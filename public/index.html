@@ -128,6 +128,35 @@
     .stat-num { font-size: 1.45rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
     .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
 
+    /* Horizontal Infinite Creator Carousel */
+    .creator-carousel {
+      display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none;
+      scroll-snap-type: x mandatory; padding: 4px 0 12px;
+    }
+    .creator-carousel::-webkit-scrollbar { display: none; }
+    .creator-slide {
+      flex: 0 0 280px; scroll-snap-align: start;
+    }
+
+    /* Landscape Ad Banner Slideshow */
+    .ad-landscape-container {
+      position: relative; width: 100%; min-height: 180px; border-radius: 22px; overflow: hidden;
+      background: var(--card); border: 1px solid var(--border); backdrop-filter: blur(20px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    .ad-slide {
+      position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 22px;
+      background-size: cover; background-position: center;
+    }
+    .ad-slide.active { opacity: 1; z-index: 2; }
+    .ad-slide::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(7,7,15,0.1) 0%, rgba(7,7,15,0.85) 90%);
+      z-index: 1;
+    }
+    .ad-content { position: relative; z-index: 3; }
+
     /* Sections */
     section { padding: 52px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
     .sec-head { margin-bottom: 26px; }
@@ -321,41 +350,41 @@
       </div>
     </section>
 
-    <!-- CREATORS OF THE WEEK -->
+    <!-- CREATORS SPOTLIGHT (HORIZONTAL INFINITE CAROUSEL) -->
     <section id="creators">
       <div class="wrap">
         <div class="sec-head">
           <div class="sec-tag">Creator Spotlight</div>
           <h2>Creators of the Week</h2>
-          <p class="sec-sub">Highlighting emerging YouTube &amp; Instagram creators selected by Akshay or approved from applications.</p>
+          <p class="sec-sub">Highlighting emerging creators. Swipe or auto-scroll through profiles.</p>
         </div>
-        <div class="grid-2">
-          <div id="creatorsList" class="grid-2" style="grid-template-columns:1fr;"></div>
-          <div class="card">
-            <h3>Apply for Creator Spotlight</h3>
-            <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Submit your channel or page. Every profile is verified before going live.</p>
-            <form onsubmit="submitCreator(event)">
-              <label>Creator / Channel Name *</label>
-              <input id="cName" required placeholder="e.g. Studio Kerala" />
-              <label>Handle *</label>
-              <input id="cHandle" required placeholder="@yourhandle" />
-              <label>Platform *</label>
-              <select id="cPlatform">
-                <option value="youtube">YouTube</option>
-                <option value="instagram">Instagram</option>
-              </select>
-              <label>Profile Link *</label>
-              <input id="cUrl" type="url" required placeholder="https://..." />
-              <label>Short Bio / Niche</label>
-              <textarea id="cBio" rows="2" placeholder="What do you create?"></textarea>
-              <button class="btn btn-primary" style="width:100%;">Submit Application</button>
-            </form>
-          </div>
+        
+        <div class="creator-carousel" id="creatorsList"></div>
+
+        <div class="card" style="margin-top:24px;">
+          <h3>Apply for Creator Spotlight</h3>
+          <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Submit your channel or page. Every profile is verified before going live.</p>
+          <form onsubmit="submitCreator(event)">
+            <label>Creator / Channel Name *</label>
+            <input id="cName" required placeholder="e.g. Studio Kerala" />
+            <label>Handle *</label>
+            <input id="cHandle" required placeholder="@yourhandle" />
+            <label>Platform *</label>
+            <select id="cPlatform">
+              <option value="youtube">YouTube</option>
+              <option value="instagram">Instagram</option>
+            </select>
+            <label>Profile Link *</label>
+            <input id="cUrl" type="url" required placeholder="https://..." />
+            <label>Short Bio / Niche</label>
+            <textarea id="cBio" rows="2" placeholder="What do you create?"></textarea>
+            <button class="btn btn-primary" style="width:100%;">Submit Application</button>
+          </form>
         </div>
       </div>
     </section>
 
-    <!-- ADS & SPONSORED -->
+    <!-- ADS & SPONSORED (LANDSCAPE BANNER SLIDESHOW) -->
     <section id="ads">
       <div class="wrap">
         <div class="sec-head">
@@ -363,7 +392,9 @@
           <h2>Ads &amp; Brand Collaborations</h2>
           <p class="sec-sub">Verified brand spots, campaign reels, and sponsored announcements.</p>
         </div>
-        <div id="adsList" class="grid-3"></div>
+        <div class="ad-landscape-container" id="adsContainer">
+          <div style="padding:40px;text-align:center;color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</div>
+        </div>
       </div>
     </section>
 
@@ -376,7 +407,6 @@
           <p class="sec-sub">Scan &amp; pay directly via UPI (GPay, PhonePe, Paytm, Navi) and unlock your creator assets.</p>
         </div>
 
-        <!-- Order Status / Download Unlock Checker -->
         <div class="card" style="margin-bottom:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;">
           <div>
             <strong style="font-size:0.95rem;">Already Paid via UPI?</strong>
@@ -446,7 +476,6 @@
         </div>
         <div class="grid-2">
           <div>
-            <!-- Open Amount UPI Donation Card -->
             <div class="card" style="margin-bottom:18px;border-color:rgba(56, 189, 248, 0.45);">
               <span class="badge badge-ok">100% Direct UPI • Any Amount</span>
               <h3 style="margin:10px 0 4px;">Support AKSHAY CARE</h3>
@@ -622,6 +651,7 @@
     let token = localStorage.getItem("akc_token") || "";
     let dashData = null;
     let activeDashTab = "creators";
+    let adSlideInterval = null;
 
     function toast(msg) {
       const t = document.getElementById("toast");
@@ -679,6 +709,33 @@
       }, 5000);
     }
 
+    function initAdSlideshow() {
+      if (adSlideInterval) clearInterval(adSlideInterval);
+      const slides = document.querySelectorAll(".ad-slide");
+      if (slides.length <= 1) return;
+      let currentIdx = 0;
+      adSlideInterval = setInterval(() => {
+        slides[currentIdx].classList.remove("active");
+        currentIdx = (currentIdx + 1) % slides.length;
+        slides[currentIdx].classList.add("active");
+      }, 4500);
+    }
+
+    // Auto-scroll horizontal creator carousel
+    function initCreatorAutoScroll() {
+      const container = document.getElementById("creatorsList");
+      if (!container) return;
+      setInterval(() => {
+        if (!container.matches(':hover')) {
+          if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+            container.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            container.scrollBy({ left: 300, behavior: 'smooth' });
+          }
+        }
+      }, 3500);
+    }
+
     async function loadPublic() {
       try {
         const data = await api("/api/public/overview");
@@ -691,30 +748,38 @@
 
         document.getElementById("igFollowers").textContent = "14.8K+";
 
+        // Creators Horizontal Carousel
         const cEl = document.getElementById("creatorsList");
         cEl.innerHTML = data.creators.length
           ? data.creators.map(c => `
-              <div class="card">
-                <span class="badge">${c.platform.toUpperCase()} • ${c.week_label || "Featured"}</span>
-                <h3 style="margin:8px 0 4px;">${c.name}</h3>
-                <p style="color:var(--cyan);font-size:0.84rem;">${c.handle}</p>
-                <p style="color:var(--muted);font-size:0.85rem;margin:8px 0 12px;">${c.bio || ""}</p>
-                <a href="${c.profile_url}" target="_blank" class="btn btn-ghost btn-sm">Visit Profile</a>
+              <div class="creator-slide">
+                <div class="card" style="height:100%;">
+                  <span class="badge">${c.platform.toUpperCase()} • ${c.week_label || "Featured"}</span>
+                  <h3 style="margin:8px 0 4px;">${c.name}</h3>
+                  <p style="color:var(--cyan);font-size:0.84rem;">${c.handle}</p>
+                  <p style="color:var(--muted);font-size:0.85rem;margin:8px 0 12px;min-height:40px;">${c.bio || ""}</p>
+                  <a href="${c.profile_url}" target="_blank" class="btn btn-ghost btn-sm">Visit Profile ↗</a>
+                </div>
               </div>
             `).join("")
-          : `<div class="card"><p style="color:var(--muted);">No featured creators published yet. Apply on the right to be featured!</p></div>`;
+          : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet. Apply below to be featured!</p></div>`;
 
-        const aEl = document.getElementById("adsList");
-        aEl.innerHTML = data.ads.length
-          ? data.ads.map(a => `
-              <div class="card">
-                ${a.media_url ? `<img src="${a.media_url}" alt="${a.title}" class="card-cover" onerror="this.style.display='none'" />` : ""}
-                <span class="badge">${a.badge || "Sponsored"}</span>
-                <h3 style="margin:10px 0 6px;">${a.title}</h3>
-                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm" style="margin-top:8px;">Explore Offer ↗</a>
+        // Ads Landscape Slideshow Banner
+        const adsContainer = document.getElementById("adsContainer");
+        if (data.ads.length > 0) {
+          adsContainer.innerHTML = data.ads.map((a, idx) => `
+            <div class="ad-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${a.media_url || ''}');">
+              <div class="ad-content">
+                <span class="badge" style="margin-bottom:8px;">${a.badge || "Sponsored"}</span>
+                <h3 style="font-size:1.4rem;font-weight:900;margin-bottom:8px;">${a.title}</h3>
+                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm" style="display:inline-flex;">Explore Campaign ↗</a>
               </div>
-            `).join("")
-          : `<div class="card"><p style="color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</p></div>`;
+            </div>
+          `).join("");
+          initAdSlideshow();
+        } else {
+          adsContainer.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</div>`;
+        }
 
         const pEl = document.getElementById("productsList");
         pEl.innerHTML = data.products.length
@@ -1163,6 +1228,7 @@
     refreshDonateQr();
     loadPublic();
     startTrafficSimulation();
+    initCreatorAutoScroll();
     verifyReturnOrder();
   </script>
 </body>
