@@ -128,14 +128,19 @@
     .stat-num { font-size: 1.45rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
     .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
 
-    /* Horizontal Infinite Creator Carousel */
+    /* Horizontal Infinite Creator Carousel with Avatar */
     .creator-carousel {
       display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none;
       scroll-snap-type: x mandatory; padding: 4px 0 12px;
     }
     .creator-carousel::-webkit-scrollbar { display: none; }
     .creator-slide {
-      flex: 0 0 280px; scroll-snap-align: start;
+      flex: 0 0 290px; scroll-snap-align: start;
+    }
+    .creator-avatar {
+      width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--cyan); margin-bottom: 10px;
+      background: #101022;
     }
 
     /* Landscape Ad Banner Slideshow */
@@ -350,13 +355,13 @@
       </div>
     </section>
 
-    <!-- CREATORS SPOTLIGHT (HORIZONTAL INFINITE CAROUSEL) -->
+    <!-- CREATORS SPOTLIGHT (WITH AVATAR / DP) -->
     <section id="creators">
       <div class="wrap">
         <div class="sec-head">
           <div class="sec-tag">Creator Spotlight</div>
           <h2>Creators of the Week</h2>
-          <p class="sec-sub">Highlighting emerging creators. Swipe or auto-scroll through profiles.</p>
+          <p class="sec-sub">Highlighting emerging creators with verified profiles &amp; avatar display.</p>
         </div>
         
         <div class="creator-carousel" id="creatorsList"></div>
@@ -374,6 +379,8 @@
               <option value="youtube">YouTube</option>
               <option value="instagram">Instagram</option>
             </select>
+            <label>Profile Picture / Avatar URL</label>
+            <input id="cAvatar" type="url" placeholder="https://... (optional DP image)" />
             <label>Profile Link *</label>
             <input id="cUrl" type="url" required placeholder="https://..." />
             <label>Short Bio / Niche</label>
@@ -384,7 +391,7 @@
       </div>
     </section>
 
-    <!-- ADS & SPONSORED (LANDSCAPE BANNER SLIDESHOW) -->
+    <!-- ADS & SPONSORED -->
     <section id="ads">
       <div class="wrap">
         <div class="sec-head">
@@ -721,7 +728,6 @@
       }, 4500);
     }
 
-    // Auto-scroll horizontal creator carousel
     function initCreatorAutoScroll() {
       const container = document.getElementById("creatorsList");
       if (!container) return;
@@ -748,23 +754,23 @@
 
         document.getElementById("igFollowers").textContent = "14.8K+";
 
-        // Creators Horizontal Carousel
+        // Creators Carousel with Avatar support
         const cEl = document.getElementById("creatorsList");
         cEl.innerHTML = data.creators.length
           ? data.creators.map(c => `
               <div class="creator-slide">
                 <div class="card" style="height:100%;">
-                  <span class="badge">${c.platform.toUpperCase()} • ${c.week_label || "Featured"}</span>
-                  <h3 style="margin:8px 0 4px;">${c.name}</h3>
+                  ${c.avatar_url ? `<img src="${c.avatar_url}" alt="${c.name}" class="creator-avatar" onerror="this.style.display='none'" />` : ""}
+                  <span class="badge" style="display:block;margin-bottom:6px;width:fit-content;">${c.platform.toUpperCase()} • ${c.week_label || "Featured"}</span>
+                  <h3 style="margin:6px 0 2px;">${c.name}</h3>
                   <p style="color:var(--cyan);font-size:0.84rem;">${c.handle}</p>
-                  <p style="color:var(--muted);font-size:0.85rem;margin:8px 0 12px;min-height:40px;">${c.bio || ""}</p>
+                  <p style="color:var(--muted);font-size:0.85rem;margin:6px 0 10px;min-height:36px;">${c.bio || ""}</p>
                   <a href="${c.profile_url}" target="_blank" class="btn btn-ghost btn-sm">Visit Profile ↗</a>
                 </div>
               </div>
             `).join("")
           : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet. Apply below to be featured!</p></div>`;
 
-        // Ads Landscape Slideshow Banner
         const adsContainer = document.getElementById("adsContainer");
         if (data.ads.length > 0) {
           adsContainer.innerHTML = data.ads.map((a, idx) => `
@@ -847,6 +853,7 @@
             name: document.getElementById("cName").value,
             handle: document.getElementById("cHandle").value,
             platform: document.getElementById("cPlatform").value,
+            avatar_url: document.getElementById("cAvatar").value,
             profile_url: document.getElementById("cUrl").value,
             bio: document.getElementById("cBio").value
           })
@@ -989,7 +996,6 @@
       window.history.replaceState({}, "", "/");
     }
 
-    // Portal & Admin Logic
     function openPortal() {
       document.getElementById("portalModal").classList.add("open");
       if (token) loadDashboard();
@@ -1087,9 +1093,10 @@
             <input id="acName" placeholder="Creator Name" />
             <input id="acHandle" placeholder="@handle" />
             <select id="acPlat"><option value="youtube">YouTube</option><option value="instagram">Instagram</option></select>
+            <input id="acAvatar" placeholder="Avatar/DP Image URL (https://...)" />
             <input id="acUrl" placeholder="Profile URL" />
             <input id="acWeek" placeholder="Label (e.g. Week 1 Spotlight)" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'create', name:acName.value, handle:acHandle.value, platform:acPlat.value, profile_url:acUrl.value, week_label:acWeek.value})">Publish Creator</button>
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'create', name:acName.value, handle:acHandle.value, platform:acPlat.value, avatar_url:acAvatar.value, profile_url:acUrl.value, week_label:acWeek.value})">Publish Creator</button>
           </div>
           ${dashData.creators.map(c => `
             <div class="card" style="margin-bottom:8px;">
