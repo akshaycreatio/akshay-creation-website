@@ -1,0 +1,16 @@
+{
+  "name": "akshay-creation-website",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-17",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "akshay-creation-db",
+      "database_id": "eac0ace0-a5ae-4694-9c95-cbbe4e8335f6"
+    }
+  ]
+}
