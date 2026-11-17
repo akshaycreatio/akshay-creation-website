@@ -139,16 +139,56 @@
       background: rgba(124, 58, 237, 0.22); color: #d8b4fe;
     }
     .badge-ok { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+    .badge-warn { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+    .badge-err { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+
+    /* UPI QR Box */
+    .qr-box {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      margin: 12px 0 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    .qr-box img {
+      width: 205px;
+      height: 205px;
+      display: block;
+      margin: 8px auto;
+      border-radius: 8px;
+    }
+    .upi-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 4px;
+    }
+    .amt-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 12px; }
+    .amt-pill {
+      padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700;
+      background: rgba(56, 189, 248, 0.12); border: 1px solid var(--border);
+      color: var(--cyan); cursor: pointer; transition: 0.2s;
+    }
+    .amt-pill:hover { background: var(--purple); color: #fff; border-color: var(--purple); }
 
     /* Modal */
     .modal-bg {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82);
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.84);
       display: none; align-items: center; justify-content: center;
       padding: 16px; z-index: 100; overflow-y: auto;
     }
     .modal-bg.open { display: flex; }
     .modal {
-      width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto;
+      width: 100%; max-width: 780px; max-height: 92vh; overflow-y: auto;
       background: #0d0d1d; border: 1px solid var(--border); border-radius: 20px; padding: 22px;
     }
     .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
@@ -193,7 +233,7 @@
         <div class="hero-cta">
           <a href="https://youtube.com/@akshaycreationshorts" target="_blank" class="btn btn-primary">YouTube Channel</a>
           <a href="https://www.instagram.com/akshaycreation_offl" target="_blank" class="btn btn-ghost">Instagram</a>
-          <a href="#services" class="btn btn-ghost">Work With Me</a>
+          <a href="#care" class="btn btn-ghost">Akshay Care / Donate</a>
         </div>
 
         <div class="stats-grid">
@@ -295,10 +335,24 @@
     <section id="store">
       <div class="wrap">
         <div class="sec-head">
-          <div class="sec-tag">Creator Assets</div>
+          <div class="sec-tag">Creator Assets • Zero-Fee Direct UPI</div>
           <h2>Digital Store</h2>
-          <p class="sec-sub">Presets, editing packs, and creator resources with verified Cashfree checkout.</p>
+          <p class="sec-sub">Scan &amp; pay directly via UPI (GPay, PhonePe, Paytm, Navi) and unlock your creator assets.</p>
         </div>
+
+        <!-- Order Status / Download Unlock Checker -->
+        <div class="card" style="margin-bottom:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;">
+          <div>
+            <strong style="font-size:0.95rem;">Already Paid via UPI?</strong>
+            <p style="color:var(--muted);font-size:0.82rem;">Enter your Order ID or 12-digit UTR number to check verification &amp; download.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;max-width:440px;">
+            <input id="trackOrderInput" placeholder="e.g. AKC_17... or 12-digit UTR" style="margin:0;flex:1;min-width:190px;" />
+            <button class="btn btn-ghost btn-sm" onclick="checkOrderStatus()">Check Status</button>
+          </div>
+          <div id="trackOrderResult" style="width:100%;display:none;margin-top:8px;padding-top:10px;border-top:1px solid var(--border);font-size:0.86rem;"></div>
+        </div>
+
         <div id="productsList" class="grid-3"></div>
       </div>
     </section>
@@ -346,18 +400,53 @@
       </div>
     </section>
 
-    <!-- AKSHAY CARE -->
+    <!-- AKSHAY CARE & DONATION PORTAL -->
     <section id="care">
       <div class="wrap">
         <div class="sec-head">
-          <div class="sec-tag">Social Responsibility</div>
-          <h2>AKSHAY CARE</h2>
-          <p class="sec-sub">Verified community support. Submissions remain 100% private until verified and published only with explicit consent.</p>
+          <div class="sec-tag">Social Responsibility &amp; Support</div>
+          <h2>AKSHAY CARE &amp; Donation Portal</h2>
+          <p class="sec-sub">Contribute any amount you wish via UPI or submit a genuine support request privately.</p>
         </div>
         <div class="grid-2">
-          <div id="careList" class="grid-2" style="grid-template-columns:1fr;"></div>
+          <div>
+            <!-- Open Amount UPI Donation Card -->
+            <div class="card" style="margin-bottom:18px;border-color:rgba(56, 189, 248, 0.45);">
+              <span class="badge badge-ok">100% Direct UPI • Any Amount</span>
+              <h3 style="margin:10px 0 4px;">Support AKSHAY CARE</h3>
+              <p style="color:var(--muted);font-size:0.84rem;">Choose a quick preset or enter any custom amount (or leave blank to enter amount inside your UPI app).</p>
+
+              <div class="amt-pills">
+                <button type="button" class="amt-pill" onclick="setDonateAmount(50)">₹50</button>
+                <button type="button" class="amt-pill" onclick="setDonateAmount(100)">₹100</button>
+                <button type="button" class="amt-pill" onclick="setDonateAmount(500)">₹500</button>
+                <button type="button" class="amt-pill" onclick="setDonateAmount(1000)">₹1,000</button>
+                <button type="button" class="amt-pill" onclick="setDonateAmount('')">Any Amount</button>
+              </div>
+
+              <label>Custom Amount in ₹ (Optional)</label>
+              <input id="donateAmtInput" type="number" min="1" placeholder="Leave empty to enter any amount in UPI app" oninput="refreshDonateQr()" />
+
+              <div class="qr-box">
+                <div style="font-size:0.75rem;font-weight:700;color:#475569;" id="donateQrLabel">SCAN TO DONATE ANY AMOUNT</div>
+                <img id="donateQrImg" src="" alt="Akshay Care Donation UPI QR" />
+                <div style="font-weight:800;font-size:0.92rem;color:#0f172a;">Akshay K P</div>
+                <div class="upi-chip">
+                  <span>akshaycreation7@naviaxis</span>
+                  <button type="button" onclick="copyUpiId()" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">Copy</button>
+                </div>
+                <div style="margin-top:10px;">
+                  <a id="donateDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Donate via UPI App ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <div id="careList" class="grid-2" style="grid-template-columns:1fr;"></div>
+          </div>
+
           <div class="card">
             <h3>Request Support / Submit Case</h3>
+            <p style="color:var(--muted);font-size:0.84rem;margin-bottom:10px;">Submissions remain 100% private until verified and published only with explicit consent.</p>
             <form onsubmit="submitCare(event)">
               <label>Full Name *</label>
               <input id="careName" required placeholder="Applicant name" />
@@ -366,7 +455,7 @@
               <label>Case Title *</label>
               <input id="careTitle" required placeholder="Brief summary of need" />
               <label>Full Details &amp; Verification Info *</label>
-              <textarea id="careDetails" rows="3" required placeholder="Explain the situation clearly"></textarea>
+              <textarea id="careDetails" rows="4" required placeholder="Explain the situation clearly"></textarea>
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:14px;cursor:pointer;">
                 <input type="checkbox" id="careConsent" style="width:auto;margin:0;" />
                 <span>I consent to public listing if verified (optional; unchecked stays private)</span>
@@ -398,24 +487,51 @@
     </div>
   </footer>
 
-  <!-- CHECKOUT MODAL -->
+  <!-- DIRECT UPI QR CHECKOUT MODAL -->
   <div class="modal-bg" id="checkoutModal">
-    <div class="modal" style="max-width:440px;">
+    <div class="modal" style="max-width:450px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <h3 id="chkTitle">Checkout</h3>
+        <h3 id="chkTitle">UPI Checkout</h3>
         <button class="btn btn-ghost btn-sm" onclick="closeCheckout()">Close</button>
       </div>
-      <p id="chkPrice" style="color:var(--cyan);font-weight:700;margin:8px 0 14px;"></p>
-      <form onsubmit="startCheckout(event)">
-        <input type="hidden" id="chkProductId" />
-        <label>Full Name *</label>
-        <input id="chkName" required />
-        <label>Email (for download receipt) *</label>
-        <input id="chkEmail" type="email" required />
-        <label>Phone (10-digit Indian mobile) *</label>
-        <input id="chkPhone" required placeholder="9876543210" />
-        <button class="btn btn-primary" style="width:100%;">Pay Securely via Cashfree</button>
-      </form>
+      <p id="chkPrice" style="color:var(--cyan);font-weight:800;font-size:1.15rem;margin:6px 0 4px;"></p>
+
+      <div id="upiPayStep">
+        <div class="qr-box">
+          <div style="font-size:0.75rem;font-weight:700;color:#475569;">SCAN WITH ANY UPI APP</div>
+          <img id="chkQrImg" src="" alt="Dynamic UPI QR Code" />
+          <div style="font-weight:800;font-size:0.92rem;color:#0f172a;">Akshay K P</div>
+          <div class="upi-chip">
+            <span id="chkUpiIdText">akshaycreation7@naviaxis</span>
+            <button type="button" onclick="copyUpiId()" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">Copy</button>
+          </div>
+          <div style="margin-top:10px;">
+            <a id="chkUpiDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Open UPI App &amp; Pay ↗</a>
+          </div>
+        </div>
+
+        <form onsubmit="submitUpiPayment(event)">
+          <input type="hidden" id="chkProductId" />
+          <label>Your Full Name *</label>
+          <input id="chkName" required placeholder="Enter your name" />
+          <label>Email (for download receipt) *</label>
+          <input id="chkEmail" type="email" required placeholder="you@example.com" />
+          <label>12-Digit UPI UTR / Reference No. *</label>
+          <input id="chkUtr" required maxlength="12" pattern="\d{12}" inputmode="numeric" placeholder="e.g. 632189450123" />
+          <button class="btn btn-primary" id="chkSubmitBtn" style="width:100%;">Confirm Payment &amp; Submit UTR</button>
+        </form>
+      </div>
+
+      <div id="upiDoneStep" style="display:none;text-align:center;padding:12px 0;">
+        <span class="badge badge-warn" style="font-size:0.8rem;padding:5px 12px;">PENDING VERIFICATION</span>
+        <h4 style="margin:12px 0 6px;">Payment Details Submitted!</h4>
+        <p style="color:var(--muted);font-size:0.86rem;margin-bottom:12px;">Save your Order ID below. Once Akshay verifies your Navi UPI receipt, use this Order ID or UTR in the Store section to download your file.</p>
+        <div class="card" style="margin-bottom:14px;background:#13132b;">
+          <div style="font-size:0.75rem;color:var(--muted);">YOUR ORDER ID</div>
+          <div id="doneOrderId" style="font-size:1.1rem;font-weight:800;color:var(--cyan);margin-top:4px;word-break:break-all;"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="copyOrderId()">Copy Order ID</button>
+      </div>
     </div>
   </div>
 
@@ -465,7 +581,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    let state = { creators: [], ads: [], products: [], care_cases: [], polls: [] };
+    let state = { creators: [], ads: [], products: [], care_cases: [], polls: [], upi_id: "akshaycreation7@naviaxis", upi_name: "Akshay K P" };
     let loginRole = "owner";
     let token = localStorage.getItem("akc_token") || "";
     let dashData = null;
@@ -487,10 +603,33 @@
       return data;
     }
 
+    // Open-Amount Donation QR Updater
+    function setDonateAmount(val) {
+      document.getElementById("donateAmtInput").value = val;
+      refreshDonateQr();
+    }
+
+    function refreshDonateQr() {
+      const upiId = state.upi_id || "akshaycreation7@naviaxis";
+      const upiName = state.upi_name || "Akshay K P";
+      const rawAmt = Number(document.getElementById("donateAmtInput")?.value || 0);
+      const hasAmt = rawAmt > 0;
+      const upiUri = hasAmt
+        ? `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${encodeURIComponent(rawAmt)}&cu=INR&tn=${encodeURIComponent("AKSHAY CARE Support")}`
+        : `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&cu=INR&tn=${encodeURIComponent("AKSHAY CARE Support")}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data=${encodeURIComponent(upiUri)}`;
+
+      document.getElementById("donateQrImg").src = qrUrl;
+      document.getElementById("donateQrLabel").textContent = hasAmt ? `SCAN TO DONATE ₹${rawAmt}` : "SCAN TO DONATE ANY AMOUNT";
+      document.getElementById("donateDeepLink").href = upiUri;
+      document.getElementById("donateDeepLink").textContent = hasAmt ? `Donate ₹${rawAmt} via UPI App ↗` : "Donate Any Amount via UPI App ↗";
+    }
+
     async function loadPublic() {
       try {
         const data = await api("/api/public/overview");
-        state = data;
+        state = { ...state, ...data };
+        refreshDonateQr();
 
         // Live Stats
         document.getElementById("ytSubs").textContent = data.stats?.youtube?.count_text || "150K+";
@@ -545,7 +684,7 @@
                 <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">${p.description || ""}</p>
                 <div style="display:flex;justify-content:space-between;align-items:center;">
                   <strong style="font-size:1.1rem;color:var(--cyan);">₹${p.price_inr}</strong>
-                  <button class="btn btn-primary btn-sm" onclick="openCheckout(${p.id}, '${p.title.replace(/'/g, "\\'")}', ${p.price_inr})">Buy Now</button>
+                  <button class="btn btn-primary btn-sm" onclick="openCheckout(${p.id}, '${p.title.replace(/'/g, "\\'")}', ${p.price_inr})">Buy via UPI</button>
                 </div>
               </div>
             `).join("")
@@ -648,44 +787,102 @@
       } catch (err) { toast(err.message); }
     }
 
+    // Direct Dynamic UPI QR Checkout (akshaycreation7@naviaxis)
     function openCheckout(id, title, price) {
+      const upiId = state.upi_id || "akshaycreation7@naviaxis";
+      const upiName = state.upi_name || "Akshay K P";
+      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${encodeURIComponent(price)}&cu=INR&tn=${encodeURIComponent(title)}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data=${encodeURIComponent(upiUri)}`;
+
       document.getElementById("chkProductId").value = id;
       document.getElementById("chkTitle").textContent = title;
-      document.getElementById("chkPrice").textContent = `Amount: ₹${price}`;
+      document.getElementById("chkPrice").textContent = `Pay Exact Amount: ₹${price}`;
+      document.getElementById("chkQrImg").src = qrUrl;
+      document.getElementById("chkUpiIdText").textContent = upiId;
+      document.getElementById("chkUpiDeepLink").href = upiUri;
+      document.getElementById("chkUpiDeepLink").textContent = `Open UPI App & Pay ₹${price} ↗`;
+
+      document.getElementById("upiPayStep").style.display = "block";
+      document.getElementById("upiDoneStep").style.display = "none";
       document.getElementById("checkoutModal").classList.add("open");
     }
+
     function closeCheckout() { document.getElementById("checkoutModal").classList.remove("open"); }
 
-    async function startCheckout(e) {
+    function copyUpiId() {
+      const upiId = state.upi_id || "akshaycreation7@naviaxis";
+      navigator.clipboard?.writeText(upiId);
+      toast("Copied UPI ID: " + upiId);
+    }
+
+    function copyOrderId() {
+      const oid = document.getElementById("doneOrderId").textContent;
+      navigator.clipboard?.writeText(oid);
+      toast("Copied Order ID: " + oid);
+    }
+
+    async function submitUpiPayment(e) {
       e.preventDefault();
+      const btn = document.getElementById("chkSubmitBtn");
+      btn.disabled = true;
+      btn.textContent = "Submitting UTR...";
       try {
-        const res = await api("/api/checkout/create-order", {
+        const res = await api("/api/checkout/upi-submit", {
           method: "POST",
           body: JSON.stringify({
             product_id: document.getElementById("chkProductId").value,
             customer_name: document.getElementById("chkName").value,
             customer_email: document.getElementById("chkEmail").value,
-            customer_phone: document.getElementById("chkPhone").value
+            utr: document.getElementById("chkUtr").value
           })
         });
-        const cf = Cashfree({ mode: res.environment });
-        cf.checkout({ paymentSessionId: res.payment_session_id, redirectTarget: "_self" });
-      } catch (err) { toast(err.message); }
+        e.target.reset();
+        document.getElementById("upiPayStep").style.display = "none";
+        document.getElementById("upiDoneStep").style.display = "block";
+        document.getElementById("doneOrderId").textContent = res.order_id;
+        document.getElementById("trackOrderInput").value = res.order_id;
+        toast("UTR Submitted Successfully!");
+      } catch (err) {
+        toast(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Confirm Payment & Submit UTR";
+      }
+    }
+
+    async function checkOrderStatus() {
+      const q = document.getElementById("trackOrderInput").value.trim();
+      const box = document.getElementById("trackOrderResult");
+      if (!q) return toast("Enter your Order ID or 12-digit UTR number");
+      try {
+        const res = await api(`/api/checkout/verify?order_id=${encodeURIComponent(q)}`);
+        box.style.display = "block";
+        if (res.status === "PAID" && res.download_url) {
+          box.innerHTML = `
+            <span class="badge badge-ok">VERIFIED &amp; PAID</span>
+            <strong style="margin-left:8px;">${res.product_title}</strong>
+            <div style="margin-top:8px;">
+              <a href="${res.download_url}" target="_blank" class="btn btn-primary btn-sm">Download Asset Now ↗</a>
+            </div>
+          `;
+        } else if (res.status === "REJECTED") {
+          box.innerHTML = `<span class="badge badge-err">REJECTED</span> <span style="margin-left:8px;color:var(--muted);">UTR could not be matched. Contact collab.akshaycreation@gmail.com with screenshot.</span>`;
+        } else {
+          box.innerHTML = `<span class="badge badge-warn">PENDING VERIFICATION</span> <span style="margin-left:8px;color:var(--muted);">Order <strong>${res.order_id}</strong> (${res.product_title}) is awaiting Akshay's UPI confirmation.</span>`;
+        }
+      } catch (err) {
+        box.style.display = "block";
+        box.innerHTML = `<span style="color:#fca5a5;">${err.message}</span>`;
+      }
     }
 
     async function verifyReturnOrder() {
       const params = new URLSearchParams(window.location.search);
       const orderId = params.get("order_id");
       if (!orderId) return;
-      try {
-        const res = await api(`/api/checkout/verify?order_id=${encodeURIComponent(orderId)}`);
-        if (res.status === "PAID" && res.download_url) {
-          alert(`Payment Verified for ${res.product_title}!\n\nDownload Link:\n${res.download_url}`);
-        } else {
-          toast(`Order ${orderId} status: ${res.status}`);
-        }
-        window.history.replaceState({}, "", "/");
-      } catch (e) { toast(e.message); }
+      document.getElementById("trackOrderInput").value = orderId;
+      await checkOrderStatus();
+      window.history.replaceState({}, "", "/");
     }
 
     // Portal & Admin Logic
@@ -829,8 +1026,23 @@
             <input id="prUrl" placeholder="Protected Download URL" />
             <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/products', {action:'create', title:prTitle.value, category:prCat.value, description:prDesc.value, price_inr:prPrice.value, download_url:prUrl.value})">Add Product</button>
           </div>
-          <h4>Recent Orders (${dashData.orders.length})</h4>
-          ${dashData.orders.map(o => `<div class="card" style="margin-top:6px;font-size:0.84rem;">${o.order_id} • ₹${o.amount_inr} • <strong>${o.status}</strong> (${o.customer_email})</div>`).join("")}
+          <h4 style="margin-bottom:8px;">UPI Orders &amp; UTR Verification (${dashData.orders.length})</h4>
+          ${dashData.orders.map(o => `
+            <div class="card" style="margin-bottom:8px;font-size:0.84rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <strong>${o.product_title || "Product #" + o.product_id} • ₹${o.amount_inr}</strong>
+                <span class="badge ${o.status === 'PAID' ? 'badge-ok' : (o.status === 'REJECTED' ? 'badge-err' : 'badge-warn')}">${o.status}</span>
+              </div>
+              <div style="color:var(--muted);margin-top:4px;">Order: ${o.order_id} • Buyer: ${o.customer_name} (${o.customer_email})</div>
+              ${o.utr ? `<div style="color:var(--cyan);font-weight:700;margin-top:4px;">UPI UTR: ${o.utr}</div>` : ""}
+              ${o.status !== "PAID" ? `
+                <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/orders/verify', {order_id:'${o.order_id}', action:'approve'})">Approve &amp; Unlock Download</button>
+                  <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/orders/verify', {order_id:'${o.order_id}', action:'reject'})">Reject</button>
+                </div>
+              ` : ""}
+            </div>
+          `).join("") || "<p style='color:var(--muted);'>No orders yet.</p>"}
         `;
       } else if (activeDashTab === "bookings") {
         box.innerHTML = dashData.bookings.map(b => `
@@ -889,8 +1101,8 @@
         const cfEnv = (dashData.settings.find(s => s.key === "cashfree_env") || {}).value || "SANDBOX";
         box.innerHTML = `
           <div class="card">
-            <h4>Owner Payment Gateway Controls</h4>
-            <p style="font-size:0.84rem;color:var(--muted);margin:8px 0;">Cashfree App ID &amp; Secret Key are stored encrypted in Cloudflare Runtime Secrets. Switch gateway mode below:</p>
+            <h4>Owner Payment Controls</h4>
+            <p style="font-size:0.84rem;color:var(--muted);margin:8px 0;">Direct UPI Checkout &amp; AKSHAY CARE Donations (<strong>akshaycreation7@naviaxis</strong>) are active with 0% transaction fee. Optional Cashfree gateway mode below:</p>
             <select id="gwMode">
               <option value="SANDBOX" ${cfEnv === "SANDBOX" ? "selected" : ""}>Cashfree SANDBOX (Test)</option>
               <option value="PRODUCTION" ${cfEnv === "PRODUCTION" ? "selected" : ""}>Cashfree PRODUCTION (Live Payouts)</option>
@@ -907,6 +1119,7 @@
       }
     }
 
+    refreshDonateQr();
     loadPublic();
     verifyReturnOrder();
   </script>
