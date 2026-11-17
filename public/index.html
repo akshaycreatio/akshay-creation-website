@@ -128,14 +128,6 @@
       width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cyan); margin-bottom: 10px; background: #101022;
     }
 
-    /* Fan Shoutouts Wall Grid */
-    .shoutouts-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px;
-    }
-    .shoutout-card {
-      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 16px; padding: 14px;
-    }
-
     /* Landscape Ad Banner Slideshow */
     .ad-landscape-container {
       position: relative; width: 100%; min-height: 180px; border-radius: 22px; overflow: hidden;
@@ -234,7 +226,6 @@
         <a href="#store">Store</a>
         <a href="#services">Services</a>
         <a href="#care">Akshay Care</a>
-        <a href="#wall">Wall of Love</a>
         <a href="#community">Community</a>
       </nav>
       <button class="btn btn-ghost btn-sm" onclick="openPortal()">Portal</button>
@@ -390,32 +381,6 @@
               <textarea id="sDetails" rows="3" required placeholder="Describe timeline, deliverables, and goals"></textarea>
               <button class="btn btn-primary" style="width:100%;">Send Booking Request</button>
             </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- WALL OF LOVE & FAN SHOUTOUTS -->
-    <section id="wall">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Community Wall</div>
-          <h2>Wall of Love &amp; Fan Shoutouts</h2>
-          <p class="sec-sub">Leave a nice message or shoutout for Akshay. Approved messages appear live here!</p>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Leave a Shoutout</h3>
-            <form onsubmit="submitShoutout(event)">
-              <label>Your Name *</label>
-              <input id="shName" required placeholder="e.g. Rahul / Fan" />
-              <label>Your Message *</label>
-              <textarea id="shMsg" rows="3" required placeholder="Awesome videos Akshay! Keep growing..."></textarea>
-              <button class="btn btn-primary" style="width:100%;">Post Shoutout</button>
-            </form>
-          </div>
-          <div>
-            <div id="shoutoutsGrid" class="shoutouts-grid"></div>
           </div>
         </div>
       </div>
@@ -589,7 +554,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    let state = { creators: [], ads: [], products: [], care_cases: [], shoutouts: [], polls: [], upi_id: "akshaycreation7@naviaxis", upi_name: "Akshay K P" };
+    let state = { creators: [], ads: [], products: [], care_cases: [], polls: [], upi_id: "akshaycreation7@naviaxis", upi_name: "Akshay K P" };
     let token = localStorage.getItem("akc_token") || "";
     let dashData = null;
     let activeDashTab = "creators";
@@ -697,16 +662,6 @@
             `).join("")
           : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet.</p></div>`;
 
-        const shEl = document.getElementById("shoutoutsGrid");
-        shEl.innerHTML = data.shoutouts.length
-          ? data.shoutouts.map(s => `
-              <div class="shoutout-card">
-                <p style="font-size:0.9rem;color:#f8fafc;margin-bottom:8px;">"${s.message}"</p>
-                <div style="font-size:0.75rem;color:var(--cyan);font-weight:700;">— ${s.author_name}</div>
-              </div>
-            `).join("")
-          : `<p style="color:var(--muted);">Be the first to leave a shoutout!</p>`;
-
         const adsContainer = document.getElementById("adsContainer");
         if (data.ads.length > 0) {
           adsContainer.innerHTML = data.ads.map((a, idx) => `
@@ -748,18 +703,6 @@
           </div>
         `).join("") || `<div class="card"><p style="color:var(--muted);">No active polls.</p></div>`;
       } catch (e) { console.error(e); }
-    }
-
-    async function submitShoutout(e) {
-      e.preventDefault();
-      try {
-        const res = await api("/api/shoutouts/submit", {
-          method: "POST",
-          body: JSON.stringify({ author_name: document.getElementById("shName").value, message: document.getElementById("shMsg").value })
-        });
-        e.target.reset();
-        toast(res.message);
-      } catch (err) { toast(err.message); }
     }
 
     async function votePoll(pollId, optionIndex) {
@@ -864,7 +807,7 @@
         document.getElementById("authBox").style.display = "none";
         document.getElementById("dashBox").style.display = "block";
         document.getElementById("dashRoleBadge").textContent = `${dashData.username.toUpperCase()} • ${dashData.role.toUpperCase()}`;
-        const tabs = ["creators", "shoutouts", "ads", "store", "bookings", "care", "polls"];
+        const tabs = ["creators", "ads", "store", "bookings", "care", "polls"];
         document.getElementById("dashTabs").innerHTML = tabs.map(t => `<button class="tab ${activeDashTab === t ? "active" : ""}" onclick="switchDashTab('${t}')">${t.toUpperCase()}</button>`).join("");
         renderDashTab();
       } catch (e) { doLogout(); }
@@ -883,17 +826,7 @@
 
     function renderDashTab() {
       const box = document.getElementById("dashContent");
-      if (activeDashTab === "shoutouts") {
-        box.innerHTML = dashData.shoutouts.map(s => `
-          <div class="card" style="margin-bottom:8px;font-size:0.85rem;">
-            <strong>${s.author_name}</strong>: "${s.message}" — <span class="badge">${s.status}</span>
-            <div style="margin-top:8px;display:flex;gap:6px;">
-              <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/shoutouts', {id:${s.id}, status:'approved'})">Approve &amp; Publish</button>
-              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/shoutouts', {id:${s.id}, status:'rejected'})">Reject</button>
-            </div>
-          </div>
-        `).join("") || "<p>No shoutouts yet.</p>";
-      } else if (activeDashTab === "creators") {
+      if (activeDashTab === "creators") {
         box.innerHTML = dashData.creators.map(c => `
           <div class="card" style="margin-bottom:8px;">
             <strong>${c.name}</strong> (${c.handle}) — <span class="badge">${c.status}</span>
