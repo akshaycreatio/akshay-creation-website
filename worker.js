@@ -51,7 +51,6 @@ async function fetchSocialStats(env) {
   const now = new Date().toISOString();
   const results = {};
 
-  // YouTube Data API v3 (Official)
   if (env.YOUTUBE_API_KEY && env.YOUTUBE_CHANNEL_ID) {
     try {
       const ytRes = await fetch(
@@ -68,7 +67,6 @@ async function fetchSocialStats(env) {
     } catch (_) {}
   }
 
-  // Instagram Graph API (Official Professional Creator/Business Account)
   if (env.IG_ACCESS_TOKEN && env.IG_USER_ID) {
     try {
       const igRes = await fetch(
@@ -117,7 +115,7 @@ export default {
     }
 
     try {
-      // 1. One-time Owner Bootstrap (requires OWNER_SETUP_KEY env secret)
+      // 1. One-time Owner Bootstrap
       if (path === "/api/auth/setup-owner" && request.method === "POST") {
         const body = await request.json();
         if (!env.OWNER_SETUP_KEY || body.setup_key !== env.OWNER_SETUP_KEY) {
@@ -139,7 +137,7 @@ export default {
         return json({ ok: true, message: "Owner account created securely" });
       }
 
-      // 2. Login (Separate Owner & Moderator roles)
+      // 2. Login
       if (path === "/api/auth/login" && request.method === "POST") {
         const body = await request.json();
         const username = String(body.username || "").trim().toLowerCase();
@@ -196,7 +194,7 @@ export default {
           "SELECT id, title, media_type, media_url, target_url, badge FROM ads_promotions WHERE active = 1 ORDER BY id DESC"
         ).all();
         const products = await env.DB.prepare(
-          "SELECT id, title, category, description, price_inr FROM products WHERE active = 1 ORDER BY id DESC"
+          "SELECT id, title, category, description, price_inr, image_url FROM products WHERE active = 1 ORDER BY id DESC"
         ).all();
         const careCases = await env.DB.prepare(
           "SELECT id, case_title, public_summary, created_at FROM akshay_care WHERE status = 'published' AND consent_granted = 1 ORDER BY id DESC"
@@ -243,7 +241,7 @@ export default {
         });
       }
 
-      // 4. Real Poll Voting (1 vote per unique visitor per poll)
+      // 4. Real Poll Voting
       if (path === "/api/polls/vote" && request.method === "POST") {
         const body = await request.json();
         const pollId = Number(body.poll_id);
@@ -265,7 +263,7 @@ export default {
         return json({ ok: true });
       }
 
-      // 5. Public Submissions (Creator Spotlight, Services, AKSHAY CARE)
+      // 5. Public Submissions
       if (path === "/api/creators/apply" && request.method === "POST") {
         const b = await request.json();
         if (!b.name || !b.handle || !b.platform || !b.profile_url) {
@@ -335,7 +333,7 @@ export default {
         });
       }
 
-      // 6B. Cashfree Secure Checkout (Optional Backup Gateway)
+      // 6B. Cashfree Secure Checkout (Optional Backup)
       if (path === "/api/checkout/create-order" && request.method === "POST") {
         const b = await request.json();
         const product = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1").bind(Number(b.product_id)).first();
@@ -389,7 +387,7 @@ export default {
         });
       }
 
-      // Server-side verification (Supports both Direct UPI Approval & Cashfree)
+      // Server-side verification
       if (path === "/api/checkout/verify" && request.method === "GET") {
         const orderId = (url.searchParams.get("order_id") || "").trim();
         const order = await env.DB.prepare(
@@ -450,7 +448,6 @@ export default {
         if (!session) return json({ error: "Unauthorized" }, 401);
         const isOwner = session.role === "owner";
 
-        // Admin Overview Data
         if (path === "/api/admin/dashboard" && request.method === "GET") {
           const creators = await env.DB.prepare("SELECT * FROM creator_spotlight ORDER BY id DESC").all();
           const ads = await env.DB.prepare("SELECT * FROM ads_promotions ORDER BY id DESC").all();
@@ -487,7 +484,7 @@ export default {
           });
         }
 
-        // Owner/Admin Approve or Reject Direct UPI UTR Payment
+        // Approve or Reject Direct UPI UTR Payment
         if (path === "/api/admin/orders/verify" && request.method === "POST") {
           const b = await request.json();
           const status = b.action === "approve" ? "PAID" : "REJECTED";
@@ -497,7 +494,6 @@ export default {
           return json({ ok: true, status });
         }
 
-        // Moderator + Owner Shared Permissions
         if (path === "/api/admin/creators" && request.method === "POST") {
           const b = await request.json();
           if (b.action === "create") {
@@ -534,8 +530,8 @@ export default {
           const b = await request.json();
           if (b.action === "create") {
             await env.DB.prepare(
-              "INSERT INTO products (title, category, description, price_inr, download_url, active) VALUES (?, ?, ?, ?, ?, 1)"
-            ).bind(b.title, b.category, b.description || "", Number(b.price_inr), b.download_url).run();
+              "INSERT INTO products (title, category, description, price_inr, image_url, download_url, active) VALUES (?, ?, ?, ?, ?, ?, 1)"
+            ).bind(b.title, b.category, b.description || "", Number(b.price_inr), String(b.image_url || "").trim(), b.download_url).run();
             await logAudit(env, session.username, session.role, "PRODUCT_CREATED", b.title);
           } else if (b.action === "delete") {
             await env.DB.prepare("UPDATE products SET active = 0 WHERE id = ?").bind(Number(b.id)).run();
@@ -579,7 +575,6 @@ export default {
           return json({ ok: true });
         }
 
-        // OWNER-ONLY PERMISSIONS (Moderators strictly blocked)
         if (path.startsWith("/api/admin/owner/")) {
           if (!isOwner) return json({ error: "Owner privileges required" }, 403);
 
