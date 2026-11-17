@@ -237,7 +237,9 @@ export default {
           ads: ads.results || [],
           products: products.results || [],
           care_cases: careCases.results || [],
-          polls
+          polls,
+          upi_id: "akshaycreation7@naviaxis",
+          upi_name: "Akshay K P"
         });
       }
 
@@ -297,7 +299,43 @@ export default {
         return json({ ok: true, message: "Submitted privately to AKSHAY CARE. Nothing is published without verification & consent." });
       }
 
-      // 6. Cashfree Secure Checkout (Backend Order Creation + Server Verification + Signed Webhook)
+      // 6A. Direct UPI QR Checkout (akshaycreation7@naviaxis + 12-Digit UTR Submission)
+      if (path === "/api/checkout/upi-submit" && request.method === "POST") {
+        const b = await request.json();
+        const product = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1").bind(Number(b.product_id)).first();
+        if (!product) return json({ error: "Product not found" }, 404);
+        const name = String(b.customer_name || "").trim();
+        const email = String(b.customer_email || b.buyer_email || "").trim();
+        const phone = String(b.customer_phone || "0000000000").trim();
+        const utr = String(b.utr || "").replace(/\s+/g, "").trim();
+
+        if (!name || !email) {
+          return json({ error: "Name and Email are required" }, 400);
+        }
+        if (!/^\d{12}$/.test(utr)) {
+          return json({ error: "Please enter a valid 12-digit UPI UTR / Reference number" }, 400);
+        }
+
+        const dup = await env.DB.prepare("SELECT order_id FROM orders WHERE utr = ?").bind(utr).first();
+        if (dup) {
+          return json({ error: "This UTR number is already submitted. Check your Order ID: " + dup.order_id }, 409);
+        }
+
+        const orderId = `AKC_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+        await env.DB.prepare(
+          "INSERT INTO orders (order_id, product_id, customer_name, customer_email, buyer_email, customer_phone, amount_inr, utr, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'PENDING_VERIFICATION')"
+        ).bind(orderId, product.id, name, email, email, phone, product.price_inr, utr).run();
+
+        return json({
+          ok: true,
+          order_id: orderId,
+          status: "PENDING_VERIFICATION",
+          product_title: product.title,
+          message: "Payment UTR submitted! Akshay will verify your Navi UPI receipt and unlock your download shortly."
+        });
+      }
+
+      // 6B. Cashfree Secure Checkout (Optional Backup Gateway)
       if (path === "/api/checkout/create-order" && request.method === "POST") {
         const b = await request.json();
         const product = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1").bind(Number(b.product_id)).first();
@@ -313,8 +351,8 @@ export default {
         const baseUrl = cfEnv?.value === "PRODUCTION" ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg";
 
         await env.DB.prepare(
-          "INSERT INTO orders (order_id, product_id, customer_name, customer_email, customer_phone, amount_inr, status) VALUES (?, ?, ?, ?, ?, ?, 'PENDING')"
-        ).bind(orderId, product.id, b.customer_name, b.customer_email, b.customer_phone, product.price_inr).run();
+          "INSERT INTO orders (order_id, product_id, customer_name, customer_email, buyer_email, customer_phone, amount_inr, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'PENDING')"
+        ).bind(orderId, product.id, b.customer_name, b.customer_email, b.customer_email, b.customer_phone, product.price_inr).run();
 
         const cfRes = await fetch(`${baseUrl}/orders`, {
           method: "POST",
@@ -351,18 +389,18 @@ export default {
         });
       }
 
-      // Server-side verification (never trust browser redirect alone)
+      // Server-side verification (Supports both Direct UPI Approval & Cashfree)
       if (path === "/api/checkout/verify" && request.method === "GET") {
-        const orderId = url.searchParams.get("order_id") || "";
+        const orderId = (url.searchParams.get("order_id") || "").trim();
         const order = await env.DB.prepare(
-          "SELECT o.*, p.title AS product_title, p.download_url FROM orders o JOIN products p ON p.id = o.product_id WHERE o.order_id = ?"
-        ).bind(orderId).first();
+          "SELECT o.*, p.title AS product_title, p.download_url FROM orders o JOIN products p ON p.id = o.product_id WHERE o.order_id = ? OR o.utr = ?"
+        ).bind(orderId, orderId).first();
         if (!order) return json({ error: "Order not found" }, 404);
 
-        if (order.status !== "PAID" && env.CASHFREE_APP_ID && env.CASHFREE_SECRET_KEY) {
+        if (order.status !== "PAID" && !order.utr && env.CASHFREE_APP_ID && env.CASHFREE_SECRET_KEY) {
           const cfEnv = await env.DB.prepare("SELECT value FROM site_settings WHERE key = 'cashfree_env'").first();
           const baseUrl = cfEnv?.value === "PRODUCTION" ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg";
-          const verifyRes = await fetch(`${baseUrl}/orders/${encodeURIComponent(orderId)}`, {
+          const verifyRes = await fetch(`${baseUrl}/orders/${encodeURIComponent(order.order_id)}`, {
             headers: {
               "x-api-version": "2023-08-01",
               "x-client-id": env.CASHFREE_APP_ID,
@@ -372,7 +410,7 @@ export default {
           const verifyData = await verifyRes.json();
           if (verifyData.order_status === "PAID") {
             await env.DB.prepare("UPDATE orders SET status = 'PAID', gateway_ref = ? WHERE order_id = ?")
-              .bind(String(verifyData.cf_order_id || ""), orderId).run();
+              .bind(String(verifyData.cf_order_id || ""), order.order_id).run();
             order.status = "PAID";
           }
         }
@@ -381,6 +419,7 @@ export default {
           order_id: order.order_id,
           product_title: order.product_title,
           status: order.status,
+          utr: order.utr || null,
           download_url: order.status === "PAID" ? order.download_url : null
         });
       }
@@ -416,7 +455,9 @@ export default {
           const creators = await env.DB.prepare("SELECT * FROM creator_spotlight ORDER BY id DESC").all();
           const ads = await env.DB.prepare("SELECT * FROM ads_promotions ORDER BY id DESC").all();
           const products = await env.DB.prepare("SELECT * FROM products ORDER BY id DESC").all();
-          const orders = await env.DB.prepare("SELECT * FROM orders ORDER BY id DESC LIMIT 100").all();
+          const orders = await env.DB.prepare(
+            "SELECT o.*, p.title AS product_title FROM orders o LEFT JOIN products p ON p.id = o.product_id ORDER BY o.id DESC LIMIT 100"
+          ).all();
           const bookings = await env.DB.prepare("SELECT * FROM service_bookings ORDER BY id DESC").all();
           const care = await env.DB.prepare("SELECT * FROM akshay_care ORDER BY id DESC").all();
           const polls = await env.DB.prepare("SELECT * FROM polls ORDER BY id DESC").all();
@@ -444,6 +485,16 @@ export default {
             moderators: moderators.results || [],
             settings: settings.results || []
           });
+        }
+
+        // Owner/Admin Approve or Reject Direct UPI UTR Payment
+        if (path === "/api/admin/orders/verify" && request.method === "POST") {
+          const b = await request.json();
+          const status = b.action === "approve" ? "PAID" : "REJECTED";
+          await env.DB.prepare("UPDATE orders SET status = ?, gateway_ref = ? WHERE order_id = ?")
+            .bind(status, `UPI_VERIFIED_BY_${session.username.toUpperCase()}`, String(b.order_id)).run();
+          await logAudit(env, session.username, session.role, "ORDER_UTR_VERIFIED", `${b.order_id} -> ${status}`);
+          return json({ ok: true, status });
         }
 
         // Moderator + Owner Shared Permissions
