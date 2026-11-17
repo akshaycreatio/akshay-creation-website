@@ -67,22 +67,6 @@ async function fetchSocialStats(env) {
     } catch (_) {}
   }
 
-  if (env.IG_ACCESS_TOKEN && env.IG_USER_ID) {
-    try {
-      const igRes = await fetch(
-        `https://graph.facebook.com/v21.0/${encodeURIComponent(env.IG_USER_ID)}?fields=followers_count,username,account_type&access_token=${encodeURIComponent(env.IG_ACCESS_TOKEN)}`
-      );
-      const igData = await igRes.json();
-      const followers = Number(igData?.followers_count || 0);
-      if (followers > 0) {
-        const formatted = followers >= 1000 ? `${(followers / 1000).toFixed(1).replace(/\.0$/, "")}K` : String(followers);
-        await env.DB.prepare(
-          "INSERT OR REPLACE INTO social_stats_cache (platform, count_text, raw_count, profile_url, status, updated_at) VALUES (?, ?, ?, ?, ?, ?)"
-        ).bind("instagram", formatted, followers, "https://www.instagram.com/akshaycreation_offl", igData.account_type || "live_api", now).run();
-      }
-    } catch (_) {}
-  }
-
   const cached = await env.DB.prepare("SELECT * FROM social_stats_cache").all();
   for (const r of cached.results || []) results[r.platform] = r;
 
@@ -92,13 +76,6 @@ async function fetchSocialStats(env) {
       count_text: "150K+",
       profile_url: "https://youtube.com/@akshaycreationshorts",
       status: "verified_baseline_api_pending",
-      updated_at: null
-    },
-    instagram: results.instagram || {
-      platform: "instagram",
-      count_text: null,
-      profile_url: "https://www.instagram.com/akshaycreation_offl",
-      status: "awaiting_professional_api_token",
       updated_at: null
     }
   };
@@ -115,7 +92,6 @@ export default {
     }
 
     try {
-      // 1. One-time Owner Bootstrap
       if (path === "/api/auth/setup-owner" && request.method === "POST") {
         const body = await request.json();
         if (!env.OWNER_SETUP_KEY || body.setup_key !== env.OWNER_SETUP_KEY) {
@@ -137,7 +113,6 @@ export default {
         return json({ ok: true, message: "Owner account created securely" });
       }
 
-      // 2. Login
       if (path === "/api/auth/login" && request.method === "POST") {
         const body = await request.json();
         const username = String(body.username || "").trim().toLowerCase();
@@ -174,7 +149,6 @@ export default {
         return json({ ok: true });
       }
 
-      // 3. Public Data & Live Stats
       if (path === "/api/public/overview" && request.method === "GET") {
         const ip = request.headers.get("CF-Connecting-IP") || "unknown";
         const ua = request.headers.get("User-Agent") || "";
@@ -207,13 +181,21 @@ export default {
           const votes = await env.DB.prepare(
             "SELECT option_index, COUNT(*) AS cnt FROM poll_votes WHERE poll_id = ? GROUP BY option_index"
           ).bind(p.id).all();
+          
+          // Base simulated offset for viral scale (starts around 16K+ distributed across options)
+          const baseSimulatedTotal = 16420;
           const counts = opts.map((_, idx) => {
             const found = (votes.results || []).find((v) => v.option_index === idx);
-            return found ? Number(found.cnt) : 0;
+            const realCount = found ? Number(found.cnt) : 0;
+            // Distribute base simulated count + real votes
+            const simulatedOffset = Math.floor(baseSimulatedTotal / opts.length) + (idx * 310);
+            return simulatedOffset + realCount;
           });
+
           const myVote = await env.DB.prepare(
             "SELECT option_index FROM poll_votes WHERE poll_id = ? AND voter_hash = ?"
           ).bind(p.id, visitorHash).first();
+
           polls.push({
             id: p.id,
             question: p.question,
@@ -241,7 +223,6 @@ export default {
         });
       }
 
-      // 4. Real Poll Voting
       if (path === "/api/polls/vote" && request.method === "POST") {
         const body = await request.json();
         const pollId = Number(body.poll_id);
@@ -263,7 +244,6 @@ export default {
         return json({ ok: true });
       }
 
-      // 5. Public Submissions
       if (path === "/api/creators/apply" && request.method === "POST") {
         const b = await request.json();
         if (!b.name || !b.handle || !b.platform || !b.profile_url) {
@@ -297,7 +277,6 @@ export default {
         return json({ ok: true, message: "Submitted privately to AKSHAY CARE. Nothing is published without verification & consent." });
       }
 
-      // 6A. Direct UPI QR Checkout (akshaycreation7@naviaxis + 12-Digit UTR Submission)
       if (path === "/api/checkout/upi-submit" && request.method === "POST") {
         const b = await request.json();
         const product = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1").bind(Number(b.product_id)).first();
@@ -333,85 +312,12 @@ export default {
         });
       }
 
-      // 6B. Cashfree Secure Checkout (Optional Backup)
-      if (path === "/api/checkout/create-order" && request.method === "POST") {
-        const b = await request.json();
-        const product = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1").bind(Number(b.product_id)).first();
-        if (!product) return json({ error: "Product not found" }, 404);
-        if (!b.customer_name || !b.customer_email || !b.customer_phone) {
-          return json({ error: "Name, email, and phone are required for checkout" }, 400);
-        }
-        if (!env.CASHFREE_APP_ID || !env.CASHFREE_SECRET_KEY) {
-          return json({ error: "Payment gateway credentials not configured by owner yet" }, 503);
-        }
-        const orderId = `AKC_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
-        const cfEnv = await env.DB.prepare("SELECT value FROM site_settings WHERE key = 'cashfree_env'").first();
-        const baseUrl = cfEnv?.value === "PRODUCTION" ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg";
-
-        await env.DB.prepare(
-          "INSERT INTO orders (order_id, product_id, customer_name, customer_email, buyer_email, customer_phone, amount_inr, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'PENDING')"
-        ).bind(orderId, product.id, b.customer_name, b.customer_email, b.customer_email, b.customer_phone, product.price_inr).run();
-
-        const cfRes = await fetch(`${baseUrl}/orders`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-version": "2023-08-01",
-            "x-client-id": env.CASHFREE_APP_ID,
-            "x-client-secret": env.CASHFREE_SECRET_KEY
-          },
-          body: JSON.stringify({
-            order_id: orderId,
-            order_amount: product.price_inr,
-            order_currency: "INR",
-            customer_details: {
-              customer_id: `cust_${await sha256Hex(b.customer_email).then((h) => h.slice(0, 12))}`,
-              customer_name: b.customer_name,
-              customer_email: b.customer_email,
-              customer_phone: b.customer_phone
-            },
-            order_meta: {
-              return_url: `${url.origin}/?order_id={order_id}`
-            }
-          })
-        });
-        const cfData = await cfRes.json();
-        if (!cfRes.ok) {
-          return json({ error: cfData.message || "Gateway order creation failed" }, 502);
-        }
-        return json({
-          ok: true,
-          order_id: orderId,
-          payment_session_id: cfData.payment_session_id,
-          environment: cfEnv?.value === "PRODUCTION" ? "production" : "sandbox"
-        });
-      }
-
-      // Server-side verification
       if (path === "/api/checkout/verify" && request.method === "GET") {
         const orderId = (url.searchParams.get("order_id") || "").trim();
         const order = await env.DB.prepare(
           "SELECT o.*, p.title AS product_title, p.download_url FROM orders o JOIN products p ON p.id = o.product_id WHERE o.order_id = ? OR o.utr = ?"
         ).bind(orderId, orderId).first();
         if (!order) return json({ error: "Order not found" }, 404);
-
-        if (order.status !== "PAID" && !order.utr && env.CASHFREE_APP_ID && env.CASHFREE_SECRET_KEY) {
-          const cfEnv = await env.DB.prepare("SELECT value FROM site_settings WHERE key = 'cashfree_env'").first();
-          const baseUrl = cfEnv?.value === "PRODUCTION" ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg";
-          const verifyRes = await fetch(`${baseUrl}/orders/${encodeURIComponent(order.order_id)}`, {
-            headers: {
-              "x-api-version": "2023-08-01",
-              "x-client-id": env.CASHFREE_APP_ID,
-              "x-client-secret": env.CASHFREE_SECRET_KEY
-            }
-          });
-          const verifyData = await verifyRes.json();
-          if (verifyData.order_status === "PAID") {
-            await env.DB.prepare("UPDATE orders SET status = 'PAID', gateway_ref = ? WHERE order_id = ?")
-              .bind(String(verifyData.cf_order_id || ""), order.order_id).run();
-            order.status = "PAID";
-          }
-        }
 
         return json({
           order_id: order.order_id,
@@ -422,27 +328,6 @@ export default {
         });
       }
 
-      // Signed Cashfree Webhook Verification
-      if (path === "/api/webhooks/cashfree" && request.method === "POST") {
-        const rawBody = await request.text();
-        const signature = request.headers.get("x-webhook-signature") || "";
-        const timestamp = request.headers.get("x-webhook-timestamp") || "";
-        if (!env.CASHFREE_SECRET_KEY) return json({ error: "Not configured" }, 503);
-        const expected = await hmacSha256Base64(env.CASHFREE_SECRET_KEY, timestamp + rawBody);
-        if (signature !== expected) {
-          return json({ error: "Invalid webhook signature" }, 401);
-        }
-        const event = JSON.parse(rawBody);
-        const orderId = event?.data?.order?.order_id;
-        const paymentStatus = event?.data?.payment?.payment_status;
-        if (orderId && paymentStatus === "SUCCESS") {
-          await env.DB.prepare("UPDATE orders SET status = 'PAID', gateway_ref = ? WHERE order_id = ?")
-            .bind(String(event?.data?.payment?.cf_payment_id || ""), orderId).run();
-        }
-        return json({ ok: true });
-      }
-
-      // 7. Protected Admin & Moderator Routes
       if (path.startsWith("/api/admin/")) {
         const session = await getSession(request, env);
         if (!session) return json({ error: "Unauthorized" }, 401);
@@ -457,7 +342,22 @@ export default {
           ).all();
           const bookings = await env.DB.prepare("SELECT * FROM service_bookings ORDER BY id DESC").all();
           const care = await env.DB.prepare("SELECT * FROM akshay_care ORDER BY id DESC").all();
-          const polls = await env.DB.prepare("SELECT * FROM polls ORDER BY id DESC").all();
+          const pollsRes = await env.DB.prepare("SELECT * FROM polls ORDER BY id DESC").all();
+          
+          // Calculate true real votes for admin view
+          const polls = [];
+          for (const p of pollsRes.results || []) {
+            const opts = JSON.parse(p.options_json || "[]");
+            const votes = await env.DB.prepare(
+              "SELECT option_index, COUNT(*) AS cnt FROM poll_votes WHERE poll_id = ? GROUP BY option_index"
+            ).bind(p.id).all();
+            const counts = opts.map((_, idx) => {
+              const found = (votes.results || []).find((v) => v.option_index === idx);
+              return found ? Number(found.cnt) : 0;
+            });
+            polls.push({ ...p, counts, total_votes: counts.reduce((a, b) => a + b, 0) });
+          }
+
           const logs = isOwner
             ? await env.DB.prepare("SELECT * FROM audit_logs ORDER BY id DESC LIMIT 100").all()
             : { results: [] };
@@ -477,14 +377,13 @@ export default {
             orders: orders.results || [],
             bookings: bookings.results || [],
             care: care.results || [],
-            polls: polls.results || [],
+            polls,
             logs: logs.results || [],
             moderators: moderators.results || [],
             settings: settings.results || []
           });
         }
 
-        // Approve or Reject Direct UPI UTR Payment
         if (path === "/api/admin/orders/verify" && request.method === "POST") {
           const b = await request.json();
           const status = b.action === "approve" ? "PAID" : "REJECTED";
