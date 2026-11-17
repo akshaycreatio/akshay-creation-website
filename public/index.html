@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07070f" />
+  <title>AKSHAY CREATION — Create. Connect. Inspire.</title>
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+  <style>
+    :root {
+      --bg: #07070f;
+      --bg-2: #0d0d1a;
+      --card: rgba(18, 18, 36, 0.78);
+      --border: rgba(147, 51, 234, 0.28);
+      --purple: #9333ea;
+      --violet: #7c3aed;
+      --blue: #2563eb;
+      --cyan: #38bdf8;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --ok: #10b981;
+      --warn: #f59e0b;
+      --err: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 15% 10%, rgba(124, 58, 237, 0.18), transparent 40%),
+                  radial-gradient(circle at 85% 25%, rgba(37, 99, 235, 0.16), transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 18px; }
+
+    /* Navbar */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 7, 15, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; gap: 12px;
+    }
+    .brand {
+      font-weight: 800; font-size: 1.05rem; letter-spacing: 0.06em;
+      background: linear-gradient(90deg, #c084fc, #38bdf8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; }
+    .nav-links a { font-size: 0.84rem; color: var(--muted); white-space: nowrap; transition: 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 0.88rem;
+      border: 1px solid transparent; cursor: pointer; transition: 0.25s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(56, 189, 248, 0.4); }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.04); border-color: var(--border); color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--cyan); background: rgba(56, 189, 248, 0.08); }
+    .btn-sm { padding: 7px 12px; font-size: 0.8rem; border-radius: 9px; }
+
+    /* Hero */
+    .hero { padding: 64px 0 44px; text-align: center; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px; font-size: 0.78rem;
+      background: rgba(147, 51, 234, 0.14); border: 1px solid var(--border);
+      color: #d8b4fe; margin-bottom: 18px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); }
+    h1 {
+      font-size: clamp(2.1rem, 6vw, 3.7rem); font-weight: 900; line-height: 1.12;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .grad {
+      background: linear-gradient(90deg, #e879f9, #818cf8, #38bdf8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 26px; font-size: 1rem; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 36px; }
+
+    /* Stats & Grid */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 14px; margin-top: 12px;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px; backdrop-filter: blur(12px);
+      transition: 0.25s;
+    }
+    .card:hover { border-color: rgba(56, 189, 248, 0.5); transform: translateY(-2px); }
+    .stat-num { font-size: 1.65rem; font-weight: 800; color: #fff; }
+    .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* Sections */
+    section { padding: 52px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+    .sec-head { margin-bottom: 26px; }
+    .sec-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--cyan); font-weight: 700; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; margin-top: 4px; }
+    .sec-sub { color: var(--muted); font-size: 0.92rem; margin-top: 6px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+
+    /* Forms */
+    input, select, textarea {
+      width: 100%; padding: 11px 14px; border-radius: 11px;
+      background: rgba(9, 9, 20, 0.9); border: 1px solid var(--border);
+      color: #fff; font-size: 0.9rem; margin-top: 6px; margin-bottom: 12px;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--cyan); }
+    label { font-size: 0.82rem; color: var(--muted); font-weight: 600; }
+
+    /* Polls */
+    .poll-opt {
+      width: 100%; text-align: left; padding: 11px 14px; margin-top: 8px;
+      border-radius: 11px; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); color: #fff; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .poll-opt.voted { border-color: var(--cyan); background: rgba(56, 189, 248, 0.14); }
+
+    /* Badges */
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 700;
+      background: rgba(124, 58, 237, 0.22); color: #d8b4fe;
+    }
+    .badge-ok { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; z-index: 100; overflow-y: auto;
+    }
+    .modal-bg.open { display: flex; }
+    .modal {
+      width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto;
+      background: #0d0d1d; border: 1px solid var(--border); border-radius: 20px; padding: 22px;
+    }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+    .tab {
+      padding: 7px 12px; border-radius: 9px; font-size: 0.8rem; cursor: pointer;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--muted);
+    }
+    .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .toast {
+      position: fixed; bottom: 18px; right: 18px; left: 18px; max-width: 420px; margin: 0 auto;
+      background: #14142b; border: 1px solid var(--cyan); color: #fff;
+      padding: 12px 16px; border-radius: 12px; z-index: 200; display: none; font-size: 0.88rem;
+    }
+    footer { padding: 36px 0; text-align: center; color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="#home" class="brand">AKSHAY CREATION</a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#creators">Creators</a>
+        <a href="#ads">Ads</a>
+        <a href="#store">Store</a>
+        <a href="#services">Services</a>
+        <a href="#care">Akshay Care</a>
+        <a href="#community">Community</a>
+      </nav>
+      <button class="btn btn-ghost btn-sm" onclick="openPortal()">Portal</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="home" style="border-top:none;">
+      <div class="wrap">
+        <div class="pill"><span class="dot"></span> Official Hub • Kerala, India</div>
+        <h1>Create. <span class="grad">Connect.</span> Inspire.</h1>
+        <p>Digital Creator, Visual Storyteller &amp; Tech Explorer. Building high-impact video edits, creator tools, and a supportive community.</p>
+        <div class="hero-cta">
+          <a href="https://youtube.com/@akshaycreationshorts" target="_blank" class="btn btn-primary">YouTube Channel</a>
+          <a href="https://www.instagram.com/akshaycreation_offl" target="_blank" class="btn btn-ghost">Instagram</a>
+          <a href="#services" class="btn btn-ghost">Work With Me</a>
+        </div>
+
+        <div class="stats-grid">
+          <div class="card">
+            <div class="stat-num" id="ytSubs">150K+</div>
+            <div class="stat-lbl" id="ytStatus">YouTube Subscribers</div>
+          </div>
+          <div class="card">
+            <div class="stat-num" id="igFollowers">Official</div>
+            <div class="stat-lbl" id="igStatus">@akshaycreation_offl</div>
+          </div>
+          <div class="card">
+            <div class="stat-num" id="uniqueVisitors">—</div>
+            <div class="stat-lbl">Verified Visitors</div>
+          </div>
+          <div class="card">
+            <div class="stat-num" id="activeNow">—</div>
+            <div class="stat-lbl">Active Now (5m)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">About AKSHAY CREATION</div>
+          <h2>Storytelling Meets Next-Gen Editing</h2>
+          <p class="sec-sub">From Malappuram, Kerala to 150K+ subscribers—crafting crisp tech explainers, cinematic edits, and community initiatives.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <span class="badge">YouTube</span>
+            <h3 style="margin:10px 0 6px;">AKSHAY CREATION</h3>
+            <p style="color:var(--muted);font-size:0.88rem;">High-retention Shorts, tech insights, and creative stories watched by millions.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Tech Channel</span>
+            <h3 style="margin:10px 0 6px;">AKSHAY CREATION TECH</h3>
+            <p style="color:var(--muted);font-size:0.88rem;">Dedicated deep-dives into smartphones, creator gear, AI workflows, and digital tools.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Collaborations</span>
+            <h3 style="margin:10px 0 6px;">Brand &amp; Creator Studio</h3>
+            <p style="color:var(--muted);font-size:0.88rem;">Direct business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREATORS OF THE WEEK -->
+    <section id="creators">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Creator Spotlight</div>
+          <h2>Creators of the Week</h2>
+          <p class="sec-sub">Highlighting emerging YouTube &amp; Instagram creators selected by Akshay or approved from applications.</p>
+        </div>
+        <div class="grid-2">
+          <div id="creatorsList" class="grid-2" style="grid-template-columns:1fr;"></div>
+          <div class="card">
+            <h3>Apply for Creator Spotlight</h3>
+            <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Submit your channel or page. Every profile is verified before going live.</p>
+            <form onsubmit="submitCreator(event)">
+              <label>Creator / Channel Name *</label>
+              <input id="cName" required placeholder="e.g. Studio Kerala" />
+              <label>Handle *</label>
+              <input id="cHandle" required placeholder="@yourhandle" />
+              <label>Platform *</label>
+              <select id="cPlatform">
+                <option value="youtube">YouTube</option>
+                <option value="instagram">Instagram</option>
+              </select>
+              <label>Profile Link *</label>
+              <input id="cUrl" type="url" required placeholder="https://..." />
+              <label>Short Bio / Niche</label>
+              <textarea id="cBio" rows="2" placeholder="What do you create?"></textarea>
+              <button class="btn btn-primary" style="width:100%;">Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADS & SPONSORED -->
+    <section id="ads">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Featured Campaigns</div>
+          <h2>Ads &amp; Brand Collaborations</h2>
+          <p class="sec-sub">Verified brand spots, campaign reels, and sponsored announcements.</p>
+        </div>
+        <div id="adsList" class="grid-3"></div>
+      </div>
+    </section>
+
+    <!-- DIGITAL STORE -->
+    <section id="store">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Creator Assets</div>
+          <h2>Digital Store</h2>
+          <p class="sec-sub">Presets, editing packs, and creator resources with verified Cashfree checkout.</p>
+        </div>
+        <div id="productsList" class="grid-3"></div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Work With AKSHAY CREATION</div>
+          <h2>Services &amp; Bookings</h2>
+          <p class="sec-sub">Book professional video editing, brand promotions, or custom creative production.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Available Services</h3>
+            <ul style="margin:12px 0 0 18px;color:var(--muted);font-size:0.9rem;line-height:1.9;">
+              <li><strong>Sponsored YouTube / Reels Promotion:</strong> High-engagement integrations.</li>
+              <li><strong>Short-Form Video Editing:</strong> Retention-focused Reels &amp; Shorts.</li>
+              <li><strong>Brand Ad Production:</strong> Script-to-screen product showcase videos.</li>
+              <li><strong>Creator Consultation:</strong> Channel audit &amp; growth roadmap.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Book a Service</h3>
+            <form onsubmit="submitBooking(event)">
+              <label>Service Type *</label>
+              <select id="sType">
+                <option>Sponsored Promotion</option>
+                <option>Short-Form Video Editing</option>
+                <option>Brand Ad Production</option>
+                <option>Creator Consultation</option>
+              </select>
+              <label>Your Name / Brand *</label>
+              <input id="sName" required placeholder="Your name or company" />
+              <label>Email *</label>
+              <input id="sEmail" type="email" required placeholder="you@example.com" />
+              <label>Phone / WhatsApp</label>
+              <input id="sContact" placeholder="+91 ..." />
+              <label>Project Brief *</label>
+              <textarea id="sDetails" rows="3" required placeholder="Describe timeline, deliverables, and goals"></textarea>
+              <button class="btn btn-primary" style="width:100%;">Send Booking Request</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AKSHAY CARE -->
+    <section id="care">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Social Responsibility</div>
+          <h2>AKSHAY CARE</h2>
+          <p class="sec-sub">Verified community support. Submissions remain 100% private until verified and published only with explicit consent.</p>
+        </div>
+        <div class="grid-2">
+          <div id="careList" class="grid-2" style="grid-template-columns:1fr;"></div>
+          <div class="card">
+            <h3>Request Support / Submit Case</h3>
+            <form onsubmit="submitCare(event)">
+              <label>Full Name *</label>
+              <input id="careName" required placeholder="Applicant name" />
+              <label>Private Contact (Phone / Email) *</label>
+              <input id="careContact" required placeholder="Never shown publicly" />
+              <label>Case Title *</label>
+              <input id="careTitle" required placeholder="Brief summary of need" />
+              <label>Full Details &amp; Verification Info *</label>
+              <textarea id="careDetails" rows="3" required placeholder="Explain the situation clearly"></textarea>
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:14px;cursor:pointer;">
+                <input type="checkbox" id="careConsent" style="width:auto;margin:0;" />
+                <span>I consent to public listing if verified (optional; unchecked stays private)</span>
+              </label>
+              <button class="btn btn-primary" style="width:100%;">Submit Privately</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY POLLS -->
+    <section id="community">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Real Audience Voice</div>
+          <h2>Community Polls</h2>
+          <p class="sec-sub">One verified vote per visitor—no fake bots or inflated numbers.</p>
+        </div>
+        <div id="pollsList" class="grid-2"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><strong>AKSHAY CREATION</strong> • Create. Connect. Inspire.</p>
+      <p style="margin-top:6px;">Business: collab.akshaycreation@gmail.com • Built on Cloudflare Edge</p>
+    </div>
+  </footer>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-bg" id="checkoutModal">
+    <div class="modal" style="max-width:440px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3 id="chkTitle">Checkout</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeCheckout()">Close</button>
+      </div>
+      <p id="chkPrice" style="color:var(--cyan);font-weight:700;margin:8px 0 14px;"></p>
+      <form onsubmit="startCheckout(event)">
+        <input type="hidden" id="chkProductId" />
+        <label>Full Name *</label>
+        <input id="chkName" required />
+        <label>Email (for download receipt) *</label>
+        <input id="chkEmail" type="email" required />
+        <label>Phone (10-digit Indian mobile) *</label>
+        <input id="chkPhone" required placeholder="9876543210" />
+        <button class="btn btn-primary" style="width:100%;">Pay Securely via Cashfree</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- OWNER / MODERATOR PORTAL MODAL -->
+  <div class="modal-bg" id="portalModal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3>AKSHAY CREATION Control Portal</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closePortal()">Close</button>
+      </div>
+
+      <div id="authBox">
+        <div class="tabs">
+          <button class="tab active" id="tabOwner" onclick="setLoginRole('owner')">Owner Login</button>
+          <button class="tab" id="tabMod" onclick="setLoginRole('moderator')">Moderator Login</button>
+          <button class="tab" id="tabSetup" onclick="setLoginRole('setup')">First-Time Owner Setup</button>
+        </div>
+        <form id="loginForm" onsubmit="doLogin(event)">
+          <label>Username</label>
+          <input id="lUser" required />
+          <label>Password</label>
+          <input id="lPass" type="password" required />
+          <button class="btn btn-primary" style="width:100%;">Sign In</button>
+        </form>
+        <form id="setupForm" onsubmit="doSetupOwner(event)" style="display:none;">
+          <label>Owner Setup Secret Key (from Cloudflare Env)</label>
+          <input id="sKey" type="password" required />
+          <label>Choose Owner Username</label>
+          <input id="sOwnerUser" required placeholder="akshay" />
+          <label>Choose Strong Password (min 8 chars)</label>
+          <input id="sOwnerPass" type="password" required />
+          <button class="btn btn-primary" style="width:100%;">Initialize Owner Account</button>
+        </form>
+      </div>
+
+      <div id="dashBox" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+          <span class="badge badge-ok" id="dashRoleBadge">ROLE</span>
+          <button class="btn btn-ghost btn-sm" onclick="doLogout()">Logout</button>
+        </div>
+        <div class="tabs" id="dashTabs"></div>
+        <div id="dashContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let state = { creators: [], ads: [], products: [], care_cases: [], polls: [] };
+    let loginRole = "owner";
+    let token = localStorage.getItem("akc_token") || "";
+    let dashData = null;
+    let activeDashTab = "creators";
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 3800);
+    }
+
+    async function api(path, opts = {}) {
+      const headers = { "Content-Type": "application/json", ...(opts.headers || {}) };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+      const res = await fetch(path, { ...opts, headers });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Request failed");
+      return data;
+    }
+
+    async function loadPublic() {
+      try {
+        const data = await api("/api/public/overview");
+        state = data;
+
+        // Live Stats
+        document.getElementById("ytSubs").textContent = data.stats?.youtube?.count_text || "150K+";
+        document.getElementById("ytStatus").textContent =
+          data.stats?.youtube?.status === "live_api" ? "YouTube Live Subscribers" : "YouTube Subscribers";
+
+        if (data.stats?.instagram?.count_text) {
+          document.getElementById("igFollowers").textContent = data.stats.instagram.count_text;
+          document.getElementById("igStatus").textContent = "Instagram Live Followers";
+        } else {
+          document.getElementById("igFollowers").textContent = "Official";
+          document.getElementById("igStatus").textContent = "@akshaycreation_offl";
+        }
+
+        document.getElementById("uniqueVisitors").textContent = data.analytics?.unique_visitors ?? 1;
+        document.getElementById("activeNow").textContent = data.analytics?.active_now ?? 1;
+
+        // Creators
+        const cEl = document.getElementById("creatorsList");
+        cEl.innerHTML = data.creators.length
+          ? data.creators.map(c => `
+              <div class="card">
+                <span class="badge">${c.platform.toUpperCase()} • ${c.week_label || "Featured"}</span>
+                <h3 style="margin:8px 0 4px;">${c.name}</h3>
+                <p style="color:var(--cyan);font-size:0.84rem;">${c.handle}</p>
+                <p style="color:var(--muted);font-size:0.85rem;margin:8px 0 12px;">${c.bio || ""}</p>
+                <a href="${c.profile_url}" target="_blank" class="btn btn-ghost btn-sm">Visit Profile</a>
+              </div>
+            `).join("")
+          : `<div class="card"><p style="color:var(--muted);">No featured creators published yet. Apply on the right to be featured!</p></div>`;
+
+        // Ads
+        const aEl = document.getElementById("adsList");
+        aEl.innerHTML = data.ads.length
+          ? data.ads.map(a => `
+              <div class="card">
+                <span class="badge">${a.badge || "Sponsored"}</span>
+                <h3 style="margin:10px 0 6px;">${a.title}</h3>
+                <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Type: ${a.media_type}</p>
+                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm">Explore Offer</a>
+              </div>
+            `).join("")
+          : `<div class="card"><p style="color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</p></div>`;
+
+        // Products
+        const pEl = document.getElementById("productsList");
+        pEl.innerHTML = data.products.length
+          ? data.products.map(p => `
+              <div class="card">
+                <span class="badge">${p.category}</span>
+                <h3 style="margin:10px 0 6px;">${p.title}</h3>
+                <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">${p.description || ""}</p>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <strong style="font-size:1.1rem;color:var(--cyan);">₹${p.price_inr}</strong>
+                  <button class="btn btn-primary btn-sm" onclick="openCheckout(${p.id}, '${p.title.replace(/'/g, "\\'")}', ${p.price_inr})">Buy Now</button>
+                </div>
+              </div>
+            `).join("")
+          : `<div class="card"><p style="color:var(--muted);">Digital creator packs launching soon.</p></div>`;
+
+        // Akshay Care
+        const careEl = document.getElementById("careList");
+        careEl.innerHTML = data.care_cases.length
+          ? data.care_cases.map(k => `
+              <div class="card">
+                <span class="badge badge-ok">Verified &amp; Consented</span>
+                <h3 style="margin:8px 0 6px;">${k.case_title}</h3>
+                <p style="color:var(--muted);font-size:0.86rem;">${k.public_summary || ""}</p>
+              </div>
+            `).join("")
+          : `<div class="card"><p style="color:var(--muted);">All current AKSHAY CARE reviews are kept strictly private to protect applicant dignity.</p></div>`;
+
+        // Polls
+        const pollEl = document.getElementById("pollsList");
+        pollEl.innerHTML = data.polls.length
+          ? data.polls.map(pl => `
+              <div class="card">
+                <h3>${pl.question}</h3>
+                <p style="color:var(--muted);font-size:0.78rem;margin-bottom:8px;">${pl.total_votes} verified vote(s)</p>
+                ${pl.options.map((opt, idx) => {
+                  const pct = pl.total_votes ? Math.round((pl.counts[idx] / pl.total_votes) * 100) : 0;
+                  const voted = pl.user_voted === idx ? "voted" : "";
+                  return `<button class="poll-opt ${voted}" onclick="votePoll(${pl.id}, ${idx})">
+                    <span>${opt}</span>
+                    <span>${pl.counts[idx]} (${pct}%)</span>
+                  </button>`;
+                }).join("")}
+              </div>
+            `).join("")
+          : `<div class="card"><p style="color:var(--muted);">No active community poll right now.</p></div>`;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function votePoll(pollId, optionIndex) {
+      try {
+        await api("/api/polls/vote", { method: "POST", body: JSON.stringify({ poll_id: pollId, option_index: optionIndex }) });
+        toast("Vote recorded!");
+        loadPublic();
+      } catch (e) { toast(e.message); }
+    }
+
+    async function submitCreator(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/creators/apply", {
+          method: "POST",
+          body: JSON.stringify({
+            name: document.getElementById("cName").value,
+            handle: document.getElementById("cHandle").value,
+            platform: document.getElementById("cPlatform").value,
+            profile_url: document.getElementById("cUrl").value,
+            bio: document.getElementById("cBio").value
+          })
+        });
+        e.target.reset();
+        toast(res.message);
+      } catch (err) { toast(err.message); }
+    }
+
+    async function submitBooking(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/services/book", {
+          method: "POST",
+          body: JSON.stringify({
+            service_type: document.getElementById("sType").value,
+            client_name: document.getElementById("sName").value,
+            client_email: document.getElementById("sEmail").value,
+            client_contact: document.getElementById("sContact").value,
+            details: document.getElementById("sDetails").value
+          })
+        });
+        e.target.reset();
+        toast(res.message);
+      } catch (err) { toast(err.message); }
+    }
+
+    async function submitCare(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/care/submit", {
+          method: "POST",
+          body: JSON.stringify({
+            applicant_name: document.getElementById("careName").value,
+            contact_info: document.getElementById("careContact").value,
+            case_title: document.getElementById("careTitle").value,
+            private_details: document.getElementById("careDetails").value,
+            consent_granted: document.getElementById("careConsent").checked
+          })
+        });
+        e.target.reset();
+        toast(res.message);
+      } catch (err) { toast(err.message); }
+    }
+
+    function openCheckout(id, title, price) {
+      document.getElementById("chkProductId").value = id;
+      document.getElementById("chkTitle").textContent = title;
+      document.getElementById("chkPrice").textContent = `Amount: ₹${price}`;
+      document.getElementById("checkoutModal").classList.add("open");
+    }
+    function closeCheckout() { document.getElementById("checkoutModal").classList.remove("open"); }
+
+    async function startCheckout(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/checkout/create-order", {
+          method: "POST",
+          body: JSON.stringify({
+            product_id: document.getElementById("chkProductId").value,
+            customer_name: document.getElementById("chkName").value,
+            customer_email: document.getElementById("chkEmail").value,
+            customer_phone: document.getElementById("chkPhone").value
+          })
+        });
+        const cf = Cashfree({ mode: res.environment });
+        cf.checkout({ paymentSessionId: res.payment_session_id, redirectTarget: "_self" });
+      } catch (err) { toast(err.message); }
+    }
+
+    async function verifyReturnOrder() {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get("order_id");
+      if (!orderId) return;
+      try {
+        const res = await api(`/api/checkout/verify?order_id=${encodeURIComponent(orderId)}`);
+        if (res.status === "PAID" && res.download_url) {
+          alert(`Payment Verified for ${res.product_title}!\n\nDownload Link:\n${res.download_url}`);
+        } else {
+          toast(`Order ${orderId} status: ${res.status}`);
+        }
+        window.history.replaceState({}, "", "/");
+      } catch (e) { toast(e.message); }
+    }
+
+    // Portal & Admin Logic
+    function openPortal() {
+      document.getElementById("portalModal").classList.add("open");
+      if (token) loadDashboard();
+    }
+    function closePortal() { document.getElementById("portalModal").classList.remove("open"); }
+
+    function setLoginRole(role) {
+      loginRole = role;
+      ["tabOwner", "tabMod", "tabSetup"].forEach(id => document.getElementById(id).classList.remove("active"));
+      if (role === "owner") document.getElementById("tabOwner").classList.add("active");
+      if (role === "moderator") document.getElementById("tabMod").classList.add("active");
+      if (role === "setup") document.getElementById("tabSetup").classList.add("active");
+      document.getElementById("loginForm").style.display = role === "setup" ? "none" : "block";
+      document.getElementById("setupForm").style.display = role === "setup" ? "block" : "none";
+    }
+
+    async function doSetupOwner(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/auth/setup-owner", {
+          method: "POST",
+          body: JSON.stringify({
+            setup_key: document.getElementById("sKey").value,
+            username: document.getElementById("sOwnerUser").value,
+            password: document.getElementById("sOwnerPass").value
+          })
+        });
+        toast(res.message);
+        setLoginRole("owner");
+      } catch (err) { toast(err.message); }
+    }
+
+    async function doLogin(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify({
+            username: document.getElementById("lUser").value,
+            password: document.getElementById("lPass").value,
+            role: loginRole
+          })
+        });
+        token = res.token;
+        localStorage.setItem("akc_token", token);
+        toast(`Welcome ${res.username} (${res.role})`);
+        loadDashboard();
+      } catch (err) { toast(err.message); }
+    }
+
+    async function doLogout() {
+      try { await api("/api/auth/logout", { method: "POST" }); } catch (_) {}
+      token = "";
+      localStorage.removeItem("akc_token");
+      document.getElementById("authBox").style.display = "block";
+      document.getElementById("dashBox").style.display = "none";
+    }
+
+    async function loadDashboard() {
+      try {
+        dashData = await api("/api/admin/dashboard");
+        document.getElementById("authBox").style.display = "none";
+        document.getElementById("dashBox").style.display = "block";
+        document.getElementById("dashRoleBadge").textContent = `${dashData.username.toUpperCase()} • ${dashData.role.toUpperCase()}`;
+
+        const tabs = ["creators", "ads", "store", "bookings", "care", "polls"];
+        if (dashData.role === "owner") tabs.push("moderators", "gateway", "logs");
+
+        document.getElementById("dashTabs").innerHTML = tabs.map(t =>
+          `<button class="tab ${activeDashTab === t ? "active" : ""}" onclick="switchDashTab('${t}')">${t.toUpperCase()}</button>`
+        ).join("");
+        renderDashTab();
+      } catch (e) {
+        doLogout();
+      }
+    }
+
+    function switchDashTab(t) { activeDashTab = t; loadDashboard(); }
+
+    async function adminAction(endpoint, payload) {
+      try {
+        await api(endpoint, { method: "POST", body: JSON.stringify(payload) });
+        toast("Saved!");
+        loadDashboard();
+        loadPublic();
+      } catch (e) { toast(e.message); }
+    }
+
+    function renderDashTab() {
+      const box = document.getElementById("dashContent");
+      if (activeDashTab === "creators") {
+        box.innerHTML = `
+          <div class="card" style="margin-bottom:12px;">
+            <h4>Add Featured Creator Directly</h4>
+            <input id="acName" placeholder="Creator Name" />
+            <input id="acHandle" placeholder="@handle" />
+            <select id="acPlat"><option value="youtube">YouTube</option><option value="instagram">Instagram</option></select>
+            <input id="acUrl" placeholder="Profile URL" />
+            <input id="acWeek" placeholder="Label (e.g. Week 1 Spotlight)" />
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'create', name:acName.value, handle:acHandle.value, platform:acPlat.value, profile_url:acUrl.value, week_label:acWeek.value})">Publish Creator</button>
+          </div>
+          ${dashData.creators.map(c => `
+            <div class="card" style="margin-bottom:8px;">
+              <strong>${c.name}</strong> (${c.handle}) — <span class="badge">${c.status}</span>
+              <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'status', id:${c.id}, status:'approved'})">Approve</button>
+                <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/creators', {action:'status', id:${c.id}, status:'rejected'})">Reject</button>
+                <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/creators', {action:'delete', id:${c.id}})">Delete</button>
+              </div>
+            </div>
+          `).join("")}
+        `;
+      } else if (activeDashTab === "ads") {
+        box.innerHTML = `
+          <div class="card" style="margin-bottom:12px;">
+            <h4>Add Campaign / Sponsor</h4>
+            <input id="adTitle" placeholder="Campaign Title" />
+            <select id="adType"><option value="sponsor">Sponsor</option><option value="image">Image</option><option value="video">Video</option></select>
+            <input id="adMedia" placeholder="Media or Poster URL" />
+            <input id="adTarget" placeholder="Target Click URL" />
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/ads', {action:'create', title:adTitle.value, media_type:adType.value, media_url:adMedia.value, target_url:adTarget.value})">Publish Ad</button>
+          </div>
+          ${dashData.ads.map(a => `
+            <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+              <span>${a.title} (${a.media_type})</span>
+              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/ads', {action:'delete', id:${a.id}})">Remove</button>
+            </div>
+          `).join("")}
+        `;
+      } else if (activeDashTab === "store") {
+        box.innerHTML = `
+          <div class="card" style="margin-bottom:12px;">
+            <h4>Add Digital Product</h4>
+            <input id="prTitle" placeholder="Product Title" />
+            <input id="prCat" placeholder="Category (e.g. LUTs / Presets)" />
+            <input id="prDesc" placeholder="Short Description" />
+            <input id="prPrice" type="number" placeholder="Price in INR (e.g. 199)" />
+            <input id="prUrl" placeholder="Protected Download URL" />
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/products', {action:'create', title:prTitle.value, category:prCat.value, description:prDesc.value, price_inr:prPrice.value, download_url:prUrl.value})">Add Product</button>
+          </div>
+          <h4>Recent Orders (${dashData.orders.length})</h4>
+          ${dashData.orders.map(o => `<div class="card" style="margin-top:6px;font-size:0.84rem;">${o.order_id} • ₹${o.amount_inr} • <strong>${o.status}</strong> (${o.customer_email})</div>`).join("")}
+        `;
+      } else if (activeDashTab === "bookings") {
+        box.innerHTML = dashData.bookings.map(b => `
+          <div class="card" style="margin-bottom:8px;">
+            <strong>${b.service_type}</strong> — ${b.client_name} (${b.client_email})
+            <p style="font-size:0.84rem;color:var(--muted);margin:6px 0;">${b.details}</p>
+            <span class="badge">${b.status}</span>
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/bookings', {id:${b.id}, status:'in_progress'})">In Progress</button>
+            <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/bookings', {id:${b.id}, status:'completed'})">Complete</button>
+          </div>
+        `).join("") || "<p>No bookings yet.</p>";
+      } else if (activeDashTab === "care") {
+        box.innerHTML = dashData.care.map(c => `
+          <div class="card" style="margin-bottom:8px;">
+            <strong>${c.case_title}</strong> — ${c.applicant_name} (${c.contact_info})
+            <p style="font-size:0.84rem;color:var(--muted);margin:6px 0;">Private Details: ${c.private_details}</p>
+            <p style="font-size:0.8rem;">Consent Flag: <strong>${c.consent_granted ? "YES" : "NO (Private Only)"}</strong> • Status: ${c.status}</p>
+            <input id="carePub_${c.id}" placeholder="Safe public summary (only if consented)" value="${c.public_summary || ""}" />
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/care', {id:${c.id}, status:'verified_private', consent_granted:${c.consent_granted}, public_summary:''})">Verify (Keep Private)</button>
+              <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/care', {id:${c.id}, status:'published', consent_granted:${c.consent_granted}, public_summary:document.getElementById('carePub_${c.id}').value})">Publish (Requires Consent)</button>
+            </div>
+          </div>
+        `).join("") || "<p>No AKSHAY CARE submissions yet.</p>";
+      } else if (activeDashTab === "polls") {
+        box.innerHTML = `
+          <div class="card" style="margin-bottom:12px;">
+            <h4>Create Community Poll</h4>
+            <input id="plQ" placeholder="Poll Question" />
+            <input id="plOpts" placeholder="Comma-separated options (e.g. Tech Reviews, Vlogs, Editing Tutorials)" />
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/polls', {action:'create', question:plQ.value, options:plOpts.value.split(',')})">Launch Poll</button>
+          </div>
+          ${dashData.polls.map(p => `
+            <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+              <span>${p.question} (${p.active ? "Active" : "Closed"})</span>
+              ${p.active ? `<button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/polls', {action:'close', id:${p.id}})">Close</button>` : ""}
+            </div>
+          `).join("")}
+        `;
+      } else if (activeDashTab === "moderators" && dashData.role === "owner") {
+        box.innerHTML = `
+          <div class="card" style="margin-bottom:12px;">
+            <h4>Create Moderator Account (Owner Only)</h4>
+            <input id="mUser" placeholder="Moderator Username" />
+            <input id="mPass" type="password" placeholder="Password (min 8 chars)" />
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/owner/moderators', {action:'create', username:mUser.value, password:mPass.value})">Create Moderator</button>
+          </div>
+          ${dashData.moderators.map(m => `
+            <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+              <span>${m.username} — ${m.active ? "Active" : "Disabled"}</span>
+              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/owner/moderators', {action:'toggle', id:${m.id}, active:${m.active ? 0 : 1}})">${m.active ? "Disable" : "Enable"}</button>
+            </div>
+          `).join("")}
+        `;
+      } else if (activeDashTab === "gateway" && dashData.role === "owner") {
+        const cfEnv = (dashData.settings.find(s => s.key === "cashfree_env") || {}).value || "SANDBOX";
+        box.innerHTML = `
+          <div class="card">
+            <h4>Owner Payment Gateway Controls</h4>
+            <p style="font-size:0.84rem;color:var(--muted);margin:8px 0;">Cashfree App ID &amp; Secret Key are stored encrypted in Cloudflare Runtime Secrets. Switch gateway mode below:</p>
+            <select id="gwMode">
+              <option value="SANDBOX" ${cfEnv === "SANDBOX" ? "selected" : ""}>Cashfree SANDBOX (Test)</option>
+              <option value="PRODUCTION" ${cfEnv === "PRODUCTION" ? "selected" : ""}>Cashfree PRODUCTION (Live Payouts)</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/owner/settings', {settings:{cashfree_env:gwMode.value}})">Save Gateway Mode</button>
+          </div>
+        `;
+      } else if (activeDashTab === "logs" && dashData.role === "owner") {
+        box.innerHTML = dashData.logs.map(l => `
+          <div class="card" style="margin-bottom:6px;font-size:0.82rem;">
+            <strong>[${l.role.toUpperCase()}] ${l.actor}</strong> — ${l.action} (${l.details || ""}) <span style="color:var(--muted);float:right;">${l.created_at}</span>
+          </div>
+        `).join("") || "<p>No audit logs yet.</p>";
+      }
+    }
+
+    loadPublic();
+    verifyReturnOrder();
+  </script>
+</body>
+</html>
