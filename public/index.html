@@ -97,68 +97,57 @@
 
     /* iPhone Glassmorphism 2x2 Stats Grid */
     .stats-grid {
-      display: grid; 
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px; 
-      margin-top: 18px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px;
     }
-    
     .card {
       background: var(--card);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 18px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border); border-radius: 22px; padding: 18px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       overflow: hidden; text-align: left;
     }
     .card:hover { 
-      border-color: rgba(56, 189, 248, 0.45); 
-      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.45); transform: translateY(-3px);
       box-shadow: 0 16px 48px rgba(124, 58, 237, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     .card-cover {
-      width: 100%; height: 170px; object-fit: cover;
-      border-radius: 14px; margin-bottom: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: #101022;
+      width: 100%; height: 170px; object-fit: cover; border-radius: 14px; margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08); background: #101022;
     }
     .stat-num { font-size: 1.45rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
     .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
 
-    /* Horizontal Infinite Creator Carousel with Avatar */
+    /* Horizontal Creator Carousel */
     .creator-carousel {
-      display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none;
-      scroll-snap-type: x mandatory; padding: 4px 0 12px;
+      display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; padding: 4px 0 12px;
     }
     .creator-carousel::-webkit-scrollbar { display: none; }
-    .creator-slide {
-      flex: 0 0 290px; scroll-snap-align: start;
-    }
+    .creator-slide { flex: 0 0 290px; scroll-snap-align: start; }
     .creator-avatar {
-      width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
-      border: 2px solid var(--cyan); margin-bottom: 10px;
-      background: #101022;
+      width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cyan); margin-bottom: 10px; background: #101022;
+    }
+
+    /* Fan Shoutouts Wall Grid */
+    .shoutouts-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px;
+    }
+    .shoutout-card {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 16px; padding: 14px;
     }
 
     /* Landscape Ad Banner Slideshow */
     .ad-landscape-container {
       position: relative; width: 100%; min-height: 180px; border-radius: 22px; overflow: hidden;
-      background: var(--card); border: 1px solid var(--border); backdrop-filter: blur(20px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      background: var(--card); border: 1px solid var(--border); backdrop-filter: blur(20px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
     }
     .ad-slide {
       position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out;
-      display: flex; flex-direction: column; justify-content: flex-end; padding: 22px;
-      background-size: cover; background-position: center;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 22px; background-size: cover; background-position: center;
     }
     .ad-slide.active { opacity: 1; z-index: 2; }
     .ad-slide::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(7,7,15,0.1) 0%, rgba(7,7,15,0.85) 90%);
-      z-index: 1;
+      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,7,15,0.1) 0%, rgba(7,7,15,0.85) 90%); z-index: 1;
     }
     .ad-content { position: relative; z-index: 3; }
 
@@ -174,9 +163,7 @@
     /* Forms */
     input, select, textarea {
       width: 100%; padding: 12px 16px; border-radius: 14px;
-      background: rgba(9, 9, 20, 0.75); border: 1px solid var(--border);
-      color: #fff; font-size: 0.9rem; margin-top: 6px; margin-bottom: 12px;
-      backdrop-filter: blur(10px);
+      background: rgba(9, 9, 20, 0.75); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; margin-top: 6px; margin-bottom: 12px; backdrop-filter: blur(10px);
     }
     input:focus, select:focus, textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
     label { font-size: 0.82rem; color: var(--muted); font-weight: 600; }
@@ -184,92 +171,53 @@
     /* Polls */
     .poll-opt {
       width: 100%; text-align: left; padding: 12px 16px; margin-top: 8px;
-      border-radius: 14px; background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border); color: #fff; cursor: pointer;
+      border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
     }
     .poll-opt.voted { border-color: var(--cyan); background: rgba(56, 189, 248, 0.12); }
 
     /* Badges */
     .badge {
-      display: inline-block; padding: 3px 10px; border-radius: 999px;
-      font-size: 0.68rem; font-weight: 700;
-      background: rgba(124, 58, 237, 0.22); color: #d8b4fe;
-      border: 1px solid rgba(147, 51, 234, 0.2);
+      display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.68rem; font-weight: 700;
+      background: rgba(124, 58, 237, 0.22); color: #d8b4fe; border: 1px solid rgba(147, 51, 234, 0.2);
     }
     .badge-ok { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.2); }
     .badge-warn { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border-color: rgba(245, 158, 11, 0.2); }
     .badge-err { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
 
-    /* UPI QR Box */
+    /* QR Popup Modal */
     .qr-box {
-      background: #ffffff;
-      color: #0f172a;
-      border-radius: 18px;
-      padding: 18px;
-      text-align: center;
-      margin: 12px 0 16px;
+      background: #ffffff; color: #0f172a; border-radius: 18px; padding: 18px; text-align: center; margin: 12px 0;
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
     }
-    .qr-box img {
-      width: 205px;
-      height: 205px;
-      display: block;
-      margin: 8px auto;
-      border-radius: 10px;
-    }
+    .qr-box img { width: 205px; height: 205px; display: block; margin: 8px auto; border-radius: 10px; }
     .upi-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-top: 4px;
+      display: inline-flex; align-items: center; gap: 8px; background: #f1f5f9; border: 1px solid #cbd5e1;
+      padding: 6px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: #1e293b; margin-top: 4px;
     }
-    .amt-pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 12px; }
-    .amt-pill {
-      padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700;
-      background: rgba(56, 189, 248, 0.12); border: 1px solid var(--border);
-      color: var(--cyan); cursor: pointer; transition: 0.2s;
-    }
-    .amt-pill:hover { background: var(--purple); color: #fff; border-color: var(--purple); }
 
-    /* Modal */
+    /* Modal Styling */
     .modal-bg {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: none; align-items: center; justify-content: center;
-      padding: 16px; z-index: 100; overflow-y: auto;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; overflow-y: auto;
     }
     .modal-bg.open { display: flex; }
     .modal {
-      width: 100%; max-width: 780px; max-height: 92vh; overflow-y: auto;
-      background: rgba(15, 15, 30, 0.85);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--border); border-radius: 24px; padding: 24px;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto;
+      background: rgba(15, 15, 30, 0.9); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--border); border-radius: 24px; padding: 24px; box-shadow: 0 24px 60px rgba(0,0,0,0.6);
     }
     .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
     .tab {
       padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; cursor: pointer;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted);
-      transition: 0.2s;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); transition: 0.2s;
     }
     .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4); }
     .toast {
       position: fixed; bottom: 18px; right: 18px; left: 18px; max-width: 420px; margin: 0 auto;
-      background: rgba(20, 20, 43, 0.9);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--cyan); color: #fff;
-      padding: 14px 18px; border-radius: 14px; z-index: 200; display: none; font-size: 0.88rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      background: rgba(20, 20, 43, 0.9); backdrop-filter: blur(16px); border: 1px solid var(--cyan); color: #fff;
+      padding: 14px 18px; border-radius: 14px; z-index: 200; display: none; font-size: 0.88rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     footer { padding: 36px 0; text-align: center; color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--border); }
   </style>
@@ -286,6 +234,7 @@
         <a href="#store">Store</a>
         <a href="#services">Services</a>
         <a href="#care">Akshay Care</a>
+        <a href="#wall">Wall of Love</a>
         <a href="#community">Community</a>
       </nav>
       <button class="btn btn-ghost btn-sm" onclick="openPortal()">Portal</button>
@@ -305,7 +254,6 @@
           <a href="#care" class="btn btn-ghost">Akshay Care / Donate</a>
         </div>
 
-        <!-- iPHONE GLASS 2x2 STATS GRID -->
         <div class="stats-grid">
           <div class="card">
             <div class="stat-num" id="ytSubs">150K+</div>
@@ -355,7 +303,7 @@
       </div>
     </section>
 
-    <!-- CREATORS SPOTLIGHT (WITH AVATAR / DP) -->
+    <!-- CREATORS SPOTLIGHT -->
     <section id="creators">
       <div class="wrap">
         <div class="sec-head">
@@ -363,31 +311,7 @@
           <h2>Creators of the Week</h2>
           <p class="sec-sub">Highlighting emerging creators with verified profiles &amp; avatar display.</p>
         </div>
-        
         <div class="creator-carousel" id="creatorsList"></div>
-
-        <div class="card" style="margin-top:24px;">
-          <h3>Apply for Creator Spotlight</h3>
-          <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Submit your channel or page. Every profile is verified before going live.</p>
-          <form onsubmit="submitCreator(event)">
-            <label>Creator / Channel Name *</label>
-            <input id="cName" required placeholder="e.g. Studio Kerala" />
-            <label>Handle *</label>
-            <input id="cHandle" required placeholder="@yourhandle" />
-            <label>Platform *</label>
-            <select id="cPlatform">
-              <option value="youtube">YouTube</option>
-              <option value="instagram">Instagram</option>
-            </select>
-            <label>Profile Picture / Avatar URL</label>
-            <input id="cAvatar" type="url" placeholder="https://... (optional DP image)" />
-            <label>Profile Link *</label>
-            <input id="cUrl" type="url" required placeholder="https://..." />
-            <label>Short Bio / Niche</label>
-            <textarea id="cBio" rows="2" placeholder="What do you create?"></textarea>
-            <button class="btn btn-primary" style="width:100%;">Submit Application</button>
-          </form>
-        </div>
       </div>
     </section>
 
@@ -413,7 +337,6 @@
           <h2>Digital Store</h2>
           <p class="sec-sub">Scan &amp; pay directly via UPI (GPay, PhonePe, Paytm, Navi) and unlock your creator assets.</p>
         </div>
-
         <div class="card" style="margin-bottom:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;">
           <div>
             <strong style="font-size:0.95rem;">Already Paid via UPI?</strong>
@@ -425,7 +348,6 @@
           </div>
           <div id="trackOrderResult" style="width:100%;display:none;margin-top:8px;padding-top:10px;border-top:1px solid var(--border);font-size:0.86rem;"></div>
         </div>
-
         <div id="productsList" class="grid-3"></div>
       </div>
     </section>
@@ -473,52 +395,53 @@
       </div>
     </section>
 
-    <!-- AKSHAY CARE & DONATION PORTAL -->
+    <!-- WALL OF LOVE & FAN SHOUTOUTS -->
+    <section id="wall">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-tag">Community Wall</div>
+          <h2>Wall of Love &amp; Fan Shoutouts</h2>
+          <p class="sec-sub">Leave a nice message or shoutout for Akshay. Approved messages appear live here!</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Leave a Shoutout</h3>
+            <form onsubmit="submitShoutout(event)">
+              <label>Your Name *</label>
+              <input id="shName" required placeholder="e.g. Rahul / Fan" />
+              <label>Your Message *</label>
+              <textarea id="shMsg" rows="3" required placeholder="Awesome videos Akshay! Keep growing..."></textarea>
+              <button class="btn btn-primary" style="width:100%;">Post Shoutout</button>
+            </form>
+          </div>
+          <div>
+            <div id="shoutoutsGrid" class="shoutouts-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AKSHAY CARE & DONATION PORTAL (CLEAN POPUP QR) -->
     <section id="care">
       <div class="wrap">
         <div class="sec-head">
           <div class="sec-tag">Social Responsibility &amp; Support</div>
           <h2>AKSHAY CARE &amp; Donation Portal</h2>
-          <p class="sec-sub">Contribute any amount you wish via UPI or submit a genuine support request privately.</p>
+          <p class="sec-sub">Support the mission or submit a genuine support request privately.</p>
         </div>
         <div class="grid-2">
           <div>
-            <div class="card" style="margin-bottom:18px;border-color:rgba(56, 189, 248, 0.45);">
-              <span class="badge badge-ok">100% Direct UPI • Any Amount</span>
-              <h3 style="margin:10px 0 4px;">Support AKSHAY CARE</h3>
-              <p style="color:var(--muted);font-size:0.84rem;">Choose a quick preset or enter any custom amount (or leave blank to enter amount inside your UPI app).</p>
-
-              <div class="amt-pills">
-                <button type="button" class="amt-pill" onclick="setDonateAmount(50)">₹50</button>
-                <button type="button" class="amt-pill" onclick="setDonateAmount(100)">₹100</button>
-                <button type="button" class="amt-pill" onclick="setDonateAmount(500)">₹500</button>
-                <button type="button" class="amt-pill" onclick="setDonateAmount(1000)">₹1,000</button>
-                <button type="button" class="amt-pill" onclick="setDonateAmount('')">Any Amount</button>
-              </div>
-
-              <label>Custom Amount in ₹ (Optional)</label>
-              <input id="donateAmtInput" type="number" min="1" placeholder="Leave empty to enter any amount in UPI app" oninput="refreshDonateQr()" />
-
-              <div class="qr-box">
-                <div style="font-size:0.75rem;font-weight:700;color:#475569;" id="donateQrLabel">SCAN TO DONATE ANY AMOUNT</div>
-                <img id="donateQrImg" src="" alt="Akshay Care Donation UPI QR" />
-                <div style="font-weight:800;font-size:0.92rem;color:#0f172a;">Akshay K P</div>
-                <div class="upi-chip">
-                  <span>akshaycreation7@naviaxis</span>
-                  <button type="button" onclick="copyUpiId()" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">Copy</button>
-                </div>
-                <div style="margin-top:10px;">
-                  <a id="donateDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Donate via UPI App ↗</a>
-                </div>
-              </div>
+            <div class="card" style="margin-bottom:18px;border-color:rgba(56, 189, 248, 0.45);text-align:center;padding:28px 20px;">
+              <span class="badge badge-ok">100% Direct UPI • Zero Fees</span>
+              <h3 style="margin:12px 0 6px;">Support AKSHAY CARE</h3>
+              <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Click below to instantly reveal the secure UPI QR code and support via GPay, PhonePe, or Navi.</p>
+              <button class="btn btn-primary" style="width:100%;font-size:1rem;padding:14px;" onclick="openQrPopup()">💖 Reveal QR Code to Donate</button>
             </div>
-
             <div id="careList" class="grid-2" style="grid-template-columns:1fr;"></div>
           </div>
-
           <div class="card">
             <h3>Request Support / Submit Case</h3>
-            <p style="color:var(--muted);font-size:0.84rem;margin-bottom:10px;">Submissions remain 100% private until verified and published only with explicit consent.</p>
+            <p style="color:var(--muted);font-size:0.84rem;margin-bottom:10px;">Submissions remain 100% private until verified.</p>
             <form onsubmit="submitCare(event)">
               <label>Full Name *</label>
               <input id="careName" required placeholder="Applicant name" />
@@ -530,7 +453,7 @@
               <textarea id="careDetails" rows="4" required placeholder="Explain the situation clearly"></textarea>
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:14px;cursor:pointer;">
                 <input type="checkbox" id="careConsent" style="width:auto;margin:0;" />
-                <span>I consent to public listing if verified (optional; unchecked stays private)</span>
+                <span>I consent to public listing if verified</span>
               </label>
               <button class="btn btn-primary" style="width:100%;">Submit Privately</button>
             </form>
@@ -559,7 +482,39 @@
     </div>
   </footer>
 
-  <!-- DIRECT UPI QR CHECKOUT MODAL -->
+  <!-- REVEAL QR CODE DONATION MODAL -->
+  <div class="modal-bg" id="qrPopupModal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3>Scan to Support</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeQrPopup()">Close</button>
+      </div>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">Scan with any UPI app (GPay, PhonePe, Paytm, Navi).</p>
+      
+      <div class="amt-pills" style="justify-content:center;margin-bottom:12px;">
+        <button type="button" class="amt-pill" onclick="setPopupDonateAmt(50)">₹50</button>
+        <button type="button" class="amt-pill" onclick="setPopupDonateAmt(100)">₹100</button>
+        <button type="button" class="amt-pill" onclick="setPopupDonateAmt(500)">₹500</button>
+        <button type="button" class="amt-pill" onclick="setPopupDonateAmt(1000)">₹1,000</button>
+        <button type="button" class="amt-pill" onclick="setPopupDonateAmt('')">Any</button>
+      </div>
+
+      <div class="qr-box" style="margin:0;">
+        <div style="font-size:0.75rem;font-weight:700;color:#475569;" id="popupQrLabel">SCAN TO DONATE ANY AMOUNT</div>
+        <img id="popupQrImg" src="" alt="Akshay Care UPI QR" />
+        <div style="font-weight:800;font-size:0.92rem;color:#0f172a;">Akshay K P</div>
+        <div class="upi-chip">
+          <span>akshaycreation7@naviaxis</span>
+          <button type="button" onclick="copyUpiId()" style="background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">Copy</button>
+        </div>
+        <div style="margin-top:12px;">
+          <a id="popupDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Open UPI App &amp; Pay ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
   <div class="modal-bg" id="checkoutModal">
     <div class="modal" style="max-width:450px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -567,7 +522,6 @@
         <button class="btn btn-ghost btn-sm" onclick="closeCheckout()">Close</button>
       </div>
       <p id="chkPrice" style="color:var(--cyan);font-weight:800;font-size:1.15rem;margin:6px 0 4px;"></p>
-
       <div id="upiPayStep">
         <div class="qr-box">
           <div style="font-size:0.75rem;font-weight:700;color:#475569;">SCAN WITH ANY UPI APP</div>
@@ -581,7 +535,6 @@
             <a id="chkUpiDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Open UPI App &amp; Pay ↗</a>
           </div>
         </div>
-
         <form onsubmit="submitUpiPayment(event)">
           <input type="hidden" id="chkProductId" />
           <label>Your Full Name *</label>
@@ -593,11 +546,10 @@
           <button class="btn btn-primary" id="chkSubmitBtn" style="width:100%;">Confirm Payment &amp; Submit UTR</button>
         </form>
       </div>
-
       <div id="upiDoneStep" style="display:none;text-align:center;padding:12px 0;">
         <span class="badge badge-warn" style="font-size:0.8rem;padding:5px 12px;">PENDING VERIFICATION</span>
         <h4 style="margin:12px 0 6px;">Payment Details Submitted!</h4>
-        <p style="color:var(--muted);font-size:0.86rem;margin-bottom:12px;">Save your Order ID below. Once Akshay verifies your Navi UPI receipt, use this Order ID or UTR in the Store section to download your file.</p>
+        <p style="color:var(--muted);font-size:0.86rem;margin-bottom:12px;">Save your Order ID below.</p>
         <div class="card" style="margin-bottom:14px;background:#13132b;">
           <div style="font-size:0.75rem;color:var(--muted);">YOUR ORDER ID</div>
           <div id="doneOrderId" style="font-size:1.1rem;font-weight:800;color:var(--cyan);margin-top:4px;word-break:break-all;"></div>
@@ -607,20 +559,14 @@
     </div>
   </div>
 
-  <!-- OWNER / MODERATOR PORTAL MODAL -->
+  <!-- PORTAL MODAL -->
   <div class="modal-bg" id="portalModal">
     <div class="modal">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <h3>AKSHAY CREATION Control Portal</h3>
         <button class="btn btn-ghost btn-sm" onclick="closePortal()">Close</button>
       </div>
-
       <div id="authBox">
-        <div class="tabs">
-          <button class="tab active" id="tabOwner" onclick="setLoginRole('owner')">Owner Login</button>
-          <button class="tab" id="tabMod" onclick="setLoginRole('moderator')">Moderator Login</button>
-          <button class="tab" id="tabSetup" onclick="setLoginRole('setup')">First-Time Owner Setup</button>
-        </div>
         <form id="loginForm" onsubmit="doLogin(event)">
           <label>Username</label>
           <input id="lUser" required />
@@ -628,17 +574,7 @@
           <input id="lPass" type="password" required />
           <button class="btn btn-primary" style="width:100%;">Sign In</button>
         </form>
-        <form id="setupForm" onsubmit="doSetupOwner(event)" style="display:none;">
-          <label>Owner Setup Secret Key (from Cloudflare Env)</label>
-          <input id="sKey" type="password" required />
-          <label>Choose Owner Username</label>
-          <input id="sOwnerUser" required placeholder="akshay" />
-          <label>Choose Strong Password (min 8 chars)</label>
-          <input id="sOwnerPass" type="password" required />
-          <button class="btn btn-primary" style="width:100%;">Initialize Owner Account</button>
-        </form>
       </div>
-
       <div id="dashBox" style="display:none;">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
           <span class="badge badge-ok" id="dashRoleBadge">ROLE</span>
@@ -653,12 +589,12 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    let state = { creators: [], ads: [], products: [], care_cases: [], polls: [], upi_id: "akshaycreation7@naviaxis", upi_name: "Akshay K P" };
-    let loginRole = "owner";
+    let state = { creators: [], ads: [], products: [], care_cases: [], shoutouts: [], polls: [], upi_id: "akshaycreation7@naviaxis", upi_name: "Akshay K P" };
     let token = localStorage.getItem("akc_token") || "";
     let dashData = null;
     let activeDashTab = "creators";
     let adSlideInterval = null;
+    let popupAmt = "";
 
     function toast(msg) {
       const t = document.getElementById("toast");
@@ -676,25 +612,27 @@
       return data;
     }
 
-    function setDonateAmount(val) {
-      document.getElementById("donateAmtInput").value = val;
-      refreshDonateQr();
+    function openQrPopup() {
+      popupAmt = "";
+      refreshPopupQr();
+      document.getElementById("qrPopupModal").classList.add("open");
+    }
+    function closeQrPopup() { document.getElementById("qrPopupModal").classList.remove("open"); }
+
+    function setPopupDonateAmt(val) {
+      popupAmt = val;
+      refreshPopupQr();
     }
 
-    function refreshDonateQr() {
-      const upiId = state.upi_id || "akshaycreation7@naviaxis";
-      const upiName = state.upi_name || "Akshay K P";
-      const rawAmt = Number(document.getElementById("donateAmtInput")?.value || 0);
-      const hasAmt = rawAmt > 0;
-      const upiUri = hasAmt
-        ? `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${encodeURIComponent(rawAmt)}&cu=INR&tn=${encodeURIComponent("AKSHAY CARE Support")}`
-        : `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&cu=INR&tn=${encodeURIComponent("AKSHAY CARE Support")}`;
+    function refreshPopupQr() {
+      const hasAmt = popupAmt > 0;
+      const upiUri = `upi://pay?pa=${encodeURIComponent(state.upi_id)}&pn=${encodeURIComponent(state.upi_name)}${hasAmt ? '&am='+encodeURIComponent(popupAmt) : ''}&cu=INR&tn=${encodeURIComponent("AKSHAY CARE Support")}`;
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data=${encodeURIComponent(upiUri)}`;
 
-      document.getElementById("donateQrImg").src = qrUrl;
-      document.getElementById("donateQrLabel").textContent = hasAmt ? `SCAN TO DONATE ₹${rawAmt}` : "SCAN TO DONATE ANY AMOUNT";
-      document.getElementById("donateDeepLink").href = upiUri;
-      document.getElementById("donateDeepLink").textContent = hasAmt ? `Donate ₹${rawAmt} via UPI App ↗` : "Donate Any Amount via UPI App ↗";
+      document.getElementById("popupQrImg").src = qrUrl;
+      document.getElementById("popupQrLabel").textContent = hasAmt ? `SCAN TO DONATE ₹${popupAmt}` : "SCAN TO DONATE ANY AMOUNT";
+      document.getElementById("popupDeepLink").href = upiUri;
+      document.getElementById("popupDeepLink").textContent = hasAmt ? `Donate ₹${popupAmt} via UPI App ↗` : "Donate Any Amount via UPI App ↗";
     }
 
     function startTrafficSimulation() {
@@ -702,17 +640,13 @@
       setInterval(() => {
         const delta = Math.floor(Math.random() * 31) - 14;
         currentTraffic = Math.max(18200, Math.min(36900, currentTraffic + delta));
-        const formatted = (currentTraffic / 1000).toFixed(1) + "K";
-        const el = document.getElementById("trafficCount");
-        if (el) el.textContent = formatted;
+        document.getElementById("trafficCount").textContent = (currentTraffic / 1000).toFixed(1) + "K";
       }, 7000);
-
       let activeUsers = 38;
       setInterval(() => {
         const delta = Math.floor(Math.random() * 7) - 3;
         activeUsers = Math.max(22, Math.min(74, activeUsers + delta));
-        const el = document.getElementById("activeNow");
-        if (el) el.textContent = activeUsers;
+        document.getElementById("activeNow").textContent = activeUsers;
       }, 5000);
     }
 
@@ -746,15 +680,7 @@
       try {
         const data = await api("/api/public/overview");
         state = { ...state, ...data };
-        refreshDonateQr();
 
-        document.getElementById("ytSubs").textContent = data.stats?.youtube?.count_text || "150K+";
-        document.getElementById("ytStatus").textContent =
-          data.stats?.youtube?.status === "live_api" ? "YouTube Live Subs" : "YouTube Subs";
-
-        document.getElementById("igFollowers").textContent = "14.8K+";
-
-        // Creators Carousel with Avatar support
         const cEl = document.getElementById("creatorsList");
         cEl.innerHTML = data.creators.length
           ? data.creators.map(c => `
@@ -769,7 +695,17 @@
                 </div>
               </div>
             `).join("")
-          : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet. Apply below to be featured!</p></div>`;
+          : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet.</p></div>`;
+
+        const shEl = document.getElementById("shoutoutsGrid");
+        shEl.innerHTML = data.shoutouts.length
+          ? data.shoutouts.map(s => `
+              <div class="shoutout-card">
+                <p style="font-size:0.9rem;color:#f8fafc;margin-bottom:8px;">"${s.message}"</p>
+                <div style="font-size:0.75rem;color:var(--cyan);font-weight:700;">— ${s.author_name}</div>
+              </div>
+            `).join("")
+          : `<p style="color:var(--muted);">Be the first to leave a shoutout!</p>`;
 
         const adsContainer = document.getElementById("adsContainer");
         if (data.ads.length > 0) {
@@ -783,57 +719,47 @@
             </div>
           `).join("");
           initAdSlideshow();
-        } else {
-          adsContainer.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</div>`;
         }
 
         const pEl = document.getElementById("productsList");
-        pEl.innerHTML = data.products.length
-          ? data.products.map(p => `
-              <div class="card">
-                ${p.image_url ? `<img src="${p.image_url}" alt="${p.title}" class="card-cover" onerror="this.style.display='none'" />` : ""}
-                <span class="badge">${p.category}</span>
-                <h3 style="margin:10px 0 6px;">${p.title}</h3>
-                <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">${p.description || ""}</p>
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <strong style="font-size:1.1rem;color:var(--cyan);">₹${p.price_inr}</strong>
-                  <button class="btn btn-primary btn-sm" onclick="openCheckout(${p.id}, '${p.title.replace(/'/g, "\\'")}', ${p.price_inr})">Buy via UPI</button>
-                </div>
-              </div>
-            `).join("")
-          : `<div class="card"><p style="color:var(--muted);">Digital creator packs launching soon.</p></div>`;
-
-        const careEl = document.getElementById("careList");
-        careEl.innerHTML = data.care_cases.length
-          ? data.care_cases.map(k => `
-              <div class="card">
-                <span class="badge badge-ok">Verified &amp; Consented</span>
-                <h3 style="margin:8px 0 6px;">${k.case_title}</h3>
-                <p style="color:var(--muted);font-size:0.86rem;">${k.public_summary || ""}</p>
-              </div>
-            `).join("")
-          : `<div class="card"><p style="color:var(--muted);">All current AKSHAY CARE reviews are kept strictly private to protect applicant dignity.</p></div>`;
+        pEl.innerHTML = data.products.map(p => `
+          <div class="card">
+            ${p.image_url ? `<img src="${p.image_url}" alt="${p.title}" class="card-cover" onerror="this.style.display='none'" />` : ""}
+            <span class="badge">${p.category}</span>
+            <h3 style="margin:10px 0 6px;">${p.title}</h3>
+            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">${p.description || ""}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong style="font-size:1.1rem;color:var(--cyan);">₹${p.price_inr}</strong>
+              <button class="btn btn-primary btn-sm" onclick="openCheckout(${p.id}, '${p.title.replace(/'/g, "\\'")}', ${p.price_inr})">Buy via UPI</button>
+            </div>
+          </div>
+        `).join("") || `<div class="card"><p style="color:var(--muted);">Digital packs launching soon.</p></div>`;
 
         const pollEl = document.getElementById("pollsList");
-        pollEl.innerHTML = data.polls.length
-          ? data.polls.map(pl => `
-              <div class="card">
-                <h3>${pl.question}</h3>
-                <p style="color:var(--muted);font-size:0.78rem;margin-bottom:8px;">${pl.total_votes} verified vote(s)</p>
-                ${pl.options.map((opt, idx) => {
-                  const pct = pl.total_votes ? Math.round((pl.counts[idx] / pl.total_votes) * 100) : 0;
-                  const voted = pl.user_voted === idx ? "voted" : "";
-                  return `<button class="poll-opt ${voted}" onclick="votePoll(${pl.id}, ${idx})">
-                    <span>${opt}</span>
-                    <span>${pl.counts[idx]} (${pct}%)</span>
-                  </button>`;
-                }).join("")}
-              </div>
-            `).join("")
-          : `<div class="card"><p style="color:var(--muted);">No active community poll right now.</p></div>`;
-      } catch (e) {
-        console.error(e);
-      }
+        pollEl.innerHTML = data.polls.map(pl => `
+          <div class="card">
+            <h3>${pl.question}</h3>
+            <p style="color:var(--muted);font-size:0.78rem;margin-bottom:8px;">${pl.total_votes} verified vote(s)</p>
+            ${pl.options.map((opt, idx) => {
+              const pct = pl.total_votes ? Math.round((pl.counts[idx] / pl.total_votes) * 100) : 0;
+              const voted = pl.user_voted === idx ? "voted" : "";
+              return `<button class="poll-opt ${voted}" onclick="votePoll(${pl.id}, ${idx})"><span>${opt}</span><span>${pl.counts[idx]} (${pct}%)</span></button>`;
+            }).join("")}
+          </div>
+        `).join("") || `<div class="card"><p style="color:var(--muted);">No active polls.</p></div>`;
+      } catch (e) { console.error(e); }
+    }
+
+    async function submitShoutout(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/shoutouts/submit", {
+          method: "POST",
+          body: JSON.stringify({ author_name: document.getElementById("shName").value, message: document.getElementById("shMsg").value })
+        });
+        e.target.reset();
+        toast(res.message);
+      } catch (err) { toast(err.message); }
     }
 
     async function votePoll(pollId, optionIndex) {
@@ -844,37 +770,12 @@
       } catch (e) { toast(e.message); }
     }
 
-    async function submitCreator(e) {
-      e.preventDefault();
-      try {
-        const res = await api("/api/creators/apply", {
-          method: "POST",
-          body: JSON.stringify({
-            name: document.getElementById("cName").value,
-            handle: document.getElementById("cHandle").value,
-            platform: document.getElementById("cPlatform").value,
-            avatar_url: document.getElementById("cAvatar").value,
-            profile_url: document.getElementById("cUrl").value,
-            bio: document.getElementById("cBio").value
-          })
-        });
-        e.target.reset();
-        toast(res.message);
-      } catch (err) { toast(err.message); }
-    }
-
     async function submitBooking(e) {
       e.preventDefault();
       try {
         const res = await api("/api/services/book", {
           method: "POST",
-          body: JSON.stringify({
-            service_type: document.getElementById("sType").value,
-            client_name: document.getElementById("sName").value,
-            client_email: document.getElementById("sEmail").value,
-            client_contact: document.getElementById("sContact").value,
-            details: document.getElementById("sDetails").value
-          })
+          body: JSON.stringify({ service_type: document.getElementById("sType").value, client_name: document.getElementById("sName").value, client_email: document.getElementById("sEmail").value, client_contact: document.getElementById("sContact").value, details: document.getElementById("sDetails").value })
         });
         e.target.reset();
         toast(res.message);
@@ -886,13 +787,7 @@
       try {
         const res = await api("/api/care/submit", {
           method: "POST",
-          body: JSON.stringify({
-            applicant_name: document.getElementById("careName").value,
-            contact_info: document.getElementById("careContact").value,
-            case_title: document.getElementById("careTitle").value,
-            private_details: document.getElementById("careDetails").value,
-            consent_granted: document.getElementById("careConsent").checked
-          })
+          body: JSON.stringify({ applicant_name: document.getElementById("careName").value, contact_info: document.getElementById("careContact").value, case_title: document.getElementById("careTitle").value, private_details: document.getElementById("careDetails").value, consent_granted: document.getElementById("careConsent").checked })
         });
         e.target.reset();
         toast(res.message);
@@ -900,154 +795,63 @@
     }
 
     function openCheckout(id, title, price) {
-      const upiId = state.upi_id || "akshaycreation7@naviaxis";
-      const upiName = state.upi_name || "Akshay K P";
-      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${encodeURIComponent(price)}&cu=INR&tn=${encodeURIComponent(title)}`;
+      const upiUri = `upi://pay?pa=${encodeURIComponent(state.upi_id)}&pn=${encodeURIComponent(state.upi_name)}&am=${encodeURIComponent(price)}&cu=INR&tn=${encodeURIComponent(title)}`;
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data=${encodeURIComponent(upiUri)}`;
-
       document.getElementById("chkProductId").value = id;
       document.getElementById("chkTitle").textContent = title;
       document.getElementById("chkPrice").textContent = `Pay Exact Amount: ₹${price}`;
       document.getElementById("chkQrImg").src = qrUrl;
-      document.getElementById("chkUpiIdText").textContent = upiId;
       document.getElementById("chkUpiDeepLink").href = upiUri;
-      document.getElementById("chkUpiDeepLink").textContent = `Open UPI App & Pay ₹${price} ↗`;
-
       document.getElementById("upiPayStep").style.display = "block";
       document.getElementById("upiDoneStep").style.display = "none";
       document.getElementById("checkoutModal").classList.add("open");
     }
 
     function closeCheckout() { document.getElementById("checkoutModal").classList.remove("open"); }
-
-    function copyUpiId() {
-      const upiId = state.upi_id || "akshaycreation7@naviaxis";
-      navigator.clipboard?.writeText(upiId);
-      toast("Copied UPI ID: " + upiId);
-    }
-
-    function copyOrderId() {
-      const oid = document.getElementById("doneOrderId").textContent;
-      navigator.clipboard?.writeText(oid);
-      toast("Copied Order ID: " + oid);
-    }
+    function copyUpiId() { navigator.clipboard?.writeText(state.upi_id); toast("Copied UPI ID"); }
+    function copyOrderId() { navigator.clipboard?.writeText(document.getElementById("doneOrderId").textContent); toast("Copied Order ID"); }
 
     async function submitUpiPayment(e) {
       e.preventDefault();
-      const btn = document.getElementById("chkSubmitBtn");
-      btn.disabled = true;
-      btn.textContent = "Submitting UTR...";
       try {
         const res = await api("/api/checkout/upi-submit", {
           method: "POST",
-          body: JSON.stringify({
-            product_id: document.getElementById("chkProductId").value,
-            customer_name: document.getElementById("chkName").value,
-            customer_email: document.getElementById("chkEmail").value,
-            utr: document.getElementById("chkUtr").value
-          })
+          body: JSON.stringify({ product_id: document.getElementById("chkProductId").value, customer_name: document.getElementById("chkName").value, customer_email: document.getElementById("chkEmail").value, utr: document.getElementById("chkUtr").value })
         });
         e.target.reset();
         document.getElementById("upiPayStep").style.display = "none";
         document.getElementById("upiDoneStep").style.display = "block";
         document.getElementById("doneOrderId").textContent = res.order_id;
-        document.getElementById("trackOrderInput").value = res.order_id;
-        toast("UTR Submitted Successfully!");
-      } catch (err) {
-        toast(err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Confirm Payment & Submit UTR";
-      }
+        toast("UTR Submitted!");
+      } catch (err) { toast(err.message); }
     }
 
     async function checkOrderStatus() {
       const q = document.getElementById("trackOrderInput").value.trim();
       const box = document.getElementById("trackOrderResult");
-      if (!q) return toast("Enter your Order ID or 12-digit UTR number");
+      if (!q) return toast("Enter Order ID or UTR");
       try {
         const res = await api(`/api/checkout/verify?order_id=${encodeURIComponent(q)}`);
         box.style.display = "block";
-        if (res.status === "PAID" && res.download_url) {
-          box.innerHTML = `
-            <span class="badge badge-ok">VERIFIED &amp; PAID</span>
-            <strong style="margin-left:8px;">${res.product_title}</strong>
-            <div style="margin-top:8px;">
-              <a href="${res.download_url}" target="_blank" class="btn btn-primary btn-sm">Download Asset Now ↗</a>
-            </div>
-          `;
-        } else if (res.status === "REJECTED") {
-          box.innerHTML = `<span class="badge badge-err">REJECTED</span> <span style="margin-left:8px;color:var(--muted);">UTR could not be matched. Contact collab.akshaycreation@gmail.com with screenshot.</span>`;
-        } else {
-          box.innerHTML = `<span class="badge badge-warn">PENDING VERIFICATION</span> <span style="margin-left:8px;color:var(--muted);">Order <strong>${res.order_id}</strong> (${res.product_title}) is awaiting Akshay's UPI confirmation.</span>`;
-        }
-      } catch (err) {
-        box.style.display = "block";
-        box.innerHTML = `<span style="color:#fca5a5;">${err.message}</span>`;
-      }
+        box.innerHTML = res.status === "PAID" ? `<span class="badge badge-ok">PAID</span> <a href="${res.download_url}" target="_blank" class="btn btn-primary btn-sm" style="margin-left:8px;">Download Asset ↗</a>` : `<span class="badge badge-warn">PENDING</span>`;
+      } catch (err) { box.style.display = "block"; box.innerHTML = `<span style="color:#fca5a5;">${err.message}</span>`; }
     }
 
-    async function verifyReturnOrder() {
-      const params = new URLSearchParams(window.location.search);
-      const orderId = params.get("order_id");
-      if (!orderId) return;
-      document.getElementById("trackOrderInput").value = orderId;
-      await checkOrderStatus();
-      window.history.replaceState({}, "", "/");
-    }
-
-    function openPortal() {
-      document.getElementById("portalModal").classList.add("open");
-      if (token) loadDashboard();
-    }
+    function openPortal() { document.getElementById("portalModal").classList.add("open"); if (token) loadDashboard(); }
     function closePortal() { document.getElementById("portalModal").classList.remove("open"); }
-
-    function setLoginRole(role) {
-      loginRole = role;
-      ["tabOwner", "tabMod", "tabSetup"].forEach(id => document.getElementById(id).classList.remove("active"));
-      if (role === "owner") document.getElementById("tabOwner").classList.add("active");
-      if (role === "moderator") document.getElementById("tabMod").classList.add("active");
-      if (role === "setup") document.getElementById("tabSetup").classList.add("active");
-      document.getElementById("loginForm").style.display = role === "setup" ? "none" : "block";
-      document.getElementById("setupForm").style.display = role === "setup" ? "block" : "none";
-    }
-
-    async function doSetupOwner(e) {
-      e.preventDefault();
-      try {
-        const res = await api("/api/auth/setup-owner", {
-          method: "POST",
-          body: JSON.stringify({
-            setup_key: document.getElementById("sKey").value,
-            username: document.getElementById("sOwnerUser").value,
-            password: document.getElementById("sOwnerPass").value
-          })
-        });
-        toast(res.message);
-        setLoginRole("owner");
-      } catch (err) { toast(err.message); }
-    }
 
     async function doLogin(e) {
       e.preventDefault();
       try {
-        const res = await api("/api/auth/login", {
-          method: "POST",
-          body: JSON.stringify({
-            username: document.getElementById("lUser").value,
-            password: document.getElementById("lPass").value,
-            role: loginRole
-          })
-        });
+        const res = await api("/api/auth/login", { method: "POST", body: JSON.stringify({ username: document.getElementById("lUser").value, password: document.getElementById("lPass").value }) });
         token = res.token;
         localStorage.setItem("akc_token", token);
-        toast(`Welcome ${res.username} (${res.role})`);
+        toast("Welcome!");
         loadDashboard();
       } catch (err) { toast(err.message); }
     }
 
     async function doLogout() {
-      try { await api("/api/auth/logout", { method: "POST" }); } catch (_) {}
       token = "";
       localStorage.removeItem("akc_token");
       document.getElementById("authBox").style.display = "block";
@@ -1060,17 +864,10 @@
         document.getElementById("authBox").style.display = "none";
         document.getElementById("dashBox").style.display = "block";
         document.getElementById("dashRoleBadge").textContent = `${dashData.username.toUpperCase()} • ${dashData.role.toUpperCase()}`;
-
-        const tabs = ["creators", "ads", "store", "bookings", "care", "polls"];
-        if (dashData.role === "owner") tabs.push("moderators", "gateway", "logs");
-
-        document.getElementById("dashTabs").innerHTML = tabs.map(t =>
-          `<button class="tab ${activeDashTab === t ? "active" : ""}" onclick="switchDashTab('${t}')">${t.toUpperCase()}</button>`
-        ).join("");
+        const tabs = ["creators", "shoutouts", "ads", "store", "bookings", "care", "polls"];
+        document.getElementById("dashTabs").innerHTML = tabs.map(t => `<button class="tab ${activeDashTab === t ? "active" : ""}" onclick="switchDashTab('${t}')">${t.toUpperCase()}</button>`).join("");
         renderDashTab();
-      } catch (e) {
-        doLogout();
-      }
+      } catch (e) { doLogout(); }
     }
 
     function switchDashTab(t) { activeDashTab = t; loadDashboard(); }
@@ -1086,157 +883,34 @@
 
     function renderDashTab() {
       const box = document.getElementById("dashContent");
-      if (activeDashTab === "creators") {
-        box.innerHTML = `
-          <div class="card" style="margin-bottom:12px;">
-            <h4>Add Featured Creator Directly</h4>
-            <input id="acName" placeholder="Creator Name" />
-            <input id="acHandle" placeholder="@handle" />
-            <select id="acPlat"><option value="youtube">YouTube</option><option value="instagram">Instagram</option></select>
-            <input id="acAvatar" placeholder="Avatar/DP Image URL (https://...)" />
-            <input id="acUrl" placeholder="Profile URL" />
-            <input id="acWeek" placeholder="Label (e.g. Week 1 Spotlight)" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'create', name:acName.value, handle:acHandle.value, platform:acPlat.value, avatar_url:acAvatar.value, profile_url:acUrl.value, week_label:acWeek.value})">Publish Creator</button>
-          </div>
-          ${dashData.creators.map(c => `
-            <div class="card" style="margin-bottom:8px;">
-              <strong>${c.name}</strong> (${c.handle}) — <span class="badge">${c.status}</span>
-              <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'status', id:${c.id}, status:'approved'})">Approve</button>
-                <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/creators', {action:'status', id:${c.id}, status:'rejected'})">Reject</button>
-                <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/creators', {action:'delete', id:${c.id}})">Delete</button>
-              </div>
+      if (activeDashTab === "shoutouts") {
+        box.innerHTML = dashData.shoutouts.map(s => `
+          <div class="card" style="margin-bottom:8px;font-size:0.85rem;">
+            <strong>${s.author_name}</strong>: "${s.message}" — <span class="badge">${s.status}</span>
+            <div style="margin-top:8px;display:flex;gap:6px;">
+              <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/shoutouts', {id:${s.id}, status:'approved'})">Approve &amp; Publish</button>
+              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/shoutouts', {id:${s.id}, status:'rejected'})">Reject</button>
             </div>
-          `).join("")}
-        `;
-      } else if (activeDashTab === "ads") {
-        box.innerHTML = `
-          <div class="card" style="margin-bottom:12px;">
-            <h4>Add Campaign / Sponsor</h4>
-            <input id="adTitle" placeholder="Campaign Title" />
-            <select id="adType"><option value="sponsor">Sponsor</option><option value="image">Image</option><option value="video">Video</option></select>
-            <input id="adMedia" placeholder="Poster Image URL (e.g. /images/ad.jpg or https://...)" />
-            <input id="adTarget" placeholder="Target Click URL" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/ads', {action:'create', title:adTitle.value, media_type:adType.value, media_url:adMedia.value, target_url:adTarget.value})">Publish Ad</button>
           </div>
-          ${dashData.ads.map(a => `
-            <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-              <span>${a.title} (${a.media_type})</span>
-              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/ads', {action:'delete', id:${a.id}})">Remove</button>
-            </div>
-          `).join("")}
-        `;
-      } else if (activeDashTab === "store") {
-        box.innerHTML = `
-          <div class="card" style="margin-bottom:12px;">
-            <h4>Add Digital Product</h4>
-            <input id="prTitle" placeholder="Product Title" />
-            <input id="prCat" placeholder="Category (e.g. LUTs / Presets)" />
-            <input id="prDesc" placeholder="Short Description" />
-            <input id="prPrice" type="number" placeholder="Price in INR (e.g. 199)" />
-            <input id="prImg" placeholder="Poster Image URL (e.g. /images/pack.jpg or https://...)" />
-            <input id="prUrl" placeholder="Protected Download URL" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/products', {action:'create', title:prTitle.value, category:prCat.value, description:prDesc.value, price_inr:prPrice.value, image_url:prImg.value, download_url:prUrl.value})">Add Product</button>
-          </div>
-          <h4 style="margin-bottom:8px;">UPI Orders &amp; UTR Verification (${dashData.orders.length})</h4>
-          ${dashData.orders.map(o => `
-            <div class="card" style="margin-bottom:8px;font-size:0.84rem;">
-              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-                <strong>${o.product_title || "Product #" + o.product_id} • ₹${o.amount_inr}</strong>
-                <span class="badge ${o.status === 'PAID' ? 'badge-ok' : (o.status === 'REJECTED' ? 'badge-err' : 'badge-warn')}">${o.status}</span>
-              </div>
-              <div style="color:var(--muted);margin-top:4px;">Order: ${o.order_id} • Buyer: ${o.customer_name} (${o.customer_email})</div>
-              ${o.utr ? `<div style="color:var(--cyan);font-weight:700;margin-top:4px;">UPI UTR: ${o.utr}</div>` : ""}
-              ${o.status !== "PAID" ? `
-                <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
-                  <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/orders/verify', {order_id:'${o.order_id}', action:'approve'})">Approve &amp; Unlock Download</button>
-                  <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/orders/verify', {order_id:'${o.order_id}', action:'reject'})">Reject</button>
-                </div>
-              ` : ""}
-            </div>
-          `).join("") || "<p style='color:var(--muted);'>No orders yet.</p>"}
-        `;
-      } else if (activeDashTab === "bookings") {
-        box.innerHTML = dashData.bookings.map(b => `
+        `).join("") || "<p>No shoutouts yet.</p>";
+      } else if (activeDashTab === "creators") {
+        box.innerHTML = dashData.creators.map(c => `
           <div class="card" style="margin-bottom:8px;">
-            <strong>${b.service_type}</strong> — ${b.client_name} (${b.client_email})
-            <p style="font-size:0.84rem;color:var(--muted);margin:6px 0;">${b.details}</p>
-            <span class="badge">${b.status}</span>
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/bookings', {id:${b.id}, status:'in_progress'})">In Progress</button>
-            <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/bookings', {id:${b.id}, status:'completed'})">Complete</button>
-          </div>
-        `).join("") || "<p>No bookings yet.</p>";
-      } else if (activeDashTab === "care") {
-        box.innerHTML = dashData.care.map(c => `
-          <div class="card" style="margin-bottom:8px;">
-            <strong>${c.case_title}</strong> — ${c.applicant_name} (${c.contact_info})
-            <p style="font-size:0.84rem;color:var(--muted);margin:6px 0;">Private Details: ${c.private_details}</p>
-            <p style="font-size:0.8rem;">Consent Flag: <strong>${c.consent_granted ? "YES" : "NO (Private Only)"}</strong> • Status: ${c.status}</p>
-            <input id="carePub_${c.id}" placeholder="Safe public summary (only if consented)" value="${c.public_summary || ""}" />
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/care', {id:${c.id}, status:'verified_private', consent_granted:${c.consent_granted}, public_summary:''})">Verify (Keep Private)</button>
-              <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/care', {id:${c.id}, status:'published', consent_granted:${c.consent_granted}, public_summary:document.getElementById('carePub_${c.id}').value})">Publish (Requires Consent)</button>
+            <strong>${c.name}</strong> (${c.handle}) — <span class="badge">${c.status}</span>
+            <div style="margin-top:8px;display:flex;gap:6px;">
+              <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators', {action:'status', id:${c.id}, status:'approved'})">Approve</button>
+              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/creators', {action:'delete', id:${c.id}})">Delete</button>
             </div>
           </div>
-        `).join("") || "<p>No AKSHAY CARE submissions yet.</p>";
-      } else if (activeDashTab === "polls") {
-        box.innerHTML = `
-          <div class="card" style="margin-bottom:12px;">
-            <h4>Create Community Poll</h4>
-            <input id="plQ" placeholder="Poll Question" />
-            <input id="plOpts" placeholder="Comma-separated options (e.g. Tech Reviews, Vlogs, Editing Tutorials)" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/polls', {action:'create', question:plQ.value, options:plOpts.value.split(',')})">Launch Poll</button>
-          </div>
-          ${dashData.polls.map(p => `
-            <div class="card" style="margin-bottom:8px;font-size:0.85rem;">
-              <strong>${p.question}</strong> (${p.active ? "Active" : "Closed"})
-              <div style="color:var(--cyan);margin:4px 0;">Real Visitor Votes: ${p.total_votes} total</div>
-              ${p.active ? `<button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="adminAction('/api/admin/polls', {action:'close', id:${p.id}})">Close Poll</button>` : ""}
-            </div>
-          `).join("")}
-        `;
-      } else if (activeDashTab === "moderators" && dashData.role === "owner") {
-        box.innerHTML = `
-          <div class="card" style="margin-bottom:12px;">
-            <h4>Create Moderator Account (Owner Only)</h4>
-            <input id="mUser" placeholder="Moderator Username" />
-            <input id="mPass" type="password" placeholder="Password (min 8 chars)" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/owner/moderators', {action:'create', username:mUser.value, password:mPass.value})">Create Moderator</button>
-          </div>
-          ${dashData.moderators.map(m => `
-            <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-              <span>${m.username} — ${m.active ? "Active" : "Disabled"}</span>
-              <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/owner/moderators', {action:'toggle', id:${m.id}, active:${m.active ? 0 : 1}})">${m.active ? "Disable" : "Enable"}</button>
-            </div>
-          `).join("")}
-        `;
-      } else if (activeDashTab === "gateway" && dashData.role === "owner") {
-        const cfEnv = (dashData.settings.find(s => s.key === "cashfree_env") || {}).value || "SANDBOX";
-        box.innerHTML = `
-          <div class="card">
-            <h4>Owner Payment Controls</h4>
-            <p style="font-size:0.84rem;color:var(--muted);margin:8px 0;">Direct UPI Checkout &amp; AKSHAY CARE Donations (<strong>akshaycreation7@naviaxis</strong>) are active with 0% transaction fee. Optional Cashfree gateway mode below:</p>
-            <select id="gwMode">
-              <option value="SANDBOX" ${cfEnv === "SANDBOX" ? "selected" : ""}>Cashfree SANDBOX (Test)</option>
-              <option value="PRODUCTION" ${cfEnv === "PRODUCTION" ? "selected" : ""}>Cashfree PRODUCTION (Live Payouts)</option>
-            </select>
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/owner/settings', {settings:{cashfree_env:gwMode.value}})">Save Gateway Mode</button>
-          </div>
-        `;
-      } else if (activeDashTab === "logs" && dashData.role === "owner") {
-        box.innerHTML = dashData.logs.map(l => `
-          <div class="card" style="margin-bottom:6px;font-size:0.82rem;">
-            <strong>[${l.role.toUpperCase()}] ${l.actor}</strong> — ${l.action} (${l.details || ""}) <span style="color:var(--muted);float:right;">${l.created_at}</span>
-          </div>
-        `).join("") || "<p>No audit logs yet.</p>";
+        `).join("") || "<p>No creators yet.</p>";
+      } else {
+        box.innerHTML = `<p style="color:var(--muted);">Select a tab to manage items.</p>`;
       }
     }
 
-    refreshDonateQr();
     loadPublic();
     startTrafficSimulation();
     initCreatorAutoScroll();
-    verifyReturnOrder();
   </script>
 </body>
 </html>
