@@ -99,9 +99,15 @@
     .card {
       background: var(--card); border: 1px solid var(--border);
       border-radius: 18px; padding: 20px; backdrop-filter: blur(12px);
-      transition: 0.25s;
+      transition: 0.25s; overflow: hidden;
     }
     .card:hover { border-color: rgba(56, 189, 248, 0.5); transform: translateY(-2px); }
+    .card-cover {
+      width: 100%; height: 170px; object-fit: cover;
+      border-radius: 12px; margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #101022;
+    }
     .stat-num { font-size: 1.65rem; font-weight: 800; color: #fff; }
     .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 
@@ -603,7 +609,6 @@
       return data;
     }
 
-    // Open-Amount Donation QR Updater
     function setDonateAmount(val) {
       document.getElementById("donateAmtInput").value = val;
       refreshDonateQr();
@@ -661,24 +666,25 @@
             `).join("")
           : `<div class="card"><p style="color:var(--muted);">No featured creators published yet. Apply on the right to be featured!</p></div>`;
 
-        // Ads
+        // Ads (with Poster Image support)
         const aEl = document.getElementById("adsList");
         aEl.innerHTML = data.ads.length
           ? data.ads.map(a => `
               <div class="card">
+                ${a.media_url ? `<img src="${a.media_url}" alt="${a.title}" class="card-cover" onerror="this.style.display='none'" />` : ""}
                 <span class="badge">${a.badge || "Sponsored"}</span>
                 <h3 style="margin:10px 0 6px;">${a.title}</h3>
-                <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Type: ${a.media_type}</p>
-                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm">Explore Offer</a>
+                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm" style="margin-top:8px;">Explore Offer ↗</a>
               </div>
             `).join("")
           : `<div class="card"><p style="color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</p></div>`;
 
-        // Products
+        // Products (with Poster Image support)
         const pEl = document.getElementById("productsList");
         pEl.innerHTML = data.products.length
           ? data.products.map(p => `
               <div class="card">
+                ${p.image_url ? `<img src="${p.image_url}" alt="${p.title}" class="card-cover" onerror="this.style.display='none'" />` : ""}
                 <span class="badge">${p.category}</span>
                 <h3 style="margin:10px 0 6px;">${p.title}</h3>
                 <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">${p.description || ""}</p>
@@ -787,7 +793,6 @@
       } catch (err) { toast(err.message); }
     }
 
-    // Direct Dynamic UPI QR Checkout (akshaycreation7@naviaxis)
     function openCheckout(id, title, price) {
       const upiId = state.upi_id || "akshaycreation7@naviaxis";
       const upiName = state.upi_name || "Akshay K P";
@@ -1004,7 +1009,7 @@
             <h4>Add Campaign / Sponsor</h4>
             <input id="adTitle" placeholder="Campaign Title" />
             <select id="adType"><option value="sponsor">Sponsor</option><option value="image">Image</option><option value="video">Video</option></select>
-            <input id="adMedia" placeholder="Media or Poster URL" />
+            <input id="adMedia" placeholder="Poster Image URL (e.g. /images/ad.jpg or https://...)" />
             <input id="adTarget" placeholder="Target Click URL" />
             <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/ads', {action:'create', title:adTitle.value, media_type:adType.value, media_url:adMedia.value, target_url:adTarget.value})">Publish Ad</button>
           </div>
@@ -1023,8 +1028,9 @@
             <input id="prCat" placeholder="Category (e.g. LUTs / Presets)" />
             <input id="prDesc" placeholder="Short Description" />
             <input id="prPrice" type="number" placeholder="Price in INR (e.g. 199)" />
+            <input id="prImg" placeholder="Poster Image URL (e.g. /images/pack.jpg or https://...)" />
             <input id="prUrl" placeholder="Protected Download URL" />
-            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/products', {action:'create', title:prTitle.value, category:prCat.value, description:prDesc.value, price_inr:prPrice.value, download_url:prUrl.value})">Add Product</button>
+            <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/products', {action:'create', title:prTitle.value, category:prCat.value, description:prDesc.value, price_inr:prPrice.value, image_url:prImg.value, download_url:prUrl.value})">Add Product</button>
           </div>
           <h4 style="margin-bottom:8px;">UPI Orders &amp; UTR Verification (${dashData.orders.length})</h4>
           ${dashData.orders.map(o => `
