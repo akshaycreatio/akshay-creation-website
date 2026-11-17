@@ -93,14 +93,16 @@
     .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 26px; font-size: 1rem; }
     .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 36px; }
 
-    /* High-Impact Live Stats Grid */
+    /* Compact 2x2 Stats Grid (Mobile & PC Side-by-Side) */
     .stats-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px; margin-top: 18px;
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px; 
+      margin-top: 18px;
     }
     .card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 18px; padding: 20px; backdrop-filter: blur(12px);
+      border-radius: 16px; padding: 16px; backdrop-filter: blur(12px);
       transition: 0.25s; overflow: hidden; text-align: left;
     }
     .card:hover { border-color: rgba(56, 189, 248, 0.5); transform: translateY(-2px); }
@@ -110,8 +112,8 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: #101022;
     }
-    .stat-num { font-size: 1.7rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
-    .stat-lbl { font-size: 0.8rem; color: var(--muted); margin-top: 4px; display: flex; align-items: center; justify-content: space-between; }
+    .stat-num { font-size: 1.4rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+    .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
 
     /* Sections */
     section { padding: 52px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
@@ -142,8 +144,8 @@
 
     /* Badges */
     .badge {
-      display: inline-block; padding: 3px 10px; border-radius: 999px;
-      font-size: 0.72rem; font-weight: 700;
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-size: 0.65rem; font-weight: 700;
       background: rgba(124, 58, 237, 0.22); color: #d8b4fe;
     }
     .badge-ok { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
@@ -244,11 +246,11 @@
           <a href="#care" class="btn btn-ghost">Akshay Care / Donate</a>
         </div>
 
-        <!-- HIGH-IMPACT LIVE STATS GRID -->
+        <!-- COMPACT 2x2 STATS GRID -->
         <div class="stats-grid">
           <div class="card">
             <div class="stat-num" id="ytSubs">150K+</div>
-            <div class="stat-lbl"><span id="ytStatus">YouTube Subscribers</span> <span class="badge badge-ok">LIVE</span></div>
+            <div class="stat-lbl"><span id="ytStatus">YouTube Subs</span> <span class="badge badge-ok">LIVE</span></div>
           </div>
           <div class="card">
             <div class="stat-num" id="igFollowers">14.8K+</div>
@@ -256,11 +258,11 @@
           </div>
           <div class="card">
             <div class="stat-num" id="trafficCount">28.4K</div>
-            <div class="stat-lbl"><span>30-Day Web Traffic</span> <span style="color:var(--cyan);font-weight:700;">↗ HIGH</span></div>
+            <div class="stat-lbl"><span>30-Day Traffic</span> <span style="color:var(--cyan);font-weight:700;">↗ HIGH</span></div>
           </div>
           <div class="card">
             <div class="stat-num" id="activeNow">38</div>
-            <div class="stat-lbl"><span>Active Online Now</span> <span class="dot" style="display:inline-block;"></span></div>
+            <div class="stat-lbl"><span>Active Now</span> <span class="dot" style="display:inline-block;"></span></div>
           </div>
         </div>
       </div>
@@ -633,7 +635,6 @@
       document.getElementById("donateDeepLink").textContent = hasAmt ? `Donate ₹${rawAmt} via UPI App ↗` : "Donate Any Amount via UPI App ↗";
     }
 
-    // Dynamic Traffic & Active Counter Fluctuation Simulator
     function startTrafficSimulation() {
       let currentTraffic = 28400;
       setInterval(() => {
@@ -659,10 +660,9 @@
         state = { ...state, ...data };
         refreshDonateQr();
 
-        // YouTube Live Stats
         document.getElementById("ytSubs").textContent = data.stats?.youtube?.count_text || "150K+";
         document.getElementById("ytStatus").textContent =
-          data.stats?.youtube?.status === "live_api" ? "YouTube Live Subs" : "YouTube Subscribers";
+          data.stats?.youtube?.status === "live_api" ? "YouTube Live Subs" : "YouTube Subs";
 
         document.getElementById("igFollowers").textContent = "14.8K+";
 
@@ -1074,7 +1074,7 @@
           <div class="card" style="margin-bottom:8px;">
             <strong>${c.case_title}</strong> — ${c.applicant_name} (${c.contact_info})
             <p style="font-size:0.84rem;color:var(--muted);margin:6px 0;">Private Details: ${c.private_details}</p>
-            <p style="font-size:0.8rem;">Consent Flag: <strong>${c.consent_granted ? "YES" : "NO (Private Only)"}</strong> • Status: ${c.status}</p>
+            <p style="font-size:0.80rem;">Consent Flag: <strong>${c.consent_granted ? "YES" : "NO (Private Only)"}</strong> • Status: ${c.status}</p>
             <input id="carePub_${c.id}" placeholder="Safe public summary (only if consented)" value="${c.public_summary || ""}" />
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
               <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/care', {id:${c.id}, status:'verified_private', consent_granted:${c.consent_granted}, public_summary:''})">Verify (Keep Private)</button>
