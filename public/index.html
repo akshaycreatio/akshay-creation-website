@@ -293,7 +293,7 @@
       </div>
     </section>
 
-    <!-- ABOUT SECTION (Clean YouTube Bio Vibe) -->
+    <!-- ABOUT SECTION -->
     <section id="about">
       <div class="wrap">
         <div class="sec-head">
@@ -1116,9 +1116,10 @@
             <button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/polls', {action:'create', question:plQ.value, options:plOpts.value.split(',')})">Launch Poll</button>
           </div>
           ${dashData.polls.map(p => `
-            <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-              <span>${p.question} (${p.active ? "Active" : "Closed"})</span>
-              ${p.active ? `<button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/polls', {action:'close', id:${p.id}})">Close</button>` : ""}
+            <div class="card" style="margin-bottom:8px;font-size:0.85rem;">
+              <strong>${p.question}</strong> (${p.active ? "Active" : "Closed"})
+              <div style="color:var(--cyan);margin:4px 0;">Real Visitor Votes: ${p.total_votes} total</div>
+              ${p.active ? `<button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="adminAction('/api/admin/polls', {action:'close', id:${p.id}})">Close Poll</button>` : ""}
             </div>
           `).join("")}
         `;
