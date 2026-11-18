@@ -38,21 +38,32 @@ export default {
         const body = await request.json();
         const { username, password } = body;
         
-        // Direct validation for easy access
-        if (username !== "OWNER_SETUP_KEY" || password !== "AKSHAY2007ADMIN") {
-          return j({ error: "Invalid username or password" }, 401);
+        // 1. Super Admin Check
+        if (username === "OWNER_SETUP_KEY" && password === "AKSHAY2007ADMIN") {
+          const token = await sha256Hex(username + Math.random() + Date.now());
+          try {
+            await env.DB.prepare(
+              "UPDATE admins SET token = ?, token_created_at = ? WHERE id = 1"
+            ).bind(token, Math.floor(Date.now() / 1000)).run();
+          } catch(e) {}
+          await logAudit(env, username, "superadmin", "ADMIN_LOGIN", "Successful superadmin login");
+          return j({ token, username: "OWNER_SETUP_KEY", role: "superadmin" });
         }
 
-        const token = await sha256Hex(username + Math.random() + Date.now());
-        
-        try {
-          await env.DB.prepare(
-            "UPDATE admins SET token = ?, token_created_at = ? WHERE id = 1"
-          ).bind(token, Math.floor(Date.now() / 1000)).run();
-        } catch(e) {}
+        // 2. Staff / Moderator Check
+        const staff = await env.DB.prepare(
+          "SELECT * FROM staff_users WHERE username = ? AND password = ?"
+        ).bind(username, password).first();
 
-        await logAudit(env, username, "superadmin", "ADMIN_LOGIN", "Successful login");
-        return j({ token, username: "OWNER_SETUP_KEY", role: "superadmin" });
+        if (!staff) return j({ error: "Invalid username or password" }, 401);
+
+        const token = await sha256Hex(username + Math.random() + Date.now());
+        await env.DB.prepare(
+          "UPDATE staff_users SET token = ?, token_created_at = ? WHERE id = ?"
+        ).bind(token, Math.floor(Date.now() / 1000), staff.id).run();
+
+        await logAudit(env, username, staff.role, "STAFF_LOGIN", "Successful staff login");
+        return j({ token, username: staff.username, role: staff.role });
       }
 
       if (request.method === "GET" && path === "/api/public/overview") {
@@ -159,7 +170,14 @@ export default {
       // Admin Endpoints
       if (path.startsWith("/api/admin/")) {
         const token = auth(request, env);
-        const admin = await env.DB.prepare("SELECT * FROM admins WHERE token = ?").bind(token).first();
+        
+        // Check admin or staff session
+        let admin = await env.DB.prepare("SELECT * FROM admins WHERE token = ?").bind(token).first();
+        let isStaff = false;
+        if (!admin) {
+          admin = await env.DB.prepare("SELECT * FROM staff_users WHERE token = ?").bind(token).first();
+          isStaff = true;
+        }
         if (!admin) return j({ error: "Unauthorized session" }, 401);
 
         if (request.method === "GET" && path === "/api/admin/dashboard") {
@@ -171,10 +189,11 @@ export default {
           const careCases = await env.DB.prepare("SELECT * FROM care_cases ORDER BY id DESC").all();
           const polls = await env.DB.prepare("SELECT * FROM polls ORDER BY id DESC").all();
           const auditLogs = await env.DB.prepare("SELECT * FROM audit_logs ORDER BY id DESC LIMIT 50").all();
+          const staffUsers = !isStaff ? await env.DB.prepare("SELECT id, username, role FROM staff_users ORDER BY id DESC").all() : { results: [] };
 
           return j({
             username: admin.username,
-            role: admin.role,
+            role: admin.role || "moderator",
             creators: creators.results,
             ads: ads.results,
             products: products.results,
@@ -182,7 +201,8 @@ export default {
             bookings: bookings.results,
             care_cases: careCases.results,
             polls: polls.results,
-            audit_logs: auditLogs.results
+            audit_logs: auditLogs.results,
+            staff_users: staffUsers.results
           });
         }
 
@@ -198,7 +218,7 @@ export default {
             } else if (action === "delete") {
               await env.DB.prepare("DELETE FROM creators WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "CREATOR_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "CREATOR_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
           }
 
@@ -212,7 +232,7 @@ export default {
             } else if (action === "delete") {
               await env.DB.prepare("DELETE FROM ads WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "AD_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "AD_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
           }
 
@@ -226,7 +246,7 @@ export default {
             } else if (action === "delete") {
               await env.DB.prepare("DELETE FROM products WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "PRODUCT_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "PRODUCT_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
           }
 
@@ -236,7 +256,7 @@ export default {
             } else if (action === "delete") {
               await env.DB.prepare("DELETE FROM orders WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "ORDER_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "ORDER_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
           }
 
@@ -246,7 +266,7 @@ export default {
             } else if (action === "delete") {
               await env.DB.prepare("DELETE FROM bookings WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "BOOKING_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "BOOKING_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
           }
 
@@ -256,11 +276,11 @@ export default {
             } else if (action === "delete") {
               await env.DB.prepare("DELETE FROM care_cases WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "CARE_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "CARE_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
           }
 
-          if, path === "/api/admin/polls") {
+          if (path === "/api/admin/polls") {
             if (action === "create") {
               const opts = data.options || [];
               const counts = new Array(opts.length).fill(0);
@@ -269,10 +289,24 @@ export default {
             } else if (action === "update") {
               await env.DB.prepare("UPDATE polls SET active = ? WHERE id = ?").bind(data.active ?? 1, id).run();
             } else if (action === "delete") {
-              await env.DB.prepare("DELETE polls WHERE id = ?").bind(id).run();
+              await env.DB.prepare("DELETE FROM polls WHERE id = ?").bind(id).run();
             }
-            await logAudit(env, admin.username, admin.role, "POLL_" + action.toUpperCase(), `ID: ${id}`);
+            await logAudit(env, admin.username, admin.role || "admin", "POLL_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
+          }
+
+          if (path === "/api/admin/staff") {
+            if (isStaff) return j({ error: "Forbidden" }, 403);
+            if (action === "create") {
+              if (!data.username || !data.password) return j({ error: "Missing username or password" }, 400);
+              await env.DB.prepare(
+                "INSERT INTO staff_users (username, password, role) VALUES (?, ?, ?)"
+              ).bind(data.username, data.password, data.role || "moderator").run();
+            } else if (action === "delete") {
+              await env.DB.prepare("DELETE FROM staff_users WHERE id = ?").bind(id).run();
+            }
+            await logAudit(env, admin.username, admin.role || "admin", "STAFF_" + action.toUpperCase(), `ID: ${id}`);
+            return j({ success: "true" });
           }
         }
       }
