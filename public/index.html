@@ -2,220 +2,210 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#030305" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
   <title>AKSHAY CREATION — Create. Connect. Inspire.</title>
   <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
   <style>
     :root {
-      --bg: #030305;
-      --card-bg: rgba(14, 12, 28, 0.78);
+      --bg: #000000;
+      --card-bg: rgba(16, 16, 28, 0.85);
       --border: rgba(168, 85, 247, 0.3);
-      --purple: #9333ea;
+      --purple: #8b5cf6;
       --violet: #a855f7;
       --cyan: #38bdf8;
       --emerald: #10b981;
-      --text: #f8fafc;
+      --text: #ffffff;
       --muted: #94a3b8;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #030305 radial-gradient(circle at 15% 10%, rgba(147, 51, 234, 0.28), transparent 45%),
-                  radial-gradient(circle at 85% 35%, rgba(56, 189, 248, 0.18), transparent 50%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.5;
       overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
     }
     a { color: inherit; text-decoration: none; }
-    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+    .wrap { width: 100%; max-width: 480px; margin: 0 auto; padding: 0 16px; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .fade-in { animation: fadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .fade-in { animation: fadeIn 0.5s ease forwards; }
 
-    /* Navbar */
+    /* Mobile App Header */
     .nav {
       position: sticky; top: 0; z-index: 50;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      background: rgba(3, 3, 5, 0.9);
-      border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(0, 0, 0, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .nav-inner {
       display: flex; align-items: center; justify-content: space-between;
-      height: 72px; gap: 12px;
+      height: 60px;
     }
     .brand {
-      font-weight: 900; font-size: 1.2rem; letter-spacing: 0.08em;
+      font-weight: 900; font-size: 1.05rem; letter-spacing: 0.05em;
       background: linear-gradient(135deg, #f0abfc, #c084fc, #38bdf8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-transform: uppercase;
     }
-    .nav-links { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; }
-    .nav-links a { font-size: 0.86rem; color: var(--muted); font-weight: 600; white-space: nowrap; transition: 0.3s; }
-    .nav-links a:hover { color: #f0abfc; text-shadow: 0 0 12px rgba(240, 171, 252, 0.6); }
-    
+    .nav-links { display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none; padding: 4px 0; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { font-size: 0.8rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .nav-links a:hover { color: #f0abfc; }
+
+    /* Buttons */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 11px 22px; border-radius: 16px; font-weight: 700; font-size: 0.88rem;
-      border: 1px solid transparent; cursor: pointer; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: 0.85rem;
+      border: 1px solid transparent; cursor: pointer; transition: 0.2s; width: 100%;
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--purple), var(--violet));
-      color: #fff; box-shadow: 0 8px 30px rgba(147, 51, 234, 0.5);
-      border: 1px solid rgba(240, 171, 252, 0.35);
+      color: #fff; box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+      border: 1px solid rgba(240, 171, 252, 0.3);
     }
-    .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 40px rgba(168, 85, 247, 0.7); }
+    .btn-primary:active { transform: scale(0.97); }
     .btn-ghost {
-      background: rgba(255, 255, 255, 0.04); border-color: rgba(168, 85, 247, 0.25); color: var(--text);
+      background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: var(--text);
     }
-    .btn-ghost:hover { border-color: var(--violet); background: rgba(147, 51, 234, 0.15); transform: translateY(-2px); }
-    .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 12px; }
+    .btn-ghost:active { background: rgba(139, 92, 246, 0.2); }
+    .btn-sm { padding: 6px 12px; font-size: 0.78rem; border-radius: 10px; width: auto; }
 
-    /* Hero */
-    .hero { padding: 85px 0 50px; text-align: center; }
+    /* Hero Section */
+    .hero { padding: 40px 0 30px; text-align: center; }
     .pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 18px; border-radius: 999px; font-size: 0.78rem;
-      background: rgba(147, 51, 234, 0.18); border: 1px solid rgba(168, 85, 247, 0.4);
-      color: #f0abfc; margin-bottom: 22px; font-weight: 700; letter-spacing: 0.05em;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 999px; font-size: 0.72rem;
+      background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #f0abfc; margin-bottom: 16px; font-weight: 700;
     }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 12px var(--emerald); animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
 
     h1 {
-      font-size: clamp(2.4rem, 7vw, 4.2rem); font-weight: 900; line-height: 1.08;
-      letter-spacing: -0.03em; margin-bottom: 16px;
+      font-size: 2.2rem; font-weight: 900; line-height: 1.15;
+      letter-spacing: -0.02em; margin-bottom: 12px;
     }
     .grad {
       background: linear-gradient(135deg, #f0abfc, #c084fc, #38bdf8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 30px; font-size: 1.05rem; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 44px; }
+    .hero p { color: var(--muted); font-size: 0.92rem; margin: 0 auto 24px; padding: 0 10px; }
+    .hero-cta { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
 
-    /* Glass Cards with smooth hover float */
+    /* Mobile 2x2 Stats Grid */
     .stats-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px;
     }
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-      border: 1px solid var(--border); border-radius: 24px; padding: 22px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow: hidden; text-align: left;
-    }
-    .card:hover { 
-      border-color: rgba(240, 171, 252, 0.8); transform: translateY(-5px);
-      box-shadow: 0 26px 70px rgba(147, 51, 234, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border); border-radius: 18px; padding: 14px;
+      text-align: left;
     }
     .card-cover {
-      width: 100%; height: 180px; object-fit: cover; border-radius: 16px; margin-bottom: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08); background: #080712;
+      width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; background: #080712;
     }
-    .stat-num { font-size: 1.65rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
-    .stat-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-weight: 600; }
+    .stat-num { font-size: 1.35rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+    .stat-lbl { font-size: 0.68rem; color: var(--muted); margin-top: 2px; display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
 
     /* Creator Carousel */
     .creator-carousel {
-      display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; padding: 6px 0 16px;
+      display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; padding: 4px 0 12px;
     }
     .creator-carousel::-webkit-scrollbar { display: none; }
-    .creator-slide { flex: 0 0 300px; scroll-snap-align: start; }
+    .creator-slide { flex: 0 0 240px; scroll-snap-align: start; }
     .creator-avatar {
-      width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--violet); margin-bottom: 12px; background: #080712;
+      width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--violet); margin-bottom: 8px; background: #080712;
     }
 
     /* Ad Banner */
     .ad-landscape-container {
-      position: relative; width: 100%; min-height: 190px; border-radius: 24px; overflow: hidden;
-      background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(30px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      position: relative; width: 100%; min-height: 160px; border-radius: 18px; overflow: hidden;
+      background: var(--card-bg); border: 1px solid var(--border);
     }
     .ad-slide {
-      position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out;
-      display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; background-size: cover; background-position: center;
+      position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease-in-out;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background-size: cover; background-position: center;
     }
     .ad-slide.active { opacity: 1; z-index: 2; }
     .ad-slide::before {
-      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(3,3,5,0.1) 0%, rgba(3,3,5,0.92) 90%); z-index: 1;
+      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(0,0,0,0.85) 90%); z-index: 1;
     }
     .ad-content { position: relative; z-index: 3; }
 
     /* Sections */
-    section { padding: 65px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
-    .sec-head { margin-bottom: 30px; }
-    .sec-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--violet); font-weight: 800; }
-    h2 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-weight: 900; margin-top: 6px; letter-spacing: -0.02em; }
-    .sec-sub { color: var(--muted); font-size: 0.96rem; margin-top: 8px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    section { padding: 40px 0; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+    .sec-head { margin-bottom: 20px; }
+    .sec-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--violet); font-weight: 800; }
+    h2 { font-size: 1.45rem; font-weight: 900; margin-top: 4px; letter-spacing: -0.02em; }
+    .sec-sub { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
 
     /* Forms */
     input, select, textarea {
-      width: 100%; padding: 13px 18px; border-radius: 16px;
-      background: rgba(10, 8, 22, 0.92); border: 1px solid var(--border); color: #fff; font-size: 0.92rem; margin-top: 6px; margin-bottom: 14px; backdrop-filter: blur(10px);
-      transition: 0.3s;
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      background: rgba(12, 10, 24, 0.95); border: 1px solid var(--border); color: #fff; font-size: 0.88rem; margin-top: 4px; margin-bottom: 10px;
     }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 22px rgba(168, 85, 247, 0.45); }
-    label { font-size: 0.84rem; color: var(--muted); font-weight: 700; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 12px rgba(168, 85, 247, 0.3); }
+    label { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
 
     /* Polls */
     .poll-opt {
-      width: 100%; text-align: left; padding: 13px 18px; margin-top: 10px;
-      border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center; transition: 0.2s; font-weight: 600;
+      width: 100%; text-align: left; padding: 11px 14px; margin-top: 8px;
+      border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 600;
     }
-    .poll-opt.voted { border-color: var(--violet); background: rgba(168, 85, 247, 0.22); box-shadow: 0 0 18px rgba(168, 85, 247, 0.3); }
+    .poll-opt.voted { border-color: var(--violet); background: rgba(139, 92, 246, 0.2); }
 
     /* Badges */
     .badge {
-      display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: 800;
-      background: rgba(147, 51, 234, 0.28); color: #f0abfc; border: 1px solid rgba(168, 85, 247, 0.4);
-      letter-spacing: 0.03em;
+      display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.65rem; font-weight: 800;
+      background: rgba(139, 92, 246, 0.25); color: #f0abfc; border: 1px solid rgba(168, 85, 247, 0.35);
     }
-    .badge-ok { background: rgba(16, 185, 129, 0.22); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.35); }
-    .badge-warn { background: rgba(245, 158, 11, 0.25); color: #fcd34d; border-color: rgba(245, 158, 11, 0.35); }
+    .badge-ok { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.3); }
+    .badge-warn { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border-color: rgba(245, 158, 11, 0.3); }
 
     /* QR Popup Modal */
     .qr-box {
-      background: #ffffff; color: #0f172a; border-radius: 20px; padding: 20px; text-align: center; margin: 14px 0;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      background: #ffffff; color: #0f172a; border-radius: 16px; padding: 16px; text-align: center; margin: 10px 0;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
     }
-    .qr-box img { width: 210px; height: 210px; display: block; margin: 10px auto; border-radius: 12px; }
+    .qr-box img { width: 190px; height: 190px; display: block; margin: 8px auto; border-radius: 10px; }
     .upi-chip {
-      display: inline-flex; align-items: center; gap: 8px; background: #f1f5f9; border: 1px solid #cbd5e1;
-      padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: #1e293b; margin-top: 6px;
+      display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1px solid #cbd5e1;
+      padding: 5px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; color: #1e293b; margin-top: 6px;
     }
 
     /* Modal Styling */
     .modal-bg {
-      position: fixed; inset: 0; background: rgba(3, 3, 5, 0.9);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; overflow-y: auto;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      display: none; align-items: center; justify-content: center; padding: 12px; z-index: 100; overflow-y: auto;
     }
     .modal-bg.open { display: flex; }
     .modal {
-      width: 100%; max-width: 500px; max-height: 92vh; overflow-y: auto;
-      background: rgba(18, 15, 40, 0.97); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-      border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 28px; padding: 28px; box-shadow: 0 35px 90px rgba(0,0,0,0.9);
+      width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto;
+      background: rgba(18, 15, 38, 0.98); backdrop-filter: blur(25px);
+      border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 22px; padding: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.9);
     }
-    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
     .tab {
-      padding: 9px 16px; border-radius: 12px; font-size: 0.82rem; cursor: pointer; font-weight: 700;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); transition: 0.3s;
+      padding: 7px 12px; border-radius: 10px; font-size: 0.78rem; cursor: pointer; font-weight: 700;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted);
     }
-    .tab.active { background: var(--purple); color: #fff; border-color: var(--violet); box-shadow: 0 6px 20px rgba(147, 51, 234, 0.6); }
+    .tab.active { background: var(--purple); color: #fff; border-color: var(--violet); }
     .toast {
-      position: fixed; bottom: 20px; right: 20px; left: 20px; max-width: 420px; margin: 0 auto;
-      background: rgba(18, 15, 40, 0.99); backdrop-filter: blur(20px); border: 1px solid var(--violet); color: #fff;
-      padding: 15px 20px; border-radius: 16px; z-index: 200; display: none; font-size: 0.9rem; box-shadow: 0 16px 45px rgba(0,0,0,0.8);
+      position: fixed; bottom: 16px; right: 16px; left: 16px; max-width: 400px; margin: 0 auto;
+      background: rgba(18, 15, 38, 0.98); backdrop-filter: blur(16px); border: 1px solid var(--violet); color: #fff;
+      padding: 12px 16px; border-radius: 14px; z-index: 200; display: none; font-size: 0.85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
-    footer { padding: 40px 0; text-align: center; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    footer { padding: 30px 0; text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.06); }
   </style>
 </head>
 <body>
@@ -226,255 +216,233 @@
       <nav class="nav-links">
         <a href="#about">About</a>
         <a href="#creators">Creators</a>
-        <a href="#ads">Ads</a>
         <a href="#store">Store</a>
         <a href="#services">Services</a>
         <a href="#care">Support</a>
-        <a href="#community">Community</a>
       </nav>
       <button class="btn btn-ghost btn-sm" onclick="openPortal()">Portal</button>
     </div>
   </header>
 
-  <main class="fade-in">
+  <main class="fade-in wrap">
     <!-- HERO -->
     <section class="hero" id="home" style="border-top:none;">
-      <div class="wrap">
-        <div class="pill"><span class="dot"></span> Official Hub • Kerala, India</div>
-        <h1>Create. <span class="grad">Connect.</span> Inspire.</h1>
-        <p>Entertainment, creative content &amp; digital storytelling. You're not just a subscriber — you're part of my story.</p>
-        <div class="hero-cta">
-          <a href="https://youtube.com/@akshaycreationshorts" target="_blank" class="btn btn-primary">YouTube Channel</a>
-          <a href="https://www.instagram.com/akshaycreation_offl" target="_blank" class="btn btn-ghost">Instagram</a>
-          <a href="#care" class="btn btn-ghost">Support &amp; Care</a>
-        </div>
+      <div class="pill"><span class="dot"></span> Official Hub • Kerala, India</div>
+      <h1>Create. <span class="grad">Connect.</span> Inspire.</h1>
+      <p>Entertainment, creative content &amp; digital storytelling. You're not just a subscriber — you're part of my story.</p>
+      
+      <div class="hero-cta">
+        <a href="https://youtube.com/@akshaycreationshorts" target="_blank" class="btn btn-primary">YouTube Channel ↗</a>
+        <a href="https://www.instagram.com/akshaycreation_offl" target="_blank" class="btn btn-ghost">Instagram ↗</a>
+        <a href="#care" class="btn btn-ghost">Support &amp; Care 💖</a>
+      </div>
 
-        <div class="stats-grid">
-          <div class="card">
-            <div class="stat-num" id="ytSubs">150K+</div>
-            <div class="stat-lbl"><span id="ytStatus">YouTube Subs</span> <span class="badge badge-ok">LIVE</span></div>
-          </div>
-          <div class="card">
-            <div class="stat-num" id="igFollowers">1K+</div>
-            <div class="stat-lbl"><span>Instagram Followers</span> <span class="badge">ACTIVE</span></div>
-          </div>
-          <div class="card">
-            <div class="stat-num" id="trafficCount">28.4K</div>
-            <div class="stat-lbl"><span>30-Day Traffic</span> <span style="color:var(--cyan);font-weight:700;">↗ HIGH</span></div>
-          </div>
-          <div class="card">
-            <div class="stat-num" id="activeNow">38</div>
-            <div class="stat-lbl"><span>Active Now</span> <span class="dot" style="display:inline-block;"></span></div>
-          </div>
+      <div class="stats-grid">
+        <div class="card">
+          <div class="stat-num" id="ytSubs">150K+</div>
+          <div class="stat-lbl"><span id="ytStatus">YouTube Subs</span> <span class="badge badge-ok">LIVE</span></div>
+        </div>
+        <div class="card">
+          <div class="stat-num" id="igFollowers">1K+</div>
+          <div class="stat-lbl"><span>Instagram</span> <span class="badge">ACTIVE</span></div>
+        </div>
+        <div class="card">
+          <div class="stat-num" id="trafficCount">28.4K</div>
+          <div class="stat-lbl"><span>30-Day Traffic</span> <span style="color:var(--cyan);font-weight:700;">↗ HIGH</span></div>
+        </div>
+        <div class="card">
+          <div class="stat-num" id="activeNow">38</div>
+          <div class="stat-lbl"><span>Active Now</span> <span class="dot" style="display:inline-block;"></span></div>
         </div>
       </div>
     </section>
 
     <!-- ABOUT SECTION -->
     <section id="about">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">About Me</div>
-          <h2>One Vision. One Journey.</h2>
-          <p class="sec-sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world. Fresh ideas, unique vibes, and content worth your time—because you're never disappointed here.</p>
+      <div class="sec-head">
+        <div class="sec-tag">About Me</div>
+        <h2>One Vision. One Journey.</h2>
+        <p class="sec-sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world. Fresh ideas, unique vibes, and content worth your time.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card">
+          <span class="badge">The Family</span>
+          <h3 style="margin:8px 0 4px;font-size:1.1rem;">150K+ Strong Fam</h3>
+          <p style="color:var(--muted);font-size:0.84rem;">You're not just a subscriber—you're part of my story. Your time and trust will never be taken for granted.</p>
         </div>
-        <div class="grid-3">
-          <div class="card">
-            <span class="badge">The Family</span>
-            <h3 style="margin:10px 0 6px;">150K+ Strong Fam</h3>
-            <p style="color:var(--muted);font-size:0.88rem;">You're not just a subscriber—you're part of my story. Your time and trust will never be taken for granted.</p>
-          </div>
-          <div class="card">
-            <span class="badge">The Content</span>
-            <h3 style="margin:10px 0 6px;">Fresh Ideas &amp; Vibes</h3>
-            <p style="color:var(--muted);font-size:0.88rem;">Dedicated to entertainment, creative storytelling, and building a community that grows together stronger.</p>
-          </div>
-          <div class="card">
-            <span class="badge">Collaborations</span>
-            <h3 style="margin:10px 0 6px;">Let's Connect</h3>
-            <p style="color:var(--muted);font-size:0.88rem;">Got a business inquiry or brand idea? Reach out directly at: <strong>collab.akshaycreation@gmail.com</strong></p>
-          </div>
+        <div class="card">
+          <span class="badge">The Content</span>
+          <h3 style="margin:8px 0 4px;font-size:1.1rem;">Fresh Ideas &amp; Vibes</h3>
+          <p style="color:var(--muted);font-size:0.84rem;">Dedicated to entertainment, creative storytelling, and building a community that grows together stronger.</p>
+        </div>
+        <div class="card">
+          <span class="badge">Collaborations</span>
+          <h3 style="margin:8px 0 4px;font-size:1.1rem;">Let's Connect</h3>
+          <p style="color:var(--muted);font-size:0.84rem;">Got a business inquiry or brand idea? Reach out directly at: <strong>collab.akshaycreation@gmail.com</strong></p>
         </div>
       </div>
     </section>
 
     <!-- CREATORS SPOTLIGHT & REGISTRATION -->
     <section id="creators">
-      <div class="wrap">
-        <div class="sec-head" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
-          <div>
-            <div class="sec-tag">Creator Spotlight</div>
-            <h2>Creators of the Week</h2>
-            <p class="sec-sub">Highlighting emerging creators with verified profiles &amp; avatar display.</p>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="openCreatorModal()">✨ Register as Creator</button>
+      <div class="sec-head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;">
+        <div>
+          <div class="sec-tag">Creator Spotlight</div>
+          <h2>Creators of the Week</h2>
         </div>
-        <div class="creator-carousel" id="creatorsList"></div>
+        <button class="btn btn-primary btn-sm" onclick="openCreatorModal()">✨ Register</button>
       </div>
+      <p class="sec-sub" style="margin-bottom:14px;">Highlighting emerging creators with verified profiles.</p>
+      <div class="creator-carousel" id="creatorsList"></div>
     </section>
 
     <!-- ADS & SPONSORED -->
     <section id="ads">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Featured Campaigns</div>
-          <h2>Ads &amp; Brand Collaborations</h2>
-          <p class="sec-sub">Verified brand spots, campaign reels, and sponsored announcements.</p>
-        </div>
-        <div class="ad-landscape-container" id="adsContainer">
-          <div style="padding:40px;text-align:center;color:var(--muted);">No active sponsored campaigns right now. Book a slot in Services.</div>
-        </div>
+      <div class="sec-head">
+        <div class="sec-tag">Featured Campaigns</div>
+        <h2>Ads &amp; Collaborations</h2>
+        <p class="sec-sub">Verified brand spots and sponsored announcements.</p>
+      </div>
+      <div class="ad-landscape-container" id="adsContainer">
+        <div style="padding:30px;text-align:center;color:var(--muted);font-size:0.85rem;">No active campaigns right now. Book a slot in Services.</div>
       </div>
     </section>
 
     <!-- DIGITAL STORE -->
     <section id="store">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Creator Assets • Zero-Fee Direct UPI</div>
-          <h2>Digital Store</h2>
-          <p class="sec-sub">Scan &amp; pay directly via UPI (GPay, PhonePe, Paytm, Navi) and unlock your creator assets.</p>
-        </div>
-        <div class="card" style="margin-bottom:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
-          <div>
-            <strong style="font-size:0.95rem;">Already Paid via UPI?</strong>
-            <p style="color:var(--muted);font-size:0.82rem;">Enter your Order ID or 12-digit UTR number to check verification &amp; download.</p>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;max-width:440px;">
-            <input id="trackOrderInput" placeholder="e.g. AKC_17... or 12-digit UTR" style="margin:0;flex:1;min-width:190px;" />
-            <button class="btn btn-ghost btn-sm" onclick="checkOrderStatus()">Check Status</button>
-          </div>
-          <div id="trackOrderResult" style="width:100%;display:none;margin-top:8px;padding-top:10px;border-top:1px solid var(--border);font-size:0.86rem;"></div>
-        </div>
-        <div id="productsList" class="grid-3"></div>
+      <div class="sec-head">
+        <div class="sec-tag">Creator Assets • Zero-Fee Direct UPI</div>
+        <h2>Digital Store</h2>
+        <p class="sec-sub">Scan &amp; pay directly via UPI and unlock creator assets instantly.</p>
       </div>
+      <div class="card" style="margin-bottom:16px;">
+        <strong style="font-size:0.9rem;">Already Paid via UPI?</strong>
+        <p style="color:var(--muted);font-size:0.78rem;margin-bottom:8px;">Enter your Order ID or 12-digit UTR to check status.</p>
+        <div style="display:flex;gap:6px;">
+          <input id="trackOrderInput" placeholder="Order ID or UTR" style="margin:0;flex:1;" />
+          <button class="btn btn-ghost btn-sm" onclick="checkOrderStatus()">Check</button>
+        </div>
+        <div id="trackOrderResult" style="width:100%;display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:0.82rem;"></div>
+      </div>
+      <div id="productsList" style="display:flex;flex-direction:column;gap:12px;"></div>
     </section>
 
     <!-- SERVICES -->
     <section id="services">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Work With AKSHAY CREATION</div>
-          <h2>Services &amp; Bookings</h2>
-          <p class="sec-sub">Book professional video editing, brand promotions, or custom creative production.</p>
+      <div class="sec-head">
+        <div class="sec-tag">Work With AKSHAY CREATION</div>
+        <h2>Services &amp; Bookings</h2>
+        <p class="sec-sub">Book video editing, brand promotions, or consultations.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card">
+          <h3 style="font-size:1.05rem;margin-bottom:8px;">Available Services</h3>
+          <ul style="margin-left:16px;color:var(--muted);font-size:0.85rem;line-height:1.8;">
+            <li><strong>YouTube / Reels Promotion:</strong> High-engagement integrations.</li>
+            <li><strong>Short-Form Video Editing:</strong> Retention-focused shorts.</li>
+            <li><strong>Brand Ad Production:</strong> Showcase videos.</li>
+            <li><strong>Creator Consultation:</strong> Growth roadmap.</li>
+          </ul>
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Available Services</h3>
-            <ul style="margin:12px 0 0 18px;color:var(--muted);font-size:0.9rem;line-height:1.9;">
-              <li><strong>Sponsored YouTube / Reels Promotion:</strong> High-engagement integrations.</li>
-              <li><strong>Short-Form Video Editing:</strong> Retention-focused Reels &amp; Shorts.</li>
-              <li><strong>Brand Ad Production:</strong> Script-to-screen product showcase videos.</li>
-              <li><strong>Creator Consultation:</strong> Channel audit &amp; growth roadmap.</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Book a Service</h3>
-            <form onsubmit="submitBooking(event)">
-              <label>Service Type *</label>
-              <select id="sType">
-                <option>Sponsored Promotion</option>
-                <option>Short-Form Video Editing</option>
-                <option>Brand Ad Production</option>
-                <option>Creator Consultation</option>
-              </select>
-              <label>Your Name / Brand *</label>
-              <input id="sName" required placeholder="Your name or company" />
-              <label>Email *</label>
-              <input id="sEmail" type="email" required placeholder="you@example.com" />
-              <label>Phone / WhatsApp</label>
-              <input id="sContact" placeholder="+91 ..." />
-              <label>Project Brief *</label>
-              <textarea id="sDetails" rows="3" required placeholder="Describe timeline, deliverables, and goals"></textarea>
-              <button class="btn btn-primary" style="width:100%;">Send Booking Request</button>
-            </form>
-          </div>
+        <div class="card">
+          <h3 style="font-size:1.05rem;margin-bottom:8px;">Book a Service</h3>
+          <form onsubmit="submitBooking(event)">
+            <label>Service Type *</label>
+            <select id="sType">
+              <option>Sponsored Promotion</option>
+              <option>Short-Form Video Editing</option>
+              <option>Brand Ad Production</option>
+              <option>Creator Consultation</option>
+            </select>
+            <label>Your Name / Brand *</label>
+            <input id="sName" required placeholder="Name or company" />
+            <label>Email *</label>
+            <input id="sEmail" type="email" required placeholder="you@example.com" />
+            <label>Phone / WhatsApp</label>
+            <input id="sContact" placeholder="+91 ..." />
+            <label>Project Brief *</label>
+            <textarea id="sDetails" rows="3" required placeholder="Describe timeline & goals"></textarea>
+            <button class="btn btn-primary" style="width:100%;margin-top:4px;">Send Booking Request</button>
+          </form>
         </div>
       </div>
     </section>
 
     <!-- SUPPORT AKSHAY CREATION -->
     <section id="care">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Support &amp; Contribution</div>
-          <h2>Support AKSHAY CREATION</h2>
-          <p class="sec-sub">Support the journey and fuel future content creation.</p>
+      <div class="sec-head">
+        <div class="sec-tag">Support &amp; Contribution</div>
+        <h2>Support AKSHAY CREATION</h2>
+        <p class="sec-sub">Support the journey and fuel future content creation.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="border-color:rgba(168, 85, 247, 0.5);text-align:center;padding:24px 16px;">
+          <span class="badge badge-ok">100% Direct UPI • Zero Fees</span>
+          <h3 style="margin:10px 0 4px;font-size:1.15rem;">Fuel the Journey</h3>
+          <p style="color:var(--muted);font-size:0.84rem;margin-bottom:16px;">Click below to instantly open the secure UPI payment QR code &amp; support via GPay, PhonePe, Paytm, or Navi.</p>
+          <button class="btn btn-primary" style="width:100%;font-size:0.95rem;padding:12px;" onclick="openQrPopup()">💖 Open UPI QR &amp; Support</button>
         </div>
-        <div class="grid-2">
-          <div>
-            <div class="card" style="margin-bottom:18px;border-color:rgba(168, 85, 247, 0.6);text-align:center;padding:34px 22px;">
-              <span class="badge badge-ok">100% Direct UPI • Zero Fees</span>
-              <h3 style="margin:12px 0 6px;">Fuel the Journey</h3>
-              <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Click below to instantly open the secure UPI payment QR code &amp; support via GPay, PhonePe, Paytm, or Navi.</p>
-              <button class="btn btn-primary" style="width:100%;font-size:1.02rem;padding:14px;" onclick="openQrPopup()">💖 Open UPI QR &amp; Support</button>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Request Support / Partner With Us</h3>
-            <p style="color:var(--muted);font-size:0.84rem;margin-bottom:10px;">Submissions remain 100% private and verified directly.</p>
-            <form onsubmit="submitCare(event)">
-              <label>Full Name *</label>
-              <input id="careName" required placeholder="Your name" />
-              <label>Private Contact (Phone / Email) *</label>
-              <input id="careContact" required placeholder="Never shown publicly" />
-              <label>Subject / Title *</label>
-              <input id="careTitle" required placeholder="Brief summary" />
-              <label>Message / Details *</label>
-              <textarea id="careDetails" rows="4" required placeholder="Write your message here"></textarea>
-              <button class="btn btn-primary" style="width:100%;">Send Message Privately</button>
-            </form>
-          </div>
+        <div class="card">
+          <h3 style="font-size:1.05rem;margin-bottom:4px;">Request Support / Partner</h3>
+          <p style="color:var(--muted);font-size:0.78rem;margin-bottom:8px;">Submissions remain 100% private.</p>
+          <form onsubmit="submitCare(event)">
+            <label>Full Name *</label>
+            <input id="careName" required placeholder="Your name" />
+            <label>Private Contact *</label>
+            <input id="careContact" required placeholder="Phone / Email" />
+            <label>Subject *</label>
+            <input id="careTitle" required placeholder="Brief summary" />
+            <label>Message *</label>
+            <textarea id="careDetails" rows="3" required placeholder="Write message..."></textarea>
+            <button class="btn btn-primary" style="width:100%;">Send Privately</button>
+          </form>
         </div>
       </div>
     </section>
 
     <!-- COMMUNITY POLLS -->
     <section id="community">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Real Audience Voice</div>
-          <h2>Community Polls</h2>
-          <p class="sec-sub">One verified vote per visitor—no fake bots or inflated numbers.</p>
-        </div>
-        <div id="pollsList" class="grid-2"></div>
+      <div class="sec-head">
+        <div class="sec-tag">Real Audience Voice</div>
+        <h2>Community Polls</h2>
+        <p class="sec-sub">One verified vote per visitor.</p>
       </div>
+      <div id="pollsList" style="display:flex;flex-direction:column;gap:12px;"></div>
     </section>
   </main>
 
   <footer>
     <div class="wrap">
       <p><strong>AKSHAY CREATION</strong> • Create. Connect. Inspire.</p>
-      <p style="margin-top:6px;">Business: collab.akshaycreation@gmail.com • Built on Cloudflare Edge</p>
+      <p style="margin-top:4px;">Business: collab.akshaycreation@gmail.com</p>
     </div>
   </footer>
 
   <!-- CREATOR REGISTRATION MODAL -->
   <div class="modal-bg" id="creatorModal">
     <div class="modal">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <h3>Register for Creator Spotlight</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="font-size:1.1rem;">Register for Spotlight</h3>
         <button class="btn btn-ghost btn-sm" onclick="closeCreatorModal()">Close</button>
       </div>
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px;">Submit your profile to be featured as Creator of the Week after Akshay's review.</p>
       <form onsubmit="submitCreatorApp(event)">
         <label>Your Name *</label>
-        <input id="cAppName" required placeholder="e.g. Creator Name" />
+        <input id="cAppName" required placeholder="Creator Name" />
         <label>Platform &amp; Handle *</label>
-        <div style="display:flex;gap:8px;">
-          <select id="cAppPlatform" style="width:130px;margin-top:6px;">
+        <div style="display:flex;gap:6px;">
+          <select id="cAppPlatform" style="width:110px;margin-top:4px;">
             <option>YouTube</option>
             <option>Instagram</option>
             <option>Twitter</option>
           </select>
           <input id="cAppHandle" required placeholder="@handle" style="margin:0;flex:1;" />
         </div>
-        <label style="margin-top:12px;display:block;">Profile / Channel URL *</label>
+        <label style="margin-top:10px;display:block;">Profile URL *</label>
         <input id="cAppProfileUrl" required placeholder="https://..." />
-        <label>Avatar / Image URL (Optional)</label>
+        <label>Avatar URL (Optional)</label>
         <input id="cAppAvatarUrl" placeholder="https://... image link" />
-        <label>Short Bio / Vibe *</label>
-        <textarea id="cAppBio" rows="3" required placeholder="Tell us what you create..."></textarea>
+        <label>Short Bio *</label>
+        <textarea id="cAppBio" rows="3" required placeholder="What do you create?"></textarea>
         <button class="btn btn-primary" style="width:100%;margin-top:6px;">Submit for Review</button>
       </form>
     </div>
@@ -483,29 +451,29 @@
   <!-- REVEAL QR CODE DONATION MODAL -->
   <div class="modal-bg" id="qrPopupModal">
     <div class="modal">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3>Support AKSHAY CREATION</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h3 style="font-size:1.1rem;">Support AKSHAY CREATION</h3>
         <button class="btn btn-ghost btn-sm" onclick="closeQrPopup()">Close</button>
       </div>
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">Select an amount or scan directly with any UPI app.</p>
+      <p style="color:var(--muted);font-size:0.8rem;margin-bottom:10px;">Select an amount or scan directly.</p>
       
-      <div class="amt-pills" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;">
+      <div class="amt-pills" style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;">
         <button type="button" class="tab" onclick="setPopupDonateAmt(50)">₹50</button>
         <button type="button" class="tab" onclick="setPopupDonateAmt(100)">₹100</button>
         <button type="button" class="tab" onclick="setPopupDonateAmt(500)">₹500</button>
         <button type="button" class="tab" onclick="setPopupDonateAmt(1000)">₹1,000</button>
-        <button type="button" class="tab active" onclick="setPopupDonateAmt('')">Any Amount</button>
+        <button type="button" class="tab active" onclick="setPopupDonateAmt('')">Any</button>
       </div>
 
       <div class="qr-box" style="margin:0;">
-        <div style="font-size:0.75rem;font-weight:700;color:#475569;" id="popupQrLabel">SCAN WITH ANY UPI APP</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#475569;" id="popupQrLabel">SCAN WITH ANY UPI APP</div>
         <img id="popupQrImg" src="" alt="Support UPI QR" />
-        <div style="font-weight:800;font-size:0.92rem;color:#0f172a;">Akshay K P</div>
+        <div style="font-weight:800;font-size:0.9rem;color:#0f172a;">Akshay K P</div>
         <div class="upi-chip">
           <span>akshaycreation7@naviaxis</span>
-          <button type="button" onclick="copyUpiId()" style="background:#9333ea;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">Copy</button>
+          <button type="button" onclick="copyUpiId()" style="background:#9333ea;color:#fff;border:none;border-radius:6px;padding:3px 6px;font-size:0.7rem;cursor:pointer;">Copy</button>
         </div>
-        <div style="margin-top:14px;">
+        <div style="margin-top:12px;">
           <a id="popupDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Open UPI App &amp; Pay ↗</a>
         </div>
       </div>
@@ -514,48 +482,48 @@
 
   <!-- CHECKOUT MODAL -->
   <div class="modal-bg" id="checkoutModal">
-    <div class="modal" style="max-width:450px;">
+    <div class="modal">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <h3 id="chkTitle">UPI Checkout</h3>
+        <h3 id="chkTitle" style="font-size:1.1rem;">UPI Checkout</h3>
         <button class="btn btn-ghost btn-sm" onclick="closeCheckout()">Close</button>
       </div>
-      <p id="chkPrice" style="color:var(--cyan);font-weight:800;font-size:1.15rem;margin:6px 0 4px;"></p>
+      <p id="chkPrice" style="color:var(--cyan);font-weight:800;font-size:1.05rem;margin:6px 0;"></p>
       
       <div id="upiPayStep">
         <div class="qr-box">
-          <div style="font-size:0.75rem;font-weight:700;color:#475569;">SCAN WITH ANY UPI APP</div>
+          <div style="font-size:0.7rem;font-weight:700;color:#475569;">SCAN WITH ANY UPI APP</div>
           <img id="chkQrImg" src="" alt="Dynamic UPI QR Code" />
-          <div style="font-weight:800;font-size:0.92rem;color:#0f172a;">Akshay K P</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0f172a;">Akshay K P</div>
           <div class="upi-chip">
             <span id="chkUpiIdText">akshaycreation7@naviaxis</span>
-            <button type="button" onclick="copyUpiId()" style="background:#9333ea;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">Copy</button>
+            <button type="button" onclick="copyUpiId()" style="background:#9333ea;color:#fff;border:none;border-radius:6px;padding:3px 6px;font-size:0.7rem;cursor:pointer;">Copy</button>
           </div>
-          <div style="margin-top:10px;">
+          <div style="margin-top:8px;">
             <a id="chkUpiDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%;">Open UPI App &amp; Pay ↗</a>
           </div>
         </div>
         <form onsubmit="submitUpiPayment(event)">
           <input type="hidden" id="chkProductId" />
           <label>Your Full Name *</label>
-          <input id="chkName" required placeholder="Enter your name" />
-          <label>Email (for download receipt) *</label>
+          <input id="chkName" required placeholder="Name" />
+          <label>Email *</label>
           <input id="chkEmail" type="email" required placeholder="you@example.com" />
-          <label>12-Digit UPI UTR / Reference No. *</label>
+          <label>12-Digit UTR / Ref No. *</label>
           <input id="chkUtr" required maxlength="12" pattern="\d{12}" inputmode="numeric" placeholder="e.g. 632189450123" />
-          <button class="btn btn-primary" id="chkSubmitBtn" style="width:100%;">Confirm Payment &amp; Submit UTR</button>
+          <button class="btn btn-primary" id="chkSubmitBtn" style="width:100%;">Confirm Payment &amp; Submit</button>
         </form>
       </div>
 
       <!-- SUCCESS STEP -->
-      <div id="upiDoneStep" style="display:none;text-align:center;padding:16px 0;">
-        <div style="font-size:3rem;margin-bottom:8px;">🙏✨</div>
-        <span class="badge badge-ok" style="font-size:0.8rem;padding:6px 14px;">THANK YOU SO MUCH!</span>
-        <h3 style="margin:12px 0 6px;color:#f0abfc;">"Nanni... Romba Nanni!"</h3>
-        <p style="color:var(--muted);font-size:0.86rem;margin-bottom:14px;">Your support fuels this journey. Payment details submitted successfully!</p>
+      <div id="upiDoneStep" style="display:none;text-align:center;padding:12px 0;">
+        <div style="font-size:2.5rem;margin-bottom:6px;">🙏✨</div>
+        <span class="badge badge-ok" style="font-size:0.75rem;padding:5px 12px;">THANK YOU SO MUCH!</span>
+        <h3 style="margin:10px 0 4px;color:#f0abfc;font-size:1.2rem;">"Nanni... Romba Nanni!"</h3>
+        <p style="color:var(--muted);font-size:0.82rem;margin-bottom:12px;">Your support fuels this journey. Details submitted successfully!</p>
         
-        <div class="card" style="margin-bottom:16px;background:#131026;text-align:left;">
-          <div style="font-size:0.72rem;color:var(--muted);">YOUR ORDER ID (SAVE THIS)</div>
-          <div id="doneOrderId" style="font-size:1.05rem;font-weight:800;color:var(--cyan);margin-top:4px;word-break:break-all;"></div>
+        <div class="card" style="margin-bottom:14px;background:#131026;text-align:left;padding:12px;">
+          <div style="font-size:0.7rem;color:var(--muted);">YOUR ORDER ID (SAVE THIS)</div>
+          <div id="doneOrderId" style="font-size:0.95rem;font-weight:800;color:var(--cyan);margin-top:2px;word-break:break-all;"></div>
         </div>
         <button class="btn btn-primary btn-sm" onclick="copyOrderId()">Copy Order ID</button>
       </div>
@@ -565,8 +533,8 @@
   <!-- PORTAL MODAL -->
   <div class="modal-bg" id="portalModal">
     <div class="modal">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <h3>AKSHAY CREATION Control Portal</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3>Control Portal</h3>
         <button class="btn btn-ghost btn-sm" onclick="closePortal()">Close</button>
       </div>
       <div id="authBox">
@@ -579,7 +547,7 @@
         </form>
       </div>
       <div id="dashBox" style="display:none;">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <span class="badge badge-ok" id="dashRoleBadge">ROLE</span>
           <button class="btn btn-ghost btn-sm" onclick="doLogout()">Logout</button>
         </div>
@@ -624,7 +592,7 @@
       const t = document.getElementById("toast");
       t.textContent = msg;
       t.style.display = "block";
-      setTimeout(() => { t.style.display = "none"; }, 3800);
+      setTimeout(() => { t.style.display = "none"; }, 3500);
     }
 
     async function api(path, opts = {}) {
@@ -674,7 +642,7 @@
     function refreshPopupQr() {
       const hasAmt = popupAmt > 0;
       const upiUri = `upi://pay?pa=${encodeURIComponent(state.upi_id)}&pn=${encodeURIComponent(state.upi_name)}${hasAmt ? '&am='+encodeURIComponent(popupAmt) : ''}&cu=INR&tn=${encodeURIComponent("Support AKSHAY CREATION")}`;
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data=${encodeURIComponent(upiUri)}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(upiUri)}`;
 
       document.getElementById("popupQrImg").src = qrUrl;
       document.getElementById("popupQrLabel").textContent = hasAmt ? `SCAN TO SUPPORT ₹${popupAmt}` : "SCAN WITH ANY UPI APP";
@@ -717,7 +685,7 @@
           if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
             container.scrollTo({ left: 0, behavior: 'smooth' });
           } else {
-            container.scrollBy({ left: 300, behavior: 'smooth' });
+            container.scrollBy({ left: 250, behavior: 'smooth' });
           }
         }
       }, 3500);
@@ -734,24 +702,24 @@
               <div class="creator-slide">
                 <div class="card" style="height:100%;">
                   ${c.avatar_url ? `<img src="${c.avatar_url}" alt="${c.name}" class="creator-avatar" onerror="this.style.display='none'" />` : ""}
-                  <span class="badge" style="display:block;margin-bottom:6px;width:fit-content;">${c.platform.toUpperCase()} • ${c.week_label || "Featured"}</span>
-                  <h3 style="margin:6px 0 2px;">${c.name}</h3>
-                  <p style="color:var(--cyan);font-size:0.84rem;">${c.handle}</p>
-                  <p style="color:var(--muted);font-size:0.85rem;margin:6px 0 10px;min-height:36px;">${c.bio || ""}</p>
-                  <a href="${c.profile_url}" target="_blank" class="btn btn-ghost btn-sm">Visit Profile ↗</a>
+                  <span class="badge" style="display:block;margin-bottom:4px;width:fit-content;">${c.platform.toUpperCase()}</span>
+                  <h3 style="margin:4px 0 2px;font-size:0.95rem;">${c.name}</h3>
+                  <p style="color:var(--cyan);font-size:0.78rem;">${c.handle}</p>
+                  <p style="color:var(--muted);font-size:0.78rem;margin:4px 0 8px;min-height:30px;">${c.bio || ""}</p>
+                  <a href="${c.profile_url}" target="_blank" class="btn btn-ghost btn-sm" style="width:100%;">Visit Profile ↗</a>
                 </div>
               </div>
             `).join("")
-          : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet. Click 'Register as Creator' above to submit yours!</p></div>`;
+          : `<div class="card" style="width:100%;text-align:center;"><p style="color:var(--muted);font-size:0.84rem;">No featured creators yet. Tap 'Register' above!</p></div>`;
 
         const adsContainer = document.getElementById("adsContainer");
         if (data.ads.length > 0) {
           adsContainer.innerHTML = data.ads.map((a, idx) => `
             <div class="ad-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${a.media_url || ''}');">
               <div class="ad-content">
-                <span class="badge" style="margin-bottom:8px;">${a.badge || "Sponsored"}</span>
-                <h3 style="font-size:1.4rem;font-weight:900;margin-bottom:8px;">${a.title}</h3>
-                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm" style="display:inline-flex;">Explore Campaign ↗</a>
+                <span class="badge" style="margin-bottom:6px;">${a.badge || "Sponsored"}</span>
+                <h3 style="font-size:1.15rem;font-weight:900;margin-bottom:6px;">${a.title}</h3>
+                <a href="${a.target_url}" target="_blank" class="btn btn-primary btn-sm" style="display:inline-flex;">Explore ↗</a>
               </div>
             </div>
           `).join("");
@@ -760,30 +728,30 @@
 
         const pEl = document.getElementById("productsList");
         pEl.innerHTML = data.products.map(p => `
-          <div class="card">
+          <div class="card" style="display:flex;flex-direction:column;gap:6px;">
             ${p.image_url ? `<img src="${p.image_url}" alt="${p.title}" class="card-cover" onerror="this.style.display='none'" />` : ""}
-            <span class="badge">${p.category}</span>
-            <h3 style="margin:10px 0 6px;">${p.title}</h3>
-            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">${p.description || ""}</p>
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <strong style="font-size:1.1rem;color:var(--cyan);">₹${p.price_inr}</strong>
+            <span class="badge" style="width:fit-content;">${p.category}</span>
+            <h3 style="margin:2px 0;font-size:1rem;">${p.title}</h3>
+            <p style="color:var(--muted);font-size:0.78rem;">${p.description || ""}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+              <strong style="font-size:1.05rem;color:var(--cyan);">₹${p.price_inr}</strong>
               <button class="btn btn-primary btn-sm" onclick="openCheckout(${p.id}, '${p.title.replace(/'/g, "\\'")}', ${p.price_inr})">Buy via UPI</button>
             </div>
           </div>
-        `).join("") || `<div class="card"><p style="color:var(--muted);">Digital packs launching soon.</p></div>`;
+        `).join("") || `<div class="card" style="text-align:center;"><p style="color:var(--muted);">Digital packs launching soon.</p></div>`;
 
         const pollEl = document.getElementById("pollsList");
         pollEl.innerHTML = data.polls.map(pl => `
           <div class="card">
-            <h3>${pl.question}</h3>
-            <p style="color:var(--muted);font-size:0.78rem;margin-bottom:8px;">${pl.total_votes} verified vote(s)</p>
+            <h3 style="font-size:1rem;margin-bottom:4px;">${pl.question}</h3>
+            <p style="color:var(--muted);font-size:0.72rem;margin-bottom:6px;">${pl.total_votes} verified vote(s)</p>
             ${pl.options.map((opt, idx) => {
               const pct = pl.total_votes ? Math.round((pl.counts[idx] / pl.total_votes) * 100) : 0;
               const voted = pl.user_voted === idx ? "voted" : "";
               return `<button class="poll-opt ${voted}" onclick="votePoll(${pl.id}, ${idx})"><span>${opt}</span><span>${pl.counts[idx]} (${pct}%)</span></button>`;
             }).join("")}
           </div>
-        `).join("") || `<div class="card"><p style="color:var(--muted);">No active polls.</p></div>`;
+        `).join("") || `<div class="card" style="text-align:center;"><p style="color:var(--muted);">No active polls.</p></div>`;
       } catch (e) { console.error(e); }
     }
 
@@ -821,7 +789,7 @@
 
     function openCheckout(id, title, price) {
       const upiUri = `upi://pay?pa=${encodeURIComponent(state.upi_id)}&pn=${encodeURIComponent(state.upi_name)}&am=${encodeURIComponent(price)}&cu=INR&tn=${encodeURIComponent(title)}`;
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data=${encodeURIComponent(upiUri)}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=4&data=${encodeURIComponent(upiUri)}`;
       document.getElementById("chkProductId").value = id;
       document.getElementById("chkTitle").textContent = title;
       document.getElementById("chkPrice").textContent = `Pay Exact Amount: ₹${price}`;
@@ -859,7 +827,7 @@
       try {
         const res = await api(`/api/checkout/verify?order_id=${encodeURIComponent(q)}`);
         box.style.display = "block";
-        box.innerHTML = res.status === "PAID" ? `<span class="badge badge-ok">PAID</span> <a href="${res.download_url}" target="_blank" class="btn btn-primary btn-sm" style="margin-left:8px;">Download Asset ↗</a>` : `<span class="badge badge-warn">PENDING</span>`;
+        box.innerHTML = res.status === "PAID" ? `<span class="badge badge-ok">PAID</span> <a href="${res.download_url}" target="_blank" class="btn btn-primary btn-sm" style="margin-left:6px;">Download ↗</a>` : `<span class="badge badge-warn">PENDING</span>`;
       } catch (err) { box.style.display = "block"; box.innerHTML = `<span style="color:#fca5a5;">${err.message}</span>`; }
     }
 
@@ -918,9 +886,9 @@
               <button class="btn btn-ghost btn-sm" onclick="adminAction('/api/admin/creators', {action:'delete', id:${c.id}})">Delete</button>
             </div>
           </div>
-        `).join("") || "<p>No creators yet.</p>";
+        `).join("") || "<p style='font-size:0.84rem;'>No creators yet.</p>";
       } else {
-        box.innerHTML = `<p style="color:var(--muted);">Select a tab to manage items.</p>`;
+        box.innerHTML = `<p style="color:var(--muted);font-size:0.84rem;">Select a tab to manage items.</p>`;
       }
     }
 
