@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 <style>
 :root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--modal:#072a21;--footer:#021611;--on-gold:#1b1505;--input:rgba(0,0,0,.25);--bg-rgb:4,34,27;--deep-rgb:2,15,12;--gold-rgb:217,180,90;--ok-rgb:126,224,181;--line:rgba(var(--gold-rgb),.28);--cyan:var(--gold2);--emerald:var(--ok);--red:#ff9a8a;--violet:var(--gold2);--band:var(--bg)}
 html[data-theme=violet]{--bg:#140d2b;--bg2:#1a1237;--card:#221848;--card2:#342467;--gold:#ff7eb6;--gold2:#ffb6d6;--paper:#f7f0ff;--muted:#b9acd6;--ok:#8ef0c8;--modal:#1b1239;--footer:#0d0820;--on-gold:#2a0a1b;--bg-rgb:20,13,43;--deep-rgb:9,5,22;--gold-rgb:255,126,182;--ok-rgb:142,240,200}
@@ -763,7 +762,7 @@ async function addStaff(e){
   try{
     await post("/api/admin/staff",{action:"create",data:{username:v("stUser"),password:v("stPass"),role:v("stRole")}});
     e.target.reset();
-    toast("Staff account created successful!");
+    toast("Staff account created successfully!");
     loadDashboard();
   }catch(x){toast(x.message)}
 }
