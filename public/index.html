@@ -95,14 +95,6 @@ h1 span{display:block;animation:rise .9s cubic-bezier(.2,.7,.2,1) backwards}
 .ad-content{position:relative;z-index:3;color:#fff}
 .ad-empty{padding:40px 20px;text-align:center;color:var(--muted)}
 
-/* Charity Banner Section */
-.charity-banner{background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--gold);border-radius:14px;padding:24px;margin-bottom:36px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-.charity-grid{display:grid;grid-template-columns:1fr;gap:20px;align-items:center}
-@media(min-width:768px){.charity-grid{grid-template-columns:1fr 1.2fr}}
-.charity-img{width:100%;max-height:300px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
-.progress-bar-wrap{background:var(--input);border-radius:999px;height:14px;width:100%;overflow:hidden;margin:12px 0;border:1px solid var(--line)}
-.progress-bar-fill{background:linear-gradient(90deg,var(--gold),var(--ok));height:100%;transition:width .6s ease}
-
 /* Forms + polls */
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--input);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}
@@ -237,8 +229,6 @@ section.marquee::before{display:none}
 </header>
 
 <main class="wrap">
-  <div id="charitySectionContainer"></div>
-
   <section class="hero" id="home">
     <div class="pill"><span class="dot"></span> Official Hub • Kerala, India</div>
     <h1><span class="w1">Create.</span><span class="w2">Connect.</span><span class="w3">Inspire.</span></h1>
@@ -392,7 +382,7 @@ section.marquee::before{display:none}
     <div id="pollsList" class="grid-2"></div>
   </section>
   <section id="faq">
-    <div class="sec-head"><div class="sec-tag" id="faqSection">Good to know</div><h2>Questions, answered</h2></div>
+    <div class="sec-head"><div class="sec-tag">Good to know</div><h2>Questions, answered</h2></div>
     <div class="faq">
       <details><summary>How do I buy a digital pack?</summary><p>Open the Digital Store, tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID straight away.</p></details>
       <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check Status in the store. Once your payment is marked Paid, the download button appears.</p></details>
@@ -450,23 +440,6 @@ section.marquee::before{display:none}
       <div style="font-weight:800">Akshay K P</div>
       <div class="upi-chip"><span>akshaycreation7@naviaxis</span><button type="button" class="copy" onclick="copyUpiId()">Copy</button></div>
       <div style="margin-top:12px"><a id="popupDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%">Open UPI app &amp; pay ↗</a></div>
-    </div>
-  </div>
-</div>
-
-<!-- Charity UPI / QR Modal -->
-<div class="modal-bg" id="charityModal">
-  <div class="modal">
-    <div class="row" style="margin-bottom:10px"><h3 id="charityModalTitle">Support Campaign</h3><button class="btn btn-sm" onclick="modal('charityModal',0)">Close</button></div>
-    <div class="qr-box">
-      <div class="qr-lbl">Scan with any UPI App</div>
-      <img id="charityQrImg" src="" alt="Charity UPI QR" />
-      <div style="font-weight:800" id="charityUpiName">Name</div>
-      <div class="upi-chip"><span id="charityUpiIdText">upi@id</span><button type="button" class="copy" onclick="copyCharityUpi()">Copy</button></div>
-      <div style="margin-top:12px"><a id="charityDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%">Open UPI app &amp; pay ↗</a></div>
-    </div>
-    <div id="charityExternalLinkWrap" style="margin-top:10px;text-align:center">
-      <a id="charityExternalLink" href="#" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Open Official Fundraising Page ↗</a>
     </div>
   </div>
 </div>
@@ -576,32 +549,17 @@ section.marquee::before{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
-let state={creators:[],ads:[],products:[],care_cases:[],polls:[],charity:null,upi_id:"akshaycreation7@naviaxis",upi_name:"Akshay K P"};
+let state={creators:[],ads:[],products:[],care_cases:[],polls:[],upi_id:"akshaycreation7@naviaxis",upi_name:"Akshay K P"};
 let token=localStorage.getItem("akc_token")||"",dash=null,dashTab="creators",adTimer=null,amt="",tt;
 const $=id=>document.getElementById(id);
-const v=id=> {
-  const el = document.getElementById(id);
-  return el ? el.value : "";
-};
+const v=id=>{const el=document.getElementById(id);return el?el.value:""};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const link=u=>/^https?:\/\//i.test(u||"")?esc(String(u).replace(/['"<>\s]/g,c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0"))):"#";
 const modal=(id,on)=>$(id).classList.toggle("open",!!on);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal-bg.open").forEach(m=>m.classList.remove("open"))});
 
-function showSuccessModal(msg){
-  const msgEl = $("successMsg");
-  if(msgEl) msgEl.textContent = msg || "Your submission was successful!";
-  const overlay = $("successOverlay");
-  if(overlay) overlay.classList.add("show");
-  setTimeout(() => {
-    const faq = $("faqSection");
-    if(faq) faq.scrollIntoView({ behavior: 'smooth' });
-  }, 300);
-}
-function closeSuccessModal(){
-  const overlay = $("successOverlay");
-  if(overlay) overlay.classList.remove("show");
-}
+function showSuccessModal(msg){const m=$("successMsg");if(m)m.textContent=msg||"Your submission was successful!";const o=$("successOverlay");if(o)o.classList.add("show")}
+function closeSuccessModal(){const o=$("successOverlay");if(o)o.classList.remove("show")}
 
 function playSuccessSound(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),t=a.currentTime;[523.25,659.25,783.99,1046.5].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),s=t+i*.08;o.type="triangle";o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.2,s+.02);g.gain.exponentialRampToValueAtTime(.001,s+.6);o.connect(g);g.connect(a.destination);o.start(s);o.stop(s+.6)})}catch(e){}}
 function toast(m){const t=$("toast");if(!t)return;t.textContent=m;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",3800)}
@@ -611,101 +569,21 @@ const post=(p,b)=>api(p,{method:"POST",body:JSON.stringify(b)});
 const upi=(a,note,id,name)=>`upi://pay?pa=${encodeURIComponent(id||state.upi_id)}&pn=${encodeURIComponent(name||state.upi_name)}${a?"&am="+encodeURIComponent(a):""}&cu=INR&tn=${encodeURIComponent(note)}`;
 const qr=u=>"https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data="+encodeURIComponent(u);
 
-function openCharityModal(){
-  const c=state.charity;
-  if(!c)return;
-  const uId=c.upi_id||"limsontt1@fbl",uName=c.upi_name||c.title;
-  const upiUrl=`upi://pay?pa=${encodeURIComponent(uId)}&pn=${encodeURIComponent(uName)}&cu=INR&tn=${encodeURIComponent(c.title)}`;
-  if($("charityModalTitle")) $("charityModalTitle").textContent=c.title;
-  if($("charityQrImg")) $("charityQrImg").src=qr(upiUrl);
-  if($("charityUpiName")) $("charityUpiName").textContent=uName;
-  if($("charityUpiIdText")) $("charityUpiIdText").textContent=uId;
-  if($("charityDeepLink")) $("charityDeepLink").href=upiUrl;
-  const ext=$("charityExternalLink");
-  if(ext){if(c.donate_link){ext.href=c.donate_link;ext.style.display="inline-flex"}else{ext.style.display="none"}}
-  modal("charityModal",1);
-}
-function copyCharityUpi(){navigator.clipboard?.writeText(state.charity?.upi_id||"limsontt1@fbl");toast("Copied Campaign UPI ID")}
-
 function openQrPopup(){amt="";refreshPopupQr();modal("qrPopupModal",1)}
 function setPopupDonateAmt(a){amt=a;refreshPopupQr()}
-function refreshPopupQr(){
-  const u=upi(amt>0?amt:"","Support AKSHAY CREATION");
-  const d=$("popupDeepLink");
-  if($("popupQrImg")) $("popupQrImg").src=qr(u);
-  if($("popupQrLabel")) $("popupQrLabel").textContent=amt>0?`Scan to support ₹${amt}`:"Scan with any UPI app";
-  if(d){d.href=u;d.textContent=amt>0?`Donate ₹${amt} via UPI app ↗`:"Open UPI app & pay ↗";}
-  document.querySelectorAll("#qrPopupModal .tab").forEach(b=>b.classList.toggle("active",b.dataset.a===String(amt)));
-}
+function refreshPopupQr(){const u=upi(amt>0?amt:"","Support AKSHAY CREATION"),d=$("popupDeepLink");if($("popupQrImg"))$("popupQrImg").src=qr(u);if($("popupQrLabel"))$("popupQrLabel").textContent=amt>0?`Scan to support ₹${amt}`:"Scan with any UPI app";if(d){d.href=u;d.textContent=amt>0?`Donate ₹${amt} via UPI app ↗`:"Open UPI app & pay ↗"}document.querySelectorAll("#qrPopupModal .tab").forEach(b=>b.classList.toggle("active",b.dataset.a===String(amt)))}
 function copyUpiId(){navigator.clipboard?.writeText(state.upi_id);toast("Copied UPI ID")}
-function copyOrderId(){const oId=$("doneOrderId");if(oId) navigator.clipboard?.writeText(oId.textContent);toast("Copied Order ID")}
+function copyOrderId(){const o=$("doneOrderId");if(o)navigator.clipboard?.writeText(o.textContent);toast("Copied Order ID")}
 
-async function submitCreatorApp(e){
-  e.preventDefault();
-  try{
-    const r=await post("/api/creators/apply",{name:v("cAppName"),platform:v("cAppPlatform"),handle:v("cAppHandle"),profile_url:v("cAppProfileUrl"),avatar_url:v("cAppAvatarUrl"),bio:v("cAppBio")});
-    if(r){modal("creatorModal",0);e.target.reset();showSuccessModal("Creator application submitted successfully for review!");}
-  }catch(x){toast(x.message)}
-}
+async function submitCreatorApp(e){e.preventDefault();try{const r=await post("/api/creators/apply",{name:v("cAppName"),platform:v("cAppPlatform"),handle:v("cAppHandle"),profile_url:v("cAppProfileUrl"),avatar_url:v("cAppAvatarUrl"),bio:v("cAppBio")});if(r){modal("creatorModal",0);e.target.reset();showSuccessModal("Creator application submitted successfully for review!")}}catch(x){toast(x.message)}}
+async function submitBooking(e){e.preventDefault();try{const r=await post("/api/services/book",{service_type:v("sType"),client_name:v("sName"),client_email:v("sEmail"),client_contact:v("sContact"),details:v("sDetails")});if(r){e.target.reset();showSuccessModal("Booking request received successfully!")}}catch(x){toast(x.message)}}
+async function submitCare(e){e.preventDefault();try{const r=await post("/api/care/submit",{applicant_name:v("careName"),contact_info:v("careContact"),case_title:v("careTitle"),private_details:v("careDetails"),consent_granted:true});if(r){e.target.reset();showSuccessModal("Support message sent privately & securely!")}}catch(x){toast(x.message)}}
 
-async function submitBooking(e){
-  e.preventDefault();
-  try{
-    const r=await post("/api/services/book",{service_type:v("sType"),client_name:v("sName"),client_email:v("sEmail"),client_contact:v("sContact"),details:v("sDetails")});
-    if(r){e.target.reset();showSuccessModal("Booking request received successfully!");}
-  }catch(x){toast(x.message)}
-}
+function openCheckout(id){const p=state.products.find(x=>x.id==id);if(!p)return;const u=upi(p.price_inr,p.title);if($("chkProductId"))$("chkProductId").value=id;if($("chkTitle"))$("chkTitle").textContent=p.title;if($("chkPrice"))$("chkPrice").textContent=`Pay exact amount: ₹${p.price_inr}`;if($("chkQrImg"))$("chkQrImg").src=qr(u);if($("chkUpiDeepLink"))$("chkUpiDeepLink").href=u;if($("upiPayStep"))$("upiPayStep").style.display="block";if($("upiDoneStep"))$("upiDoneStep").style.display="none";modal("checkoutModal",1)}
 
-async function submitCare(e){
-  e.preventDefault();
-  try{
-    const r=await post("/api/care/submit",{applicant_name:v("careName"),contact_info:v("careContact"),case_title:v("careTitle"),private_details:v("careDetails"),consent_granted:true});
-    if(r){e.target.reset();showSuccessModal("Support message sent privately & securely!");}
-  }catch(x){toast(x.message)}
-}
+async function submitUpiPayment(e){e.preventDefault();const utrVal=v("chkUtr");if(utrVal.length!==12||isNaN(utrVal)){toast("UTR number must be exactly 12 digits!");return}try{const r=await post("/api/checkout/upi-submit",{product_id:v("chkProductId"),customer_name:v("chkName"),customer_email:v("chkEmail"),utr:utrVal});if(r){modal("checkoutModal",0);playSuccessSound();showSuccessModal("UTR payment details submitted successfully!")}}catch(x){toast(x.message)}}
 
-function openCheckout(id){
-  const p=state.products.find(x=>x.id==id);
-  if(!p)return;
-  const u=upi(p.price_inr,p.title);
-  if($("chkProductId")) $("chkProductId").value=id;
-  if($("chkTitle")) $("chkTitle").textContent=p.title;
-  if($("chkPrice")) $("chkPrice").textContent=`Pay exact amount: ₹${p.price_inr}`;
-  if($("chkQrImg")) $("chkQrImg").src=qr(u);
-  if($("chkUpiDeepLink")) $("chkUpiDeepLink").href=u;
-  if($("upiPayStep")) $("upiPayStep").style.display="block";
-  if($("upiDoneStep")) $("upiDoneStep").style.display="none";
-  modal("checkoutModal",1);
-}
-
-async function submitUpiPayment(e){
-  e.preventDefault();
-  const utrVal=v("chkUtr");
-  if(utrVal.length!==12||isNaN(utrVal)){
-    toast("UTR number must be exactly 12 digits!");
-    return;
-  }
-  try{
-    const r=await post("/api/checkout/upi-submit",{product_id:v("chkProductId"),customer_name:v("chkName"),customer_email:v("chkEmail"),utr:utrVal});
-    if(r){
-      modal("checkoutModal",0);
-      playSuccessSound();
-      showSuccessModal("UTR payment details submitted successfully!");
-    }
-  }catch(x){toast(x.message)}
-}
-
-async function checkOrderStatus(){
-  const q=v("trackOrderInput").trim(),b=$("trackOrderResult");
-  if(!q)return toast("Enter Order ID or UTR");
-  if(b) b.style.display="block";
-  try{
-    const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));
-    if(b) b.innerHTML=r.status==="PAID"?`<span class="badge badge-ok">Paid</span> <a href="${link(r.download_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="margin-left:8px">Download Asset ↗</a>`:`<span class="badge badge-warn">${r.status==="REJECTED"?"Rejected":"Pending"}</span>`;
-  }catch(x){
-    if(b) b.innerHTML=`<span style="color:var(--red);font-weight:700">${esc(x.message)}</span>`;
-  }
-}
+async function checkOrderStatus(){const q=v("trackOrderInput").trim(),b=$("trackOrderResult");if(!q)return toast("Enter Order ID or UTR");if(b)b.style.display="block";try{const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));if(b)b.innerHTML=r.status==="PAID"?`<span class="badge badge-ok">Paid</span> <a href="${link(r.download_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="margin-left:8px">Download Asset ↗</a>`:`<span class="badge badge-warn">${r.status==="REJECTED"?"Rejected":"Pending"}</span>`}catch(x){if(b)b.innerHTML=`<span style="color:var(--red);font-weight:700">${esc(x.message)}</span>`}}
 
 async function votePoll(id,i){try{await post("/api/polls/vote",{poll_id:id,option_index:i});toast("Vote recorded!");loadPublic()}catch(e){toast(e.message)}}
 
@@ -715,149 +593,60 @@ function initCreatorAutoScroll(){const c=$("creatorsList");if(!c||matchMedia("(p
 
 async function loadPublic(){try{
   const d=await api("/api/public/overview");state={...state,...d};
-  
-  // Render Charity Banner if active
-  const cCont=$("charitySectionContainer");
-  if(cCont){
-    if(d.charity){
-      const c=d.charity;
-      const target=c.target_amount||14000000;
-      const raised=c.raised_amount||127570757;
-      const pct=Math.min(100, Math.round((raised/target)*100));
-      cCont.innerHTML=`
-        <div class="charity-banner">
-          <div class="charity-grid">
-            <div>
-              ${c.banner_url?`<img src="${c.banner_url}" alt="${esc(c.title)}" class="charity-img" />`:""}
-            </div>
-            <div>
-              <span class="badge badge-warn">Emergency Medical Help 💖</span>
-              <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);margin:8px 0">${esc(c.title)}</h2>
-              <p class="sub" style="margin-bottom:14px">${esc(c.description||"Every contribution can save a life and make a huge difference.")}</p>
-              <div style="font-size:.9rem;font-weight:600;color:var(--gold2);display:flex;justify-content:space-between">
-                <span>Raised: ₹${raised.toLocaleString('en-IN')}</span>
-                <span>Target: ₹${target.toLocaleString('en-IN')} (${pct}%)</span>
-              </div>
-              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-              <div class="row" style="margin-top:14px">
-                <button class="btn btn-primary btn-sm" onclick="openCharityModal()">💖 Help &amp; Donate Now</button>
-                ${c.donate_link?`<a href="${link(c.donate_link)}" target="_blank" rel="noopener" class="btn btn-sm">Official Page ↗</a>`:""}
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    } else {
-      cCont.innerHTML="";
-    }
-  }
-
   const cl=$("creatorsList");
-  if(cl) cl.innerHTML=d.creators.length?d.creators.map(c=>`<div class="creator-slide"><div class="card" style="height:100%">${c.avatar_url?`<img src="${link(c.avatar_url)}" alt="" class="creator-avatar" onerror="this.style.display='none'">`:""}<div style="margin-top:10px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--cyan);font-weight:700;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 14px;min-height:40px">${esc(c.bio)}</p><a href="${link(c.profile_url)}" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Visit Profile ↗</a></div></div>`).join(""):`<div class="card" style="width:100%;text-align:center"><p class="sub">No featured creators yet. Tap 'Register as Creator' above!</p></div>`;
-  
-  if(d.ads.length){
-    const ac=$("adsContainer");
-    if(ac) {
-      ac.innerHTML=d.ads.map((a,i)=>`<div class="ad-slide ${i?"":"active"}" ${a.media_url?`style="background-image:url('${link(a.media_url)}')"`:""}><div class="ad-content"><span class="badge" style="margin-bottom:8px">${esc(a.badge||"Sponsored")}</span><h3 style="font-size:1.5rem;margin:6px 0 10px">${esc(a.title)}</h3><a href="${link(a.target_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Explore Campaign ↗</a></div></div>`).join("");
-      initAdSlideshow();
-    }
-  }
-  
+  if(cl)cl.innerHTML=d.creators.length?d.creators.map(c=>`<div class="creator-slide"><div class="card" style="height:100%">${c.avatar_url?`<img src="${link(c.avatar_url)}" alt="" class="creator-avatar" onerror="this.style.display='none'">`:""}<div style="margin-top:10px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--cyan);font-weight:700;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 14px;min-height:40px">${esc(c.bio)}</p><a href="${link(c.profile_url)}" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Visit Profile ↗</a></div></div>`).join(""):`<div class="card" style="width:100%;text-align:center"><p class="sub">No featured creators yet. Tap 'Register as Creator' above!</p></div>`;
+  if(d.ads.length){const ac=$("adsContainer");if(ac){ac.innerHTML=d.ads.map((a,i)=>`<div class="ad-slide ${i?"":"active"}" ${a.media_url?`style="background-image:url('${link(a.media_url)}')"`:""}><div class="ad-content"><span class="badge" style="margin-bottom:8px">${esc(a.badge||"Sponsored")}</span><h3 style="font-size:1.5rem;margin:6px 0 10px">${esc(a.title)}</h3><a href="${link(a.target_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Explore Campaign ↗</a></div></div>`).join("");initAdSlideshow()}}
   const pl=$("productsList");
-  if(pl) pl.innerHTML=d.products.map(p=>`<div class="card">${p.image_url?`<img src="${link(p.image_url)}" alt="${esc(p.title)}" class="card-cover" onerror="this.style.display='none'">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:14px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button class="btn btn-primary btn-sm" onclick="openCheckout(${+p.id})">Buy via UPI</button></div></div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">Digital packs launching soon.</p></div>`;
-  
+  if(pl)pl.innerHTML=d.products.map(p=>`<div class="card">${p.image_url?`<img src="${link(p.image_url)}" alt="${esc(p.title)}" class="card-cover" onerror="this.style.display='none'">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:14px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button class="btn btn-primary btn-sm" onclick="openCheckout(${+p.id})">Buy via UPI</button></div></div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">Digital packs launching soon.</p></div>`;
   const pol=$("pollsList");
-  if(pol) pol.innerHTML=d.polls.map(pl=>`<div class="card"><h3 style="margin-top:0">${esc(pl.question)}</h3><p class="sub" style="font-size:.8rem">${+pl.total_votes} verified vote(s)</p>${pl.options.map((o,i)=>{const pct=pl.total_votes?Math.round(pl.counts[i]/pl.total_votes*100):0;return`<button class="poll-opt ${pl.user_voted===i?"voted":""}" onclick="votePoll(${+pl.id},${i})"><span>${esc(o)}</span><span>${+pl.counts[i]} (${pct}%)</span></button>`}).join("")}</div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">No active polls.</p></div>`;
-  
+  if(pol)pol.innerHTML=d.polls.map(pl=>`<div class="card"><h3 style="margin-top:0">${esc(pl.question)}</h3><p class="sub" style="font-size:.8rem">${+pl.total_votes} verified vote(s)</p>${pl.options.map((o,i)=>{const pct=pl.total_votes?Math.round(pl.counts[i]/pl.total_votes*100):0;return`<button class="poll-opt ${pl.user_voted===i?"voted":""}" onclick="votePoll(${+pl.id},${i})"><span>${esc(o)}</span><span>${+pl.counts[i]} (${pct}%)</span></button>`}).join("")}</div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">No active polls.</p></div>`;
   initReveal();
 }catch(e){console.error(e)}}
 
-/* ---------- theme + scroll effects ---------- */
 const TH={emerald:"#04221b",violet:"#140d2b",navy:"#0a1a2f",wine:"#2a0f1c"};
-function setTheme(t){if(!TH[t])t="emerald";document.documentElement.dataset.theme=t;try{localStorage.setItem("akc_theme",t)}catch(e){}const mc=document.querySelector('meta[name=theme-color]');if(mc) mc.content=TH[t];document.querySelectorAll("#themes [data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t===t));const thm=$("themes");if(thm) thm.classList.remove("open")}
+function setTheme(t){if(!TH[t])t="emerald";document.documentElement.dataset.theme=t;try{localStorage.setItem("akc_theme",t)}catch(e){}const mc=document.querySelector('meta[name=theme-color]');if(mc)mc.content=TH[t];document.querySelectorAll("#themes [data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t===t));const thm=$("themes");if(thm)thm.classList.remove("open")}
 let io;
 function countUp(el){const m=el.textContent.match(/^([\d.]+)(.*)$/);if(!m||matchMedia("(prefers-reduced-motion: reduce)").matches)return;const end=parseFloat(m[1]),dec=(m[1].split(".")[1]||"").length,suf=m[2],t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3);el.textContent=(end*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(f)})(t0)}
-function initReveal(){
-  if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add("in");io.unobserve(e.target);if(e.target.classList.contains("stats-grid"))e.target.querySelectorAll(".stat-num").forEach(countUp)}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
-  document.querySelectorAll(".sec-head,.stats-grid,.hero p,.hero-cta,#about .card,#services .card,.steps li,#care .card,#store>.card,#productsList>*,#pollsList,.creator-carousel,.ad-landscape-container,.faq details").forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add("reveal");el.style.setProperty("--d",Math.min([...el.parentNode.children].indexOf(el),5)*90+"ms");io.observe(el)})}
-function initFx(){
-  const m=$("mqt");if(m) m.innerHTML=m.innerHTML.repeat(4);
-  setTheme(localStorage.getItem("akc_theme")||"emerald");
-  const pg=$("prog"),tb=$("totop");let tick=false;
-  addEventListener("scroll",()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;if(pg) pg.style.setProperty("--p",h>0?y/h:0);document.documentElement.style.setProperty("--sy",y);if(tb) tb.classList.toggle("show",y>700);tick=false})},{passive:true});
-  initReveal();
-  if(location.hash==="#admin")openPortal();
-}
+function initReveal(){if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add("in");io.unobserve(e.target);if(e.target.classList.contains("stats-grid"))e.target.querySelectorAll(".stat-num").forEach(countUp)}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});document.querySelectorAll(".sec-head,.stats-grid,.hero p,.hero-cta,#about .card,#services .card,.steps li,#care .card,#store>.card,#productsList>*,#pollsList,.creator-carousel,.ad-landscape-container,.faq details").forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add("reveal");el.style.setProperty("--d",Math.min([...el.parentNode.children].indexOf(el),5)*90+"ms");io.observe(el)})}
+function initFx(){const m=$("mqt");if(m)m.innerHTML=m.innerHTML.repeat(4);setTheme(localStorage.getItem("akc_theme")||"emerald");const pg=$("prog"),tb=$("totop");let tick=false;addEventListener("scroll",()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;if(pg)pg.style.setProperty("--p",h>0?y/h:0);document.documentElement.style.setProperty("--sy",y);if(tb)tb.classList.toggle("show",y>700);tick=false})},{passive:true});initReveal();if(location.hash==="#admin")openPortal()}
 
-/* ---------- admin portal ---------- */
-const ADM=[["overview","Overview"],["creators","Creators"],["ads","Ads"],["charity","Charity Banner"],["store","Store"],["bookings","Bookings"],["care","Support"],["polls","Polls"],["staff","Staff & Access"]];
-const KEYS={creators:["creators"],ads:["ads"],charity:["charity_campaigns"],store:["orders","products"],bookings:["bookings"],care:["care_cases","care"],polls:["polls"],staff:["staff_users"]};
+const ADM=[["overview","Overview"],["creators","Creators"],["ads","Ads"],["store","Store"],["bookings","Bookings"],["care","Support"],["polls","Polls"],["staff","Staff & Access"]];
+const KEYS={creators:["creators"],ads:["ads"],store:["orders","products"],bookings:["bookings"],care:["care_cases","care"],polls:["polls"],staff:["staff_users"]};
 let admTab="overview",admQ="";
 const secs=t=>(KEYS[t]||[]).filter(k=>dash&&Array.isArray(dash[k])).map(k=>[k,dash[k]]);
 const cnt=t=>secs(t).reduce((n,[,a])=>n+a.length,0);
 const fmt=x=>x==null?"":Array.isArray(x)?x.join(", "):typeof x==="object"?JSON.stringify(x):String(x);
 const hit=r=>!admQ||JSON.stringify(r).toLowerCase().includes(admQ);
-function togglePw(){const p=$("lPass");if(p) p.type=p.type==="password"?"text":"password"}
-function openPortal(){const adm=$("admin");if(adm) adm.hidden=false;document.body.style.overflow="hidden";if(token)loadDashboard();else showLogin();if(location.hash!=="#admin")history.replaceState(null,"","#admin")}
-function closePortal(){const adm=$("admin");if(adm) adm.hidden=true;document.body.style.overflow="";history.replaceState(null,"",location.pathname+location.search)}
-function showLogin(){const err=$("lErr");if(err) err.textContent="";const al=$("admLogin");if(al) al.hidden=false;const ad=$("admDash");if(ad) ad.hidden=true;setTimeout(()=>{const lu=$("lUser");if(lu) lu.focus();},60)}
-async function doLogin(e){e.preventDefault();const b=$("lBtn");if(b){b.disabled=true;b.textContent="Signing in…";}try{const r=await post("/api/auth/login",{username:v("lUser"),password:v("lPass")});token=r.token;localStorage.setItem("akc_token",token);const lp=$("lPass");if(lp) lp.value="";if(await loadDashboard())toast("Welcome back!")}catch(x){const f=$("admForm");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");}const lErr=$("lErr");if(lErr) lErr.textContent=x.message;}if(b){b.disabled=false;b.textContent="Sign in";}}
+function togglePw(){const p=$("lPass");if(p)p.type=p.type==="password"?"text":"password"}
+function openPortal(){const adm=$("admin");if(adm)adm.hidden=false;document.body.style.overflow="hidden";if(token)loadDashboard();else showLogin();if(location.hash!=="#admin")history.replaceState(null,"","#admin")}
+function closePortal(){const adm=$("admin");if(adm)adm.hidden=true;document.body.style.overflow="";history.replaceState(null,"",location.pathname+location.search)}
+function showLogin(){const err=$("lErr");if(err)err.textContent="";const al=$("admLogin");if(al)al.hidden=false;const ad=$("admDash");if(ad)ad.hidden=true;setTimeout(()=>{const lu=$("lUser");if(lu)lu.focus()},60)}
+async function doLogin(e){e.preventDefault();const b=$("lBtn");if(b){b.disabled=true;b.textContent="Signing in…"}try{const r=await post("/api/auth/login",{username:v("lUser"),password:v("lPass")});token=r.token;localStorage.setItem("akc_token",token);const lp=$("lPass");if(lp)lp.value="";if(await loadDashboard())toast("Welcome back!")}catch(x){const f=$("admForm");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake")}const lErr=$("lErr");if(lErr)lErr.textContent=x.message}if(b){b.disabled=false;b.textContent="Sign in"}}
 function doLogout(){token="";localStorage.removeItem("akc_token");dash=null;showLogin()}
-async function loadDashboard(){try{dash=await api("/api/admin/dashboard")}catch(e){doLogout();return false}const al=$("admLogin");if(al) al.hidden=true;const ad=$("admDash");if(ad) ad.hidden=false;renderAdm();return true}
-function admGo(k){admTab=k;admQ="";const as=$("admSearch");if(as) as.value="";renderAdm();const adm=$("admin");if(adm) adm.scrollTo({top:0})}
+async function loadDashboard(){try{dash=await api("/api/admin/dashboard")}catch(e){doLogout();return false}const al=$("admLogin");if(al)al.hidden=true;const ad=$("admDash");if(ad)ad.hidden=false;renderAdm();return true}
+function admGo(k){admTab=k;admQ="";const as=$("admSearch");if(as)as.value="";renderAdm();const adm=$("admin");if(adm)adm.scrollTo({top:0})}
 async function adminAction(ep,p){try{await post(ep,p);toast("Saved!");loadDashboard();loadPublic()}catch(e){toast(e.message)}}
 const creatorCard=c=>`<div class="card"><div class="row" style="justify-content:flex-start">${c.avatar_url?`<img class="creator-avatar" src="${link(c.avatar_url)}" alt="" onerror="this.style.display='none'">`:""}<div><h3 style="margin:0">${esc(c.name)}</h3><p class="sub">${esc(c.handle)} • ${esc(c.platform)}</p></div></div><p class="sub" style="margin:12px 0">${esc(c.bio)}</p><div class="row"><span class="badge ${c.status==="approved"?"badge-ok":"badge-warn"}">${esc(c.status)}</span><div style="display:flex;gap:8px"><a class="btn btn-sm" href="${link(c.profile_url)}" target="_blank" rel="noopener">Profile</a>${c.status!=="approved"?`<button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators',{action:'status',id:${+c.id},status:'approved'})">Approve</button>`:""}<button class="btn btn-sm" onclick="admDel('creators',${+c.id})">Delete</button></div></div></div>`;
 function renderAdm(){
-  const au=$("admUser");
-  if(au) au.textContent=`${dash.username||"admin"} • ${dash.role||""}`;
-  const an=$("admNav");
-  if(an) an.innerHTML=ADM.map(([k,l])=>`<button class="${admTab===k?"on":""}" onclick="admGo('${k}')">${l}${k!=="overview"?`<i>${cnt(k)}</i>`:""}</button>`).join("");
-  const at=$("admTitle");
-  if(at) at.textContent=ADM.find(a=>a[0]===admTab)[1];
-  const atools=$("admTools");
-  if(atools) atools.hidden=admTab==="overview"||admTab==="staff"||admTab==="charity";
-  const nw=$("admNew"),NEW={creators:["creators","Add creator"],ads:["ads","New ad"],charity:["charity","Add Charity Campaign"],store:["products","New product"],polls:["polls","New poll"]}[admTab];
-  if(nw){nw.hidden=!NEW;if(NEW){nw.textContent="＋ "+NEW[1];nw.onclick=()=>admForm(NEW[0])}}
-  const b=$("admBody");
-  if(!b) return;
-  if(admTab==="overview"){const pend=(dash.creators||[]).filter(c=>c.status&&c.status!=="approved");b.innerHTML=`<div class="tiles">${ADM.slice(1,8).map(([k,l])=>`<button class="card tile" onclick="admGo('${k}')"><span class="stat-num">${cnt(k)}</span><span>${l}</span></button>`).join("")}</div><h3 class="adm-h">Waiting for approval <small>${pend.length}</small></h3>${pend.length?`<div class="recs">${pend.map(creatorCard).join("")}</div>`:`<p class="sub">Nothing waiting. New creator registrations will appear here.</p>`}`;return}
-  if(admTab==="staff"){
-    b.innerHTML=`<div class="card" style="margin-bottom:20px">
-      <h3 style="margin-top:0">Add New Staff / Moderator</h3>
-      <form onsubmit="addStaff(event)">
-        <label>Username *</label>
-        <input id="stUser" required placeholder="Staff username" />
-        <label>Password *</label>
-        <input id="stPass" type="password" required placeholder="Staff password" />
-        <label>Role</label>
-        <select id="stRole"><option value="moderator">Moderator</option><option value="admin">Admin</option></select>
-        <button class="btn btn-primary" style="margin-top:10px;width:100%">Create Staff Account</button>
-      </form>
-    </div>
-    <h3 class="adm-h">Existing Staff Members</h3>
-    <div class="recs">${(dash.staff_users||[]).map(s=>`<div class="card"><div class="row"><h3 style="margin:0">${esc(s.username)}</h3><span class="badge">${esc(s.role)}</span></div><div class="adm-acts" style="margin-top:12px"><button class="btn btn-sm" onclick="admDel('staff',${+s.id})">Delete Staff</button></div></div>`).join("")||`<p class="sub">No staff accounts created yet.</p>`}</div>`;
-    return;
-  }
-  if(admTab==="charity"){
-    const list=dash.charity_campaigns||[];
-    b.innerHTML=`<div style="margin-bottom:16px"><button class="btn btn-primary btn-sm" onclick="admForm('charity')">＋ New Charity Campaign</button></div>
-    <div class="recs">${list.map(c=>`<div class="card"><h3 style="margin-top:0">${esc(c.title)}</h3><p class="sub">Target: ₹${c.target_amount} | Raised: ₹${c.raised_amount}</p><p class="sub">UPI: ${esc(c.upi_id)}</p><div class="adm-acts"><button class="btn btn-sm btn-primary" onclick="admForm('charity',${c.id})">Edit</button><button class="btn btn-sm" onclick="admDel('charity',${c.id})">Delete</button></div></div>`).join("")||`<p class="sub">No charity campaigns configured yet.</p>`}</div>`;
-    return;
-  }
-  const S=secs(admTab);
-  b.innerHTML=S.length?S.map(([k,a])=>{const f=a.filter(hit);return`${S.length>1?`<h3 class="adm-h">${esc(k)} <small>${f.length}</small></h3>`:""}${f.length?`<div class="recs">${f.map(r=>k==="creators"?creatorCard(r):recCard(r,k)).join("")}</div>`:`<p class="sub">No matching records.</p>`}`}).join(""):`<div class="card"><h3 style="margin-top:0">No data yet</h3><p class="sub">/api/admin/dashboard did not return a list for this section. Once it does, the records show up here.</p></div>`}
+  const au=$("admUser");if(au)au.textContent=`${dash.username||"admin"} • ${dash.role||""}`;
+  const an=$("admNav");if(an)an.innerHTML=ADM.map(([k,l])=>`<button class="${admTab===k?"on":""}" onclick="admGo('${k}')">${l}${k!=="overview"?`<i>${cnt(k)}</i>`:""}</button>`).join("");
+  const at=$("admTitle");if(at)at.textContent=ADM.find(a=>a[0]===admTab)[1];
+  const atools=$("admTools");if(atools)atools.hidden=admTab==="overview"||admTab==="staff";
+  const nw=$("admNew"),NEW={creators:["creators","Add creator"],ads:["ads","New ad"],store:["products","New product"],polls:["polls","New poll"]}[admTab];if(nw){nw.hidden=!NEW;if(NEW){nw.textContent="＋ "+NEW[1];nw.onclick=()=>admForm(NEW[0])}}
+  const b=$("admBody");if(!b)return;
+  if(admTab==="overview"){const pend=(dash.creators||[]).filter(c=>c.status&&c.status!=="approved");b.innerHTML=`<div class="tiles">${ADM.slice(1,7).map(([k,l])=>`<button class="card tile" onclick="admGo('${k}')"><span class="stat-num">${cnt(k)}</span><span>${l}</span></button>`).join("")}</div><h3 class="adm-h">Waiting for approval <small>${pend.length}</small></h3>${pend.length?`<div class="recs">${pend.map(creatorCard).join("")}</div>`:`<p class="sub">Nothing waiting. New creator registrations will appear here.</p>`}`;return}
+  if(admTab==="staff"){b.innerHTML=`<div class="card" style="margin-bottom:20px"><h3 style="margin-top:0">Add New Staff / Moderator</h3><form onsubmit="addStaff(event)"><label>Username *</label><input id="stUser" required placeholder="Staff username" /><label>Password *</label><input id="stPass" type="password" required placeholder="Staff password" /><label>Role</label><select id="stRole"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn btn-primary" style="margin-top:10px;width:100%">Create Staff Account</button></form></div><h3 class="adm-h">Existing Staff Members</h3><div class="recs">${(dash.staff_users||[]).map(s=>`<div class="card"><div class="row"><h3 style="margin:0">${esc(s.username)}</h3><span class="badge">${esc(s.role)}</span></div><div class="adm-acts" style="margin-top:12px"><button class="btn btn-sm" onclick="admDel('staff',${+s.id})">Delete Staff</button></div></div>`).join("")||`<p class="sub">No staff accounts created yet.</p>`}</div>`;return}
+  const S=secs(admTab);b.innerHTML=S.length?S.map(([k,a])=>{const f=a.filter(hit);return`${S.length>1?`<h3 class="adm-h">${esc(k)} <small>${f.length}</small></h3>`:""}${f.length?`<div class="recs">${f.map(r=>k==="creators"?creatorCard(r):recCard(r,k)).join("")}</div>`:`<p class="sub">No matching records.</p>`}`}).join(""):`<div class="card"><h3 style="margin-top:0">No data yet</h3><p class="sub">/api/admin/dashboard did not return a list for this section.</p></div>`}
 function admExport(){const rows=secs(admTab).flatMap(([,a])=>a);if(!rows.length)return toast("Nothing to export");const cols=[...new Set(rows.flatMap(r=>Object.keys(r)))];const q=x=>{let s=fmt(x);if(/^[=+\-@]/.test(s))s="'"+s;return`"${s.replace(/"/g,'""')}"`};const csv=[cols.join(","),...rows.map(r=>cols.map(c=>q(r[c])).join(","))].join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`akshay-creation-${admTab}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
 
-/* ---------- admin CRUD ---------- */
 const FORMS={
   creators:[["name","Name"],["platform","Platform (YouTube / Instagram / Twitter)"],["handle","Handle"],["profile_url","Profile URL"],["avatar_url","Avatar URL (optional)"],["bio","Bio","textarea"]],
   ads:[["title","Title"],["badge","Badge (e.g. Sponsored)"],["media_url","Banner image URL"],["target_url","Link URL"],["sort","Order (0 = first)","number"]],
-  charity:[["title","Campaign Title (e.g. Help Baby Elroy)"],["banner_url","Banner Image (Upload Photo or select file)","file"],["target_amount","Target Amount (₹)","number"],["raised_amount","Raised Amount so far (₹)","number"],["upi_id","Official UPI ID (e.g. limsontt1@fbl)"],["upi_name","UPI Account Name"],["donate_link","Official External Link (GoFundMe/Fundraiser URL)"],["description","Short Description","textarea"],["active","Active (1 = Show, 0 = Hide)","number"]],
   products:[["title","Title"],["category","Category"],["description","Description","textarea"],["price_inr","Price (₹)","number"],["image_url","Cover image URL"],["download_url","Private download link (shown only after payment)"]],
   polls:[["question","Question"],["options","Options (one per line, 2 to 6)","textarea"]]
 };
-const DK={creators:"creators",ads:"ads",products:"products",charity:"charity_campaigns"};
-const RES={creators:"creators",ads:"ads",orders:"orders",products:"products",bookings:"bookings",care_cases:"care",care:"care",polls:"polls",staff:"staff",charity:"charity"};
+const DK={creators:"creators",ads:"ads",products:"products"};
+const RES={creators:"creators",ads:"ads",orders:"orders",products:"products",bookings:"bookings",care_cases:"care",care:"care",polls:"polls",staff:"staff"};
 const A=(res,r,x)=>[...x,["Delete",`admDel('${res}',${r.id})`]];
 const tog=(res,r,a,b)=>[r.active?a:b,`admSet('${res}',${r.id},{active:${r.active?0:1}})`];
 const stb=(res,r,l,s,p)=>[l,`admStatus('${res}',${r.id},'${s}')`,p];
@@ -872,27 +661,9 @@ const ACT={
 const admStatus=(res,id,status)=>adminAction("/api/admin/"+res,{action:"status",id,status});
 const admSet=(res,id,data)=>adminAction("/api/admin/"+res,{action:"update",id,data});
 function admDel(res,id){if(confirm("Delete this permanently?"))adminAction("/api/admin/"+res,{action:"delete",id})}
-function admForm(res,id){
-  const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};
-  const afb = $("admFormBody");
-  if(afb){
-    afb.innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>{
-      if(t==="file")return`<label>${l}</label><input type="file" accept="image/*" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
-      return`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`
-    }).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
-  }
-  modal("admModal",1);
-}
+function admForm(res,id){const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};const afb=$("admFormBody");if(afb){afb.innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`}).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`}modal("admModal",1)}
 async function admSave(e,res,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(res==="polls")d.options=String(d.options||"").split("\n").map(x=>x.trim()).filter(Boolean);try{await post("/api/admin/"+res,{action:id?"update":"create",id,data:d});modal("admModal",0);toast("Saved!");loadDashboard();loadPublic()}catch(x){toast(x.message)}}
-async function addStaff(e){
-  e.preventDefault();
-  try{
-    await post("/api/admin/staff",{action:"create",data:{username:v("stUser"),password:v("stPass"),role:v("stRole")}});
-    e.target.reset();
-    toast("Staff account created successfully!");
-    loadDashboard();
-  }cache(x){toast(x.message)}
-}
+async function addStaff(e){e.preventDefault();try{await post("/api/admin/staff",{action:"create",data:{username:v("stUser"),password:v("stPass"),role:v("stRole")}});e.target.reset();toast("Staff account created successfully!");loadDashboard()}catch(x){toast(x.message)}}
 function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
 
 loadPublic();startTrafficSimulation();initCreatorAutoScroll();initFx();
