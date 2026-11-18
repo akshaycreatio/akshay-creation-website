@@ -148,8 +148,7 @@ footer p+p{margin-top:6px}
 .reveal{opacity:0}
 .reveal.in{opacity:1;animation:rv .85s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:var(--d,0ms)}
 @keyframes rv{from{opacity:0;transform:translateY(30px)}}
-#prog{position:fixed;top:0;left:0;height:3px;width:100%
-transform-origin:0 50%;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:400}
+#prog{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:400}
 .hero>*{position:relative;z-index:1}
 .hero::after{content:"";position:absolute;right:-8%;top:-10%;width:75%;height:130%;pointer-events:none;z-index:0;transform:translateY(calc(var(--sy,0)*-.12px));background:radial-gradient(circle at 65% 35%,rgba(var(--gold-rgb),.22),transparent 52%),radial-gradient(circle at 25% 80%,rgba(var(--ok-rgb),.12),transparent 50%)}
 #productsList .card,.creator-slide .card{transition:transform .3s,border-color .3s}
@@ -594,11 +593,6 @@ function showSuccessModal(msg){
   if(msgEl) msgEl.textContent = msg || "Your submission was successful!";
   const overlay = $("successOverlay");
   if(overlay) overlay.classList.add("show");
-  // Automatically scroll down smoothly to the FAQ / Q&A section
-  setTimeout(() => {
-    const faq = $("faqSection");
-    if(faq) faq.scrollIntoView({ behavior: 'smooth' });
-  }, 300);
 }
 function closeSuccessModal(){
   const overlay = $("successOverlay");
@@ -879,7 +873,7 @@ function admForm(res,id){
   const afb = $("admFormBody");
   if(afb){
     afb.innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>{
-      if(t==="file")return`<label>${l}</label><input type="file" accept="image/*" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
+      if(t==="file")return`<label>${l}</label><input type="file" accept="file" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
       return`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`
     }).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
   }
