@@ -3,121 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#020205" />
+  <meta name="theme-color" content="#050508" />
   <title>AKSHAY CREATION — Create. Connect. Inspire.</title>
   <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
   <style>
     :root {
-      --bg: #020205;
-      --card-bg: rgba(15, 13, 30, 0.75);
-      --border: rgba(168, 85, 247, 0.28);
+      --bg: #050508;
+      --card-bg: rgba(18, 16, 32, 0.7);
+      --border: rgba(168, 85, 247, 0.25);
       --border-glow: rgba(168, 85, 247, 0.6);
       --purple: #9333ea;
       --violet: #a855f7;
       --cyan: #38bdf8;
+      --emerald: #10b981;
       --text: #f8fafc;
       --muted: #94a3b8;
-      --ok: #10b981;
-      --warn: #f59e0b;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at 10% 10%, rgba(147, 51, 234, 0.25), transparent 40%),
-                  radial-gradient(circle at 90% 30%, rgba(168, 85, 247, 0.18), transparent 45%),
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 10% 10%, rgba(147, 51, 234, 0.22), transparent 45%),
+                  radial-gradient(circle at 90% 40%, rgba(56, 189, 248, 0.15), transparent 50%),
                   var(--bg);
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
     }
     a { color: inherit; text-decoration: none; }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+
+    /* Smooth Fade-in Animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     /* Navbar */
     .nav {
       position: sticky; top: 0; z-index: 50;
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      background: rgba(2, 2, 5, 0.85);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      background: rgba(5, 5, 8, 0.85);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner {
       display: flex; align-items: center; justify-content: space-between;
-      height: 70px; gap: 12px;
+      height: 72px; gap: 12px;
     }
     .brand {
-      font-weight: 900; font-size: 1.15rem; letter-spacing: 0.08em;
-      background: linear-gradient(135deg, #e879f9, #c084fc, #38bdf8);
+      font-weight: 900; font-size: 1.2rem; letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #f0abfc, #c084fc, #38bdf8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
     }
-    .nav-links { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; }
-    .nav-links a { font-size: 0.86rem; color: var(--muted); font-weight: 500; white-space: nowrap; transition: 0.2s; }
-    .nav-links a:hover { color: #e879f9; text-shadow: 0 0 10px rgba(232, 121, 249, 0.4); }
+    .nav-links { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+    .nav-links a { font-size: 0.86rem; color: var(--muted); font-weight: 600; white-space: nowrap; transition: 0.3s; }
+    .nav-links a:hover { color: #f0abfc; text-shadow: 0 0 12px rgba(240, 171, 252, 0.5); }
     
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 10px 20px; border-radius: 16px; font-weight: 600; font-size: 0.88rem;
+      padding: 11px 22px; border-radius: 16px; font-weight: 700; font-size: 0.88rem;
       border: 1px solid transparent; cursor: pointer; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--purple), var(--violet));
-      color: #fff; box-shadow: 0 8px 30px rgba(147, 51, 234, 0.4);
-      border: 1px solid rgba(232, 121, 249, 0.3);
+      color: #fff; box-shadow: 0 8px 30px rgba(147, 51, 234, 0.45);
+      border: 1px solid rgba(240, 171, 252, 0.3);
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(168, 85, 247, 0.6); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(168, 85, 247, 0.65); }
     .btn-ghost {
       background: rgba(255, 255, 255, 0.04); border-color: var(--border); color: var(--text);
     }
-    .btn-ghost:hover { border-color: var(--violet); background: rgba(147, 51, 234, 0.1); }
-    .btn-sm { padding: 7px 14px; font-size: 0.8rem; border-radius: 12px; }
+    .btn-ghost:hover { border-color: var(--violet); background: rgba(147, 51, 234, 0.12); }
+    .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 12px; }
 
     /* Hero */
-    .hero { padding: 76px 0 50px; text-align: center; }
+    .hero { padding: 80px 0 50px; text-align: center; }
     .pill {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 16px; border-radius: 999px; font-size: 0.78rem;
-      background: rgba(147, 51, 234, 0.15); border: 1px solid rgba(168, 85, 247, 0.3);
-      color: #f0abfc; margin-bottom: 20px; font-weight: 600; letter-spacing: 0.04em;
+      padding: 6px 18px; border-radius: 999px; font-size: 0.78rem;
+      background: rgba(147, 51, 234, 0.15); border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #f0abfc; margin-bottom: 22px; font-weight: 700; letter-spacing: 0.05em;
     }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 12px var(--ok); animation: pulse 2s infinite; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 12px var(--emerald); animation: pulse 2s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
     h1 {
-      font-size: clamp(2.3rem, 6.5vw, 4rem); font-weight: 900; line-height: 1.1;
+      font-size: clamp(2.4rem, 7vw, 4.2rem); font-weight: 900; line-height: 1.08;
       letter-spacing: -0.03em; margin-bottom: 16px;
     }
     .grad {
       background: linear-gradient(135deg, #f0abfc, #c084fc, #38bdf8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 28px; font-size: 1.05rem; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 40px; }
+    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 30px; font-size: 1.05rem; font-weight: 400; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 44px; }
 
-    /* Ultra-Slick Glass Cards */
+    /* Glass Cards */
     .stats-grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px;
     }
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       border: 1px solid var(--border); border-radius: 24px; padding: 22px;
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       overflow: hidden; text-align: left;
     }
     .card:hover { 
-      border-color: rgba(232, 121, 249, 0.6); transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(147, 51, 234, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: rgba(240, 171, 252, 0.65); transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(147, 51, 234, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     .card-cover {
       width: 100%; height: 180px; object-fit: cover; border-radius: 16px; margin-bottom: 14px;
       border: 1px solid rgba(255, 255, 255, 0.08); background: #080712;
     }
-    .stat-num { font-size: 1.6rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
-    .stat-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-weight: 500; }
+    .stat-num { font-size: 1.65rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+    .stat-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-weight: 600; }
 
-    /* Horizontal Creator Carousel */
+    /* Creator Carousel */
     .creator-carousel {
       display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; padding: 6px 0 16px;
     }
@@ -127,10 +134,10 @@
       width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--violet); margin-bottom: 12px; background: #080712;
     }
 
-    /* Landscape Ad Banner Slideshow */
+    /* Ad Banner */
     .ad-landscape-container {
       position: relative; width: 100%; min-height: 190px; border-radius: 24px; overflow: hidden;
-      background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(25px); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5);
+      background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(30px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
     .ad-slide {
       position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out;
@@ -138,35 +145,35 @@
     }
     .ad-slide.active { opacity: 1; z-index: 2; }
     .ad-slide::before {
-      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2,2,5,0.1) 0%, rgba(2,2,5,0.88) 90%); z-index: 1;
+      content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,8,0.1) 0%, rgba(5,5,8,0.9) 90%); z-index: 1;
     }
     .ad-content { position: relative; z-index: 3; }
 
     /* Sections */
-    section { padding: 60px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+    section { padding: 64px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
     .sec-head { margin-bottom: 30px; }
     .sec-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--violet); font-weight: 800; }
-    h2 { font-size: clamp(1.6rem, 4.5vw, 2.3rem); font-weight: 900; margin-top: 6px; letter-spacing: -0.02em; }
-    .sec-sub { color: var(--muted); font-size: 0.95rem; margin-top: 8px; }
+    h2 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-weight: 900; margin-top: 6px; letter-spacing: -0.02em; }
+    .sec-sub { color: var(--muted); font-size: 0.96rem; margin-top: 8px; }
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
 
     /* Forms */
     input, select, textarea {
       width: 100%; padding: 13px 18px; border-radius: 16px;
-      background: rgba(8, 7, 18, 0.9); border: 1px solid var(--border); color: #fff; font-size: 0.92rem; margin-top: 6px; margin-bottom: 14px; backdrop-filter: blur(10px);
-      transition: 0.2s;
+      background: rgba(10, 8, 20, 0.9); border: 1px solid var(--border); color: #fff; font-size: 0.92rem; margin-top: 6px; margin-bottom: 14px; backdrop-filter: blur(10px);
+      transition: 0.3s;
     }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 20px rgba(168, 85, 247, 0.35); }
-    label { font-size: 0.84rem; color: var(--muted); font-weight: 600; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+    label { font-size: 0.84rem; color: var(--muted); font-weight: 700; }
 
     /* Polls */
     .poll-opt {
       width: 100%; text-align: left; padding: 13px 18px; margin-top: 10px;
       border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center; transition: 0.2s; font-weight: 500;
+      display: flex; justify-content: space-between; align-items: center; transition: 0.2s; font-weight: 600;
     }
-    .poll-opt.voted { border-color: var(--violet); background: rgba(168, 85, 247, 0.18); box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); }
+    .poll-opt.voted { border-color: var(--violet); background: rgba(168, 85, 247, 0.2); box-shadow: 0 0 15px rgba(168, 85, 247, 0.25); }
 
     /* Badges */
     .badge {
@@ -190,26 +197,26 @@
 
     /* Modal Styling */
     .modal-bg {
-      position: fixed; inset: 0; background: rgba(2, 2, 5, 0.85);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      position: fixed; inset: 0; background: rgba(5, 5, 8, 0.88);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
       display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; overflow-y: auto;
     }
     .modal-bg.open { display: flex; }
     .modal {
       width: 100%; max-width: 500px; max-height: 92vh; overflow-y: auto;
-      background: rgba(15, 12, 35, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-      border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 28px; padding: 28px; box-shadow: 0 28px 70px rgba(0,0,0,0.8);
+      background: rgba(18, 15, 38, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(168, 85, 247, 0.45); border-radius: 28px; padding: 28px; box-shadow: 0 30px 80px rgba(0,0,0,0.85);
     }
     .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
     .tab {
-      padding: 9px 16px; border-radius: 12px; font-size: 0.82px; cursor: pointer; font-weight: 600;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); transition: 0.2s;
+      padding: 9px 16px; border-radius: 12px; font-size: 0.82rem; cursor: pointer; font-weight: 700;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); transition: 0.3s;
     }
-    .tab.active { background: var(--purple); color: #fff; border-color: var(--violet); box-shadow: 0 6px 20px rgba(147, 51, 234, 0.45); }
+    .tab.active { background: var(--purple); color: #fff; border-color: var(--violet); box-shadow: 0 6px 20px rgba(147, 51, 234, 0.5); }
     .toast {
       position: fixed; bottom: 20px; right: 20px; left: 20px; max-width: 420px; margin: 0 auto;
-      background: rgba(18, 14, 38, 0.98); backdrop-filter: blur(20px); border: 1px solid var(--violet); color: #fff;
-      padding: 15px 20px; border-radius: 16px; z-index: 200; display: none; font-size: 0.9rem; box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+      background: rgba(18, 15, 38, 0.98); backdrop-filter: blur(20px); border: 1px solid var(--violet); color: #fff;
+      padding: 15px 20px; border-radius: 16px; z-index: 200; display: none; font-size: 0.9rem; box-shadow: 0 14px 40px rgba(0,0,0,0.75);
     }
     footer { padding: 40px 0; text-align: center; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
   </style>
@@ -232,7 +239,7 @@
     </div>
   </header>
 
-  <main>
+  <main class="animate-in">
     <!-- HERO -->
     <section class="hero" id="home" style="border-top:none;">
       <div class="wrap">
@@ -294,13 +301,16 @@
       </div>
     </section>
 
-    <!-- CREATORS SPOTLIGHT -->
+    <!-- CREATORS SPOTLIGHT & REGISTRATION -->
     <section id="creators">
       <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-tag">Creator Spotlight</div>
-          <h2>Creators of the Week</h2>
-          <p class="sec-sub">Highlighting emerging creators with verified profiles &amp; avatar display.</p>
+        <div class="sec-head" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+          <div>
+            <div class="sec-tag">Creator Spotlight</div>
+            <h2>Creators of the Week</h2>
+            <p class="sec-sub">Highlighting emerging creators with verified profiles &amp; avatar display.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openCreatorModal()">✨ Register as Creator</button>
         </div>
         <div class="creator-carousel" id="creatorsList"></div>
       </div>
@@ -441,6 +451,37 @@
       <p style="margin-top:6px;">Business: collab.akshaycreation@gmail.com • Built on Cloudflare Edge</p>
     </div>
   </footer>
+
+  <!-- CREATOR REGISTRATION MODAL -->
+  <div class="modal-bg" id="creatorModal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3>Register for Creator Spotlight</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeCreatorModal()">Close</button>
+      </div>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px;">Submit your profile to be featured as Creator of the Week after Akshay's review.</p>
+      <form onsubmit="submitCreatorApp(event)">
+        <label>Your Name *</label>
+        <input id="cAppName" required placeholder="e.g. Creator Name" />
+        <label>Platform &amp; Handle *</label>
+        <div style="display:flex;gap:8px;">
+          <select id="cAppPlatform" style="width:130px;margin-top:6px;">
+            <option>YouTube</option>
+            <option>Instagram</option>
+            <option>Twitter</option>
+          </select>
+          <input id="cAppHandle" required placeholder="@handle" style="margin:0;flex:1;" />
+        </div>
+        <label style="margin-top:12px;display:block;">Profile / Channel URL *</label>
+        <input id="cAppProfileUrl" required placeholder="https://..." />
+        <label>Avatar / Image URL (Optional)</label>
+        <input id="cAppAvatarUrl" placeholder="https://... image link" />
+        <label>Short Bio / Vibe *</label>
+        <textarea id="cAppBio" rows="3" required placeholder="Tell us what you create..."></textarea>
+        <button class="btn btn-primary" style="width:100%;margin-top:6px;">Submit for Review</button>
+      </form>
+    </div>
+  </div>
 
   <!-- REVEAL QR CODE DONATION MODAL -->
   <div class="modal-bg" id="qrPopupModal">
@@ -605,6 +646,29 @@
     }
     function closeQrPopup() { document.getElementById("qrPopupModal").classList.remove("open"); }
 
+    function openCreatorModal() { document.getElementById("creatorModal").classList.add("open"); }
+    function closeCreatorModal() { document.getElementById("creatorModal").classList.remove("open"); }
+
+    async function submitCreatorApp(e) {
+      e.preventDefault();
+      try {
+        const res = await api("/api/creators/apply", {
+          method: "POST",
+          body: JSON.stringify({
+            name: document.getElementById("cAppName").value,
+            platform: document.getElementById("cAppPlatform").value,
+            handle: document.getElementById("cAppHandle").value,
+            profile_url: document.getElementById("cAppProfileUrl").value,
+            avatar_url: document.getElementById("cAppAvatarUrl").value,
+            bio: document.getElementById("cAppBio").value
+          })
+        });
+        e.target.reset();
+        closeCreatorModal();
+        toast(res.message);
+      } catch (err) { toast(err.message); }
+    }
+
     function setPopupDonateAmt(val) {
       popupAmt = val;
       refreshPopupQr();
@@ -681,7 +745,7 @@
                 </div>
               </div>
             `).join("")
-          : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet.</p></div>`;
+          : `<div class="card" style="width:100%;"><p style="color:var(--muted);">No featured creators published yet. Click 'Register as Creator' above to submit yours!</p></div>`;
 
         const adsContainer = document.getElementById("adsContainer");
         if (data.ads.length > 0) {
