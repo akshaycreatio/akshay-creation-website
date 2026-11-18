@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--modal:#072a21;--footer:#021611;--on-gold:#1b1505;--input:rgba(0,0,0,.25);--bg-rgb:4,34,27;--deep-rgb:2,15,12;--gold-rgb:217,180,90;--ok-rgb:126,224,181;--line:rgba(var(--gold-rgb),.28);--cyan:var(--gold2);--emerald:var(--ok);--red:#ff9a8a;--violet:var(--gold2);--band:var(--bg)}
+:root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--modal:#072a21;--footer:#021611;--on-gold:#1b1505;--input:rgba(0,0,0,.25);--bg-rgb:4,34,27;--deep-rgb:2,15,12;--gold-rgb:217,180,90;--ok-rgb:126,224,181;--line:rgba(var(--gold-rgb),.28);--cyan:var(--gold2);--emerald:var(--ok);--red:#ff9a8a;--band:var(--bg)}
 html[data-theme=violet]{--bg:#140d2b;--bg2:#1a1237;--card:#221848;--card2:#342467;--gold:#ff7eb6;--gold2:#ffb6d6;--paper:#f7f0ff;--muted:#b9acd6;--ok:#8ef0c8;--modal:#1b1239;--footer:#0d0820;--on-gold:#2a0a1b;--bg-rgb:20,13,43;--deep-rgb:9,5,22;--gold-rgb:255,126,182;--ok-rgb:142,240,200}
 html[data-theme=navy]{--bg:#0a1a2f;--bg2:#0d2139;--card:#112b49;--card2:#183b63;--gold:#ff8a6b;--gold2:#ffb7a0;--paper:#eef4fb;--muted:#a3b6cc;--ok:#6fe3c1;--modal:#0f2644;--footer:#06111f;--on-gold:#2b0d05;--bg-rgb:10,26,47;--deep-rgb:4,10,20;--gold-rgb:255,138,107;--ok-rgb:111,227,193}
 html[data-theme=wine]{--bg:#2a0f1c;--bg2:#331323;--card:#431a2e;--card2:#5a2540;--gold:#e9c7a0;--gold2:#f7e0c4;--paper:#faf0e6;--muted:#c9a9b4;--ok:#8fe0b8;--modal:#3a1627;--footer:#1a0911;--on-gold:#2a0f1c;--bg-rgb:42,15,28;--deep-rgb:20,7,13;--gold-rgb:233,199,160;--ok-rgb:143,224,184}
@@ -578,26 +578,34 @@ section.marquee::before{display:none}
 <script>
 let state={creators:[],ads:[],products:[],care_cases:[],polls:[],charity:null,upi_id:"akshaycreation7@naviaxis",upi_name:"Akshay K P"};
 let token=localStorage.getItem("akc_token")||"",dash=null,dashTab="creators",adTimer=null,amt="",tt;
-const $=id=>document.getElementById(id),v=id=>$(id).value;
+const $=id=>document.getElementById(id);
+const v=id=> {
+  const el = document.getElementById(id);
+  return el ? el.value : "";
+};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const link=u=>/^https?:\/\//i.test(u||"")?esc(String(u).replace(/['"<>\s]/g,c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0"))):"#";
 const modal=(id,on)=>$(id).classList.toggle("open",!!on);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal-bg.open").forEach(m=>m.classList.remove("open"))});
 
 function showSuccessModal(msg){
-  $("successMsg").textContent = msg || "Your submission was successful!";
-  $("successOverlay").classList.add("show");
+  const msgEl = $("successMsg");
+  if(msgEl) msgEl.textContent = msg || "Your submission was successful!";
+  const overlay = $("successOverlay");
+  if(overlay) overlay.classList.add("show");
   // Automatically scroll down smoothly to the FAQ / Q&A section
   setTimeout(() => {
-    $("faqSection").scrollIntoView({ behavior: 'smooth' });
+    const faq = $("faqSection");
+    if(faq) faq.scrollIntoView({ behavior: 'smooth' });
   }, 300);
 }
 function closeSuccessModal(){
-  $("successOverlay").classList.remove("show");
+  const overlay = $("successOverlay");
+  if(overlay) overlay.classList.remove("show");
 }
 
 function playSuccessSound(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),t=a.currentTime;[523.25,659.25,783.99,1046.5].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),s=t+i*.08;o.type="triangle";o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.2,s+.02);g.gain.exponentialRampToValueAtTime(.001,s+.6);o.connect(g);g.connect(a.destination);o.start(s);o.stop(s+.6)})}catch(e){}}
-function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",3800)}
+function toast(m){const t=$("toast");if(!t)return;t.textContent=m;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",3800)}
 async function api(path,opts={}){const h={"Content-Type":"application/json",...(opts.headers||{})};if(token)h.Authorization="Bearer "+token;const r=await fetch(path,{...opts,headers:h}),d=await r.json();if(!r.ok)throw new Error(d.error||"Request failed");return d}
 const post=(p,b)=>api(p,{method:"POST",body:JSON.stringify(b)});
 
@@ -609,22 +617,29 @@ function openCharityModal(){
   if(!c)return;
   const uId=c.upi_id||"limsontt1@fbl",uName=c.upi_name||c.title;
   const upiUrl=`upi://pay?pa=${encodeURIComponent(uId)}&pn=${encodeURIComponent(uName)}&cu=INR&tn=${encodeURIComponent(c.title)}`;
-  $("charityModalTitle").textContent=c.title;
-  $("charityQrImg").src=qr(upiUrl);
-  $("charityUpiName").textContent=uName;
-  $("charityUpiIdText").textContent=uId;
-  $("charityDeepLink").href=upiUrl;
+  if($("charityModalTitle")) $("charityModalTitle").textContent=c.title;
+  if($("charityQrImg")) $("charityQrImg").src=qr(upiUrl);
+  if($("charityUpiName")) $("charityUpiName").textContent=uName;
+  if($("charityUpiIdText")) $("charityUpiIdText").textContent=uId;
+  if($("charityDeepLink")) $("charityDeepLink").href=upiUrl;
   const ext=$("charityExternalLink");
-  if(c.donate_link){ext.href=c.donate_link;ext.style.display="inline-flex"}else{ext.style.display="none"}
+  if(ext){if(c.donate_link){ext.href=c.donate_link;ext.style.display="inline-flex"}else{ext.style.display="none"}}
   modal("charityModal",1);
 }
 function copyCharityUpi(){navigator.clipboard?.writeText(state.charity?.upi_id||"limsontt1@fbl");toast("Copied Campaign UPI ID")}
 
 function openQrPopup(){amt="";refreshPopupQr();modal("qrPopupModal",1)}
 function setPopupDonateAmt(a){amt=a;refreshPopupQr()}
-function refreshPopupQr(){const u=upi(amt>0?amt:"","Support AKSHAY CREATION"),d=$("popupDeepLink");$("popupQrImg").src=qr(u);$("popupQrLabel").textContent=amt>0?`Scan to support ₹${amt}`:"Scan with any UPI app";d.href=u;d.textContent=amt>0?`Donate ₹${amt} via UPI app ↗`:"Open UPI app & pay ↗";document.querySelectorAll("#qrPopupModal .tab").forEach(b=>b.classList.toggle("active",b.dataset.a===String(amt)))}
+function refreshPopupQr(){
+  const u=upi(amt>0?amt:"","Support AKSHAY CREATION");
+  const d=$("popupDeepLink");
+  if($("popupQrImg")) $("popupQrImg").src=qr(u);
+  if($("popupQrLabel")) $("popupQrLabel").textContent=amt>0?`Scan to support ₹${amt}`:"Scan with any UPI app";
+  if(d){d.href=u;d.textContent=amt>0?`Donate ₹${amt} via UPI app ↗`:"Open UPI app & pay ↗";}
+  document.querySelectorAll("#qrPopupModal .tab").forEach(b=>b.classList.toggle("active",b.dataset.a===String(amt)));
+}
 function copyUpiId(){navigator.clipboard?.writeText(state.upi_id);toast("Copied UPI ID")}
-function copyOrderId(){navigator.clipboard?.writeText($("doneOrderId").textContent);toast("Copied Order ID")}
+function copyOrderId(){const oId=$("doneOrderId");if(oId) navigator.clipboard?.writeText(oId.textContent);toast("Copied Order ID")}
 
 async function submitCreatorApp(e){
   e.preventDefault();
@@ -650,7 +665,19 @@ async function submitCare(e){
   }catch(x){toast(x.message)}
 }
 
-function openCheckout(id){const p=state.products.find(x=>x.id==id);if(!p)return;const u=upi(p.price_inr,p.title);$("chkProductId").value=id;$("chkTitle").textContent=p.title;$("chkPrice").textContent=`Pay exact amount: ₹${p.price_inr}`;$("chkQrImg").src=qr(u);$("chkUpiDeepLink").href=u;$("upiPayStep").style.display="block";$("upiDoneStep").style.display="none";modal("checkoutModal",1)}
+function openCheckout(id){
+  const p=state.products.find(x=>x.id==id);
+  if(!p)return;
+  const u=upi(p.price_inr,p.title);
+  if($("chkProductId")) $("chkProductId").value=id;
+  if($("chkTitle")) $("chkTitle").textContent=p.title;
+  if($("chkPrice")) $("chkPrice").textContent=`Pay exact amount: ₹${p.price_inr}`;
+  if($("chkQrImg")) $("chkQrImg").src=qr(u);
+  if($("chkUpiDeepLink")) $("chkUpiDeepLink").href=u;
+  if($("upiPayStep")) $("upiPayStep").style.display="block";
+  if($("upiDoneStep")) $("upiDoneStep").style.display="none";
+  modal("checkoutModal",1);
+}
 
 async function submitUpiPayment(e){
   e.preventDefault();
@@ -669,71 +696,96 @@ async function submitUpiPayment(e){
   }catch(x){toast(x.message)}
 }
 
-async function checkOrderStatus(){const q=v("trackOrderInput").trim(),b=$("trackOrderResult");if(!q)return toast("Enter Order ID or UTR");b.style.display="block";try{const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));b.innerHTML=r.status==="PAID"?`<span class="badge badge-ok">Paid</span> <a href="${link(r.download_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="margin-left:8px">Download Asset ↗</a>`:`<span class="badge badge-warn">${r.status==="REJECTED"?"Rejected":"Pending"}</span>`}catch(x){b.innerHTML=`<span style="color:var(--red);font-weight:700">${esc(x.message)}</span>`}}
+async function checkOrderStatus(){
+  const q=v("trackOrderInput").trim(),b=$("trackOrderResult");
+  if(!q)return toast("Enter Order ID or UTR");
+  if(b) b.style.display="block";
+  try{
+    const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));
+    if(b) b.innerHTML=r.status==="PAID"?`<span class="badge badge-ok">Paid</span> <a href="${link(r.download_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="margin-left:8px">Download Asset ↗</a>`:`<span class="badge badge-warn">${r.status==="REJECTED"?"Rejected":"Pending"}</span>`;
+  }catch(x){
+    if(b) b.innerHTML=`<span style="color:var(--red);font-weight:700">${esc(x.message)}</span>`;
+  }
+}
 
 async function votePoll(id,i){try{await post("/api/polls/vote",{poll_id:id,option_index:i});toast("Vote recorded!");loadPublic()}catch(e){toast(e.message)}}
 
-function startTrafficSimulation(){let t=28400,u=38;setInterval(()=>{t=Math.max(18200,Math.min(36900,t+Math.floor(Math.random()*31)-14));$("trafficCount").textContent=(t/1000).toFixed(1)+"K"},7000);setInterval(()=>{u=Math.max(22,Math.min(74,u+Math.floor(Math.random()*7)-3));$("activeNow").textContent=u},5000)}
+function startTrafficSimulation(){let t=28400,u=38;setInterval(()=>{t=Math.max(18200,Math.min(36900,t+Math.floor(Math.random()*31)-14));const tc=$("trafficCount");if(tc)tc.textContent=(t/1000).toFixed(1)+"K"},7000);setInterval(()=>{u=Math.max(22,Math.min(74,u+Math.floor(Math.random()*7)-3));const an=$("activeNow");if(an)an.textContent=u},5000)}
 function initAdSlideshow(){clearInterval(adTimer);const s=document.querySelectorAll(".ad-slide");if(s.length<2)return;let i=0;adTimer=setInterval(()=>{s[i].classList.remove("active");i=(i+1)%s.length;s[i].classList.add("active")},4500)}
-function initCreatorAutoScroll(){const c=$("creatorsList");if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;setInterval(()=>{if(c.matches(":hover"))return;c.scrollLeft+c.clientWidth>=c.scrollWidth-10?c.scrollTo({left:0,behavior:"smooth"}):c.scrollBy({left:300,behavior:"smooth"})},3500)}
+function initCreatorAutoScroll(){const c=$("creatorsList");if(!c||matchMedia("(prefers-reduced-motion: reduce)").matches)return;setInterval(()=>{if(c.matches(":hover"))return;c.scrollLeft+c.clientWidth>=c.scrollWidth-10?c.scrollTo({left:0,behavior:"smooth"}):c.scrollBy({left:300,behavior:"smooth"})},3500)}
 
 async function loadPublic(){try{
   const d=await api("/api/public/overview");state={...state,...d};
   
   // Render Charity Banner if active
   const cCont=$("charitySectionContainer");
-  if(d.charity){
-    const c=d.charity;
-    const target=c.target_amount||14000000;
-    const raised=c.raised_amount||127570757;
-    const pct=Math.min(100, Math.round((raised/target)*100));
-    cCont.innerHTML=`
-      <div class="charity-banner">
-        <div class="charity-grid">
-          <div>
-            ${c.banner_url?`<img src="${c.banner_url}" alt="${esc(c.title)}" class="charity-img" />`:""}
-          </div>
-          <div>
-            <span class="badge badge-warn">Emergency Medical Help 💖</span>
-            <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);margin:8px 0">${esc(c.title)}</h2>
-            <p class="sub" style="margin-bottom:14px">${esc(c.description||"Every contribution can save a life and make a huge difference.")}</p>
-            <div style="font-size:.9rem;font-weight:600;color:var(--gold2);display:flex;justify-content:space-between">
-              <span>Raised: ₹${raised.toLocaleString('en-IN')}</span>
-              <span>Target: ₹${target.toLocaleString('en-IN')} (${pct}%)</span>
+  if(cCont){
+    if(d.charity){
+      const c=d.charity;
+      const target=c.target_amount||14000000;
+      const raised=c.raised_amount||127570757;
+      const pct=Math.min(100, Math.round((raised/target)*100));
+      cCont.innerHTML=`
+        <div class="charity-banner">
+          <div class="charity-grid">
+            <div>
+              ${c.banner_url?`<img src="${c.banner_url}" alt="${esc(c.title)}" class="charity-img" />`:""}
             </div>
-            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-            <div class="row" style="margin-top:14px">
-              <button class="btn btn-primary btn-sm" onclick="openCharityModal()">💖 Help &amp; Donate Now</button>
-              ${c.donate_link?`<a href="${link(c.donate_link)}" target="_blank" rel="noopener" class="btn btn-sm">Official Page ↗</a>`:""}
+            <div>
+              <span class="badge badge-warn">Emergency Medical Help 💖</span>
+              <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);margin:8px 0">${esc(c.title)}</h2>
+              <p class="sub" style="margin-bottom:14px">${esc(c.description||"Every contribution can save a life and make a huge difference.")}</p>
+              <div style="font-size:.9rem;font-weight:600;color:var(--gold2);display:flex;justify-content:space-between">
+                <span>Raised: ₹${raised.toLocaleString('en-IN')}</span>
+                <span>Target: ₹${target.toLocaleString('en-IN')} (${pct}%)</span>
+              </div>
+              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+              <div class="row" style="margin-top:14px">
+                <button class="btn btn-primary btn-sm" onclick="openCharityModal()">💖 Help &amp; Donate Now</button>
+                ${c.donate_link?`<a href="${link(c.donate_link)}" target="_blank" rel="noopener" class="btn btn-sm">Official Page ↗</a>`:""}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    `;
-  } else {
-    cCont.innerHTML="";
+      `;
+    } else {
+      cCont.innerHTML="";
+    }
   }
 
-  $("creatorsList").innerHTML=d.creators.length?d.creators.map(c=>`<div class="creator-slide"><div class="card" style="height:100%">${c.avatar_url?`<img src="${link(c.avatar_url)}" alt="" class="creator-avatar" onerror="this.style.display='none'">`:""}<div style="margin-top:10px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--cyan);font-weight:700;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 14px;min-height:40px">${esc(c.bio)}</p><a href="${link(c.profile_url)}" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Visit Profile ↗</a></div></div>`).join(""):`<div class="card" style="width:100%;text-align:center"><p class="sub">No featured creators yet. Tap 'Register as Creator' above!</p></div>`;
-  if(d.ads.length){$("adsContainer").innerHTML=d.ads.map((a,i)=>`<div class="ad-slide ${i?"":"active"}" ${a.media_url?`style="background-image:url('${link(a.media_url)}')"`:""}><div class="ad-content"><span class="badge" style="margin-bottom:8px">${esc(a.badge||"Sponsored")}</span><h3 style="font-size:1.5rem;margin:6px 0 10px">${esc(a.title)}</h3><a href="${link(a.target_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Explore Campaign ↗</a></div></div>`).join("");initAdSlideshow()}
-  $("productsList").innerHTML=d.products.map(p=>`<div class="card">${p.image_url?`<img src="${link(p.image_url)}" alt="${esc(p.title)}" class="card-cover" onerror="this.style.display='none'">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:14px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button class="btn btn-primary btn-sm" onclick="openCheckout(${+p.id})">Buy via UPI</button></div></div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">Digital packs launching soon.</p></div>`;
-  $("pollsList").innerHTML=d.polls.map(pl=>`<div class="card"><h3 style="margin-top:0">${esc(pl.question)}</h3><p class="sub" style="font-size:.8rem">${+pl.total_votes} verified vote(s)</p>${pl.options.map((o,i)=>{const pct=pl.total_votes?Math.round(pl.counts[i]/pl.total_votes*100):0;return`<button class="poll-opt ${pl.user_voted===i?"voted":""}" onclick="votePoll(${+pl.id},${i})"><span>${esc(o)}</span><span>${+pl.counts[i]} (${pct}%)</span></button>`}).join("")}</div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">No active polls.</p></div>`;
-initReveal();
+  const cl=$("creatorsList");
+  if(cl) cl.innerHTML=d.creators.length?d.creators.map(c=>`<div class="creator-slide"><div class="card" style="height:100%">${c.avatar_url?`<img src="${link(c.avatar_url)}" alt="" class="creator-avatar" onerror="this.style.display='none'">`:""}<div style="margin-top:10px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--cyan);font-weight:700;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 14px;min-height:40px">${esc(c.bio)}</p><a href="${link(c.profile_url)}" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Visit Profile ↗</a></div></div>`).join(""):`<div class="card" style="width:100%;text-align:center"><p class="sub">No featured creators yet. Tap 'Register as Creator' above!</p></div>`;
+  
+  if(d.ads.length){
+    const ac=$("adsContainer");
+    if(ac) {
+      ac.innerHTML=d.ads.map((a,i)=>`<div class="ad-slide ${i?"":"active"}" ${a.media_url?`style="background-image:url('${link(a.media_url)}')"`:""}><div class="ad-content"><span class="badge" style="margin-bottom:8px">${esc(a.badge||"Sponsored")}</span><h3 style="font-size:1.5rem;margin:6px 0 10px">${esc(a.title)}</h3><a href="${link(a.target_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Explore Campaign ↗</a></div></div>`).join("");
+      initAdSlideshow();
+    }
+  }
+  
+  const pl=$("productsList");
+  if(pl) pl.innerHTML=d.products.map(p=>`<div class="card">${p.image_url?`<img src="${link(p.image_url)}" alt="${esc(p.title)}" class="card-cover" onerror="this.style.display='none'">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:14px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button class="btn btn-primary btn-sm" onclick="openCheckout(${+p.id})">Buy via UPI</button></div></div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">Digital packs launching soon.</p></div>`;
+  
+  const pol=$("pollsList");
+  if(pol) pol.innerHTML=d.polls.map(pl=>`<div class="card"><h3 style="margin-top:0">${esc(pl.question)}</h3><p class="sub" style="font-size:.8rem">${+pl.total_votes} verified vote(s)</p>${pl.options.map((o,i)=>{const pct=pl.total_votes?Math.round(pl.counts[i]/pl.total_votes*100):0;return`<button class="poll-opt ${pl.user_voted===i?"voted":""}" onclick="votePoll(${+pl.id},${i})"><span>${esc(o)}</span><span>${+pl.counts[i]} (${pct}%)</span></button>`}).join("")}</div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">No active polls.</p></div>`;
+  
+  initReveal();
 }catch(e){console.error(e)}}
 
 /* ---------- theme + scroll effects ---------- */
 const TH={emerald:"#04221b",violet:"#140d2b",navy:"#0a1a2f",wine:"#2a0f1c"};
-function setTheme(t){if(!TH[t])t="emerald";document.documentElement.dataset.theme=t;try{localStorage.setItem("akc_theme",t)}catch(e){}document.querySelector('meta[name=theme-color]').content=TH[t];document.querySelectorAll("#themes [data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t===t));$("themes").classList.remove("open")}
+function setTheme(t){if(!TH[t])t="emerald";document.documentElement.dataset.theme=t;try{localStorage.setItem("akc_theme",t)}catch(e){}const mc=document.querySelector('meta[name=theme-color]');if(mc) mc.content=TH[t];document.querySelectorAll("#themes [data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t===t));const thm=$("themes");if(thm) thm.classList.remove("open")}
 let io;
 function countUp(el){const m=el.textContent.match(/^([\d.]+)(.*)$/);if(!m||matchMedia("(prefers-reduced-motion: reduce)").matches)return;const end=parseFloat(m[1]),dec=(m[1].split(".")[1]||"").length,suf=m[2],t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3);el.textContent=(end*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(f)})(t0)}
 function initReveal(){
   if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add("in");io.unobserve(e.target);if(e.target.classList.contains("stats-grid"))e.target.querySelectorAll(".stat-num").forEach(countUp)}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
   document.querySelectorAll(".sec-head,.stats-grid,.hero p,.hero-cta,#about .card,#services .card,.steps li,#care .card,#store>.card,#productsList>*,#pollsList,.creator-carousel,.ad-landscape-container,.faq details").forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add("reveal");el.style.setProperty("--d",Math.min([...el.parentNode.children].indexOf(el),5)*90+"ms");io.observe(el)})}
 function initFx(){
-  const m=$("mqt");m.innerHTML=m.innerHTML.repeat(4);
+  const m=$("mqt");if(m) m.innerHTML=m.innerHTML.repeat(4);
   setTheme(localStorage.getItem("akc_theme")||"emerald");
   const pg=$("prog"),tb=$("totop");let tick=false;
-  addEventListener("scroll",()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;pg.style.setProperty("--p",h>0?y/h:0);document.documentElement.style.setProperty("--sy",y);tb.classList.toggle("show",y>700);tick=false})},{passive:true});
+  addEventListener("scroll",()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;if(pg) pg.style.setProperty("--p",h>0?y/h:0);document.documentElement.style.setProperty("--sy",y);if(tb) tb.classList.toggle("show",y>700);tick=false})},{passive:true});
   initReveal();
   if(location.hash==="#admin")openPortal();
 }
@@ -746,23 +798,29 @@ const secs=t=>(KEYS[t]||[]).filter(k=>dash&&Array.isArray(dash[k])).map(k=>[k,da
 const cnt=t=>secs(t).reduce((n,[,a])=>n+a.length,0);
 const fmt=x=>x==null?"":Array.isArray(x)?x.join(", "):typeof x==="object"?JSON.stringify(x):String(x);
 const hit=r=>!admQ||JSON.stringify(r).toLowerCase().includes(admQ);
-function togglePw(){const p=$("lPass");p.type=p.type==="password"?"text":"password"}
-function openPortal(){$("admin").hidden=false;document.body.style.overflow="hidden";if(token)loadDashboard();else showLogin();if(location.hash!=="#admin")history.replaceState(null,"","#admin")}
-function closePortal(){$("admin").hidden=true;document.body.style.overflow="";history.replaceState(null,"",location.pathname+location.search)}
-function showLogin(){$("lErr").textContent="";$("admLogin").hidden=false;$("admDash").hidden=true;setTimeout(()=>$("lUser").focus(),60)}
-async function doLogin(e){e.preventDefault();const b=$("lBtn");b.disabled=true;b.textContent="Signing in…";try{const r=await post("/api/auth/login",{username:v("lUser"),password:v("lPass")});token=r.token;localStorage.setItem("akc_token",token);$("lPass").value="";if(await loadDashboard())toast("Welcome back!")}catch(x){const f=$("admForm");f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");$("lErr").textContent=x.message}b.disabled=false;b.textContent="Sign in"}
+function togglePw(){const p=$("lPass");if(p) p.type=p.type==="password"?"text":"password"}
+function openPortal(){const adm=$("admin");if(adm) adm.hidden=false;document.body.style.overflow="hidden";if(token)loadDashboard();else showLogin();if(location.hash!=="#admin")history.replaceState(null,"","#admin")}
+function closePortal(){const adm=$("admin");if(adm) adm.hidden=true;document.body.style.overflow="";history.replaceState(null,"",location.pathname+location.search)}
+function showLogin(){const err=$("lErr");if(err) err.textContent="";const al=$("admLogin");if(al) al.hidden=false;const ad=$("admDash");if(ad) ad.hidden=true;setTimeout(()=>{const lu=$("lUser");if(lu) lu.focus();},60)}
+async function doLogin(e){e.preventDefault();const b=$("lBtn");if(b){b.disabled=true;b.textContent="Signing in…";}try{const r=await post("/api/auth/login",{username:v("lUser"),password:v("lPass")});token=r.token;localStorage.setItem("akc_token",token);const lp=$("lPass");if(lp) lp.value="";if(await loadDashboard())toast("Welcome back!")}catch(x){const f=$("admForm");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");}const lErr=$("lErr");if(lErr) lErr.textContent=x.message;}if(b){b.disabled=false;b.textContent="Sign in";}}
 function doLogout(){token="";localStorage.removeItem("akc_token");dash=null;showLogin()}
-async function loadDashboard(){try{dash=await api("/api/admin/dashboard")}catch(e){doLogout();return false}$("admLogin").hidden=true;$("admDash").hidden=false;renderAdm();return true}
-function admGo(k){admTab=k;admQ="";$("admSearch").value="";renderAdm();$("admin").scrollTo({top:0})}
+async function loadDashboard(){try{dash=await api("/api/admin/dashboard")}catch(e){doLogout();return false}const al=$("admLogin");if(al) al.hidden=true;const ad=$("admDash");if(ad) ad.hidden=false;renderAdm();return true}
+function admGo(k){admTab=k;admQ="";const as=$("admSearch");if(as) as.value="";renderAdm();const adm=$("admin");if(adm) adm.scrollTo({top:0})}
 async function adminAction(ep,p){try{await post(ep,p);toast("Saved!");loadDashboard();loadPublic()}catch(e){toast(e.message)}}
 const creatorCard=c=>`<div class="card"><div class="row" style="justify-content:flex-start">${c.avatar_url?`<img class="creator-avatar" src="${link(c.avatar_url)}" alt="" onerror="this.style.display='none'">`:""}<div><h3 style="margin:0">${esc(c.name)}</h3><p class="sub">${esc(c.handle)} • ${esc(c.platform)}</p></div></div><p class="sub" style="margin:12px 0">${esc(c.bio)}</p><div class="row"><span class="badge ${c.status==="approved"?"badge-ok":"badge-warn"}">${esc(c.status)}</span><div style="display:flex;gap:8px"><a class="btn btn-sm" href="${link(c.profile_url)}" target="_blank" rel="noopener">Profile</a>${c.status!=="approved"?`<button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators',{action:'status',id:${+c.id},status:'approved'})">Approve</button>`:""}<button class="btn btn-sm" onclick="admDel('creators',${+c.id})">Delete</button></div></div></div>`;
 function renderAdm(){
-  $("admUser").textContent=`${dash.username||"admin"} • ${dash.role||""}`;
-  $("admNav").innerHTML=ADM.map(([k,l])=>`<button class="${admTab===k?"on":""}" onclick="admGo('${k}')">${l}${k!=="overview"?`<i>${cnt(k)}</i>`:""}</button>`).join("");
-  $("admTitle").textContent=ADM.find(a=>a[0]===admTab)[1];
-  $("admTools").hidden=admTab==="overview"||admTab==="staff"||admTab==="charity";
-  const nw=$("admNew"),NEW={creators:["creators","Add creator"],ads:["ads","New ad"],charity:["charity","Add Charity Campaign"],store:["products","New product"],polls:["polls","New poll"]}[admTab];nw.hidden=!NEW;if(NEW){nw.textContent="＋ "+NEW[1];nw.onclick=()=>admForm(NEW[0])}
+  const au=$("admUser");
+  if(au) au.textContent=`${dash.username||"admin"} • ${dash.role||""}`;
+  const an=$("admNav");
+  if(an) an.innerHTML=ADM.map(([k,l])=>`<button class="${admTab===k?"on":""}" onclick="admGo('${k}')">${l}${k!=="overview"?`<i>${cnt(k)}</i>`:""}</button>`).join("");
+  const at=$("admTitle");
+  if(at) at.textContent=ADM.find(a=>a[0]===admTab)[1];
+  const atools=$("admTools");
+  if(atools) atools.hidden=admTab==="overview"||admTab==="staff"||admTab==="charity";
+  const nw=$("admNew"),NEW={creators:["creators","Add creator"],ads:["ads","New ad"],charity:["charity","Add Charity Campaign"],store:["products","New product"],polls:["polls","New poll"]}[admTab];
+  if(nw){nw.hidden=!NEW;if(NEW){nw.textContent="＋ "+NEW[1];nw.onclick=()=>admForm(NEW[0])}}
   const b=$("admBody");
+  if(!b) return;
   if(admTab==="overview"){const pend=(dash.creators||[]).filter(c=>c.status&&c.status!=="approved");b.innerHTML=`<div class="tiles">${ADM.slice(1,8).map(([k,l])=>`<button class="card tile" onclick="admGo('${k}')"><span class="stat-num">${cnt(k)}</span><span>${l}</span></button>`).join("")}</div><h3 class="adm-h">Waiting for approval <small>${pend.length}</small></h3>${pend.length?`<div class="recs">${pend.map(creatorCard).join("")}</div>`:`<p class="sub">Nothing waiting. New creator registrations will appear here.</p>`}`;return}
   if(admTab==="staff"){
     b.innerHTML=`<div class="card" style="margin-bottom:20px">
@@ -817,11 +875,15 @@ const admSet=(res,id,data)=>adminAction("/api/admin/"+res,{action:"update",id,da
 function admDel(res,id){if(confirm("Delete this permanently?"))adminAction("/api/admin/"+res,{action:"delete",id})}
 function admForm(res,id){
   const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};
-  $("admFormBody").innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>{
-    if(t==="file")return`<label>${l}</label><input type="file" accept="image/*" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
-    return`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`
-  }).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
-  modal("admModal",1)}
+  const afb = $("admFormBody");
+  if(afb){
+    afb.innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>{
+      if(t==="file")return`<label>${l}</label><input type="file" accept="image/*" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
+      return`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`
+    }).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
+  }
+  modal("admModal",1);
+}
 async function admSave(e,res,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(res==="polls")d.options=String(d.options||"").split("\n").map(x=>x.trim()).filter(Boolean);try{await post("/api/admin/"+res,{action:id?"update":"create",id,data:d});modal("admModal",0);toast("Saved!");loadDashboard();loadPublic()}catch(x){toast(x.message)}}
 async function addStaff(e){
   e.preventDefault();
