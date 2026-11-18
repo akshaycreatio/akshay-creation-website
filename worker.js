@@ -33,7 +33,8 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-          if (request.method === "POST" && path === "/api/auth/login") {
+    try {
+      if (request.method === "POST" && path === "/api/auth/login") {
         const body = await request.json();
         const { username, password } = body;
         
@@ -44,7 +45,6 @@ export default {
 
         const token = await sha256Hex(username + Math.random() + Date.now());
         
-        // Ensure admin record exists or update token
         try {
           await env.DB.prepare(
             "UPDATE admins SET token = ?, token_created_at = ? WHERE id = 1"
@@ -53,8 +53,6 @@ export default {
 
         await logAudit(env, username, "superadmin", "ADMIN_LOGIN", "Successful login");
         return j({ token, username: "OWNER_SETUP_KEY", role: "superadmin" });
-      }
-
       }
 
       if (request.method === "GET" && path === "/api/public/overview") {
@@ -262,7 +260,7 @@ export default {
             return j({ success: true });
           }
 
-          if (path === "/api/admin/polls") {
+          if, path === "/api/admin/polls") {
             if (action === "create") {
               const opts = data.options || [];
               const counts = new Array(opts.length).fill(0);
@@ -271,7 +269,7 @@ export default {
             } else if (action === "update") {
               await env.DB.prepare("UPDATE polls SET active = ? WHERE id = ?").bind(data.active ?? 1, id).run();
             } else if (action === "delete") {
-              await env.DB.prepare("DELETE FROM polls WHERE id = ?").bind(id).run();
+              await env.DB.prepare("DELETE polls WHERE id = ?").bind(id).run();
             }
             await logAudit(env, admin.username, admin.role, "POLL_" + action.toUpperCase(), `ID: ${id}`);
             return j({ success: true });
