@@ -626,7 +626,7 @@ async function loadPublic(){try{
       <div class="charity-banner">
         <div class="charity-grid">
           <div>
-            ${c.banner_url?`<img src="${link(c.banner_url)}" alt="${esc(c.title)}" class="charity-img" />`:""}
+            ${c.banner_url?`<img src="${c.banner_url}" alt="${esc(c.title)}" class="charity-img" />`:""}
           </div>
           <div>
             <span class="badge badge-warn">Emergency Medical Help 💖</span>
@@ -730,7 +730,7 @@ function admExport(){const rows=secs(admTab).flatMap(([,a])=>a);if(!rows.length)
 const FORMS={
   creators:[["name","Name"],["platform","Platform (YouTube / Instagram / Twitter)"],["handle","Handle"],["profile_url","Profile URL"],["avatar_url","Avatar URL (optional)"],["bio","Bio","textarea"]],
   ads:[["title","Title"],["badge","Badge (e.g. Sponsored)"],["media_url","Banner image URL"],["target_url","Link URL"],["sort","Order (0 = first)","number"]],
-  charity:[["title","Campaign Title (e.g. Help Baby Elroy)"],["banner_url","Banner Image URL (Horizontal 16:9)"],["target_amount","Target Amount (₹)","number"],["raised_amount","Raised Amount so far (₹)","number"],["upi_id","Official UPI ID (e.g. limsontt1@fbl)"],["upi_name","UPI Account Name"],["donate_link","Official External Link (GoFundMe/Fundraiser URL)"],["description","Short Description","textarea"],["active","Active (1 = Show, 0 = Hide)","number"]],
+  charity:[["title","Campaign Title (e.g. Help Baby Elroy)"],["banner_url","Banner Image (Upload Photo or select file)","file"],["target_amount","Target Amount (₹)","number"],["raised_amount","Raised Amount so far (₹)","number"],["upi_id","Official UPI ID (e.g. limsontt1@fbl)"],["upi_name","UPI Account Name"],["donate_link","Official External Link (GoFundMe/Fundraiser URL)"],["description","Short Description","textarea"],["active","Active (1 = Show, 0 = Hide)","number"]],
   products:[["title","Title"],["category","Category"],["description","Description","textarea"],["price_inr","Price (₹)","number"],["image_url","Cover image URL"],["download_url","Private download link (shown only after payment)"]],
   polls:[["question","Question"],["options","Options (one per line, 2 to 6)","textarea"]]
 };
@@ -752,7 +752,10 @@ const admSet=(res,id,data)=>adminAction("/api/admin/"+res,{action:"update",id,da
 function admDel(res,id){if(confirm("Delete this permanently?"))adminAction("/api/admin/"+res,{action:"delete",id})}
 function admForm(res,id){
   const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};
-  $("admFormBody").innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`}`).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
+  $("admFormBody").innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>{
+    if(t==="file")return`<label>${l}</label><input type="file" accept="image/*" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
+    return`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`
+  }).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
   modal("admModal",1)}
 async function admSave(e,res,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(res==="polls")d.options=String(d.options||"").split("\n").map(x=>x.trim()).filter(Boolean);try{await post("/api/admin/"+res,{action:id?"update":"create",id,data:d});modal("admModal",0);toast("Saved!");loadDashboard();loadPublic()}catch(x){toast(x.message)}}
 async function addStaff(e){
@@ -764,7 +767,7 @@ async function addStaff(e){
     loadDashboard();
   }catch(x){toast(x.message)}
 }
-function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
+function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g, " "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
 
 loadPublic();startTrafficSimulation();initCreatorAutoScroll();initFx();
 </script>
