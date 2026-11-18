@@ -382,7 +382,7 @@
       </div>
     </section>
 
-    <!-- SUPPORT AKSHAY CREATION (CLEAN POPUP QR) -->
+    <!-- SUPPORT AKSHAY CREATION -->
     <section id="care">
       <div class="wrap">
         <div class="sec-head">
@@ -470,7 +470,7 @@
     </div>
   </div>
 
-  <!-- CHECKOUT MODAL -->
+  <!-- CHECKOUT MODAL (WITH CINEMATIC APPRECIATION POPUP / "NANNI" VIBE) -->
   <div class="modal-bg" id="checkoutModal">
     <div class="modal" style="max-width:450px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -478,6 +478,7 @@
         <button class="btn btn-ghost btn-sm" onclick="closeCheckout()">Close</button>
       </div>
       <p id="chkPrice" style="color:var(--cyan);font-weight:800;font-size:1.15rem;margin:6px 0 4px;"></p>
+      
       <div id="upiPayStep">
         <div class="qr-box">
           <div style="font-size:0.75rem;font-weight:700;color:#475569;">SCAN WITH ANY UPI APP</div>
@@ -502,13 +503,17 @@
           <button class="btn btn-primary" id="chkSubmitBtn" style="width:100%;">Confirm Payment &amp; Submit UTR</button>
         </form>
       </div>
-      <div id="upiDoneStep" style="display:none;text-align:center;padding:12px 0;">
-        <span class="badge badge-warn" style="font-size:0.8rem;padding:5px 12px;">PENDING VERIFICATION</span>
-        <h4 style="margin:12px 0 6px;">Payment Details Submitted!</h4>
-        <p style="color:var(--muted);font-size:0.86rem;margin-bottom:12px;">Save your Order ID below.</p>
-        <div class="card" style="margin-bottom:14px;background:#13132b;">
-          <div style="font-size:0.75rem;color:var(--muted);">YOUR ORDER ID</div>
-          <div id="doneOrderId" style="font-size:1.1rem;font-weight:800;color:var(--cyan);margin-top:4px;word-break:break-all;"></div>
+
+      <!-- SUCCESS STEP WITH CINEMATIC "NANNI" APPRECIATION -->
+      <div id="upiDoneStep" style="display:none;text-align:center;padding:16px 0;">
+        <div style="font-size:3rem;margin-bottom:8px;">🙏✨</div>
+        <span class="badge badge-ok" style="font-size:0.8rem;padding:6px 14px;">THANK YOU SO MUCH!</span>
+        <h3 style="margin:12px 0 6px;color:#f0abfc;">"Nanni... Romba Nanni!"</h3>
+        <p style="color:var(--muted);font-size:0.86rem;margin-bottom:14px;">Your support fuels this journey. Payment details submitted successfully!</p>
+        
+        <div class="card" style="margin-bottom:16px;background:#131026;text-align:left;">
+          <div style="font-size:0.72rem;color:var(--muted);">YOUR ORDER ID (SAVE THIS)</div>
+          <div id="doneOrderId" style="font-size:1.05rem;font-weight:800;color:var(--cyan);margin-top:4px;word-break:break-all;"></div>
         </div>
         <button class="btn btn-primary btn-sm" onclick="copyOrderId()">Copy Order ID</button>
       </div>
