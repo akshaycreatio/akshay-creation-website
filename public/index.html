@@ -593,6 +593,10 @@ function showSuccessModal(msg){
   if(msgEl) msgEl.textContent = msg || "Your submission was successful!";
   const overlay = $("successOverlay");
   if(overlay) overlay.classList.add("show");
+  setTimeout(() => {
+    const faq = $("faqSection");
+    if(faq) faq.scrollIntoView({ behavior: 'smooth' });
+  }, 300);
 }
 function closeSuccessModal(){
   const overlay = $("successOverlay");
@@ -873,7 +877,7 @@ function admForm(res,id){
   const afb = $("admFormBody");
   if(afb){
     afb.innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>{
-      if(t==="file")return`<label>${l}</label><input type="file" accept="file" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
+      if(t==="file")return`<label>${l}</label><input type="file" accept="image/*" onchange="const r=new FileReader();r.onload=e=>$('bannerUrlField').value=e.target.result;r.readAsDataURL(this.files[0]);" style="margin:6px 0 14px"/><input type="hidden" id="bannerUrlField" name="${k}" value="${esc(rec[k]??"")}">`;
       return`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`
     }).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
   }
@@ -887,7 +891,7 @@ async function addStaff(e){
     e.target.reset();
     toast("Staff account created successfully!");
     loadDashboard();
-  }catch(x){toast(x.message)}
+  }cache(x){toast(x.message)}
 }
 function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
 
