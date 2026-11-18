@@ -107,7 +107,7 @@ ul.list{margin-left:18px;color:var(--muted);line-height:1.9}
 .poll-opt:hover{border-color:var(--gold)}
 .poll-opt.voted{border-color:var(--gold);background:rgba(var(--gold-rgb),.16)}
 
-/* QR + Modals (Fixed for Center Screen Mobile Viewport) */
+/* QR + Modals */
 .qr-box{background:#fff;color:#0f172a;border-radius:14px;padding:16px;text-align:center;margin:12px 0}
 .qr-box img{width:200px;height:200px;display:block;margin:8px auto;border-radius:8px}
 .qr-lbl{font-size:.78rem;font-weight:600;color:#475569}
@@ -596,8 +596,8 @@ function initFx(){
 }
 
 /* ---------- admin portal ---------- */
-const ADM=[["overview","Overview"],["creators","Creators"],["ads","Ads"],["store","Store"],["bookings","Bookings"],["care","Support"],["polls","Polls"]];
-const KEYS={creators:["creators"],ads:["ads"],store:["orders","products"],bookings:["bookings"],care:["care_cases","care"],polls:["polls"]};
+const ADM=[["overview","Overview"],["creators","Creators"],["ads","Ads"],["store","Store"],["bookings","Bookings"],["care","Support"],["polls","Polls"],["staff","Staff & Access"]];
+const KEYS={creators:["creators"],ads:["ads"],store:["orders","products"],bookings:["bookings"],care:["care_cases","care"],polls:["polls"],staff:["staff_users"]};
 let admTab="overview",admQ="";
 const secs=t=>(KEYS[t]||[]).filter(k=>dash&&Array.isArray(dash[k])).map(k=>[k,dash[k]]);
 const cnt=t=>secs(t).reduce((n,[,a])=>n+a.length,0);
@@ -617,10 +617,27 @@ function renderAdm(){
   $("admUser").textContent=`${dash.username||"admin"} • ${dash.role||""}`;
   $("admNav").innerHTML=ADM.map(([k,l])=>`<button class="${admTab===k?"on":""}" onclick="admGo('${k}')">${l}${k!=="overview"?`<i>${cnt(k)}</i>`:""}</button>`).join("");
   $("admTitle").textContent=ADM.find(a=>a[0]===admTab)[1];
-  $("admTools").hidden=admTab==="overview";
+  $("admTools").hidden=admTab==="overview"||admTab==="staff";
   const nw=$("admNew"),NEW={creators:["creators","Add creator"],ads:["ads","New ad"],store:["products","New product"],polls:["polls","New poll"]}[admTab];nw.hidden=!NEW;if(NEW){nw.textContent="＋ "+NEW[1];nw.onclick=()=>admForm(NEW[0])}
   const b=$("admBody");
-  if(admTab==="overview"){const pend=(dash.creators||[]).filter(c=>c.status&&c.status!=="approved");b.innerHTML=`<div class="tiles">${ADM.slice(1).map(([k,l])=>`<button class="card tile" onclick="admGo('${k}')"><span class="stat-num">${cnt(k)}</span><span>${l}</span></button>`).join("")}</div><h3 class="adm-h">Waiting for approval <small>${pend.length}</small></h3>${pend.length?`<div class="recs">${pend.map(creatorCard).join("")}</div>`:`<p class="sub">Nothing waiting. New creator registrations will appear here.</p>`}`;return}
+  if(admTab==="overview"){const pend=(dash.creators||[]).filter(c=>c.status&&c.status!=="approved");b.innerHTML=`<div class="tiles">${ADM.slice(1,7).map(([k,l])=>`<button class="card tile" onclick="admGo('${k}')"><span class="stat-num">${cnt(k)}</span><span>${l}</span></button>`).join("")}</div><h3 class="adm-h">Waiting for approval <small>${pend.length}</small></h3>${pend.length?`<div class="recs">${pend.map(creatorCard).join("")}</div>`:`<p class="sub">Nothing waiting. New creator registrations will appear here.</p>`}`;return}
+  if(admTab==="staff"){
+    b.innerHTML=`<div class="card" style="margin-bottom:20px">
+      <h3 style="margin-top:0">Add New Staff / Moderator</h3>
+      <form onsubmit="addStaff(event)">
+        <label>Username *</label>
+        <input id="stUser" required placeholder="Staff username" />
+        <label>Password *</label>
+        <input id="stPass" type="password" required placeholder="Staff password" />
+        <label>Role</label>
+        <select id="stRole"><option value="moderator">Moderator</option><option value="admin">Admin</option></select>
+        <button class="btn btn-primary" style="margin-top:10px;width:100%">Create Staff Account</button>
+      </form>
+    </div>
+    <h3 class="adm-h">Existing Staff Members</h3>
+    <div class="recs">${(dash.staff_users||[]).map(s=>`<div class="card"><div class="row"><h3 style="margin:0">${esc(s.username)}</h3><span class="badge">${esc(s.role)}</span></div><div class="adm-acts" style="margin-top:12px"><button class="btn btn-sm" onclick="admDel('staff',${+s.id})">Delete Staff</button></div></div>`).join("")||`<p class="sub">No staff accounts created yet.</p>`}</div>`;
+    return;
+  }
   const S=secs(admTab);
   b.innerHTML=S.length?S.map(([k,a])=>{const f=a.filter(hit);return`${S.length>1?`<h3 class="adm-h">${esc(k)} <small>${f.length}</small></h3>`:""}${f.length?`<div class="recs">${f.map(r=>k==="creators"?creatorCard(r):recCard(r,k)).join("")}</div>`:`<p class="sub">No matching records.</p>`}`}).join(""):`<div class="card"><h3 style="margin-top:0">No data yet</h3><p class="sub">/api/admin/dashboard did not return a list for this section. Once it does, the records show up here.</p></div>`}
 function admExport(){const rows=secs(admTab).flatMap(([,a])=>a);if(!rows.length)return toast("Nothing to export");const cols=[...new Set(rows.flatMap(r=>Object.keys(r)))];const q=x=>{let s=fmt(x);if(/^[=+\-@]/.test(s))s="'"+s;return`"${s.replace(/"/g,'""')}"`};const csv=[cols.join(","),...rows.map(r=>cols.map(c=>q(r[c])).join(","))].join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`akshay-creation-${admTab}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
@@ -633,7 +650,7 @@ const FORMS={
   polls:[["question","Question"],["options","Options (one per line, 2 to 6)","textarea"]]
 };
 const DK={creators:"creators",ads:"ads",products:"products"};
-const RES={creators:"creators",ads:"ads",orders:"orders",products:"products",bookings:"bookings",care_cases:"care",care:"care",polls:"polls"};
+const RES={creators:"creators",ads:"ads",orders:"orders",products:"products",bookings:"bookings",care_cases:"care",care:"care",polls:"polls",staff:"staff"};
 const A=(res,r,x)=>[...x,["Delete",`admDel('${res}',${r.id})`]];
 const tog=(res,r,a,b)=>[r.active?a:b,`admSet('${res}',${r.id},{active:${r.active?0:1}})`];
 const stb=(res,r,l,s,p)=>[l,`admStatus('${res}',${r.id},'${s}')`,p];
@@ -653,7 +670,16 @@ function admForm(res,id){
   $("admFormBody").innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res.slice(0,-1)}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" min="0" ':""}value="${esc(rec[k]??"")}">`}`).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`;
   modal("admModal",1)}
 async function admSave(e,res,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(res==="polls")d.options=String(d.options||"").split("\n").map(x=>x.trim()).filter(Boolean);try{await post("/api/admin/"+res,{action:id?"update":"create",id,data:d});modal("admModal",0);toast("Saved!");loadDashboard();loadPublic()}catch(x){toast(x.message)}}
-function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
+async function addStaff(e){
+  e.preventDefault();
+  try{
+    await post("/api/admin/staff",{action:"create",data:{username:v("stUser"),password:v("stPass"),role:v("stRole")}});
+    e.target.reset();
+    toast("Staff account created successfully!");
+    loadDashboard();
+  }catch(x){toast(x.message)}
+}
+function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
 
 loadPublic();startTrafficSimulation();initCreatorAutoScroll();initFx();
 </script>
