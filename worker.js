@@ -186,7 +186,6 @@ export default {
           });
         }
 
-        // Generic admin POST actions
         if (request.method === "POST") {
           const b = await request.json();
           const action = b.action;
