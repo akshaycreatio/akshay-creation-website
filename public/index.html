@@ -242,7 +242,7 @@ section.marquee::before{display:none}
       <a href="#care" class="btn">Support &amp; Care 💖</a>
     </div>
     <div class="stats-grid">
-      <div class="card"><div class="stat-num" id="ytSubs">150K+</div><div class="stat-lbl"><span id="ytStatus">YouTube Subs</span> <span class="badge badge-ok">Live</span></div></div>
+      <div class="card"><div class="stat-num" id="ytSubs">157.9K</div><div class="stat-lbl"><span id="ytStatus">YouTube Subs</span> <span class="badge badge-ok">Live</span></div></div>
       <div class="card"><div class="stat-num" id="igFollowers">1K+</div><div class="stat-lbl"><span>Instagram</span> <span class="badge">Active</span></div></div>
       <div class="card"><div class="stat-num" id="trafficCount">28.4K</div><div class="stat-lbl"><span>30-Day Traffic</span> <span>↗ High</span></div></div>
       <div class="card"><div class="stat-num" id="activeNow">38</div><div class="stat-lbl"><span>Active Now</span> <span class="dot"></span></div></div>
@@ -258,7 +258,7 @@ section.marquee::before{display:none}
       <p class="sec-sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world. Fresh ideas, unique vibes, and content worth your time.</p>
     </div>
     <div class="grid-3">
-      <div class="card"><span class="badge">The Family</span><h3>150K+ Strong Fam</h3><p class="sub">You're not just a subscriber—you're part of my story. Your time and trust will never be taken for granted.</p></div>
+      <div class="card"><span class="badge">The Family</span><h3>157K+ Strong Fam</h3><p class="sub">You're not just a subscriber—you're part of my story. Your time and trust will never be taken for granted.</p></div>
       <div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Dedicated to entertainment, creative storytelling, and building a community that grows together stronger.</p></div>
       <div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub">Got a business inquiry or brand idea? Reach out directly at: <strong>collab.akshaycreation@gmail.com</strong></p></div>
     </div>
@@ -763,11 +763,11 @@ async function addStaff(e){
   try{
     await post("/api/admin/staff",{action:"create",data:{username:v("stUser"),password:v("stPass"),role:v("stRole")}});
     e.target.reset();
-    toast("Staff account created successfully!");
+    toast("Staff account created successful!");
     loadDashboard();
   }catch(x){toast(x.message)}
 }
-function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g, " "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
+function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
 
 loadPublic();startTrafficSimulation();initCreatorAutoScroll();initFx();
 </script>
