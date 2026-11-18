@@ -39,10 +39,9 @@ export default {
         const { username, password } = body;
         if (!username || !password) return j({ error: "Missing credentials" }, 400);
 
-        const passHash = await sha256Hex(password);
         const admin = await env.DB.prepare(
           "SELECT * FROM admins WHERE username = ? AND password_hash = ?"
-        ).bind(username, passHash).first();
+        ).bind(username, password).first();
 
         if (!admin) return j({ error: "Invalid username or password" }, 401);
 
