@@ -130,6 +130,9 @@ export default {
         if (!b.product_id || !b.customer_name || !b.customer_email || !b.utr) {
           return j({ error: "Missing payment confirmation details" }, 400);
         }
+        if (b.utr.length !== 12 || !/^\d{12}$/.test(b.utr)) {
+          return j({ error: "UTR number must be exactly 12 digits" }, 400);
+        }
         const orderId = "AKC_" + Math.random().toString(36).substring(2, 9).toUpperCase();
         await env.DB.prepare(
           "INSERT INTO orders (order_id, product_id, customer_name, customer_email, utr, status) VALUES (?, ?, ?, ?, ?, 'PENDING')"
