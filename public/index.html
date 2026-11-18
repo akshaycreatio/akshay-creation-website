@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--modal:#072a21;--footer:#021611;--on-gold:#1b1505;--input:rgba(0,0,0,.25);--bg-rgb:4,34,27;--deep-rgb:2,15,12;--gold-rgb:217,180,90;--ok-rgb:126,224,181;--line:rgba(var(--gold-rgb),.28);--cyan:var(--gold2);--emerald:var(--ok);--red:#ff9a8a;--band:var(--bg)}
+:root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--modal:#072a21;--footer:#021611;--on-gold:#1b1505;--input:rgba(0,0,0,.25);--bg-rgb:4,34,27;--deep-rgb:2,15,12;--gold-rgb:217,180,90;--ok-rgb:126,224,181;--line:rgba(var(--gold-rgb),.28);--cyan:var(--gold2);--emerald:var(--ok);--red:#ff9a8a;--violet:var(--gold2);--band:var(--bg)}
 html[data-theme=violet]{--bg:#140d2b;--bg2:#1a1237;--card:#221848;--card2:#342467;--gold:#ff7eb6;--gold2:#ffb6d6;--paper:#f7f0ff;--muted:#b9acd6;--ok:#8ef0c8;--modal:#1b1239;--footer:#0d0820;--on-gold:#2a0a1b;--bg-rgb:20,13,43;--deep-rgb:9,5,22;--gold-rgb:255,126,182;--ok-rgb:142,240,200}
 html[data-theme=navy]{--bg:#0a1a2f;--bg2:#0d2139;--card:#112b49;--card2:#183b63;--gold:#ff8a6b;--gold2:#ffb7a0;--paper:#eef4fb;--muted:#a3b6cc;--ok:#6fe3c1;--modal:#0f2644;--footer:#06111f;--on-gold:#2b0d05;--bg-rgb:10,26,47;--deep-rgb:4,10,20;--gold-rgb:255,138,107;--ok-rgb:111,227,193}
 html[data-theme=wine]{--bg:#2a0f1c;--bg2:#331323;--card:#431a2e;--card2:#5a2540;--gold:#e9c7a0;--gold2:#f7e0c4;--paper:#faf0e6;--muted:#c9a9b4;--ok:#8fe0b8;--modal:#3a1627;--footer:#1a0911;--on-gold:#2a0f1c;--bg-rgb:42,15,28;--deep-rgb:20,7,13;--gold-rgb:233,199,160;--ok-rgb:143,224,184}
@@ -392,7 +392,7 @@ section.marquee::before{display:none}
     <div id="pollsList" class="grid-2"></div>
   </section>
   <section id="faq">
-    <div class="sec-head"><div class="sec-tag">Good to know</div><h2>Questions, answered</h2></div>
+    <div class="sec-head"><div class="sec-tag" id="faqSection">Good to know</div><h2>Questions, answered</h2></div>
     <div class="faq">
       <details><summary>How do I buy a digital pack?</summary><p>Open the Digital Store, tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID straight away.</p></details>
       <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check Status in the store. Once your payment is marked Paid, the download button appears.</p></details>
@@ -587,6 +587,10 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelect
 function showSuccessModal(msg){
   $("successMsg").textContent = msg || "Your submission was successful!";
   $("successOverlay").classList.add("show");
+  // Automatically scroll down smoothly to the FAQ / Q&A section
+  setTimeout(() => {
+    $("faqSection").scrollIntoView({ behavior: 'smooth' });
+  }, 300);
 }
 function closeSuccessModal(){
   $("successOverlay").classList.remove("show");
@@ -658,9 +662,7 @@ async function submitUpiPayment(e){
   try{
     const r=await post("/api/checkout/upi-submit",{product_id:v("chkProductId"),customer_name:v("chkName"),customer_email:v("chkEmail"),utr:utrVal});
     if(r){
-      $("upiPayStep").style.display="none";
-      $("upiDoneStep").style.display="block";
-      $("doneOrderId").textContent=r.order_id;
+      modal("checkoutModal",0);
       playSuccessSound();
       showSuccessModal("UTR payment details submitted successfully!");
     }
