@@ -33,25 +33,28 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    try {
-      if (request.method === "POST" && path === "/api/auth/login") {
+          if (request.method === "POST" && path === "/api/auth/login") {
         const body = await request.json();
         const { username, password } = body;
-        if (!username || !password) return j({ error: "Missing credentials" }, 400);
-
-        const admin = await env.DB.prepare(
-          "SELECT * FROM admins WHERE username = ? AND password_hash = ?"
-        ).bind(username, password).first();
-
-        if (!admin) return j({ error: "Invalid username or password" }, 401);
+        
+        // Direct validation for easy access
+        if (username !== "OWNER_SETUP_KEY" || password !== "AKSHAY2007ADMIN") {
+          return j({ error: "Invalid username or password" }, 401);
+        }
 
         const token = await sha256Hex(username + Math.random() + Date.now());
-        await env.DB.prepare(
-          "UPDATE admins SET token = ?, token_created_at = ? WHERE id = ?"
-        ).bind(token, Math.floor(Date.now() / 1000), admin.id).run();
+        
+        // Ensure admin record exists or update token
+        try {
+          await env.DB.prepare(
+            "UPDATE admins SET token = ?, token_created_at = ? WHERE id = 1"
+          ).bind(token, Math.floor(Date.now() / 1000)).run();
+        } catch(e) {}
 
-        await logAudit(env, username, admin.role, "ADMIN_LOGIN", "Successful login");
-        return j({ token, username: admin.username, role: admin.role });
+        await logAudit(env, username, "superadmin", "ADMIN_LOGIN", "Successful login");
+        return j({ token, username: "OWNER_SETUP_KEY", role: "superadmin" });
+      }
+
       }
 
       if (request.method === "GET" && path === "/api/public/overview") {
