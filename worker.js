@@ -38,7 +38,6 @@ export default {
         const body = await request.json();
         const { username, password } = body;
         
-        // 1. Super Admin Check
         if (username === "OWNER_SETUP_KEY" && password === "AKSHAY2007ADMIN") {
           const token = await sha256Hex(username + Math.random() + Date.now());
           try {
@@ -50,7 +49,6 @@ export default {
           return j({ token, username: "OWNER_SETUP_KEY", role: "superadmin" });
         }
 
-        // 2. Staff / Moderator Check
         const staff = await env.DB.prepare(
           "SELECT * FROM staff_users WHERE username = ? AND password = ?"
         ).bind(username, password).first();
@@ -71,6 +69,11 @@ export default {
         const ads = await env.DB.prepare("SELECT * FROM ads WHERE active = 1 ORDER BY sort ASC, id DESC").all();
         const products = await env.DB.prepare("SELECT * FROM products WHERE active = 1 ORDER BY id DESC").all();
         const polls = await env.DB.prepare("SELECT * FROM polls WHERE active = 1 ORDER BY id DESC").all();
+        
+        let charity = null;
+        try {
+          charity = await env.DB.prepare("SELECT * FROM charity_campaigns WHERE active = 1 ORDER BY id DESC LIMIT 1").first();
+        } catch(e) {}
 
         const pollsWithOpts = await Promise.all(polls.results.map(async (p) => {
           let opts = [];
@@ -84,7 +87,8 @@ export default {
           creators: creators.results,
           ads: ads.results,
           products: products.results,
-          polls: pollsWithOpts
+          polls: pollsWithOpts,
+          charity: charity || null
         });
       }
 
@@ -171,7 +175,6 @@ export default {
       if (path.startsWith("/api/admin/")) {
         const token = auth(request, env);
         
-        // Check admin or staff session
         let admin = await env.DB.prepare("SELECT * FROM admins WHERE token = ?").bind(token).first();
         let isStaff = false;
         if (!admin) {
@@ -190,6 +193,11 @@ export default {
           const polls = await env.DB.prepare("SELECT * FROM polls ORDER BY id DESC").all();
           const auditLogs = await env.DB.prepare("SELECT * FROM audit_logs ORDER BY id DESC LIMIT 50").all();
           const staffUsers = !isStaff ? await env.DB.prepare("SELECT id, username, role FROM staff_users ORDER BY id DESC").all() : { results: [] };
+          
+          let charityCampaigns = { results: [] };
+          try {
+            charityCampaigns = await env.DB.prepare("SELECT * FROM charity_campaigns ORDER BY id DESC").all();
+          } catch(e) {}
 
           return j({
             username: admin.username,
@@ -202,7 +210,8 @@ export default {
             care_cases: careCases.results,
             polls: polls.results,
             audit_logs: auditLogs.results,
-            staff_users: staffUsers.results
+            staff_users: staffUsers.results,
+            charity_campaigns: charityCampaigns.results
           });
         }
 
@@ -211,6 +220,39 @@ export default {
           const action = b.action;
           const id = b.id;
           const data = b.data || {};
+
+          if (path === "/api/admin/charity") {
+            try {
+              await env.DB.prepare(`
+                CREATE TABLE IF NOT EXISTS charity_campaigns (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  title TEXT NOT NULL,
+                  banner_url TEXT,
+                  target_amount REAL,
+                  raised_amount REAL,
+                  upi_id TEXT,
+                  upi_name TEXT,
+                  donate_link TEXT,
+                  description TEXT,
+                  active INTEGER DEFAULT 1
+                )
+              `).run();
+            } catch(e) {}
+
+            if (action === "create") {
+              await env.DB.prepare(
+                "INSERT INTO charity_campaigns (title, banner_url, target_amount, raised_amount, upi_id, upi_name, donate_link, description, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)"
+              ).bind(data.title, data.banner_url || "", data.target_amount || 0, data.raised_amount || 0, data.upi_id || "", data.upi_name || "", data.donate_link || "", data.description || "").run();
+            } else if (action === "update") {
+              await env.DB.prepare(
+                "UPDATE charity_campaigns SET title = ?, banner_url = ?, target_amount = ?, raised_amount = ?, upi_id = ?, upi_name = ?, donate_link = ?, description = ?, active = ? WHERE id = ?"
+              ).bind(data.title, data.banner_url, data.target_amount, data.raised_amount, data.upi_id, data.upi_name, data.donate_link, data.description, data.active ?? 1, id).run();
+            } else if (action === "delete") {
+              await env.DB.prepare("DELETE FROM charity_campaigns WHERE id = ?").bind(id).run();
+            }
+            await logAudit(env, admin.username, admin.role || "admin", "CHARITY_" + action.toUpperCase(), `ID: ${id}`);
+            return j({ success: true });
+          }
 
           if (path === "/api/admin/creators") {
             if (action === "status") {
