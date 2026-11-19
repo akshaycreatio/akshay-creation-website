@@ -146,8 +146,6 @@ export default {
     if (path.startsWith("/img/") && env.DB) { await init(env.DB); return serveImage(env.DB, path.slice(5)); }
     if (!path.startsWith("/api/")) return env.ASSETS ? env.ASSETS.fetch(request) : err("Not Found", 404);
     if (method === "OPTIONS") return new Response(null, { status: 204 });
-    if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Add it in Cloudflare: Worker > Settings > Variables and Secrets", 500);
-
     const db = env.DB;
     const ip = request.headers.get("CF-Connecting-IP") || "0";
     try {
@@ -164,6 +162,8 @@ export default {
         const active = await db.prepare("SELECT COUNT(*) AS total FROM live_sessions WHERE last_seen >= ?").bind(now - 90000).first();
         return json({ active_visitors: Number(active?.total || 0) });
       }
+
+      if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Add it in Cloudflare: Worker > Settings > Variables and Secrets", 500);
 
       if (path === "/api/public/overview" && method === "GET") {
         const voter = await sign(env.AUTH_SECRET, "voter:" + ip);
