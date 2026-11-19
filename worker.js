@@ -57,6 +57,7 @@ const init = (db) => (ready ||= (async () => {
     "CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
     "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1",
     "CREATE TABLE IF NOT EXISTS images (id TEXT PRIMARY KEY, mime TEXT, data TEXT)",
+    "CREATE TABLE IF NOT EXISTS live_sessions (session_id TEXT PRIMARY KEY, last_seen INTEGER NOT NULL)",
   ]) {
     try { await db.prepare(q).run(); } catch (e) {}
   }
@@ -145,13 +146,24 @@ export default {
     if (path.startsWith("/img/") && env.DB) { await init(env.DB); return serveImage(env.DB, path.slice(5)); }
     if (!path.startsWith("/api/")) return env.ASSETS ? env.ASSETS.fetch(request) : err("Not Found", 404);
     if (method === "OPTIONS") return new Response(null, { status: 204 });
-    if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Add it in Cloudflare: Worker > Settings > Variables and Secrets", 500);
-
     const db = env.DB;
     const ip = request.headers.get("CF-Connecting-IP") || "0";
     try {
       await init(db);
       const body = method === "POST" ? await request.json().catch(() => ({})) : {};
+
+      if (path === "/api/public/presence" && method === "POST") {
+        const session = String(body.session_id || "");
+        if (!/^[0-9a-f-]{36}$/i.test(session)) return err("Invalid visitor session");
+        if (limited("presence:" + ip, 30, 60e3)) return err("Please slow down", 429);
+        const now = Date.now();
+        await db.prepare("INSERT INTO live_sessions (session_id, last_seen) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET last_seen = excluded.last_seen").bind(session, now).run();
+        await db.prepare("DELETE FROM live_sessions WHERE last_seen < ?").bind(now - 180000).run();
+        const active = await db.prepare("SELECT COUNT(*) AS total FROM live_sessions WHERE last_seen >= ?").bind(now - 90000).first();
+        return json({ active_visitors: Number(active?.total || 0) });
+      }
+
+      if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Add it in Cloudflare: Worker > Settings > Variables and Secrets", 500);
 
       if (path === "/api/public/overview" && method === "GET") {
         const voter = await sign(env.AUTH_SECRET, "voter:" + ip);
