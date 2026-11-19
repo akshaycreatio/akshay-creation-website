@@ -1,762 +1,328 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#04221b" />
-<script>try{document.documentElement.dataset.theme=localStorage.getItem("akc_theme")||"emerald"}catch(e){}</script>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#04221b">
 <title>AKSHAY CREATION — Create. Connect. Inspire.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--modal:#072a21;--footer:#021611;--on-gold:#1b1505;--input:rgba(0,0,0,.25);--bg-rgb:4,34,27;--deep-rgb:2,15,12;--gold-rgb:217,180,90;--ok-rgb:126,224,181;--line:rgba(var(--gold-rgb),.28);--cyan:var(--gold2);--emerald:var(--ok);--red:#ff9a8a;--band:var(--bg)}
-html[data-theme=violet]{--bg:#140d2b;--bg2:#1a1237;--card:#221848;--card2:#342467;--gold:#ff7eb6;--gold2:#ffb6d6;--paper:#f7f0ff;--muted:#b9acd6;--ok:#8ef0c8;--modal:#1b1239;--footer:#0d0820;--on-gold:#2a0a1b;--bg-rgb:20,13,43;--deep-rgb:9,5,22;--gold-rgb:255,126,182;--ok-rgb:142,240,200}
-html[data-theme=navy]{--bg:#0a1a2f;--bg2:#0d2139;--card:#112b49;--card2:#183b63;--gold:#ff8a6b;--gold2:#ffb7a0;--paper:#eef4fb;--muted:#a3b6cc;--ok:#6fe3c1;--modal:#0f2644;--footer:#06111f;--on-gold:#2b0d05;--bg-rgb:10,26,47;--deep-rgb:4,10,20;--gold-rgb:255,138,107;--ok-rgb:111,227,193}
-html[data-theme=wine]{--bg:#2a0f1c;--bg2:#331323;--card:#431a2e;--card2:#5a2540;--gold:#e9c7a0;--gold2:#f7e0c4;--paper:#faf0e6;--muted:#c9a9b4;--ok:#8fe0b8;--modal:#3a1627;--footer:#1a0911;--on-gold:#2a0f1c;--bg-rgb:42,15,28;--deep-rgb:20,7,13;--gold-rgb:233,199,160;--ok-rgb:143,224,184}
+:root{--bg:#04221b;--bg2:#062c22;--card:#0a3126;--card2:#0f4a38;--gold:#d9b45a;--gold2:#f0d58c;--paper:#f4edda;--muted:#a8bdb1;--ok:#7ee0b5;--red:#ff9a8a;--line:rgba(217,180,90,.28);--in:rgba(0,0,0,.28)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
-body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:var(--bg);color:var(--paper);line-height:1.65;width:100%;max-width:100vw;overflow-x:hidden;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{font:400 16px/1.65 "Hanken Grotesk",system-ui,sans-serif;background:var(--bg);color:var(--paper);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-h1,h2,h3,.brand,.stat-num,.price{font-family:"Bodoni Moda","Didot",Georgia,serif;font-weight:500}
-:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
-.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 20px;overflow-x:hidden}
-
-/* Nav */
-.nav{position:sticky;top:0;z-index:50;background:rgba(var(--bg-rgb),.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);width:100%}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px;gap:14px;width:100%}
-.brand{font-weight:700;font-size:1.15rem;letter-spacing:.14em;white-space:nowrap;display:flex;align-items:center;gap:12px;color:var(--gold2)}
-.brand::before{content:"";width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}
-.nav-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
-.nav-links::-webkit-scrollbar{display:none}
-.nav-links a{padding:6px 14px;font-weight:500;font-size:.9rem;white-space:nowrap;color:var(--muted);transition:color .2s}
-.nav-links a:hover{color:var(--gold2)}
-@media(max-width:700px){.nav-inner{height:auto;flex-wrap:wrap;padding:12px 16px}.nav-links{order:3;width:100%}.brand{letter-spacing:.08em}}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:999px;font:600 .92rem "Hanken Grotesk",sans-serif;letter-spacing:.02em;border:1px solid var(--gold);cursor:pointer;color:var(--gold2);background:transparent;transition:background .2s,transform .2s}
-.btn:hover{background:rgba(var(--gold-rgb),.14)}
-.btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--on-gold);border-color:var(--gold2)}
-.btn-primary:hover{filter:brightness(1.1)}
-.btn-sm{padding:7px 18px;font-size:.84rem}
-
-/* Sections */
-section{position:relative;padding:72px 0;background:var(--band);width:100%;overflow:hidden}
-section::before{content:"";position:absolute;top:0;left:0;right:0;height:8px;opacity:.55;background:linear-gradient(var(--gold),var(--gold)) 0 0/100% 1px no-repeat,linear-gradient(var(--gold),var(--gold)) 0 5px/100% 3px no-repeat}
-#home::before{display:none}
-#about,#ads,#services,#community{--band:var(--bg2)}
-.sec-head{margin-bottom:36px}
-.sec-tag{display:flex;align-items:center;gap:12px;color:var(--gold);font-weight:600;font-size:.9rem;letter-spacing:.04em}
-.sec-tag::before{content:"";width:32px;height:1px;background:var(--gold)}
-h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;letter-spacing:-.015em;margin:12px 0}
-.sec-sub{max-width:620px;color:var(--muted);font-size:1.05rem}
-
-/* Hero */
-.hero{padding:80px 0 90px}
-.pill{display:inline-flex;align-items:center;gap:10px;padding:6px 18px;border-radius:999px;border:1px solid var(--line);color:var(--gold2);font-weight:500;font-size:.86rem;margin-bottom:24px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);animation:pulse 2.4s infinite}
-@keyframes pulse{50%{opacity:.35}}
-h1{font-size:clamp(2.8rem,10vw,7.6rem);line-height:.98;letter-spacing:-.025em;margin-bottom:24px;word-break:break-word}
-h1 span{display:block;animation:rise .9s cubic-bezier(.2,.7,.2,1) backwards}
-.w2{padding-left:.3em;animation-delay:.15s}
-.w3{padding-left:.6em;animation-delay:.3s}
-@keyframes rise{from{opacity:0;transform:translateY(.25em)}}
-.hero p{max-width:540px;font-size:1.1rem;color:var(--muted);margin-bottom:28px}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:48px}
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-@media(min-width:768px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
-.stats-grid .card{--c:var(--bg2);border:0;border-radius:0;box-shadow:none;padding:20px}
-.stat-num{font-size:2.2rem;line-height:1.1;color:var(--gold2)}
-.stat-lbl{font-size:.82rem;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between;align-items:center;gap:6px}
-
-/* Cards + grids */
-.card{--c:var(--card);position:relative;background:var(--c);border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:inset 0 0 0 5px var(--c),inset 0 0 0 6px rgba(var(--gold-rgb),.16)}
-.card h3{font-size:1.35rem;line-height:1.25;margin:12px 0 8px}
-.sub{color:var(--muted);font-size:.95rem}
-.grid-2,.grid-3{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:768px){.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}}
-.card-cover{width:100%;height:180px;object-fit:cover;border-radius:6px;border:1px solid var(--line);margin-bottom:16px;background:var(--bg2)}
-.badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:.76rem;font-weight:600;letter-spacing:.03em;color:var(--gold2);border:1px solid var(--gold);background:rgba(var(--gold-rgb),.1)}
-.badge-ok{color:var(--ok);border-color:var(--ok);background:rgba(var(--ok-rgb),.1)}
-.badge-warn{color:#ffc27a;border-color:#ffc27a;background:rgba(255,194,122,.1)}
-.price{font-size:1.5rem;color:var(--gold2)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-
-/* Creators + ads */
-.creator-carousel{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;padding:4px 4px 14px}
-.creator-carousel::-webkit-scrollbar{display:none}
-.creator-slide{flex:0 0 280px;scroll-snap-align:start}
-.creator-avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);padding:3px;background:var(--bg2)}
-.ad-landscape-container{position:relative;width:100%;min-height:220px;border-radius:10px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
-.ad-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background-color:var(--footer);background-size:cover;background-position:center}
-.ad-slide.active{opacity:1;z-index:2}
-.ad-slide::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 20%,rgba(var(--deep-rgb),.92) 92%);z-index:1}
-.ad-content{position:relative;z-index:3;color:#fff}
-.ad-empty{padding:40px 20px;text-align:center;color:var(--muted)}
-
-/* Charity Banner Section */
-.charity-banner{background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--gold);border-radius:14px;padding:24px;margin-bottom:36px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-.charity-grid{display:grid;grid-template-columns:1fr;gap:20px;align-items:center}
-@media(min-width:768px){.charity-grid{grid-template-columns:1fr 1.2fr}}
-.charity-img{width:100%;max-height:300px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
-.progress-bar-wrap{background:var(--input);border-radius:999px;height:14px;width:100%;overflow:hidden;margin:12px 0;border:1px solid var(--line)}
-.progress-bar-fill{background:linear-gradient(90deg,var(--gold),var(--ok));height:100%;transition:width .6s ease}
-
-/* Forms + polls */
-input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--input);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
-input::placeholder,textarea::placeholder{color:var(--muted)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(var(--gold-rgb),.2)}
-select option{background:var(--modal)}
-label{font-size:.88rem;font-weight:600;color:var(--gold2)}
+h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
+.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+.nav{position:sticky;top:0;z-index:50;background:rgba(4,34,27,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
+.brand{color:var(--gold2);font-weight:700;letter-spacing:.12em;display:flex;gap:10px;align-items:center}
+.brand:before{content:"";width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}
+.links{display:flex;overflow-x:auto;width:100%;order:3;scrollbar-width:none}.links::-webkit-scrollbar{display:none}
+.links a{padding:6px 14px;color:var(--muted);white-space:nowrap;font-weight:500;font-size:.92rem}.links a:hover{color:var(--gold2)}
+@media(min-width:820px){.links{width:auto;order:0}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:999px;font:600 .92rem "Hanken Grotesk",sans-serif;border:1px solid var(--gold);cursor:pointer;color:var(--gold2);background:transparent;transition:background .2s,transform .15s}
+.btn:hover{background:rgba(217,180,90,.14)}.btn:active{transform:scale(.97)}
+.btn.pri{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1b1505;border-color:var(--gold2)}.btn.pri:hover{filter:brightness(1.08)}
+.btn.sm{padding:7px 16px;font-size:.84rem}.btn.full{width:100%}
+section{padding:64px 0;border-top:1px solid var(--line)}.alt{background:var(--bg2)}
+.tag{color:var(--gold);font-weight:600;font-size:.9rem;display:flex;gap:12px;align-items:center}.tag:before{content:"";width:32px;height:1px;background:var(--gold)}
+h2{font-size:clamp(1.9rem,5vw,3.1rem);line-height:1.1;margin:10px 0}
+.sub{color:var(--muted)}.small{font-size:.85rem}.center{text-align:center}
+.head{margin-bottom:32px}.head .sub{max-width:620px}
+.hero{padding:70px 0 60px;border:0;background:radial-gradient(circle at 80% 10%,rgba(217,180,90,.2),transparent 50%),radial-gradient(circle at 10% 90%,rgba(126,224,181,.1),transparent 50%)}
+.pill{display:inline-block;padding:6px 18px;border-radius:999px;border:1px solid var(--line);color:var(--gold2);font-size:.86rem;margin-bottom:22px}
+h1{font-size:clamp(2.8rem,11vw,7rem);line-height:1;letter-spacing:-.02em;margin-bottom:22px}h1 span{display:block}h1 span:nth-child(2){padding-left:.3em}h1 span:nth-child(3){padding-left:.6em}
+.hero p.sub{max-width:520px;font-size:1.1rem;margin-bottom:26px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:38px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stats div{background:var(--bg2);padding:18px}.stats b{display:block;font:500 1.9rem "Bodoni Moda",serif;color:var(--gold2)}.stats span{font-size:.82rem;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.card h3{font-size:1.3rem;line-height:1.25;margin:10px 0 6px}
+.g2,.g3{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:760px){.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}}
+.cover{width:100%;height:170px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-bottom:12px;background:var(--bg2)}
+.badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:.76rem;font-weight:600;color:var(--gold2);border:1px solid var(--gold)}
+.badge.ok{color:var(--ok);border-color:var(--ok)}.badge.warn{color:#ffc27a;border-color:#ffc27a}
+.price{font:500 1.5rem "Bodoni Moda",serif;color:var(--gold2)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}.car .card{flex:0 0 270px;scroll-snap-align:start}
+.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);padding:3px}
+.cbanner{display:grid;gap:18px;align-items:center;background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--gold);border-radius:14px;padding:20px}
+@media(min-width:760px){.cbanner{grid-template-columns:1fr 1.2fr}}.cbanner img{width:100%;max-height:280px;object-fit:cover;border-radius:10px}
+.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok))}
+input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
+input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:#072a21}
+label{display:block;font-size:.88rem;font-weight:600;color:var(--gold2)}label.chk{font-weight:500;color:var(--paper);margin-bottom:14px}
 ul.list{margin-left:18px;color:var(--muted);line-height:1.9}
-.poll-opt{width:100%;text-align:left;padding:12px 16px;margin-top:10px;border-radius:8px;background:var(--input);border:1px solid var(--line);color:var(--paper);cursor:pointer;display:flex;justify-content:space-between;gap:10px;font:500 .95rem "Hanken Grotesk",sans-serif;transition:border-color .2s}
-.poll-opt:hover{border-color:var(--gold)}
-.poll-opt.voted{border-color:var(--gold);background:rgba(var(--gold-rgb),.16)}
-
-/* QR + Modals */
-.qr-box{background:#fff;color:#0f172a;border-radius:14px;padding:16px;text-align:center;margin:12px 0}
-.qr-box img{width:200px;height:200px;display:block;margin:8px auto;border-radius:8px}
-.qr-lbl{font-size:.78rem;font-weight:600;color:#475569}
-.upi-chip{display:inline-flex;align-items:center;gap:8px;background:#f1f5f9;color:#1e293b;border:1px solid #cbd5e1;padding:5px 12px;border-radius:999px;font-size:.82rem;font-weight:600;margin-top:6px}
-.copy{background:var(--bg);color:var(--gold2);border:none;border-radius:6px;padding:4px 10px;font-size:.75rem;font-weight:600;cursor:pointer}
-
-.modal-bg{position:fixed;inset:0;background:rgba(var(--deep-rgb),.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;overflow-y:auto}
-.modal-bg.open{display:flex}
-.modal{width:100%;max-width:480px;max-height:90vh;overflow-y:auto;background:var(--modal);border:1px solid var(--gold);border-radius:14px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
-.modal h3{margin:0;font-size:1.3rem}
-
-/* Success Animation Overlay */
-.success-overlay{position:fixed;inset:0;background:rgba(var(--deep-rgb),.9);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
-.success-overlay.show{opacity:1;pointer-events:auto}
-.success-card{background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:36px;text-align:center;max-width:360px;width:90%;transform:scale(.8);transition:transform .3s cubic-bezier(.175,.885,.32,1.275)}
-.success-overlay.show .success-card{transform:scale(1)}
-.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(var(--ok-rgb),.15);border:2px solid var(--ok);color:var(--ok);font-size:2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation: bounceIn .6s}
-@keyframes bounceIn{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
-
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-.tab{padding:6px 14px;border-radius:999px;font:600 .85rem "Hanken Grotesk",sans-serif;cursor:pointer;background:transparent;border:1px solid var(--line);color:var(--muted)}
-.tab.active{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
-.toast{position:fixed;bottom:22px;left:16px;right:16px;max-width:440px;margin:0 auto;background:var(--card2);color:var(--paper);border:1px solid var(--gold);padding:14px 20px;border-radius:12px;z-index:300;display:none;font-weight:500}
-footer{padding:40px 0;text-align:center;background:var(--footer);border-top:1px solid var(--gold);color:var(--muted);font-size:.9rem}
-footer strong{color:var(--gold2);letter-spacing:.1em}
-footer p+p{margin-top:6px}
-
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-
-.btn:hover{transform:translateY(-1px)}
-.reveal{opacity:0}
-.reveal.in{opacity:1;animation:rv .85s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:var(--d,0ms)}
-@keyframes rv{from{opacity:0;transform:translateY(30px)}}
-#prog{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:400}
-.hero>*{position:relative;z-index:1}
-.hero::after{content:"";position:absolute;right:-8%;top:-10%;width:75%;height:130%;pointer-events:none;z-index:0;transform:translateY(calc(var(--sy,0)*-.12px));background:radial-gradient(circle at 65% 35%,rgba(var(--gold-rgb),.22),transparent 52%),radial-gradient(circle at 25% 80%,rgba(var(--ok-rgb),.12),transparent 50%)}
-#productsList .card,.creator-slide .card{transition:transform .3s,border-color .3s}
-#productsList .card:hover,.creator-slide .card:hover{transform:translateY(-5px);border-color:var(--gold)}
-.creator-carousel{padding-top:12px}
-section.marquee{padding:16px 0;overflow:hidden;--band:var(--card)}
-section.marquee::before{display:none}
-.marquee-track{display:flex;gap:48px;width:max-content;animation:mq 34s linear infinite;font:500 1.2rem "Bodoni Moda",Georgia,serif;color:var(--gold2)}
-.marquee-track span::after{content:"◆";margin-left:48px;color:var(--gold);font-size:.55em;vertical-align:middle}
-.marquee:hover .marquee-track{animation-play-state:paused}
-@keyframes mq{to{transform:translateX(-25%)}}
-.steps{list-style:none;display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:28px;counter-reset:s}
-@media(min-width:768px){.steps{grid-template-columns:repeat(3,1fr)}}
-.steps li{counter-increment:s;padding:6px 0 6px 18px;border-left:2px solid var(--gold)}
-.steps li::before{content:counter(s,decimal-leading-zero);font:500 1.8rem "Bodoni Moda",Georgia,serif;color:var(--gold)}
-.steps b{display:block;font-size:1.05rem;margin:2px 0}
-.steps span{color:var(--muted);font-size:.9rem}
-.faq{max-width:820px}
-.faq details{border-bottom:1px solid var(--line);padding:16px 0}
-.faq summary{cursor:pointer;font:500 1.15rem "Bodoni Moda",Georgia,serif;list-style:none;display:flex;justify-content:space-between;gap:16px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";color:var(--gold);transition:transform .25s}
-.faq details[open] summary::after{transform:rotate(45deg)}
-.faq p{color:var(--muted);margin-top:8px}
-.totop,.themes-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--gold);background:var(--card);color:var(--gold2);font-size:1rem;cursor:pointer}
-.totop{position:fixed;right:16px;bottom:16px;z-index:60;opacity:0;pointer-events:none;transition:opacity .3s}
-.totop.show{opacity:1;pointer-events:auto}
-.themes{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;align-items:center;gap:8px}
-.themes-pop{display:none;gap:8px;padding:6px 10px;background:var(--card);border:1px solid var(--line);border-radius:999px}
-.themes.open .themes-pop{display:flex}
-.themes-pop button{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer}
-.themes-pop button.on{border-color:var(--paper)}
-
-/* Admin */
-.adm{position:fixed;inset:0;z-index:400;background:var(--bg);color:var(--paper);overflow:auto;display:flex}
-.adm[hidden],.adm [hidden]{display:none!important}
-.adm-login{flex:1;display:grid;grid-template-columns:1.1fr 1fr;min-height:100%}
-.adm-art{position:relative;overflow:hidden;padding:48px;background:linear-gradient(160deg,var(--card2),var(--bg));border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
-.adm-art::after{content:"";position:absolute;right:-20%;bottom:-20%;width:70%;height:70%;background:radial-gradient(circle,rgba(var(--gold-rgb),.25),transparent 65%)}
-.adm-art h2{font-size:clamp(2rem,4vw,3.2rem)}
-.adm-formwrap{display:flex;align-items:center;justify-content:center;padding:24px}
-.adm-form{width:100%;max-width:380px}
-.adm-form h2{font-size:2rem;margin:0 0 6px}
-.adm-form .sub{margin-bottom:20px}
-.pw{position:relative}.pw input{padding-right:72px}
-.eye{position:absolute;right:12px;top:17px;background:none;border:0;color:var(--gold2);font:600 .8rem "Hanken Grotesk",sans-serif;cursor:pointer}
-.err{color:var(--red);min-height:1.4em;font-size:.9rem;margin-bottom:10px}
-.shake{animation:shake .4s}
-@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-@media(max-width:820px){.adm-login{grid-template-columns:1fr}.adm-art{display:none}}
-.adm-dash{flex:1;display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100%;align-items:start}
-.adm-side{position:sticky;top:0;height:100vh;padding:20px 14px;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:20px}
-.adm-nav{display:flex;flex-direction:column;gap:4px;flex:1}
-.adm-nav button{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:8px;background:none;border:0;color:var(--muted);font:600 .9rem "Hanken Grotesk",sans-serif;cursor:pointer;text-align:left}
-.adm-nav button:hover{color:var(--paper)}
-.adm-nav button.on{background:rgba(var(--gold-rgb),.15);color:var(--gold2)}
-.adm-nav i{font-style:normal;font-size:.76rem;opacity:.8}
-.adm-foot{display:flex;flex-direction:column;gap:8px}
-.adm-main{padding:28px clamp(16px,3vw,40px) 60px;min-width:0}
-.adm-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:22px}
-.adm-top h2{font-size:2rem;margin:0}
-.adm-tools{display:flex;gap:10px;align-items:center}
-.adm-tools input{margin:0;width:200px}
-.adm-h{font-size:1.3rem;margin:26px 0 12px}.adm-h small{color:var(--muted);font:400 .86rem "Hanken Grotesk",sans-serif}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
-.tile{display:flex;flex-direction:column;gap:4px;text-align:left;cursor:pointer;color:var(--paper);font:500 .88rem "Hanken Grotesk",sans-serif;transition:border-color .2s}
-.tile:hover{border-color:var(--gold)}
-.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.kv{display:flex;justify-content:space-between;gap:12px;font-size:.84px;padding:6px 0;border-bottom:1px solid var(--line)}
-.kv span{color:var(--muted);text-transform:capitalize}
-.kv b{font-weight:500;text-align:right;overflow-wrap:anywhere;max-width:60%}
-@media(max-width:820px){.adm,.adm-dash{display:block}.adm-side{position:sticky;height:auto;flex-direction:row;align-items:center;overflow-x:auto;padding:10px 14px;z-index:5}.adm-side .brand,.adm-foot .sub{display:none}.adm-nav{flex-direction:row;flex:none}.adm-nav button{white-space:nowrap;gap:8px}.adm-foot{flex-direction:row}.adm-tools input{width:130px}}
-.adm-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-</style>
-</head>
+.steps{list-style:none;display:grid;gap:16px;margin-bottom:26px;counter-reset:s}@media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
+.steps li{counter-increment:s;padding-left:16px;border-left:2px solid var(--gold)}.steps li:before{content:"0" counter(s);font:500 1.7rem "Bodoni Moda",serif;color:var(--gold);display:block}.steps b{display:block}.steps span{color:var(--muted);font-size:.9rem}
+.poll{width:100%;text-align:left;padding:12px 16px;margin-top:10px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);cursor:pointer;display:flex;justify-content:space-between;gap:10px;font:500 .95rem "Hanken Grotesk",sans-serif}
+.poll:hover,.poll.on{border-color:var(--gold)}.poll.on{background:rgba(217,180,90,.16)}
+.faq details{border-bottom:1px solid var(--line);padding:14px 0;max-width:800px}.faq summary{cursor:pointer;font:500 1.15rem "Bodoni Moda",serif}.faq p{color:var(--muted);margin-top:8px}
+footer{padding:36px 0;text-align:center;background:#021611;border-top:1px solid var(--gold);color:var(--muted);font-size:.9rem}footer strong{color:var(--gold2);letter-spacing:.1em}
+.qr{background:#fff;color:#0f172a;border-radius:14px;padding:14px;text-align:center;margin:12px 0;display:flex;flex-direction:column;align-items:center;gap:8px}.qr img{width:210px;height:210px;border-radius:8px}
+.chip{display:inline-flex;gap:8px;align-items:center;background:#f1f5f9;color:#1e293b;border:1px solid #cbd5e1;padding:4px 12px;border-radius:999px;font-size:.82rem;font-weight:600;word-break:break-all}
+.card .chip,.mbox .center .chip{background:var(--in);color:var(--gold2);border-color:var(--line)}
+.copy{background:#04221b;color:var(--gold2);border:0;border-radius:6px;padding:3px 10px;font-size:.75rem;font-weight:600;cursor:pointer}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tab{padding:6px 14px;border-radius:999px;font:600 .85rem "Hanken Grotesk",sans-serif;cursor:pointer;background:transparent;border:1px solid var(--line);color:var(--muted)}.tab.on{background:var(--gold);color:#1b1505;border-color:var(--gold)}
+.m{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(2,15,12,.88);overflow:auto}.m.open{display:flex}
+.mbox{width:100%;max-width:460px;max-height:92vh;overflow:auto;background:#072a21;border:1px solid var(--gold);border-radius:14px;padding:20px}.mbox h3{font-size:1.3rem}
+.toast{position:fixed;bottom:18px;left:14px;right:14px;max-width:460px;margin:0 auto;background:var(--card2);border:1px solid var(--gold);padding:13px 18px;border-radius:12px;z-index:700;display:none;font-weight:500}
+.toast.show{display:block}.toast.bad{border-color:var(--red);color:var(--red);background:#2a0f0f}
+.adm{position:fixed;inset:0;z-index:400;background:var(--bg);overflow:auto}.adm[hidden]{display:none!important}
+.atop{position:sticky;top:0;z-index:5;background:var(--bg2);border-bottom:1px solid var(--line);padding:10px 16px}
+.anav{display:flex;gap:6px;overflow-x:auto;padding-top:10px;scrollbar-width:none}.anav::-webkit-scrollbar{display:none}
+.anav button{white-space:nowrap;padding:8px 14px;border-radius:8px;background:none;border:0;color:var(--muted);font:600 .88rem "Hanken Grotesk",sans-serif;cursor:pointer}.anav button.on{background:rgba(217,180,90,.15);color:var(--gold2)}.anav i{font-style:normal;opacity:.7;margin-left:6px;font-size:.76rem}
+.abody{padding:20px 16px 60px;max-width:1100px;margin:0 auto}.abody h2{font-size:1.8rem;margin:0 0 16px}
+.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:14px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.tile{display:flex;flex-direction:column;gap:2px;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--paper);font:500 .88rem "Hanken Grotesk",sans-serif}.tile b{font:500 2rem "Bodoni Moda",serif;color:var(--gold2)}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:.84rem;padding:5px 0;border-bottom:1px solid var(--line)}.kv span{color:var(--muted);text-transform:capitalize}.kv b{font-weight:500;text-align:right;overflow-wrap:anywhere;max-width:62%}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.login{max-width:380px;margin:12vh auto;padding:0 18px}.login h2{margin:0 0 6px}
+</style></head>
 <body>
+<header class="nav"><div class="wrap">
+<a href="#home" class="brand">AKSHAY CREATION</a>
+<button type="button" class="btn sm" data-act="portal">Portal</button>
+<nav class="links"><a href="#about">About</a><a href="#creators">Creators</a><a href="#store">Store</a><a href="#services">Services</a><a href="#care">Support</a><a href="#community">Polls</a><a href="#faq">FAQ</a></nav>
+</div></header>
 
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a href="#home" class="brand">AKSHAY CREATION</a>
-    <nav class="nav-links">
-      <a href="#about">About</a><a href="#creators">Creators</a><a href="#store">Store</a><a href="#services">Services</a><a href="#care">Support</a><a href="#community">Community</a><a href="#faq">FAQ</a>
-    </nav>
-    <button class="btn btn-sm" onclick="openPortal()">Portal</button>
-  </div>
-</header>
+<main>
+<div id="charity"></div>
+<section class="hero" id="home"><div class="wrap">
+<div class="pill">Official Hub • Kerala, India</div>
+<h1><span>Create.</span><span>Connect.</span><span>Inspire.</span></h1>
+<p class="sub">Entertainment, creative content &amp; digital storytelling. You're not just a subscriber, you're part of my story.</p>
+<div class="btns">
+<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts">YouTube Channel ↗</a>
+<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/akshaycreation_offl">Instagram ↗</a>
+<a class="btn" href="#care">Support 💖</a></div>
+<div class="stats"><div><b>157.9K</b><span>YouTube subscribers</span></div><div><b>1K+</b><span>Instagram followers</span></div><div><b>Shorts</b><span>&amp; Reels creator</span></div><div><b>Open</b><span>for brand collabs</span></div></div>
+</div></section>
 
-<main class="wrap">
-  <div id="charitySectionContainer"></div>
+<section class="alt" id="about"><div class="wrap">
+<div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey.</h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
+<div class="g3">
+<div class="card"><span class="badge">The Family</span><h3>157K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
+<div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Entertainment, creative storytelling, and a community that grows together.</p></div>
+<div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub">Business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p></div>
+</div></div></section>
 
-  <section class="hero" id="home">
-    <div class="pill"><span class="dot"></span> Official Hub • Kerala, India</div>
-    <h1><span class="w1">Create.</span><span class="w2">Connect.</span><span class="w3">Inspire.</span></h1>
-    <p>Entertainment, creative content &amp; digital storytelling. You're not just a subscriber — you're part of my story.</p>
-    <div class="hero-cta">
-      <a href="https://youtube.com/@akshaycreationshorts" target="_blank" rel="noopener" class="btn btn-primary">YouTube Channel ↗</a>
-      <a href="https://www.instagram.com/akshaycreation_offl" target="_blank" rel="noopener" class="btn">Instagram ↗</a>
-      <a href="#care" class="btn">Support &amp; Care 💖</a>
-    </div>
-    <div class="stats-grid">
-      <div class="card"><div class="stat-num" id="ytSubs">157.9K</div><div class="stat-lbl"><span id="ytStatus">YouTube Subs</span> <span class="badge badge-ok">Live</span></div></div>
-      <div class="card"><div class="stat-num" id="igFollowers">1K+</div><div class="stat-lbl"><span>Instagram</span> <span class="badge">Active</span></div></div>
-      <div class="card"><div class="stat-num" id="trafficCount">28.4K</div><div class="stat-lbl"><span>30-Day Traffic</span> <span>↗ High</span></div></div>
-      <div class="card"><div class="stat-num" id="activeNow">38</div><div class="stat-lbl"><span>Active Now</span> <span class="dot"></span></div></div>
-    </div>
-  </section>
+<section id="creators"><div class="wrap">
+<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week</h2><p class="sub">Emerging creators, reviewed before they appear here.</p></div>
+<button type="button" class="btn pri" data-act="creatorForm">✨ Register as Creator</button></div>
+<div class="car" id="creatorsList"></div>
+</div></section>
 
-  <section class="marquee" aria-hidden="true"><div class="marquee-track" id="mqt"><span>YouTube Shorts</span><span>Instagram Reels</span><span>Digital Storytelling</span><span>Brand Collaborations</span><span>Creator Assets</span><span>Made in Kerala</span></div></section>
+<section class="alt" id="ads"><div class="wrap">
+<div class="head"><div class="tag">Featured Campaigns</div><h2>Ads &amp; Brand Collaborations</h2><p class="sub">Verified brand spots and sponsored announcements.</p></div>
+<div class="g3" id="adsList"></div>
+</div></section>
 
-  <section id="about">
-    <div class="sec-head">
-      <div class="sec-tag">About Me</div>
-      <h2>One Vision. One Journey.</h2>
-      <p class="sec-sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world. Fresh ideas, unique vibes, and content worth your time.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card"><span class="badge">The Family</span><h3>157K+ Strong Fam</h3><p class="sub">You're not just a subscriber—you're part of my story. Your time and trust will never be taken for granted.</p></div>
-      <div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Dedicated to entertainment, creative storytelling, and building a community that grows together stronger.</p></div>
-      <div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub">Got a business inquiry or brand idea? Reach out directly at: <strong>collab.akshaycreation@gmail.com</strong></p></div>
-    </div>
-  </section>
+<section id="store"><div class="wrap">
+<div class="head"><div class="tag">Creator Assets • Direct UPI</div><h2>Digital Store</h2><p class="sub">Pay directly via any UPI app and unlock your creator assets.</p></div>
+<div class="card" style="margin-bottom:22px"><strong>Already paid via UPI?</strong>
+<p class="sub small">Enter your Order ID or 12-digit UTR to check status and download.</p>
+<div class="row" style="flex-wrap:nowrap;margin-top:8px"><input id="track" placeholder="AKC_... or 12-digit UTR" style="margin:0"><button type="button" class="btn sm" data-act="track">Check</button></div>
+<div id="trackOut" style="margin-top:12px"></div></div>
+<div id="productsList" class="g3"></div>
+</div></section>
 
-  <section id="creators">
-    <div class="sec-head row" style="align-items:flex-end">
-      <div>
-        <div class="sec-tag">Creator Spotlight</div>
-        <h2>Creators of the Week</h2>
-        <p class="sec-sub">Highlighting emerging creators with verified profiles &amp; avatar display.</p>
-      </div>
-      <button class="btn btn-primary" onclick="modal('creatorModal',1)">✨ Register as Creator</button>
-    </div>
-    <div class="creator-carousel" id="creatorsList"></div>
-  </section>
+<section class="alt" id="services"><div class="wrap">
+<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings</h2><p class="sub">Video editing, brand promotions and custom creative production.</p></div>
+<ol class="steps"><li><b>Share your brief</b><span>Goal, timeline and deliverables.</span></li><li><b>Plan together</b><span>We agree on idea and format.</span></li><li><b>Review &amp; publish</b><span>You approve, then it goes live.</span></li></ol>
+<div class="g2">
+<div class="card"><h3>Available Services</h3><ul class="list"><li><strong>Sponsored Promotion:</strong> YouTube / Reels integrations.</li><li><strong>Short-Form Editing:</strong> Retention-focused Reels &amp; Shorts.</li><li><strong>Brand Ad Production:</strong> Script-to-screen showcase videos.</li><li><strong>Creator Consultation:</strong> Channel audit &amp; growth plan.</li></ul></div>
+<div class="card"><h3>Book a Service</h3>
+<form data-form="book"><label>Service *</label><select name="service_type"><option>Sponsored Promotion</option><option>Short-Form Video Editing</option><option>Brand Ad Production</option><option>Creator Consultation</option></select>
+<label>Name / Brand *</label><input name="client_name" required><label>Email *</label><input name="client_email" type="email" required>
+<label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project brief *</label><textarea name="details" rows="3" required></textarea>
+<button class="btn pri full">Send Booking Request</button></form></div>
+</div></div></section>
 
-  <section id="ads">
-    <div class="sec-head">
-      <div class="sec-tag">Featured Campaigns</div>
-      <h2>Ads &amp; Brand Collaborations</h2>
-      <p class="sec-sub">Verified brand spots, campaign reels, and sponsored announcements.</p>
-    </div>
-    <div class="ad-landscape-container" id="adsContainer"><div class="ad-empty">No active sponsored campaigns right now. Book a slot in Services.</div></div>
-  </section>
+<section id="care"><div class="wrap">
+<div class="head"><div class="tag">Support &amp; Contribution</div><h2>Support AKSHAY CREATION</h2><p class="sub">Support the journey and fuel future content.</p></div>
+<div class="g2">
+<div class="card center" style="display:flex;flex-direction:column;justify-content:center;gap:10px;background:var(--card2)"><span class="badge ok" style="align-self:center">100% Direct UPI • Zero Fees</span><h3>Fuel the Journey</h3><p>Open the UPI QR and support via GPay, PhonePe, Paytm or Navi.</p><button type="button" class="btn pri full" data-act="support">💖 Open UPI QR &amp; Support</button></div>
+<div class="card"><h3 style="margin-top:0">Request Support / Partner</h3><p class="sub small" style="margin-bottom:12px">Your message is private.</p>
+<form data-form="care"><label>Full name *</label><input name="applicant_name" required><label>Private contact *</label><input name="contact_info" required placeholder="Phone / Email">
+<label>Subject *</label><input name="case_title" required><label>Message *</label><textarea name="private_details" rows="3" required></textarea>
+<label class="chk"><input type="checkbox" name="consent" required>I agree to be contacted about this request</label>
+<button class="btn pri full">Send Privately</button></form></div>
+</div></div></section>
 
-  <section id="store">
-    <div class="sec-head">
-      <div class="sec-tag">Creator Assets • Zero-Fee Direct UPI</div>
-      <h2>Digital Store</h2>
-      <p class="sec-sub">Scan &amp; pay directly via UPI (GPay, PhonePe, Paytm, Navi) and unlock your creator assets.</p>
-    </div>
-    <div class="card row" style="margin-bottom:24px">
-      <div>
-        <strong>Already Paid via UPI?</strong>
-        <p class="sub">Enter your Order ID or 12-digit UTR number to check verification &amp; download.</p>
-      </div>
-      <div class="row" style="flex:1;max-width:440px;flex-wrap:nowrap">
-        <input id="trackOrderInput" placeholder="e.g. AKC_17... or 12-digit UTR" style="margin:0;flex:1;min-width:0" />
-        <button class="btn btn-sm" onclick="checkOrderStatus()">Check Status</button>
-      </div>
-      <div id="trackOrderResult" style="width:100%;display:none;padding-top:12px;border-top:1px solid var(--line)"></div>
-    </div>
-    <div id="productsList" class="grid-3"></div>
-  </section>
+<section class="alt" id="community"><div class="wrap">
+<div class="head"><div class="tag">Audience Voice</div><h2>Community Polls</h2><p class="sub">One vote per visitor per poll.</p></div>
+<div id="pollsList" class="g2"></div>
+</div></section>
 
-  <section id="services">
-    <div class="sec-head">
-      <div class="sec-tag">Work With AKSHAY CREATION</div>
-      <h2>Services &amp; Bookings</h2>
-      <p class="sec-sub">Book professional video editing, brand promotions, or custom creative production.</p>
-    </div>
-    <ol class="steps">
-      <li><b>Share your brief</b><span>Tell us the goal, timeline and deliverables in the booking form.</span></li>
-      <li><b>Plan together</b><span>We agree on the idea, format and what gets delivered.</span></li>
-      <li><b>Review &amp; publish</b><span>You review the final work, then it goes live.</span></li>
-    </ol>
-    <div class="grid-2">
-      <div class="card">
-        <h3>Available Services</h3>
-        <ul class="list">
-          <li><strong>Sponsored YouTube / Reels Promotion:</strong> High-engagement integrations.</li>
-          <li><strong>Short-Form Video Editing:</strong> Retention-focused Reels &amp; Shorts.</li>
-          <li><strong>Brand Ad Production:</strong> Script-to-screen product showcase videos.</li>
-          <li><strong>Creator Consultation:</strong> Channel audit &amp; growth roadmap.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Book a Service</h3>
-        <form onsubmit="submitBooking(event)">
-          <label>Service Type *</label>
-          <select id="sType"><option>Sponsored Promotion</option><option>Short-Form Video Editing</option><option>Brand Ad Production</option><option>Creator Consultation</option></select>
-          <label>Your Name / Brand *</label>
-          <input id="sName" required placeholder="Your name or company" />
-          <label>Email *</label>
-          <input id="sEmail" type="email" required placeholder="you@example.com" />
-          <label>Phone / WhatsApp</label>
-          <input id="sContact" placeholder="+91 ..." />
-          <label>Project Brief *</label>
-          <textarea id="sDetails" rows="3" required placeholder="Describe timeline, deliverables, and goals"></textarea>
-          <button class="btn btn-primary" style="width:100%">Send Booking Request</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <section id="care">
-    <div class="sec-head">
-      <div class="sec-tag">Support &amp; Contribution</div>
-      <h2>Support AKSHAY CREATION</h2>
-      <p class="sec-sub">Support the journey and fuel future content creation.</p>
-    </div>
-    <div class="grid-2">
-      <div class="card" style="text-align:center;padding:32px 20px;display:flex;flex-direction:column;justify-content:center;--c:var(--card2);background:var(--c)">
-        <span class="badge badge-ok" style="margin:0 auto">100% Direct UPI • Zero Fees</span>
-        <h3 style="font-size:1.4rem">Fuel the Journey</h3>
-        <p style="margin-bottom:20px">Tap below to open the secure UPI payment QR code &amp; support via GPay, PhonePe, Paytm, or Navi.</p>
-        <button class="btn btn-primary" style="width:100%;font-size:1rem;padding:14px" onclick="openQrPopup()">💖 Open UPI QR &amp; Support</button>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Request Support / Partner</h3>
-        <p class="sub" style="margin-bottom:12px">Submissions remain 100% private and verified directly.</p>
-        <form onsubmit="submitCare(event)">
-          <label>Full Name *</label>
-          <input id="careName" required placeholder="Your name" />
-          <label>Private Contact *</label>
-          <input id="careContact" required placeholder="Phone / Email" />
-          <label>Subject *</label>
-          <input id="careTitle" required placeholder="Brief summary" />
-          <label>Message *</label>
-          <textarea id="careDetails" rows="3" required placeholder="Write your message here"></textarea>
-          <button class="btn btn-primary" style="width:100%">Send Privately</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <section id="community">
-    <div class="sec-head">
-      <div class="sec-tag">Real Audience Voice</div>
-      <h2>Community Polls</h2>
-      <p class="sec-sub">One verified vote per visitor—no fake bots or inflated numbers.</p>
-    </div>
-    <div id="pollsList" class="grid-2"></div>
-  </section>
-  <section id="faq">
-    <div class="sec-head"><div class="sec-tag">Good to know</div><h2>Questions, answered</h2></div>
-    <div class="faq">
-      <details><summary>How do I buy a digital pack?</summary><p>Open the Digital Store, tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID straight away.</p></details>
-      <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check Status in the store. Once your payment is marked Paid, the download button appears.</p></details>
-      <details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services, or email collab.akshaycreation@gmail.com with your brand idea.</p></details>
-      <details><summary>How do I get featured as a Creator of the Week?</summary><p>Tap Register as Creator and fill in your profile. Every submission is reviewed before it appears on the site.</p></details>
-    </div>
-  </section>
+<section id="faq"><div class="wrap">
+<div class="head"><div class="tag">Good to know</div><h2>Questions, answered</h2></div>
+<div class="faq">
+<details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID straight away.</p></details>
+<details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check in the store. When your payment is marked Paid, the download button appears.</p></details>
+<details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services, or email collab.akshaycreation@gmail.com.</p></details>
+<details><summary>How do I become Creator of the Week?</summary><p>Tap Register as Creator. Every submission is reviewed before it appears.</p></details>
+</div></div></section>
 </main>
 
-<footer>
-  <div class="wrap">
-    <p><strong>AKSHAY CREATION</strong> • Create. Connect. Inspire.</p>
-    <p>Business: collab.akshaycreation@gmail.com • Built on Cloudflare Edge</p>
-  </div>
-</footer>
+<footer><div class="wrap"><p><strong>AKSHAY CREATION</strong> • Create. Connect. Inspire.</p><p>Business: collab.akshaycreation@gmail.com</p></div></footer>
 
-<!-- Creator registration -->
-<div class="modal-bg" id="creatorModal">
-  <div class="modal">
-    <div class="row" style="margin-bottom:12px"><h3>Register for Spotlight</h3><button class="btn btn-sm" onclick="modal('creatorModal',0)">Close</button></div>
-    <form onsubmit="submitCreatorApp(event)">
-      <label>Your Name *</label>
-      <input id="cAppName" required placeholder="Creator Name" />
-      <label>Platform &amp; Handle *</label>
-      <div style="display:flex;gap:8px">
-        <select id="cAppPlatform" style="width:120px"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select>
-        <input id="cAppHandle" required placeholder="@handle" style="flex:1" />
-      </div>
-      <label>Profile URL *</label>
-      <input id="cAppProfileUrl" required placeholder="https://..." />
-      <label>Avatar URL (Optional)</label>
-      <input id="cAppAvatarUrl" placeholder="https://... image link" />
-      <label>Short Bio *</label>
-      <textarea id="cAppBio" rows="3" required placeholder="What do you create?"></textarea>
-      <button class="btn btn-primary" style="width:100%">Submit for Review</button>
-    </form>
-  </div>
+<div class="m" id="m"><div class="mbox" id="mbody"></div></div>
+
+<div class="adm" id="adm" hidden>
+<div id="alogin" class="login"><h2>Admin sign in</h2><p class="sub" style="margin-bottom:18px">Authorised admins only.</p>
+<form data-form="login"><label>Username</label><input name="username" autocomplete="username" required>
+<label>Password</label><input id="lp" name="password" type="password" autocomplete="current-password" required>
+<label class="chk"><input type="checkbox" data-act="pw">Show password</label>
+<button class="btn pri full">Sign in</button><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></form></div>
+<div id="adash" hidden>
+<div class="atop"><div class="row"><span class="brand">AKSHAY CREATION</span><span class="sub small" id="auser"></span>
+<span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
+<nav class="anav" id="anav"></nav></div>
+<div class="abody"><h2 id="atitle"></h2><div id="abody"></div></div></div>
 </div>
 
-<!-- Support QR -->
-<div class="modal-bg" id="qrPopupModal">
-  <div class="modal">
-    <div class="row" style="margin-bottom:10px"><h3>Support AKSHAY CREATION</h3><button class="btn btn-sm" onclick="modal('qrPopupModal',0)">Close</button></div>
-    <p class="sub" style="margin-bottom:10px">Select an amount or scan directly with any UPI app.</p>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
-      <button type="button" class="tab" data-a="50" onclick="setPopupDonateAmt(50)">₹50</button>
-      <button type="button" class="tab" data-a="100" onclick="setPopupDonateAmt(100)">₹100</button>
-      <button type="button" class="tab" data-a="500" onclick="setPopupDonateAmt(500)">₹500</button>
-      <button type="button" class="tab" data-a="1000" onclick="setPopupDonateAmt(1000)">₹1,000</button>
-      <button type="button" class="tab active" data-a="" onclick="setPopupDonateAmt('')">Any</button>
-    </div>
-    <div class="qr-box">
-      <div class="qr-lbl" id="popupQrLabel">Scan with any UPI app</div>
-      <img id="popupQrImg" src="" alt="Support UPI QR" />
-      <div style="font-weight:800">Akshay K P</div>
-      <div class="upi-chip"><span>akshaycreation7@naviaxis</span><button type="button" class="copy" onclick="copyUpiId()">Copy</button></div>
-      <div style="margin-top:12px"><a id="popupDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%">Open UPI app &amp; pay ↗</a></div>
-    </div>
-  </div>
-</div>
-
-<!-- Charity UPI / QR Modal -->
-<div class="modal-bg" id="charityModal">
-  <div class="modal">
-    <div class="row" style="margin-bottom:10px"><h3 id="charityModalTitle">Support Campaign</h3><button class="btn btn-sm" onclick="modal('charityModal',0)">Close</button></div>
-    <div class="qr-box">
-      <div class="qr-lbl">Scan with any UPI App</div>
-      <img id="charityQrImg" src="" alt="Charity UPI QR" />
-      <div style="font-weight:800" id="charityUpiName">Name</div>
-      <div class="upi-chip"><span id="charityUpiIdText">upi@id</span><button type="button" class="copy" onclick="copyCharityUpi()">Copy</button></div>
-      <div style="margin-top:12px"><a id="charityDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%">Open UPI app &amp; pay ↗</a></div>
-    </div>
-    <div id="charityExternalLinkWrap" style="margin-top:10px;text-align:center">
-      <a id="charityExternalLink" href="#" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Open Official Fundraising Page ↗</a>
-    </div>
-  </div>
-</div>
-
-<!-- Checkout -->
-<div class="modal-bg" id="checkoutModal">
-  <div class="modal" style="max-width:440px">
-    <div class="row"><h3 id="chkTitle">UPI Checkout</h3><button class="btn btn-sm" onclick="modal('checkoutModal',0)">Close</button></div>
-    <p id="chkPrice" class="price" style="margin:6px 0"></p>
-    <div id="upiPayStep">
-      <div class="qr-box">
-        <div class="qr-lbl">Scan with any UPI app</div>
-        <img id="chkQrImg" src="" alt="UPI QR code for this product" />
-        <div style="font-weight:800">Akshay K P</div>
-        <div class="upi-chip"><span>akshaycreation7@naviaxis</span><button type="button" class="copy" onclick="copyUpiId()">Copy</button></div>
-        <div style="margin-top:10px"><a id="chkUpiDeepLink" href="#" class="btn btn-primary btn-sm" style="width:100%">Open UPI app &amp; pay ↗</a></div>
-      </div>
-      <form onsubmit="submitUpiPayment(event)">
-        <input type="hidden" id="chkProductId" />
-        <label>Your Full Name *</label>
-        <input id="chkName" required placeholder="Enter your name" />
-        <label>Email *</label>
-        <input id="chkEmail" type="email" required placeholder="you@example.com" />
-        <label>12-Digit UPI UTR / Ref No. *</label>
-        <input id="chkUtr" required minlength="12" maxlength="12" pattern="\d{12}" inputmode="numeric" placeholder="Enter exact 12-digit UTR" />
-        <button class="btn btn-primary" style="width:100%">Confirm Payment &amp; Submit</button>
-      </form>
-    </div>
-    <div id="upiDoneStep" style="display:none;text-align:center;padding:16px 0">
-      <div style="font-size:2.5rem">🙏✨</div>
-      <span class="badge badge-ok">Thank you so much!</span>
-      <h3 style="margin:10px 0 6px;font-size:1.4rem">"Nanni... Romba Nanni!"</h3>
-      <p class="sub" style="margin-bottom:14px">Your support fuels this journey. Payment details submitted successfully!</p>
-      <div class="card" style="margin-bottom:16px;--c:var(--card2);background:var(--c);text-align:left;padding:12px">
-        <div class="qr-lbl">Your order ID (save this)</div>
-        <div id="doneOrderId" style="font-weight:800;margin-top:3px;word-break:break-all"></div>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="copyOrderId()">Copy Order ID</button>
-    </div>
-  </div>
-</div>
-
-<!-- Success Animation Modal -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-card">
-    <div class="success-icon">✓</div>
-    <h3 style="font-size:1.5rem;margin-bottom:8px">Success!</h3>
-    <p class="sub" id="successMsg" style="margin-bottom:20px">Your submission was successful.</p>
-    <button class="btn btn-primary btn-sm" style="width:100%" onclick="closeSuccessModal()">Awesome</button>
-  </div>
-</div>
-
-<div id="prog"></div>
-<button class="totop" id="totop" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
-<div class="themes" id="themes">
-  <div class="themes-pop">
-    <button data-t="emerald" title="Emerald &amp; Gold" aria-label="Emerald and Gold" style="background:linear-gradient(135deg,#0f4a38 50%,#d9b45a 50%)" onclick="setTheme('emerald')"></button>
-    <button data-t="violet" title="Violet &amp; Rose" aria-label="Violet and Rose" style="background:linear-gradient(135deg,#342467 50%,#ff7eb6 50%)" onclick="setTheme('violet')"></button>
-    <button data-t="navy" title="Navy &amp; Coral" aria-label="Navy and Coral" style="background:linear-gradient(135deg,#183b63 50%,#ff8a6b 50%)" onclick="setTheme('navy')"></button>
-    <button data-t="wine" title="Wine &amp; Champagne" aria-label="Wine and Champagne" style="background:linear-gradient(135deg,#5a2540 50%,#e9c7a0 50%)" onclick="setTheme('wine')"></button>
-  </div>
-  <button class="themes-btn" onclick="$('themes').classList.toggle('open')" aria-label="Change colour theme">🎨</button>
-</div>
-
-<div class="adm" id="admin" hidden>
-  <div class="adm-login" id="admLogin">
-    <div class="adm-art">
-      <a class="brand" href="#home" onclick="closePortal()">AKSHAY CREATION</a>
-      <div><h2>Your studio,<br>one dashboard.</h2><p class="sub" style="margin-top:14px;max-width:400px">Approve creators and follow bookings, support requests and store orders in one place.</p></div>
-      <p class="sub">Private area • authorised admins only</p>
-    </div>
-    <div class="adm-formwrap">
-      <form class="adm-form" id="admForm" onsubmit="doLogin(event)">
-        <h2>Admin sign in</h2>
-        <p class="sub">Use your portal username and password.</p>
-        <label for="lUser">Username</label>
-        <input id="lUser" autocomplete="username" required />
-        <label for="lPass">Password</label>
-        <div class="pw"><input id="lPass" type="password" autocomplete="current-password" required /><button type="button" class="eye" onclick="togglePw()">Show</button></div>
-        <p class="err" id="lErr" role="alert"></p>
-        <button class="btn btn-primary" id="lBtn" style="width:100%">Sign in</button>
-        <button type="button" class="btn" style="width:100%;margin-top:12px" onclick="closePortal()">Back to website</button>
-      </form>
-    </div>
-  </div>
-  <div class="adm-dash" id="admDash" hidden>
-    <aside class="adm-side">
-      <a class="brand" href="#home" onclick="closePortal()">AKSHAY CREATION</a>
-      <nav class="adm-nav" id="admNav"></nav>
-      <div class="adm-foot"><div class="sub" id="admUser"></div><button class="btn btn-sm" onclick="closePortal()">View site</button><button class="btn btn-sm" onclick="doLogout()">Log out</button></div>
-    </aside>
-    <div class="adm-main">
-      <div class="adm-top">
-        <h2 id="admTitle"></h2>
-        <div class="adm-tools">
-          <span id="admTools" class="adm-tools"><input id="admSearch" type="search" placeholder="Search…" oninput="admQ=this.value.toLowerCase();renderAdm()" /><button class="btn btn-sm" onclick="admExport()">Export CSV</button></span>
-          <button class="btn btn-primary btn-sm" id="admNew" hidden></button>
-          <button class="btn btn-sm" onclick="loadDashboard()">Refresh</button>
-        </div>
-      </div>
-      <div id="admBody"></div>
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="admModal" style="z-index:450"><div class="modal"><div class="row" style="margin-bottom:6px"><span></span><button class="btn btn-sm" onclick="modal('admModal',0)">Close</button></div><div id="admFormBody"></div></div></div>
 <div class="toast" id="toast"></div>
-
+<script>window.addEventListener("error",function(e){var d=document.getElementById("toast");if(d){d.textContent="Page error: "+e.message;d.className="toast show bad"}});</script>
 <script>
-let state={creators:[],ads:[],products:[],care_cases:[],polls:[],charity:null,upi_id:"akshaycreation7@naviaxis",upi_name:"Akshay K P"};
-let token=localStorage.getItem("akc_token")||"",dash=null,dashTab="creators",adTimer=null,amt="",tt;
+(function(){
+"use strict";
 const $=id=>document.getElementById(id);
-const v=id=>{const el=document.getElementById(id);return el?el.value:""};
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const link=u=>/^https?:\/\//i.test(u||"")?esc(String(u).replace(/['"<>\s]/g,c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0"))):"#";
-const modal=(id,on)=>$(id).classList.toggle("open",!!on);
-document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal-bg.open").forEach(m=>m.classList.remove("open"))});
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const link=u=>{try{const x=new URL(u);return /^https?:$/.test(x.protocol)?esc(x.href.replace(/'/g,"%27")):"#"}catch(e){return"#"}};
+const S={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},d:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+const fd=f=>Object.fromEntries(new FormData(f));
+let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charity:null},tt;
+const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 
-function showSuccessModal(msg){const m=$("successMsg");if(m)m.textContent=msg||"Your submission was successful!";const o=$("successOverlay");if(o)o.classList.add("show")}
-function closeSuccessModal(){const o=$("successOverlay");if(o)o.classList.remove("show")}
-
-function playSuccessSound(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),t=a.currentTime;[523.25,659.25,783.99,1046.5].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),s=t+i*.08;o.type="triangle";o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.2,s+.02);g.gain.exponentialRampToValueAtTime(.001,s+.6);o.connect(g);g.connect(a.destination);o.start(s);o.stop(s+.6)})}catch(e){}}
-function toast(m){const t=$("toast");if(!t)return;t.textContent=m;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",3800)}
-async function api(path,opts={}){const h={"Content-Type":"application/json",...(opts.headers||{})};if(token)h.Authorization="Bearer "+token;const r=await fetch(path,{...opts,headers:h}),d=await r.json();if(!r.ok)throw new Error(d.error||"Request failed");return d}
+function toast(m,bad){const t=$("toast");t.textContent=m;t.className="toast show"+(bad?" bad":"");clearTimeout(tt);tt=setTimeout(()=>{t.className="toast"},4200)}
+async function api(p,o){
+  const h={"Content-Type":"application/json"};if(token)h.Authorization="Bearer "+token;
+  let r,d;
+  try{r=await fetch(p,Object.assign({},o,{headers:h}));d=await r.json()}catch(e){throw new Error("No data from server. Check that the Worker handles /api/*")}
+  if(r.status===401&&token&&p.indexOf("/api/admin")===0)logout();
+  if(!r.ok)throw new Error(d.error||"Request failed");return d}
 const post=(p,b)=>api(p,{method:"POST",body:JSON.stringify(b)});
 
-const upi=(a,note,id,name)=>`upi://pay?pa=${encodeURIComponent(id||state.upi_id)}&pn=${encodeURIComponent(name||state.upi_name)}${a?"&am="+encodeURIComponent(a):""}&cu=INR&tn=${encodeURIComponent(note)}`;
-const qr=u=>"https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data="+encodeURIComponent(u);
+const upiUrl=(a,n,id,nm)=>"upi://pay?pa="+encodeURIComponent(id)+"&pn="+encodeURIComponent(nm)+(a>0?"&am="+a:"")+"&cu=INR&tn="+encodeURIComponent(n);
+const qr=u=>"https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data="+encodeURIComponent(u);
+const openM=h=>{$("mbody").innerHTML=h;$("m").classList.add("open")};
+const closeM=()=>$("m").classList.remove("open");
+const head=t=>`<div class="row" style="margin-bottom:10px"><h3>${esc(t)}</h3><button type="button" class="btn sm" data-act="close">Close</button></div>`;
+const qrBox=(u,id,nm,label)=>`<div class="qr"><div style="font-size:.78rem;font-weight:600;color:#475569">Scan with any UPI app</div><img src="${qr(u)}" alt="UPI QR" width="210" height="210"><b>${esc(nm)}</b><div class="chip">${esc(id)} <button type="button" class="copy" data-act="copy" data-t="${esc(id)}">Copy</button></div><a class="btn pri sm" href="${esc(u)}">${esc(label)} ↗</a></div>`;
 
-function openCharityModal(){
-  const c=state.charity;
-  if(!c)return;
-  const uId=c.upi_id||"limsontt1@fbl",uName=c.upi_name||c.title;
-  const upiUrl=`upi://pay?pa=${encodeURIComponent(uId)}&pn=${encodeURIComponent(uName)}&cu=INR&tn=${encodeURIComponent(c.title)}`;
-  if($("charityModalTitle")) $("charityModalTitle").textContent=c.title;
-  if($("charityQrImg")) $("charityQrImg").src=qr(upiUrl);
-  if($("charityUpiName")) $("charityUpiName").textContent=uName;
-  if($("charityUpiIdText")) $("charityUpiIdText").textContent=uId;
-  if($("charityDeepLink")) $("charityDeepLink").href=upiUrl;
-  const ext=$("charityExternalLink");
-  if(ext){if(c.donate_link){ext.href=c.donate_link;ext.style.display="inline-flex"}else{ext.style.display="none"}}
-  modal("charityModal",1);
-}
-function copyCharityUpi(){navigator.clipboard?.writeText(state.charity?.upi_id||"limsontt1@fbl");toast("Copied Campaign UPI ID")}
-
-function openQrPopup(){amt="";refreshPopupQr();modal("qrPopupModal",1)}
-function setPopupDonateAmt(a){amt=a;refreshPopupQr()}
-function refreshPopupQr(){const u=upi(amt>0?amt:"","Support AKSHAY CREATION"),d=$("popupDeepLink");if($("popupQrImg"))$("popupQrImg").src=qr(u);if($("popupQrLabel"))$("popupQrLabel").textContent=amt>0?`Scan to support ₹${amt}`:"Scan with any UPI app";if(d){d.href=u;d.textContent=amt>0?`Donate ₹${amt} via UPI app ↗`:"Open UPI app & pay ↗"}document.querySelectorAll("#qrPopupModal .tab").forEach(b=>b.classList.toggle("active",b.dataset.a===String(amt)))}
-function copyUpiId(){navigator.clipboard?.writeText(state.upi_id);toast("Copied UPI ID")}
-function copyOrderId(){const o=$("doneOrderId");if(o)navigator.clipboard?.writeText(o.textContent);toast("Copied Order ID")}
-
-async function submitCreatorApp(e){e.preventDefault();try{const r=await post("/api/creators/apply",{name:v("cAppName"),platform:v("cAppPlatform"),handle:v("cAppHandle"),profile_url:v("cAppProfileUrl"),avatar_url:v("cAppAvatarUrl"),bio:v("cAppBio")});if(r){modal("creatorModal",0);e.target.reset();showSuccessModal("Creator application submitted successfully for review!")}}catch(x){toast(x.message)}}
-async function submitBooking(e){e.preventDefault();try{const r=await post("/api/services/book",{service_type:v("sType"),client_name:v("sName"),client_email:v("sEmail"),client_contact:v("sContact"),details:v("sDetails")});if(r){e.target.reset();showSuccessModal("Booking request received successfully!")}}catch(x){toast(x.message)}}
-async function submitCare(e){e.preventDefault();try{const r=await post("/api/care/submit",{applicant_name:v("careName"),contact_info:v("careContact"),case_title:v("careTitle"),private_details:v("careDetails"),consent_granted:true});if(r){e.target.reset();showSuccessModal("Support message sent privately & securely!")}}catch(x){toast(x.message)}}
-
-function openCheckout(id){const p=state.products.find(x=>x.id==id);if(!p)return;const u=upi(p.price_inr,p.title);if($("chkProductId"))$("chkProductId").value=id;if($("chkTitle"))$("chkTitle").textContent=p.title;if($("chkPrice"))$("chkPrice").textContent=`Pay exact amount: ₹${p.price_inr}`;if($("chkQrImg"))$("chkQrImg").src=qr(u);if($("chkUpiDeepLink"))$("chkUpiDeepLink").href=u;if($("upiPayStep"))$("upiPayStep").style.display="block";if($("upiDoneStep"))$("upiDoneStep").style.display="none";modal("checkoutModal",1)}
-
-async function submitUpiPayment(e){e.preventDefault();const utrVal=v("chkUtr");if(utrVal.length!==12||isNaN(utrVal)){toast("UTR number must be exactly 12 digits!");return}try{const r=await post("/api/checkout/upi-submit",{product_id:v("chkProductId"),customer_name:v("chkName"),customer_email:v("chkEmail"),utr:utrVal});if(r){modal("checkoutModal",0);playSuccessSound();showSuccessModal("UTR payment details submitted successfully!")}}catch(x){toast(x.message)}}
-
-async function checkOrderStatus(){const q=v("trackOrderInput").trim(),b=$("trackOrderResult");if(!q)return toast("Enter Order ID or UTR");if(b)b.style.display="block";try{const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));if(b)b.innerHTML=r.status==="PAID"?`<span class="badge badge-ok">Paid</span> <a href="${link(r.download_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="margin-left:8px">Download Asset ↗</a>`:`<span class="badge badge-warn">${r.status==="REJECTED"?"Rejected":"Pending"}</span>`}catch(x){if(b)b.innerHTML=`<span style="color:var(--red);font-weight:700">${esc(x.message)}</span>`}}
-
-async function votePoll(id,i){try{await post("/api/polls/vote",{poll_id:id,option_index:i});toast("Vote recorded!");loadPublic()}catch(e){toast(e.message)}}
-
-function startTrafficSimulation(){let t=28400,u=38;setInterval(()=>{t=Math.max(18200,Math.min(36900,t+Math.floor(Math.random()*31)-14));const tc=$("trafficCount");if(tc)tc.textContent=(t/1000).toFixed(1)+"K"},7000);setInterval(()=>{u=Math.max(22,Math.min(74,u+Math.floor(Math.random()*7)-3));const an=$("activeNow");if(an)an.textContent=u},5000)}
-function initAdSlideshow(){clearInterval(adTimer);const s=document.querySelectorAll(".ad-slide");if(s.length<2)return;let i=0;adTimer=setInterval(()=>{s[i].classList.remove("active");i=(i+1)%s.length;s[i].classList.add("active")},4500)}
-function initCreatorAutoScroll(){const c=$("creatorsList");if(!c||matchMedia("(prefers-reduced-motion: reduce)").matches)return;setInterval(()=>{if(c.matches(":hover"))return;c.scrollLeft+c.clientWidth>=c.scrollWidth-10?c.scrollTo({left:0,behavior:"smooth"}):c.scrollBy({left:300,behavior:"smooth"})},3500)}
+function supportM(a){a=+a||0;const u=upiUrl(a,"Support AKSHAY CREATION",UPI.id,UPI.name);
+  openM(head("Support AKSHAY CREATION")+`<div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"))}
+function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
+  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="\\d{12}" maxlength="12" inputmode="numeric" placeholder="Exact 12-digit UTR"><button class="btn pri full">Confirm payment &amp; submit</button></form>`)}
+function creatorM(){openM(head("Register for Spotlight")+`<form data-form="creator"><label>Name *</label><input name="name" required><label>Platform *</label><select name="platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select><label>Handle *</label><input name="handle" required placeholder="@handle"><label>Profile URL *</label><input name="profile_url" type="url" required placeholder="https://..."><label>Avatar URL (optional)</label><input name="avatar_url" placeholder="https://..."><label>Short bio *</label><textarea name="bio" rows="3" required></textarea><button class="btn pri full">Submit for review</button></form>`)}
 
 async function loadPublic(){try{
-  const d=await api("/api/public/overview");state={...state,...d};
-  
-  const cCont=$("charitySectionContainer");
-  if(cCont){
-    if(d.charity){
-      const c=d.charity;
-      const target=c.target_amount||14000000;
-      const raised=c.raised_amount||127570757;
-      const pct=Math.min(100, Math.round((raised/target)*100));
-      cCont.innerHTML=`
-        <div class="charity-banner">
-          <div class="charity-grid">
-            <div>
-              ${c.banner_url?`<img src="${c.banner_url}" alt="${esc(c.title)}" class="charity-img" />`:""}
-            </div>
-            <div>
-              <span class="badge badge-warn">Emergency Medical Help 💖</span>
-              <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);margin:8px 0">${esc(c.title)}</h2>
-              <p class="sub" style="margin-bottom:14px">${esc(c.description||"Every contribution can save a life and make a huge difference.")}</p>
-              <div style="font-size:.9rem;font-weight:600;color:var(--gold2);display:flex;justify-content:space-between">
-                <span>Raised: ₹${raised.toLocaleString('en-IN')}</span>
-                <span>Target: ₹${target.toLocaleString('en-IN')} (${pct}%)</span>
-              </div>
-              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-              <div class="row" style="margin-top:14px">
-                <button class="btn btn-primary btn-sm" onclick="openCharityModal()">💖 Help &amp; Donate Now</button>
-                ${c.donate_link?`<a href="${link(c.donate_link)}" target="_blank" rel="noopener" class="btn btn-sm">Official Page ↗</a>`:""}
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    } else {
-      cCont.innerHTML="";
-    }
-  }
+  const d=await api("/api/public/overview");st=d;
+  const c=d.charity;
+  $("charity").innerHTML=c?(()=>{const tg=Math.max(+c.target_amount||0,1),rs=+c.raised_amount||0,pc=Math.min(100,Math.round(rs/tg*100));
+    return`<section class="alt" style="border:0;padding:30px 0"><div class="wrap"><div class="cbanner">${c.banner_url?`<img src="${link(c.banner_url)}" alt="">`:"<div></div>"}<div><span class="badge warn">Emergency medical help 💖</span><h2 style="font-size:clamp(1.5rem,3.5vw,2.2rem)">${esc(c.title)}</h2><p class="sub">${esc(c.description)}</p><div class="row small" style="margin-top:12px"><span>Raised ₹${rs.toLocaleString("en-IN")}</span><span>Target ₹${tg.toLocaleString("en-IN")} (${pc}%)</span></div><div class="bar"><i style="width:${pc}%"></i></div><div class="btns" style="margin:0">${c.upi_id?`<button type="button" class="btn pri sm" data-act="charity">💖 Help &amp; Donate</button>`:""}${c.donate_link?`<a class="btn sm" target="_blank" rel="noopener" href="${link(c.donate_link)}">Official page ↗</a>`:""}</div></div></div></div></section>`})():"";
+  $("creatorsList").innerHTML=d.creators.length?d.creators.map(c=>`<div class="card">${c.avatar_url?`<img class="av" src="${link(c.avatar_url)}" alt="">`:""}<div style="margin-top:8px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`).join(""):`<div class="card center" style="flex:1"><p class="sub">No featured creators yet. Tap Register as Creator!</p></div>`;
+  $("adsList").innerHTML=d.ads.length?d.ads.map(a=>`<div class="card">${a.media_url?`<img class="cover" src="${link(a.media_url)}" alt="">`:""}<span class="badge">${esc(a.badge||"Sponsored")}</span><h3>${esc(a.title)}</h3><a class="btn pri sm" target="_blank" rel="noopener" href="${link(a.target_url)}">Explore ↗</a></div>`).join(""):`<div class="card center"><p class="sub">No active campaigns right now. Book a slot in Services.</p></div>`;
+  $("productsList").innerHTML=d.products.length?d.products.map(p=>`<div class="card">${p.image_url?`<img class="cover" src="${link(p.image_url)}" alt="${esc(p.title)}">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:12px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button type="button" class="btn pri sm" data-act="buy" data-id="${+p.id}">Buy via UPI</button></div></div>`).join(""):`<div class="card center"><p class="sub">Digital packs launching soon.</p></div>`;
+  $("pollsList").innerHTML=d.polls.length?d.polls.map(p=>`<div class="card"><h3 style="margin-top:0">${esc(p.question)}</h3><p class="sub small">${+p.total_votes} vote(s)</p>${p.options.map((o,i)=>{const pc=p.total_votes?Math.round(p.counts[i]/p.total_votes*100):0;return`<button type="button" class="poll${p.user_voted===i?" on":""}" data-act="vote" data-id="${+p.id}" data-i="${i}"><span>${esc(o)}</span><span>${+p.counts[i]} (${pc}%)</span></button>`}).join("")}</div>`).join(""):`<div class="card center"><p class="sub">No active polls.</p></div>`;
+}catch(e){toast("Could not load site data: "+e.message,1)}}
 
-  const cl=$("creatorsList");
-  if(cl)cl.innerHTML=d.creators.length?d.creators.map(c=>`<div class="creator-slide"><div class="card" style="height:100%">${c.avatar_url?`<img src="${link(c.avatar_url)}" alt="" class="creator-avatar" onerror="this.style.display='none'">`:""}<div style="margin-top:10px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--cyan);font-weight:700;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 14px;min-height:40px">${esc(c.bio)}</p><a href="${link(c.profile_url)}" target="_blank" rel="noopener" class="btn btn-sm" style="width:100%">Visit Profile ↗</a></div></div>`).join(""):`<div class="card" style="width:100%;text-align:center"><p class="sub">No featured creators yet. Tap 'Register as Creator' above!</p></div>`;
-  
-  if(d.ads.length){const ac=$("adsContainer");if(ac){ac.innerHTML=d.ads.map((a,i)=>`<div class="ad-slide ${i?"":"active"}" ${a.media_url?`style="background-image:url('${link(a.media_url)}')"`:""}><div class="ad-content"><span class="badge" style="margin-bottom:8px">${esc(a.badge||"Sponsored")}</span><h3 style="font-size:1.5rem;margin:6px 0 10px">${esc(a.title)}</h3><a href="${link(a.target_url)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Explore Campaign ↗</a></div></div>`).join("");initAdSlideshow()}}
-  
-  const pl=$("productsList");
-  if(pl)pl.innerHTML=d.products.map(p=>`<div class="card">${p.image_url?`<img src="${link(p.image_url)}" alt="${esc(p.title)}" class="card-cover" onerror="this.style.display='none'">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:14px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button class="btn btn-primary btn-sm" onclick="openCheckout(${+p.id})">Buy via UPI</button></div></div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">Digital packs launching soon.</p></div>`;
-  
-  const pol=$("pollsList");
-  if(pol)pol.innerHTML=d.polls.map(pl=>`<div class="card"><h3 style="margin-top:0">${esc(pl.question)}</h3><p class="sub" style="font-size:.8rem">${+pl.total_votes} verified vote(s)</p>${pl.options.map((o,i)=>{const pct=pl.total_votes?Math.round(pl.counts[i]/pl.total_votes*100):0;return`<button class="poll-opt ${pl.user_voted===i?"voted":""}" onclick="votePoll(${+pl.id},${i})"><span>${esc(o)}</span><span>${+pl.counts[i]} (${pct}%)</span></button>`}).join("")}</div>`).join("")||`<div class="card" style="text-align:center"><p class="sub">No active polls.</p></div>`;
-  
-  initReveal();
-}catch(e){console.error(e)}}
+/* ---------- Admin ---------- */
+const TABS=[["overview","Overview"],["creators","Creators","creators"],["ads","Ads","ads"],["charity","Charity","charity_campaigns"],["products","Products","products"],["orders","Orders","orders"],["bookings","Bookings","bookings"],["care","Support","care"],["polls","Polls","polls"],["staff","Staff","staff_users"]];
+const NEW={creators:"Add creator",ads:"New ad",charity:"New campaign",products:"New product",polls:"New poll"};
+const DK={creators:"creators",ads:"ads",charity:"charity_campaigns",products:"products",orders:"orders",bookings:"bookings",care:"care",polls:"polls",staff:"staff_users"};
+const tg=r=>[["Edit","form"],[r.active==null||+r.active?"Hide":"Show","set",{active:r.active==null||+r.active?0:1}],["Delete","del"]];
+const CFG={
+ creators:{t:"name",acts:r=>[...(r.status!=="approved"?[["Approve","st","approved",1]]:[]),["Edit","form"],["Delete","del"]]},
+ ads:{t:"title",acts:tg},charity:{t:"title",acts:tg},products:{t:"title",acts:tg},
+ orders:{t:"order_id",acts:r=>[["Mark paid","st","PAID",1],["Reject","st","REJECTED"],["Delete","del"]]},
+ bookings:{t:"client_name",acts:r=>[["Contacted","st","contacted"],["Done","st","done",1],["Delete","del"]]},
+ care:{t:"applicant_name",acts:r=>[["In progress","st","in_progress"],["Resolved","st","resolved",1],["Delete","del"]]},
+ polls:{t:"question",acts:r=>[[r.active==null||+r.active?"Close":"Reopen","set",{active:r.active==null||+r.active?0:1}],["Delete","del"]]},
+ staff:{t:"username",acts:r=>[["Delete","del"]]}};
+const F={
+ creators:[["name","Name"],["platform","Platform (YouTube / Instagram / Twitter)"],["handle","Handle"],["profile_url","Profile URL"],["avatar_url","Avatar URL"],["bio","Bio","t"]],
+ ads:[["title","Title"],["badge","Badge (e.g. Sponsored)"],["media_url","Banner image URL"],["target_url","Link URL"],["sort","Order (0 = first)","n"]],
+ products:[["title","Title"],["category","Category"],["description","Description","t"],["price_inr","Price (₹)","n"],["image_url","Cover image URL"],["download_url","Private download link (shown only after payment)"]],
+ charity:[["title","Campaign title"],["banner_url","Banner image URL"],["target_amount","Target (₹)","n"],["raised_amount","Raised so far (₹)","n"],["upi_id","UPI ID"],["upi_name","UPI account name"],["donate_link","Official fundraiser link"],["description","Description","t"],["active","Active (1 = show, 0 = hide)","n"]],
+ polls:[["question","Question"],["options","Options (one per line, 2 to 6)","t"]]};
+const HIDE=["id","status","active","password","avatar_url","image_url","media_url","banner_url","download_url","options","counts"];
 
-const TH={emerald:"#04221b",violet:"#140d2b",navy:"#0a1a2f",wine:"#2a0f1c"};
-function setTheme(t){if(!TH[t])t="emerald";document.documentElement.dataset.theme=t;try{localStorage.setItem("akc_theme",t)}catch(e){}const mc=document.querySelector('meta[name=theme-color]');if(mc)mc.content=TH[t];document.querySelectorAll("#themes [data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t===t));const thm=$("themes");if(thm)thm.classList.remove("open")}
-let io;
-function countUp(el){const m=el.textContent.match(/^([\d.]+)(.*)$/);if(!m||matchMedia("(prefers-reduced-motion: reduce)").matches)return;const end=parseFloat(m[1]),dec=(m[1].split(".")[1]||"").length,suf=m[2],t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3);el.textContent=(end*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(f)})(t0)}
-function initReveal(){if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add("in");io.unobserve(e.target);if(e.target.classList.contains("stats-grid"))e.target.querySelectorAll(".stat-num").forEach(countUp)}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});document.querySelectorAll(".sec-head,.stats-grid,.hero p,.hero-cta,#about .card,#services .card,.steps li,#care .card,#store>.card,#productsList>*,#pollsList,.creator-carousel,.ad-landscape-container,.faq details").forEach(el=>{if(el.dataset.rv)return;el.dataset.rv=1;el.classList.add("reveal");el.style.setProperty("--d",Math.min([...el.parentNode.children].indexOf(el),5)*90+"ms");io.observe(el)})}
-function initFx(){const m=$("mqt");if(m)m.innerHTML=m.innerHTML.repeat(4);setTheme(localStorage.getItem("akc_theme")||"emerald");const pg=$("prog"),tb=$("totop");let tick=false;addEventListener("scroll",()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;if(pg)pg.style.setProperty("--p",h>0?y/h:0);document.documentElement.style.setProperty("--sy",y);if(tb)tb.classList.toggle("show",y>700);tick=false})},{passive:true});initReveal();if(location.hash==="#admin")openPortal()}
+function card(k,r){const c=CFG[k];
+  const kv=Object.entries(r).filter(([f,x])=>f!==c.t&&HIDE.indexOf(f)<0&&x!==""&&x!=null).slice(0,8).map(([f,x])=>`<div class="kv"><span>${esc(f.replace(/_/g," "))}</span><b>${esc((f==="created_at"?new Date(x).toLocaleString():String(x)).slice(0,300))}</b></div>`).join("");
+  const badge=r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"ok":"warn"}">${esc(r.status)}</span>`:(r.active!=null&&!+r.active?`<span class="badge warn">Hidden</span>`:"");
+  const acts=c.acts(r).map(([l,op,v,p])=>`<button type="button" class="btn sm${p?" pri":""}" data-act="adm" data-op="${op}" data-res="${k}" data-id="${+r.id}" data-v='${esc(JSON.stringify(v==null?null:v))}'>${l}</button>`).join("");
+  return`<div class="card"><div class="row"><h3 style="margin:0">${esc(r[c.t]||"#"+r.id)}</h3>${badge}</div><div style="margin-top:8px">${kv}</div><div class="acts">${acts}</div></div>`}
 
-const ADM=[["overview","Overview"],["creators","Creators"],["ads","Ads"],["charity","Charity Banner"],["store","Store"],["bookings","Bookings"],["care","Support"],["polls","Polls"],["staff","Staff & Access"]];
-const KEYS={creators:["creators"],ads:["ads"],charity:["charity_campaigns"],store:["orders","products"],bookings:["bookings"],care:["care_cases","care"],polls:["polls"],staff:["staff_users"]};
-let admTab="overview",admQ="";
-const secs=t=>(KEYS[t]||[]).filter(k=>dash&&Array.isArray(dash[k])).map(k=>[k,dash[k]]);
-const cnt=t=>secs(t).reduce((n,[,a])=>n+a.length,0);
-const fmt=x=>x==null?"":Array.isArray(x)?x.join(", "):typeof x==="object"?JSON.stringify(x):String(x);
-const hit=r=>!admQ||JSON.stringify(r).toLowerCase().includes(admQ);
-function togglePw(){const p=$("lPass");if(p)p.type=p.type==="password"?"text":"password"}
-function openPortal(){const adm=$("admin");if(adm)adm.hidden=false;document.body.style.overflow="hidden";if(token)loadDashboard();else showLogin();if(location.hash!=="#admin")history.replaceState(null,"","#admin")}
-function closePortal(){const adm=$("admin");if(adm)adm.hidden=true;document.body.style.overflow="";history.replaceState(null,"",location.pathname+location.search)}
-function showLogin(){const err=$("lErr");if(err)err.textContent="";const al=$("admLogin");if(al)al.hidden=false;const ad=$("admDash");if(ad)ad.hidden=true;setTimeout(()=>{const lu=$("lUser");if(lu)lu.focus()},60)}
-async function doLogin(e){e.preventDefault();const b=$("lBtn");if(b){b.disabled=true;b.textContent="Signing in…"}try{const r=await post("/api/auth/login",{username:v("lUser"),password:v("lPass")});token=r.token;localStorage.setItem("akc_token",token);const lp=$("lPass");if(lp)lp.value="";if(await loadDashboard())toast("Welcome back!")}catch(x){const f=$("admForm");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake")}const lErr=$("lErr");if(lErr)lErr.textContent=x.message}if(b){b.disabled=false;b.textContent="Sign in"}}
-function doLogout(){token="";localStorage.removeItem("akc_token");dash=null;showLogin()}
-async function loadDashboard(){try{dash=await api("/api/admin/dashboard")}catch(e){doLogout();return false}const al=$("admLogin");if(al)al.hidden=true;const ad=$("admDash");if(ad)ad.hidden=false;renderAdm();return true}
-function admGo(k){admTab=k;admQ="";const as=$("admSearch");if(as)as.value="";renderAdm();const adm=$("admin");if(adm)adm.scrollTo({top:0})}
-async function adminAction(ep,p){try{await post(ep,p);toast("Saved!");loadDashboard();loadPublic()}catch(e){toast(e.message)}}
-const creatorCard=c=>`<div class="card"><div class="row" style="justify-content:flex-start">${c.avatar_url?`<img class="creator-avatar" src="${link(c.avatar_url)}" alt="" onerror="this.style.display='none'">`:""}<div><h3 style="margin:0">${esc(c.name)}</h3><p class="sub">${esc(c.handle)} • ${esc(c.platform)}</p></div></div><p class="sub" style="margin:12px 0">${esc(c.bio)}</p><div class="row"><span class="badge ${c.status==="approved"?"badge-ok":"badge-warn"}">${esc(c.status)}</span><div style="display:flex;gap:8px"><a class="btn btn-sm" href="${link(c.profile_url)}" target="_blank" rel="noopener">Profile</a>${c.status!=="approved"?`<button class="btn btn-primary btn-sm" onclick="adminAction('/api/admin/creators',{action:'status',id:${+c.id},status:'approved'})">Approve</button>`:""}<button class="btn btn-sm" onclick="admDel('creators',${+c.id})">Delete</button></div></div></div>`;
-function renderAdm(){
-  const au=$("admUser");if(au)au.textContent=`${dash.username||"admin"} • ${dash.role||""}`;
-  const an=$("admNav");if(an)an.innerHTML=ADM.map(([k,l])=>`<button class="${admTab===k?"on":""}" onclick="admGo('${k}')">${l}${k!=="overview"?`<i>${cnt(k)}</i>`:""}</button>`).join("");
-  const at=$("admTitle");if(at)at.textContent=ADM.find(a=>a[0]===admTab)[1];
-  const atools=$("admTools");if(atools)atools.hidden=admTab==="overview"||admTab==="staff"||admTab==="charity";
-  const nw=$("admNew"),NEW={creators:["creators","Add creator"],ads:["ads","New ad"],charity:["charity","Add Charity Campaign"],store:["products","New product"],polls:["polls","New poll"]}[admTab];if(nw){nw.hidden=!NEW;if(NEW){nw.textContent="＋ "+NEW[1];nw.onclick=()=>admForm(NEW[0])}}
-  const b=$("admBody");if(!b)return;
-  if(admTab==="overview"){const pend=(dash.creators||[]).filter(c=>c.status&&c.status!=="approved");b.innerHTML=`<div class="tiles">${ADM.slice(1,8).map(([k,l])=>`<button class="card tile" onclick="admGo('${k}')"><span class="stat-num">${cnt(k)}</span><span>${l}</span></button>`).join("")}</div><h3 class="adm-h">Waiting for approval <small>${pend.length}</small></h3>${pend.length?`<div class="recs">${pend.map(creatorCard).join("")}</div>`:`<p class="sub">Nothing waiting. New creator registrations will appear here.</p>`}`;return}
-  if(admTab==="staff"){b.innerHTML=`<div class="card" style="margin-bottom:20px"><h3 style="margin-top:0">Add New Staff / Moderator</h3><form onsubmit="addStaff(event)"><label>Username *</label><input id="stUser" required placeholder="Staff username" /><label>Password *</label><input id="stPass" type="password" required placeholder="Staff password" /><label>Role</label><select id="stRole"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn btn-primary" style="margin-top:10px;width:100%">Create Staff Account</button></form></div><h3 class="adm-h">Existing Staff Members</h3><div class="recs">${(dash.staff_users||[]).map(s=>`<div class="card"><div class="row"><h3 style="margin:0">${esc(s.username)}</h3><span class="badge">${esc(s.role)}</span></div><div class="adm-acts" style="margin-top:12px"><button class="btn btn-sm" onclick="admDel('staff',${+s.id})">Delete Staff</button></div></div>`).join("")||`<p class="sub">No staff accounts created yet.</p>`}</div>`;return}
-  if(admTab==="charity"){
-    const list=dash.charity_campaigns||[];
-    b.innerHTML=`<div style="margin-bottom:16px"><button class="btn btn-primary btn-sm" onclick="admForm('charity')">＋ New Charity Campaign</button></div>
-    <div class="recs">${list.map(c=>`<div class="card"><h3 style="margin-top:0">${esc(c.title)}</h3><p class="sub">Target: ₹${c.target_amount} | Raised: ₹${c.raised_amount}</p><p class="sub">UPI: ${esc(c.upi_id)}</p><div class="adm-acts"><button class="btn btn-sm btn-primary" onclick="admForm('charity',${c.id})">Edit</button><button class="btn btn-sm" onclick="admDel('charity',${c.id})">Delete</button></div></div>`).join("")||`<p class="sub">No charity campaigns configured yet.</p>`}</div>`;
-    return;
-  }
-  const S=secs(admTab);b.innerHTML=S.length?S.map(([k,a])=>{const f=a.filter(hit);return`${S.length>1?`<h3 class="adm-h">${esc(k)} <small>${f.length}</small></h3>`:""}${f.length?`<div class="recs">${f.map(r=>k==="creators"?creatorCard(r):recCard(r,k)).join("")}</div>`:`<p class="sub">No matching records.</p>`}`}).join(""):`<div class="card"><h3 style="margin-top:0">No data yet</h3><p class="sub">/api/admin/dashboard did not return a list for this section.</p></div>`}
-function admExport(){const rows=secs(admTab).flatMap(([,a])=>a);if(!rows.length)return toast("Nothing to export");const cols=[...new Set(rows.flatMap(r=>Object.keys(r)))];const q=x=>{let s=fmt(x);if(/^[=+\-@]/.test(s))s="'"+s;return`"${s.replace(/"/g,'""')}"`};const csv=[cols.join(","),...rows.map(r=>cols.map(c=>q(r[c])).join(","))].join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`akshay-creation-${admTab}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+function admRender(){if(!dash)return;
+  $("anav").innerHTML=TABS.map(([k,l,d])=>`<button type="button" data-act="tab" data-k="${k}" class="${tab===k?"on":""}">${l}${d?`<i>${(dash[d]||[]).length}</i>`:""}</button>`).join("");
+  $("atitle").textContent=TABS.find(t=>t[0]===tab)[1];$("auser").textContent=(dash.username||"")+" • "+(dash.role||"");
+  const b=$("abody");
+  if(tab==="overview"){
+    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING");
+    b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>`<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${(dash[d]||[]).length}</b>${l}</button>`).join("")}</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
+  const list=dash[DK[tab]]||[];
+  let h=NEW[tab]?`<p><button type="button" class="btn pri" data-act="adm" data-op="form" data-res="${tab}">＋ ${NEW[tab]}</button></p>`:"";
+  if(tab==="staff")h+=`<form class="card" data-form="staff" style="margin-bottom:16px"><h3 style="margin-top:0">Add staff</h3><label>Username *</label><input name="username" required><label>Password * (8+ characters)</label><input name="password" type="password" required minlength="8"><label>Role</label><select name="role"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn pri full">Create account</button></form>`;
+  h+=list.length?`<div class="recs">${list.map(r=>card(tab,r)).join("")}</div>`:`<p class="sub">Nothing here yet.</p>`;
+  b.innerHTML=h}
+function admForm(res,id){const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};
+  openM(head((id?"Edit ":"New ")+res)+`<form data-form="adm"><input type="hidden" name="res" value="${res}"><input type="hidden" name="id" value="${id?+id:""}">${F[res].filter(([k])=>!(k==="options"&&id)).map(([k,l,t])=>{const val=rec[k]!=null?rec[k]:(k==="active"&&!id?1:"");return`<label>${esc(l)}</label>`+(t==="t"?`<textarea name="${k}" rows="4">${esc(val)}</textarea>`:`<input name="${k}" ${t==="n"?'type="number" step="any" ':""}value="${esc(val)}">`)}).join("")}<button class="btn pri full">Save</button></form>`)}
+async function loadDash(){try{dash=await api("/api/admin/dashboard")}catch(e){toast(e.message,1);logout();return false}
+  $("alogin").hidden=true;$("adash").hidden=false;admRender();return true}
+function logout(){token="";S.d("akc_token");dash=null;$("alogin").hidden=false;$("adash").hidden=true}
 
-const FORMS={
-  creators:[["name","Name"],["platform","Platform (YouTube / Instagram / Twitter)"],["handle","Handle"],["profile_url","Profile URL"],["avatar_url","Avatar URL (optional)"],["bio","Bio","textarea"]],
-  ads:[["title","Title"],["badge","Badge (e.g. Sponsored)"],["media_url","Banner image URL"],["target_url","Link URL"],["sort","Order (0 = first)","number"]],
-  charity:[["title","Campaign Title (e.g. Help Baby Elroy)"],["banner_url","Banner Image URL","text"],["target_amount","Target Amount (₹)","number"],["raised_amount","Raised Amount so far (₹)","number"],["upi_id","Official UPI ID (e.g. limsontt1@fbl)"],["upi_name","UPI Account Name"],["donate_link","Official External Link (GoFundMe/Fundraiser URL)"],["description","Short Description","textarea"],["active","Active (1 = Show, 0 = Hide)","number"]],
-  products:[["title","Title"],["category","Category"],["description","Description","textarea"],["price_inr","Price (₹)","number"],["image_url","Cover image URL"],["download_url","Private download link (shown only after payment)"]],
-  polls:[["question","Question"],["options","Options (one per line, 2 to 6)","textarea"]]
-};
-const DK={creators:"creators",ads:"ads",products:"products",charity:"charity_campaigns"};
-const RES={creators:"creators",ads:"ads",orders:"orders",products:"products",bookings:"bookings",care_cases:"care",care:"care",polls:"polls",staff:"staff",charity:"charity"};
-const A=(res,r,x)=>[...x,["Delete",`admDel('${res}',${r.id})`]];
-const tog=(res,r,a,b)=>[r.active?a:b,`admSet('${res}',${r.id},{active:${r.active?0:1}})`];
-const stb=(res,r,l,s,p)=>[l,`admStatus('${res}',${r.id},'${s}')`,p];
+/* ---------- Actions (one click listener for everything) ---------- */
 const ACT={
-  ads:r=>A("ads",r,[["Edit",`admForm('ads',${r.id})`],tog("ads",r,"Hide","Show")]),
-  products:r=>A("products",r,[["Edit",`admForm('products',${r.id})`],tog("products",r,"Hide","Show")]),
-  orders:r=>A("orders",r,[stb("orders",r,"Mark paid","PAID",1),stb("orders",r,"Reject","REJECTED")]),
-  bookings:r=>A("bookings",r,[stb("bookings",r,"Contacted","contacted"),stb("bookings",r,"Done","done",1)]),
-  care:r=>A("care",r,[stb("care",r,"In progress","in_progress"),stb("care",r,"Resolved","resolved",1)]),
-  polls:r=>A("polls",r,[tog("polls",r,"Close","Reopen")])
-};
-const admStatus=(res,id,status)=>adminAction("/api/admin/"+res,{action:"status",id,status});
-const admSet=(res,id,data)=>adminAction("/api/admin/"+res,{action:"update",id,data});
-function admDel(res,id){if(confirm("Delete this permanently?"))adminAction("/api/admin/"+res,{action:"delete",id})}
-function admForm(res,id){const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};const afb=$("admFormBody");if(afb){afb.innerHTML=`<h3 style="margin-bottom:14px">${id?"Edit":"New"} ${res}</h3><form onsubmit="admSave(event,'${res}',${id||0})">${FORMS[res].map(([k,l,t])=>`<label>${l}</label>${t==="textarea"?`<textarea name="${k}" rows="4">${esc(rec[k]??"")}</textarea>`:`<input name="${k}" ${t==="number"?'type="number" ':""}value="${esc(rec[k]??"")}">`}).join("")}<button class="btn btn-primary" style="width:100%">Save</button></form>`}modal("admModal",1)}
-async function admSave(e,res,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(res==="polls")d.options=String(d.options||"").split("\n").map(x=>x.trim()).filter(Boolean);try{await post("/api/admin/"+res,{action:id?"update":"create",id,data:d});modal("admModal",0);toast("Saved!");loadDashboard();loadPublic()}catch(x){toast(x.message)}}
-async function addStaff(e){e.preventDefault();try{await post("/api/admin/staff",{action:"create",data:{username:v("stUser"),password:v("stPass"),role:v("stRole")}});e.target.reset();toast("Staff account created successfully!");loadDashboard()}catch(x){toast(x.message)}}
-function recCard(r,k){const res=RES[k],t=r.title||r.name||r.client_name||r.applicant_name||r.customer_name||r.question||r.order_id||"#"+(r.id??"");const skip=["id","title","name","status","avatar_url","image_url","media_url"];const f=Object.entries(r).filter(([c,x])=>!skip.includes(c)&&x!==""&&x!=null).slice(0,10).map(([c,x])=>`<div class="kv"><span>${esc(c.replace(/_/g," "))}</span><b>${esc((c==="created_at"?new Date(x).toLocaleString():fmt(x)).slice(0,600))}</b></div>`).join("");const acts=(ACT[res]?ACT[res](r):[]).map(([l,js,p])=>`<button class="btn btn-sm${p?" btn-primary":""}" onclick="${js}">${l}(r)</button>`).join("");return`<div class="card"><div class="row"><h3 style="margin:0">${esc(t)}</h3>${r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"badge-ok":"badge-warn"}">${esc(r.status)}</span>`:r.active===0?`<span class="badge badge-warn">Hidden</span>`:""}</div><div style="margin-top:10px">${f}</div><div class="adm-acts">${acts}</div></div>`}
+ portal(){$("adm").hidden=false;document.body.style.overflow="hidden";if(token)loadDash()},
+ closeAdm(){$("adm").hidden=true;document.body.style.overflow=""},
+ close:closeM,
+ support:()=>supportM(0),amt:d=>supportM(d.a),
+ charity(){const c=st.charity;if(!c||!c.upi_id)return;openM(head(c.title)+qrBox(upiUrl(0,c.title,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
+ creatorForm:creatorM,buy:d=>checkout(d.id),
+ async vote(d){await post("/api/polls/vote",{poll_id:+d.id,option_index:+d.i});toast("Vote recorded!");loadPublic()},
+ async track(){const q=$("track").value.trim();if(!q)return toast("Enter Order ID or UTR",1);const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));
+  $("trackOut").innerHTML=r.status==="PAID"?`<span class="badge ok">Paid</span> <a class="btn pri sm" target="_blank" rel="noopener" href="${link(r.download_url)}">Download ↗</a>`:`<span class="badge warn">${r.status==="REJECTED"?"Rejected":"Pending verification"}</span>`},
+ copy(d){if(navigator.clipboard)navigator.clipboard.writeText(d.t).then(()=>toast("Copied"),()=>toast("Copy failed",1));else toast(d.t)},
+ pw(d,b){$("lp").type=b.checked?"text":"password"},
+ tab(d){tab=d.k;admRender();$("adm").scrollTo(0,0)},
+ refresh:()=>loadDash(),logout,
+ async adm(d){const v=d.v?JSON.parse(d.v):null;
+  if(d.op==="form")return admForm(d.res,d.id);
+  if(d.op==="del"&&!confirm("Delete this permanently?"))return;
+  const body=d.op==="del"?{action:"delete",id:+d.id}:d.op==="st"?{action:"status",id:+d.id,status:v}:{action:"update",id:+d.id,data:v};
+  await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
-loadPublic();startTrafficSimulation();initCreatorAutoScroll();initFx();
+const FORM={
+ async creator(f){await post("/api/creators/apply",fd(f));closeM();toast("Submitted for review. Thank you!")},
+ async book(f){await post("/api/services/book",fd(f));f.reset();toast("Booking request received!")},
+ async care(f){await post("/api/care/submit",Object.assign(fd(f),{consent_granted:true}));f.reset();toast("Message sent privately")},
+ async pay(f){const r=await post("/api/checkout/upi-submit",fd(f));
+  openM(`<div class="center"><div class="big" style="font-size:2.6rem">🙏</div><h3>Thank you so much!</h3><p class="sub" style="margin:8px 0 14px">Payment details submitted. Save your Order ID. Your download unlocks once the payment is verified.</p><div class="chip">${esc(r.order_id)}</div><div style="margin-top:14px"><button type="button" class="btn pri sm" data-act="copy" data-t="${esc(r.order_id)}">Copy Order ID</button> <button type="button" class="btn sm" data-act="close">Close</button></div></div>`)},
+ async login(f){const r=await post("/api/auth/login",fd(f));token=r.token;S.s("akc_token",token);f.reset();if(await loadDash())toast("Welcome back!")},
+ async staff(f){await post("/api/admin/staff",{action:"create",data:fd(f)});f.reset();toast("Staff account created");loadDash()},
+ async adm(f){const x=fd(f),res=x.res,id=x.id;delete x.res;delete x.id;
+  if(res==="polls")x.options=String(x.options||"").split("\n").map(s=>s.trim()).filter(Boolean);
+  await post("/api/admin/"+res,{action:id?"update":"create",id:id?+id:undefined,data:x});closeM();toast("Saved");await loadDash();loadPublic()}};
+
+document.addEventListener("click",e=>{
+  if(e.target.id==="m")return closeM();
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const fn=ACT[b.dataset.act];if(!fn)return;
+  Promise.resolve().then(()=>fn(b.dataset,b)).catch(x=>toast(x.message,1))});
+document.addEventListener("submit",e=>{
+  const f=e.target.closest("form[data-form]");if(!f)return;e.preventDefault();
+  const h=FORM[f.dataset.form];if(!h)return;
+  const btn=f.querySelector("button:not([type])");if(btn)btn.disabled=true;
+  Promise.resolve().then(()=>h(f)).catch(x=>toast(x.message,1)).then(()=>{if(btn)btn.disabled=false})});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
+
+loadPublic();
+if(location.hash==="#admin")ACT.portal();
+})();
 </script>
-</body>
-</html>
+</body></html>
