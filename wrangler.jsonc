@@ -12,5 +12,13 @@
       "database_name": "akshay-creation-db",
       "database_id": "eac0ace0-a5ae-4694-9c95-cbbe4e8335f6"
     }
-  ]
+  ],
+  "previews": {
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_id": "d19d8b72-8381-4819-9b25-8857e0e115c3"
+      }
+    ]
+  }
 }
