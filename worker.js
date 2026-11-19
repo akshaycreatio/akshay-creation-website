@@ -54,6 +54,8 @@ const STATUS = { orders: ["PENDING", "PAID", "REJECTED"], bookings: ["pending", 
 let ready;
 const init = (db) => (ready ||= (async () => {
   for (const q of [
+    "CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'admin')",
+    "CREATE TABLE IF NOT EXISTS staff_users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'moderator')",
     "CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
     "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1",
     "ALTER TABLE polls ADD COLUMN options TEXT NOT NULL DEFAULT '[]'",
@@ -165,10 +167,8 @@ export default {
         return json({ active_visitors: Number(active?.total || 0) });
       }
 
-      if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Add it in Cloudflare: Worker > Settings > Variables and Secrets", 500);
-
       if (path === "/api/public/overview" && method === "GET") {
-        const voter = await sign(env.AUTH_SECRET, "voter:" + ip);
+        const voter = env.AUTH_SECRET ? await sign(env.AUTH_SECRET, "voter:" + ip) : b64u(await crypto.subtle.digest("SHA-256", enc.encode("voter:" + ip)));
         const [creators, ads, products, polls, charity, mine] = await Promise.all([
           db.prepare("SELECT id, name, platform, handle, profile_url, avatar_url, bio FROM creators WHERE status = 'approved' ORDER BY id DESC").all(),
           db.prepare("SELECT id, title, badge, media_url, target_url FROM ads WHERE active = 1 ORDER BY sort ASC, id DESC").all(),
@@ -240,6 +240,7 @@ export default {
       }
 
       if (path === "/api/polls/vote" && method === "POST") {
+        if (!env.AUTH_SECRET) return err("Website security setup is pending", 503);
         const poll = await db.prepare("SELECT id, options, counts FROM polls WHERE id = ? AND COALESCE(active, 1) = 1").bind(body.poll_id).first();
         if (!poll) return err("Poll not found", 404);
         let o = [], c = [];
@@ -256,7 +257,19 @@ export default {
         return json({ success: true });
       }
 
+      if (path === "/api/auth/setup-owner" && method === "POST") {
+        if (!env.AUTH_SECRET || !env.OWNER_SETUP_KEY) return err("Owner setup secrets are not configured yet", 503);
+        if (!same(String(body.setup_key || ""), env.OWNER_SETUP_KEY)) return err("Invalid setup key", 403);
+        const count = await db.prepare("SELECT COUNT(*) AS total FROM admins").first();
+        if (Number(count?.total || 0) > 0) return err("Owner account is already set up", 409);
+        const user = clip(body.username, 40), pw = String(body.password || "");
+        if (user.length < 3 || pw.length < 12) return err("Use a username with 3+ characters and a password with at least 12 characters");
+        await db.prepare("INSERT INTO admins (username, password, role) VALUES (?, ?, 'admin')").bind(user, await hashPw(pw)).run();
+        return json({ success: true });
+      }
+
       if (path === "/api/auth/login" && method === "POST") {
+        if (!env.AUTH_SECRET) return err("Login security is not configured yet", 503);
         if (limited("l:" + ip, 8, 600e3)) return err("Too many attempts, wait 10 minutes", 429);
         const user = clip(body.username, 60), pw = String(body.password || "");
         for (const [tbl, role] of [["admins", "admin"], ["staff_users", "moderator"]]) {
@@ -271,6 +284,7 @@ export default {
       }
 
       if (path.startsWith("/api/admin/")) {
+        if (!env.AUTH_SECRET) return err("Login security is not configured yet", 503);
         const me = await readToken(env, request);
         if (!me) return err("Unauthorized", 401);
 
