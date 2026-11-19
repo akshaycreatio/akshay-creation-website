@@ -212,7 +212,7 @@ footer{padding:36px 0;text-align:center;background:#021611;border-top:1px solid 
 <form data-form="login"><label>Username</label><input name="username" autocomplete="username" required>
 <label>Password</label><input id="lp" name="password" type="password" autocomplete="current-password" required>
 <label class="chk"><input type="checkbox" data-act="pw">Show password</label>
-<button class="btn pri full">Sign in</button><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></form></div>
+<button class="btn pri full">Sign in</button></form><details style="margin-top:18px"><summary style="cursor:pointer;color:var(--muted)">First-time Owner setup</summary><form data-form="setupOwner" style="margin-top:14px"><label>Setup key</label><input name="setup_key" type="password" autocomplete="off" required><label>Owner username</label><input name="username" minlength="3" required><label>New password (12+ characters)</label><input name="password" type="password" minlength="12" autocomplete="new-password" required><button class="btn pri full" style="margin-top:12px">Create Owner account</button></form></details><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
 <div id="adash" hidden>
 <div class="atop"><div class="row"><span class="brand">AKSHAY CREATION</span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
@@ -379,6 +379,7 @@ const FORM={
  async pay(f){const r=await post("/api/checkout/upi-submit",fd(f));
   openM(`<div class="center"><div class="big" style="font-size:2.6rem">🙏</div><h3>Thank you so much!</h3><p class="sub" style="margin:8px 0 14px">Payment details submitted. Save your Order ID. Your download unlocks once the payment is verified.</p><div class="chip">${esc(r.order_id)}</div><div style="margin-top:14px"><button type="button" class="btn pri sm" data-act="copy" data-t="${esc(r.order_id)}">Copy Order ID</button> <button type="button" class="btn sm" data-act="close">Close</button></div></div>`)},
  async login(f){const r=await post("/api/auth/login",fd(f));token=r.token;S.s("akc_token",token);f.reset();if(await loadDash())toast("Welcome back!")},
+ async setupOwner(f){await post("/api/auth/setup-owner",fd(f));f.reset();toast("Owner account created. Now sign in.")},
  async staff(f){await post("/api/admin/staff",{action:"create",data:fd(f)});f.reset();toast("Staff account created");loadDash()},
  async adm(f){const x=fd(f),res=x.res,id=x.id;delete x.res;delete x.id;
   if(res==="polls")x.options=String(x.options||"").split("\n").map(s=>s.trim()).filter(Boolean);
