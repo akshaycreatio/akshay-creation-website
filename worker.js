@@ -57,6 +57,7 @@ const init = (db) => (ready ||= (async () => {
     "CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
     "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1",
     "CREATE TABLE IF NOT EXISTS images (id TEXT PRIMARY KEY, mime TEXT, data TEXT)",
+    "CREATE TABLE IF NOT EXISTS live_sessions (session_id TEXT PRIMARY KEY, last_seen INTEGER NOT NULL)",
   ]) {
     try { await db.prepare(q).run(); } catch (e) {}
   }
@@ -152,6 +153,17 @@ export default {
     try {
       await init(db);
       const body = method === "POST" ? await request.json().catch(() => ({})) : {};
+
+      if (path === "/api/public/presence" && method === "POST") {
+        const session = String(body.session_id || "");
+        if (!/^[0-9a-f-]{36}$/i.test(session)) return err("Invalid visitor session");
+        if (limited("presence:" + ip, 30, 60e3)) return err("Please slow down", 429);
+        const now = Date.now();
+        await db.prepare("INSERT INTO live_sessions (session_id, last_seen) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET last_seen = excluded.last_seen").bind(session, now).run();
+        await db.prepare("DELETE FROM live_sessions WHERE last_seen < ?").bind(now - 180000).run();
+        const active = await db.prepare("SELECT COUNT(*) AS total FROM live_sessions WHERE last_seen >= ?").bind(now - 90000).first();
+        return json({ active_visitors: Number(active?.total || 0) });
+      }
 
       if (path === "/api/public/overview" && method === "GET") {
         const voter = await sign(env.AUTH_SECRET, "voter:" + ip);
