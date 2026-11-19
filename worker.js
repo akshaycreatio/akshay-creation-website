@@ -1,9 +1,10 @@
-// AKSHAY CREATION worker. Needs secret AUTH_SECRET: npx wrangler secret put AUTH_SECRET
+// AKSHAY CREATION worker. Needs secret AUTH_SECRET (add it in Cloudflare: Worker > Settings > Variables and Secrets)
 const enc = new TextEncoder();
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const err = (m, s = 400) => json({ error: m }, s);
 const clip = (s, n = 500) => String(s ?? "").trim().slice(0, n);
-const http = (u) => (/^https?:\/\//i.test(u) ? clip(u, 1000) : "");
+// allows normal https links and photos uploaded through the portal (/img/...)
+const http = (u) => (/^https?:\/\//i.test(u) ? clip(u, 1000) : /^\/img\/[a-f0-9-]{36}$/i.test(u) ? u : "");
 const b64u = (b) => btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64u = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
 const same = (a, b) => { a = String(a); b = String(b); let d = a.length ^ b.length; for (let i = 0; i < Math.max(a.length, b.length); i++) d |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0); return d === 0; };
@@ -52,10 +53,31 @@ const STATUS = { orders: ["PENDING", "PAID", "REJECTED"], bookings: ["pending", 
 
 let ready;
 const init = (db) => (ready ||= (async () => {
-  for (const q of ["CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))", "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1"]) {
+  for (const q of [
+    "CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
+    "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1",
+    "CREATE TABLE IF NOT EXISTS images (id TEXT PRIMARY KEY, mime TEXT, data TEXT)",
+  ]) {
     try { await db.prepare(q).run(); } catch (e) {}
   }
 })());
+
+// ---- photo upload (stored inside the D1 database, no extra setup) ----
+async function serveImage(db, id) {
+  const r = await db.prepare("SELECT mime, data FROM images WHERE id = ?").bind(id).first();
+  if (!r) return new Response("Not found", { status: 404 });
+  const bin = atob(r.data), u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return new Response(u, { headers: { "Content-Type": r.mime, "Cache-Control": "public, max-age=31536000, immutable" } });
+}
+async function saveImage(db, body) {
+  const m = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(body.data || ""));
+  if (!m) return err("Send a JPG, PNG or WEBP photo");
+  if (m[2].length > 1600000) return err("Photo is too large");
+  const id = crypto.randomUUID();
+  await db.prepare("INSERT INTO images (id, mime, data) VALUES (?, ?, ?)").bind(id, m[1], m[2]).run();
+  return json({ url: "/img/" + id });
+}
 
 async function adminWrite(db, sub, body, me) {
   const cfg = T[sub];
@@ -120,9 +142,10 @@ async function adminWrite(db, sub, body, me) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url), path = url.pathname, method = request.method;
+    if (path.startsWith("/img/") && env.DB) { await init(env.DB); return serveImage(env.DB, path.slice(5)); }
     if (!path.startsWith("/api/")) return env.ASSETS ? env.ASSETS.fetch(request) : err("Not Found", 404);
     if (method === "OPTIONS") return new Response(null, { status: 204 });
-    if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Run: npx wrangler secret put AUTH_SECRET", 500);
+    if (!env.AUTH_SECRET) return err("AUTH_SECRET is not set. Add it in Cloudflare: Worker > Settings > Variables and Secrets", 500);
 
     const db = env.DB;
     const ip = request.headers.get("CF-Connecting-IP") || "0";
@@ -137,12 +160,13 @@ export default {
           db.prepare("SELECT id, title, badge, media_url, target_url FROM ads WHERE active = 1 ORDER BY sort ASC, id DESC").all(),
           db.prepare("SELECT id, title, category, description, price_inr, image_url FROM products WHERE active = 1 ORDER BY id DESC").all(),
           db.prepare("SELECT id, question, options, counts FROM polls WHERE COALESCE(active, 1) = 1 ORDER BY id DESC").all(),
-          db.prepare("SELECT id, title, banner_url, target_amount, raised_amount, upi_id, upi_name, donate_link, description FROM charity_campaigns WHERE active = 1 ORDER BY id DESC LIMIT 1").first(),
+          db.prepare("SELECT id, title, banner_url, target_amount, raised_amount, upi_id, upi_name, donate_link, description FROM charity_campaigns WHERE active = 1 ORDER BY id DESC").all(),
           db.prepare("SELECT poll_id, option_index FROM poll_votes WHERE voter = ?").bind(voter).all(),
         ]);
         const my = Object.fromEntries((mine.results || []).map((v) => [v.poll_id, v.option_index]));
         return json({
-          creators: creators.results || [], ads: ads.results || [], products: products.results || [], charity: charity || null,
+          creators: creators.results || [], ads: ads.results || [], products: products.results || [],
+          charities: charity.results || [],
           polls: (polls.results || []).map((p) => {
             let o = [], c = [];
             try { o = JSON.parse(p.options || "[]"); } catch (e) {}
@@ -246,6 +270,7 @@ export default {
           ]);
           return json({ username: me.u, role: me.r, creators, ads, products, orders, bookings, care, polls, charity_campaigns: charity, staff_users: staff });
         }
+        if (path === "/api/admin/upload" && method === "POST") return saveImage(db, body);
         if (method === "POST") return adminWrite(db, path.slice("/api/admin/".length), body, me);
       }
 
