@@ -56,6 +56,8 @@ const init = (db) => (ready ||= (async () => {
   for (const q of [
     "CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
     "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1",
+    "ALTER TABLE polls ADD COLUMN options TEXT NOT NULL DEFAULT '[]'",
+    "ALTER TABLE polls ADD COLUMN counts TEXT NOT NULL DEFAULT '[]'",
     "CREATE TABLE IF NOT EXISTS images (id TEXT PRIMARY KEY, mime TEXT, data TEXT)",
     "CREATE TABLE IF NOT EXISTS live_sessions (session_id TEXT PRIMARY KEY, last_seen INTEGER NOT NULL)",
   ]) {
