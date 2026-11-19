@@ -258,13 +258,13 @@ export default {
       }
 
       if (path === "/api/auth/setup-owner" && method === "POST") {
+        if (limited("owner-setup:" + ip, 5, 3600e3)) return err("Too many setup attempts. Try again later.", 429);
         if (!env.AUTH_SECRET || !env.OWNER_SETUP_KEY) return err("Owner setup secrets are not configured yet", 503);
         if (!same(String(body.setup_key || ""), env.OWNER_SETUP_KEY)) return err("Invalid setup key", 403);
-        const count = await db.prepare("SELECT COUNT(*) AS total FROM admins").first();
-        if (Number(count?.total || 0) > 0) return err("Owner account is already set up", 409);
         const user = clip(body.username, 40), pw = String(body.password || "");
         if (user.length < 3 || pw.length < 12) return err("Use a username with 3+ characters and a password with at least 12 characters");
-        await db.prepare("INSERT INTO admins (username, password, role) VALUES (?, ?, 'admin')").bind(user, await hashPw(pw)).run();
+        const result = await db.prepare("INSERT INTO admins (username, password, role) SELECT ?, ?, 'admin' WHERE NOT EXISTS (SELECT 1 FROM admins)").bind(user, await hashPw(pw)).run();
+        if (!result.meta?.changes) return err("Owner account is already set up", 409);
         return json({ success: true });
       }
 
