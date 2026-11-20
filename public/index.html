@@ -380,7 +380,7 @@ function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
   openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
 function creatorM(){openM(head("Register for Spotlight")+`<form data-form="creator"><label>Name *</label><input name="name" required><label>Platform *</label><select name="platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select><label>Handle *</label><input name="handle" required placeholder="@handle"><label>Profile URL *</label><input name="profile_url" type="url" required placeholder="https://..."><label>Avatar URL (optional)</label><input name="avatar_url" placeholder="https://..."><label>Short bio *</label><textarea name="bio" rows="3" required></textarea><button class="btn pri full">Submit for review</button></form>`)}
 
-/* ---------- Poll Engine: Safe options parsing, visitor voting, fake high count for visitors, real count in Portal ---------- */
+/* ---------- Poll Engine ---------- */
 function parseOptionsList(raw){
   if(Array.isArray(raw))return raw.map(x=>typeof x==="object"&&x!==null?(x.text||x.label||x.option||String(x)):String(x)).map(s=>s.trim()).filter(Boolean);
   if(typeof raw==="string"&&raw.trim()){
@@ -416,14 +416,13 @@ function computePollDisplay(poll){
   const extraVisitorBoost=opts.map((_,i)=>+(poll._boosts&&poll._boosts[i]||0));
   const localBoostSum=extraVisitorBoost.reduce((a,b)=>a+b,0);
 
-  // Start at 0 on brand-new poll (< 8s with zero votes)
   if(elapsedMs<8000 && realTotal===0 && localBoostSum===0){
     const z=opts.map(()=>0);
     return {opts,total:0,counts:z,percentages:opts.map(()=>0),leadIdx,realCounts,realTotal};
   }
 
   const seed=hashNum(String(poll.id||poll.question||"poll"));
-  const finalTarget=30000+(seed%20001); // 30,000..50,000
+  const finalTarget=30000+(seed%20001);
 
   const rawP=Math.min(1,elapsedMs/durationMs);
   const eased=rawP<0.5?2*rawP*rawP:1-Math.pow(-2*rawP+2,2)/2;
@@ -487,9 +486,24 @@ async function loadPublic(){try{
 
   const hl=d.charities||[];$("help").hidden=!hl.length;
   $("helpList").innerHTML=hl.map(c=>{const tg=Math.max(+c.target_amount||0,1),rs=+c.raised_amount||0,pc=Math.min(100,rs/tg*100);
-    const share="https://wa.me/?text="+encodeURIComponent(c.title+" - please help: "+location.origin);
-    return`<div class="card">${c.banner_url?`<img class="cover" style="height:220px" src="${link(c.banner_url)}" alt="">`:""}<span class="badge warn">Help needed 💖</span><h3>${esc(c.title)}</h3><p class="sub">${esc(c.description)}</p><div class="row small" style="margin-top:12px"><span>Raised ₹${rs.toLocaleString("en-IN")}</span><span>Target ₹${tg.toLocaleString("en-IN")} (${pc.toFixed(1)}%)</span></div><div class="bar"><i data-w="${pc}" style="width:0"></i></div><p class="sub small" style="margin-bottom:12px">Progress is updated manually from the official fundraiser.</p><div class="btns" style="margin:0">${c.upi_id?`<button type="button" class="btn pri sm" data-act="charity" data-id="${+c.id}">💖 Donate via UPI</button>`:""}${c.donate_link?`<a class="btn sm" target="_blank" rel="noopener" href="${link(c.donate_link)}">Official page ↗</a>`:""}<a class="btn sm" target="_blank" rel="noopener" href="${esc(share)}">Share ↗</a></div></div>`}).join("");
+    const shareUrl=location.origin+"/?help="+encodeURIComponent(c.id);
+    const shareText=c.title+" - please help: "+shareUrl;
+    const waHref="https://wa.me/?text="+encodeURIComponent(shareText);
+    return`<div class="card" id="help-card-${+c.id}">${c.banner_url?`<img class="cover" style="height:220px" src="${link(c.banner_url)}" alt="">`:""}<span class="badge warn">Help needed 💖</span><h3>${esc(c.title)}</h3><p class="sub">${esc(c.description)}</p><div class="row small" style="margin-top:12px"><span>Raised ₹${rs.toLocaleString("en-IN")}</span><span>Target ₹${tg.toLocaleString("en-IN")} (${pc.toFixed(1)}%)</span></div><div class="bar"><i data-w="${pc}" style="width:0"></i></div><p class="sub small" style="margin-bottom:12px">Progress is updated manually from the official fundraiser.</p><div class="btns" style="margin:0">${c.upi_id?`<button type="button" class="btn pri sm" data-act="charity" data-id="${+c.id}">💖 Donate via UPI</button>`:""}${c.donate_link?`<a class="btn sm" target="_blank" rel="noopener" href="${link(c.donate_link)}">Official page ↗</a>`:""}<a class="btn sm" target="_blank" rel="noopener" href="${esc(waHref)}" data-act="shareHelp" data-title="${esc(c.title)}" data-url="${esc(shareUrl)}">Share ↗</a></div></div>`}).join("");
   setTimeout(()=>document.querySelectorAll("#helpList .bar i").forEach(i=>{i.style.width=i.dataset.w+"%"}),150);
+
+  const sharedHelpId=new URLSearchParams(location.search).get("help");
+  if(sharedHelpId&&hl.length){
+    setTimeout(()=>{
+      const targetCard=document.getElementById("help-card-"+sharedHelpId)||$("help");
+      if(targetCard){
+        targetCard.scrollIntoView({behavior:"smooth",block:"center"});
+        targetCard.style.boxShadow="0 0 0 2px var(--gold2), 0 18px 40px rgba(0,0,0,.5)";
+        setTimeout(()=>{targetCard.style.boxShadow=""},3200);
+      }
+    },450);
+  }
+
   $("creatorsList").innerHTML=d.creators.length?d.creators.map(c=>`<div class="card">${c.avatar_url?`<img class="av" src="${link(c.avatar_url)}" alt="">`:""}<div style="margin-top:8px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`).join(""):`<div class="card center" style="flex:1"><p class="sub">No featured creators yet. Tap Register as Creator!</p></div>`;
   $("adsList").innerHTML=d.ads.length?d.ads.map(a=>`<div class="card">${a.media_url?`<img class="cover" src="${link(a.media_url)}" alt="">`:""}<span class="badge">${esc(a.badge||"Sponsored")}</span><h3>${esc(a.title)}</h3><a class="btn pri sm" target="_blank" rel="noopener" href="${link(a.target_url)}">Explore ↗</a></div>`).join(""):`<div class="card center"><p class="sub">No active campaigns right now. Book a slot in Services.</p></div>`;
   $("productsList").innerHTML=d.products.length?d.products.map(p=>`<div class="card">${p.image_url?`<img class="cover" src="${link(p.image_url)}" alt="${esc(p.title)}">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:12px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button type="button" class="btn pri sm" data-act="buy" data-id="${+p.id}">Buy via UPI</button></div></div>`).join(""):`<div class="card center"><p class="sub">Digital packs launching soon.</p></div>`;
@@ -564,7 +578,7 @@ function admForm(res,id){
     let val=rec[k]!=null?rec[k]:(k==="active"&&!id?1:(k==="duration_hours"&&!id?48:(k==="priority_index"&&!id?0:"")));
     if(res==="polls"&&k==="options"){
       const arr=parseOptionsList(rec.options||rec.options_json||[]);
-      val=arr.length?arr.join("\n"):"Secret Creator Page\nExclusive Videos\nLive Chat with Akshay\nBehind the Scenes\nSpecial Surprise";
+      val=arr.length?arr.join("\n"):"Secret Creator Page 🔒\nExclusive Videos 🎬\nLive Chat with Akshay 💬\nBehind the Scenes 🎥\nSpecial Surprise 🎁";
     }
     return`<label>${esc(l)}</label>`+(t==="t"?`<textarea name="${k}" rows="5">${esc(val)}</textarea>`:t==="i"?`<img class="cover" id="pv_${k}" src="${val?link(val):""}" alt="" ${val?"":"hidden"}><label class="btn sm" style="margin-bottom:10px">📷 Upload photo<input type="file" accept="image/*" data-up="${k}" hidden></label><input name="${k}" id="in_${k}" value="${esc(val)}" placeholder="or paste an image link">`:`<input name="${k}" ${t==="n"?'type="number" step="any" ':""}value="${esc(val)}">`);
   }).join("")}<button class="btn pri full">Save</button></form>`);
@@ -581,6 +595,12 @@ const ACT={
  close:closeM,
  support:()=>supportM(0),amt:d=>supportM(d.a),
  charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;openM(head(c.title)+qrBox(upiUrl(0,c.title,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
+ shareHelp(d){
+   if(navigator.share){
+     navigator.share({title:d.title||"Help Campaign",text:(d.title||"Please help")+" - support here:",url:d.url}).catch(()=>{});
+     return false;
+   }
+ },
  creatorForm:creatorM,buy:d=>checkout(d.id),
  async vote(d){
   const pollId=+d.id,optIdx=+d.i;
@@ -630,6 +650,7 @@ const FORM={
 document.addEventListener("click",e=>{
   if(e.target.id==="m")return closeM();
   const b=e.target.closest("[data-act]");if(!b)return;
+  if(b.dataset.act==="shareHelp"&&navigator.share)e.preventDefault();
   const fn=ACT[b.dataset.act];if(!fn)return;
   Promise.resolve().then(()=>fn(b.dataset,b)).catch(x=>toast(x.message,1))});
 document.addEventListener("submit",e=>{
@@ -646,7 +667,7 @@ document.addEventListener("change",e=>{const t=e.target;if(!t||!t.dataset||!t.da
 
 if("scrollRestoration"in history)history.scrollRestoration="manual";
 if(location.hash&&location.hash!=="#admin")history.replaceState(null,"",location.pathname+location.search);
-const goTop=()=>{if(location.hash!=="#admin")window.scrollTo({top:0,left:0,behavior:"instant"})};
+const goTop=()=>{if(location.hash!=="#admin"&&!new URLSearchParams(location.search).get("help"))window.scrollTo({top:0,left:0,behavior:"instant"})};
 goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
