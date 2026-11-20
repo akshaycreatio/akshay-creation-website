@@ -91,7 +91,7 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .price{font:500 1.5rem "Bodoni Moda",serif;color:var(--gold2)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}.car .card{flex:0 0 270px;scroll-snap-align:start}
-.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);padding:3px}
+.av{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);padding:2px;background:var(--bg2)}
 .bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
@@ -104,6 +104,7 @@ ul.list{margin-left:18px;color:var(--muted);line-height:1.9}
 .poll:hover:not(:disabled),.poll.on{border-color:var(--gold)}.poll:active:not(:disabled){transform:scale(.985)}.poll.on{background:rgba(var(--gl),.16)}.poll.lead{border-color:rgba(var(--gl),.55)}.poll:disabled{opacity:.75;cursor:not-allowed}
 .poll-meta{white-space:nowrap;color:var(--gold2);font-weight:600;font-size:.88rem}
 .real-box{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--in);border:1px dashed var(--line);font-size:.82rem;color:var(--ok)}
+.analysis-box{margin-top:10px;padding:10px 12px;border-radius:8px;background:rgba(var(--gl),.08);border:1px solid var(--line);font-size:.82rem;color:var(--paper)}
 .faq details{border-bottom:1px solid var(--line);padding:14px 0;max-width:800px}.faq summary{cursor:pointer;font:500 1.15rem "Bodoni Moda",serif}.faq p{color:var(--muted);margin-top:8px}
 footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px solid var(--gold);color:var(--muted);font-size:.9rem}footer strong{color:var(--gold2);letter-spacing:.1em}
 .qr{background:#fff;color:#0f172a;border-radius:14px;padding:14px;text-align:center;margin:12px 0;display:flex;flex-direction:column;align-items:center;gap:8px}.qr img{width:210px;height:210px;border-radius:8px}
@@ -210,7 +211,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></div></section>
 
 <section id="creators"><div class="wrap">
-<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Emerging creators, reviewed before they appear here.</p></div>
+<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Emerging creators from our community — pick from gallery or auto-fetch channel logo.</p></div>
 <button type="button" class="btn pri" data-act="creatorForm">✨ Register as Creator</button></div>
 <div class="car" id="creatorsList"></div>
 </div></section>
@@ -308,7 +309,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 "use strict";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const link=u=>{try{const x=new URL(u,location.origin);return /^https?:$/.test(x.protocol)?esc(x.href.replace(/'/g,"%27")):"#"}catch(e){return"#"}};
+const link=u=>{try{const x=new URL(u,location.origin);return /^https?:$/.test(x.protocol)||/^data:image\//.test(u)?esc(x.href?x.href.replace(/'/g,"%27"):u):"#"}catch(e){return /^data:image\//.test(u)?esc(u):"#"}}$;
 const S={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},d:k=>{try{localStorage.removeItem(k)}catch(e){}}};
 const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[]},tt;
@@ -325,27 +326,23 @@ function computeTargetVisitors(){
   const wave=Math.sin(seed)*0.55+Math.cos(seed*0.41)*0.45;
   const jitter=Math.floor(Math.random()*13)-6;
 
-  // Evening rush window: 17:00 (5 PM) to 23:30 (11:30 PM) -> 620 to 800
   if(tHr>=17&&tHr<=23.5){
-    const peakCenter=20.25; // ~8:15 PM peak
+    const peakCenter=20.25;
     const dist=Math.abs(tHr-peakCenter)/3.25;
     const curve=Math.max(0,1-dist*dist);
     const base=635+Math.round(curve*145)+Math.round(wave*18)+jitter;
     return Math.max(610,Math.min(800,base));
   }
-  // Afternoon / Lunch moderate traffic: 11:00 to 17:00 -> 260 to 490
   if(tHr>=11&&tHr<17){
     const norm=(wave+1)/2;
     const base=280+Math.round(norm*195)+jitter;
     return Math.max(240,Math.min(510,base));
   }
-  // Morning: 07:00 to 11:00 -> 140 to 270
   if(tHr>=7&&tHr<11){
     const norm=(wave+1)/2;
     const base=150+Math.round(norm*110)+jitter;
     return Math.max(130,Math.min(285,base));
   }
-  // Late night / Early morning: 23:30 to 07:00 -> 60 to 145
   const norm=(wave+1)/2;
   const base=68+Math.round(norm*68)+jitter;
   return Math.max(60,Math.min(155,base));
@@ -394,6 +391,97 @@ function tickSocialLive(){
   renderSocialLive();
 }
 
+/* ---------- Creator Link Analyzer & Auto Logo Generator ---------- */
+function analyzeCreatorChannel(platform, handle, profileUrl, name){
+  const rawUrl=String(profileUrl||"").trim();
+  const rawHandle=String(handle||"").trim();
+  let detectedPlatform=platform||"YouTube";
+  let cleanHandle=rawHandle.replace(/^@+/,"");
+  let channelStyle="Channel Page";
+  let videoId="";
+
+  try{
+    const u=new URL(/^https?:\/\//i.test(rawUrl)?rawUrl:"https://"+rawUrl);
+    const host=u.hostname.toLowerCase().replace(/^www\./,"");
+    const path=u.pathname||"";
+
+    if(host.includes("youtube.com")||host.includes("youtu.be")){
+      detectedPlatform="YouTube";
+      if(host==="youtu.be"){
+        videoId=path.replace(/^\/+/,"").split("/")[0]||"";
+        channelStyle="YouTube Video Link";
+      }else if(path.startsWith("/shorts/")){
+        videoId=path.split("/")[2]||"";
+        channelStyle="YouTube Shorts Creator";
+      }else if(path.startsWith("/live/")){
+        videoId=path.split("/")[2]||"";
+        channelStyle="YouTube Live Streamer";
+      }else if(u.searchParams.get("v")){
+        videoId=u.searchParams.get("v");
+        channelStyle="YouTube Video Link";
+      }else if(path.includes("/@")){
+        cleanHandle=decodeURIComponent(path.split("/@")[1].split("/")[0]);
+        channelStyle="YouTube @Handle Channel";
+      }else if(path.startsWith("/channel/")){
+        cleanHandle=path.split("/")[2]||cleanHandle;
+        channelStyle="YouTube Channel ID";
+      }else if(path.startsWith("/c/")||path.startsWith("/user/")){
+        cleanHandle=path.split("/")[2]||cleanHandle;
+        channelStyle="YouTube Creator Channel";
+      }
+    }else if(host.includes("instagram.com")){
+      detectedPlatform="Instagram";
+      const seg=path.split("/").filter(Boolean)[0]||"";
+      if(seg&&!["reel","reels","p","tv","stories","explore"].includes(seg)){
+        cleanHandle=seg;
+        channelStyle="Instagram Creator Profile";
+      }else if(path.includes("/reel/")||path.includes("/reels/")){
+        channelStyle="Instagram Reels Creator";
+      }
+    }else if(host.includes("twitter.com")||host.includes("x.com")){
+      detectedPlatform="Twitter";
+      const seg=path.split("/").filter(Boolean)[0]||"";
+      if(seg&&!["home","explore","i","intent"].includes(seg)){
+        cleanHandle=seg;
+        channelStyle="X / Twitter Creator";
+      }
+    }
+  }catch(e){
+    if(rawHandle)cleanHandle=rawHandle.replace(/^@+/,"");
+  }
+
+  const labelSource=(cleanHandle||name||"AK").trim();
+  const initials=labelSource.replace(/[^a-zA-Z0-9]/g,"").slice(0,2).toUpperCase()||"AK";
+  const ytThumb=videoId?`https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`:"";
+
+  const badgeColors={
+    YouTube:{bg:"#140505",accent:"#ff3b30",text:"#ffe5a3",tag:"YT"},
+    Instagram:{bg:"#1c0618",accent:"#f77737",text:"#ffd6ec",tag:"IG"},
+    Twitter:{bg:"#051624",accent:"#4cc9f0",text:"#d8f3ff",tag:"X"}
+  };
+  const pal=badgeColors[detectedPlatform]||badgeColors.YouTube;
+
+  const autoSvg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240"><rect width="240" height="240" rx="52" fill="${pal.bg}"/><circle cx="120" cy="108" r="64" fill="none" stroke="${pal.accent}" stroke-width="6"/><text x="120" y="125" text-anchor="middle" fill="${pal.text}" font-family="Arial,sans-serif" font-size="48" font-weight="900">${initials}</text><rect x="64" y="182" width="112" height="30" rx="15" fill="${pal.accent}"/><text x="120" y="202" text-anchor="middle" fill="#050505" font-family="Arial,sans-serif" font-size="14" font-weight="800">${pal.tag} CREATOR</text></svg>`;
+  const autoAvatarUrl="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(autoSvg);
+
+  const summary=`Platform: ${detectedPlatform} • Format: ${channelStyle} • Handle: @${cleanHandle||"creator"}${videoId?" • Media ID: "+videoId:""}`;
+  return {
+    platform:detectedPlatform,
+    handle:cleanHandle?("@"+cleanHandle):rawHandle,
+    channelStyle,
+    videoId,
+    ytThumb,
+    autoAvatarUrl,
+    summary
+  };
+}
+
+function getCreatorAvatar(c){
+  if(c.avatar_url&&c.avatar_url.trim())return link(c.avatar_url.trim());
+  const info=analyzeCreatorChannel(c.platform,c.handle,c.profile_url,c.name);
+  return link(info.ytThumb||info.autoAvatarUrl);
+}
+
 /* ---------- Scroll reveal animation ---------- */
 const io="IntersectionObserver"in window?new IntersectionObserver(es=>es.forEach(e=>{
   if(!e.isIntersecting)return;const el=e.target;io.unobserve(el);
@@ -411,9 +499,11 @@ async function api(p,o){
   if(!r.ok)throw new Error(d.error||"Request failed");return d}
 const post=(p,b)=>api(p,{method:"POST",body:JSON.stringify(b)});
 
-async function shrink(file){const url=URL.createObjectURL(file);
+async function shrink(file,maxSize){
+  maxSize=maxSize||1200;
+  const url=URL.createObjectURL(file);
   const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>no(new Error("That file is not a photo"));i.src=url});
-  const s=Math.min(1,1200/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+  const s=Math.min(1,maxSize/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
   const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);return c.toDataURL("image/jpeg",.82)}
 const upiUrl=(a,n,id,nm)=>"upi://pay?pa="+encodeURIComponent(id)+"&pn="+encodeURIComponent(nm)+(a>0?"&am="+a:"")+"&cu=INR&tn="+encodeURIComponent(n);
 const qr=u=>"https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data="+encodeURIComponent(u);
@@ -426,7 +516,47 @@ function supportM(a){a=+a||0;const u=upiUrl(a,"Support AKSHAY CREATION",UPI.id,U
   openM(head("Support AKSHAY CREATION")+`<div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"))}
 function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
   openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
-function creatorM(){openM(head("Register for Spotlight")+`<form data-form="creator"><label>Name *</label><input name="name" required><label>Platform *</label><select name="platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select><label>Handle *</label><input name="handle" required placeholder="@handle"><label>Profile URL *</label><input name="profile_url" type="url" required placeholder="https://..."><label>Avatar URL (optional)</label><input name="avatar_url" placeholder="https://..."><label>Short bio *</label><textarea name="bio" rows="3" required></textarea><button class="btn pri full">Submit for review</button></form>`)}
+
+function refreshCreatorPreview(){
+  const f=document.querySelector('form[data-form="creator"]');if(!f)return;
+  const plat=f.querySelector('[name="platform"]').value;
+  const hdl=f.querySelector('[name="handle"]').value;
+  const purl=f.querySelector('[name="profile_url"]').value;
+  const nm=f.querySelector('[name="name"]').value;
+  const avInput=$("cr_avatar_url");
+  const pv=$("cr_pv");
+  const info=analyzeCreatorChannel(plat,hdl,purl,nm);
+  if(plat&&f.querySelector('[name="platform"]').value!==info.platform){
+    f.querySelector('[name="platform"]').value=info.platform;
+  }
+  if(info.handle&&!hdl.trim()){
+    f.querySelector('[name="handle"]').value=info.handle;
+  }
+  const activeImg=(avInput&&avInput.value.trim())?avInput.value.trim():info.autoAvatarUrl;
+  if(pv){
+    pv.src=link(activeImg);
+    pv.hidden=false;
+  }
+}
+
+function creatorM(){
+  openM(head("Register for Spotlight")+`<form data-form="creator">
+    <label>Name *</label><input name="name" required placeholder="Your creator name">
+    <label>Platform *</label><select name="platform" id="cr_platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select>
+    <label>Handle *</label><input name="handle" id="cr_handle" required placeholder="@handle">
+    <label>Profile / Channel URL *</label><input name="profile_url" id="cr_profile_url" type="url" required placeholder="https://youtube.com/@... or https://instagram.com/...">
+    <label>Creator Photo (Gallery Upload or Auto Channel Logo)</label>
+    <div class="row" style="margin-bottom:10px">
+      <img class="av" id="cr_pv" src="" alt="Preview" hidden>
+      <label class="btn sm" style="margin:0">📱 Pick from Gallery<input type="file" accept="image/*" id="cr_gallery_file" hidden></label>
+      <button type="button" class="btn sm" id="cr_auto_btn">✨ Auto Channel Logo</button>
+    </div>
+    <input name="avatar_url" id="cr_avatar_url" placeholder="Auto-filled from gallery or channel link (optional)">
+    <label>Short bio *</label><textarea name="bio" rows="3" required placeholder="Tell us about your content..."></textarea>
+    <button class="btn pri full">Submit for review</button>
+  </form>`);
+  refreshCreatorPreview();
+}
 
 /* ---------- Poll Engine (Max 5 Votes per Device/Poll + Slow Organic Lead Growth) ---------- */
 const MAX_VOTES_PER_POLL=5;
@@ -483,7 +613,6 @@ function computePollDisplay(poll){
   const extraVisitorBoost=opts.map((_,i)=>+(poll._boosts&&poll._boosts[i]||0));
   const localBoostSum=extraVisitorBoost.reduce((a,b)=>a+b,0);
 
-  // Slow organic drip state so lead vote climbs gradually over time, never jumping suddenly
   const pid=String(poll.id||poll.question||"poll");
   if(!pollDripState[pid]){
     const seed=hashNum(pid);
@@ -503,10 +632,9 @@ function computePollDisplay(poll){
   }else{
     const stDrip=pollDripState[pid];
     const now=Date.now();
-    // Gradually drip +1 to +3 votes every ~6 seconds on lead option and +0 to +1 on others
     if(now-stDrip.lastTick>=5500){
       stDrip.lastTick=now;
-      const leadStep=1+Math.floor(Math.random()*3); // slow +1..+3 votes
+      const leadStep=1+Math.floor(Math.random()*3);
       stDrip.counts[leadIdx]=(stDrip.counts[leadIdx]||0)+leadStep;
       for(let i=0;i<n;i++){
         if(i!==leadIdx&&Math.random()<0.45){
@@ -518,7 +646,6 @@ function computePollDisplay(poll){
 
   const counts=opts.map((_,i)=>Math.max(realCounts[i]||0,(pollDripState[pid].counts[i]||0))+extraVisitorBoost[i]);
 
-  // Ensure lead option gently stays ahead without any abrupt spike
   const maxOther=Math.max(...counts.filter((_,i)=>i!==leadIdx),0);
   if(counts[leadIdx]<=maxOther+5){
     counts[leadIdx]=maxOther+6+Math.floor(Math.random()*4);
@@ -578,7 +705,11 @@ async function loadPublic(){try{
     },450);
   }
 
-  $("creatorsList").innerHTML=d.creators.length?d.creators.map(c=>`<div class="card">${c.avatar_url?`<img class="av" src="${link(c.avatar_url)}" alt="">`:""}<div style="margin-top:8px"><span class="badge">${esc(c.platform)}</span></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`).join(""):`<div class="card center" style="flex:1"><p class="sub">No featured creators yet. Tap Register as Creator!</p></div>`;
+  $("creatorsList").innerHTML=d.creators.length?d.creators.map(c=>{
+    const avSrc=getCreatorAvatar(c);
+    const meta=analyzeCreatorChannel(c.platform,c.handle,c.profile_url,c.name);
+    return `<div class="card"><div class="row" style="justify-content:flex-start;gap:12px"><img class="av" src="${avSrc}" alt="${esc(c.name)}"><div><span class="badge">${esc(c.platform)}</span><div class="small sub" style="margin-top:3px">${esc(meta.channelStyle)}</div></div></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`;
+  }).join(""):`<div class="card center" style="flex:1"><p class="sub">No featured creators yet. Tap Register as Creator!</p></div>`;
   $("adsList").innerHTML=d.ads.length?d.ads.map(a=>`<div class="card">${a.media_url?`<img class="cover" src="${link(a.media_url)}" alt="">`:""}<span class="badge">${esc(a.badge||"Sponsored")}</span><h3>${esc(a.title)}</h3><a class="btn pri sm" target="_blank" rel="noopener" href="${link(a.target_url)}">Explore ↗</a></div>`).join(""):`<div class="card center"><p class="sub">No active campaigns right now. Book a slot in Services.</p></div>`;
   $("productsList").innerHTML=d.products.length?d.products.map(p=>`<div class="card">${p.image_url?`<img class="cover" src="${link(p.image_url)}" alt="${esc(p.title)}">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:12px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button type="button" class="btn pri sm" data-act="buy" data-id="${+p.id}">Buy via UPI</button></div></div>`).join(""):`<div class="card center"><p class="sub">Digital packs launching soon.</p></div>`;
   const communityItems=[
@@ -620,6 +751,10 @@ const HIDE=["id","status","active","password","avatar_url","image_url","media_ur
 function card(k,r){const c=CFG[k];
   const kv=Object.entries(r).filter(([f,x])=>f!==c.t&&HIDE.indexOf(f)<0&&x!==""&&x!=null).slice(0,8).map(([f,x])=>`<div class="kv"><span>${esc(f.replace(/_/g," "))}</span><b>${esc((f==="created_at"?new Date(x).toLocaleString():String(x)).slice(0,300))}</b></div>`).join("");
   let extraAdminHtml="";
+  if(k==="creators"){
+    const info=analyzeCreatorChannel(r.platform,r.handle,r.profile_url,r.name);
+    extraAdminHtml=`<div class="analysis-box"><div class="row" style="justify-content:flex-start;gap:10px"><img class="av" src="${getCreatorAvatar(r)}" alt="" style="width:42px;height:42px"><div><strong>Auto Channel Analysis</strong><div class="small sub">${esc(info.summary)}</div></div></div></div>`;
+  }
   if(k==="polls"){
     const opts=parseOptionsList(r.options||r.options_json||[]);
     const rawCounts=Array.isArray(r.counts)?r.counts:(typeof r.counts_json==="string"?(function(){try{return JSON.parse(r.counts_json)}catch(e){return[]}})():[]);
@@ -715,7 +850,19 @@ const ACT={
   await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
 const FORM={
- async creator(f){await post("/api/creators/apply",fd(f));closeM();toast("Submitted for review. Thank you!");confetti()},
+ async creator(f){
+  const data=fd(f);
+  const info=analyzeCreatorChannel(data.platform,data.handle,data.profile_url,data.name);
+  data.platform=info.platform;
+  data.handle=info.handle||data.handle;
+  if(!data.avatar_url||!data.avatar_url.trim()){
+    data.avatar_url=info.autoAvatarUrl;
+  }
+  await post("/api/creators/apply",data);
+  closeM();
+  toast("Submitted for review! Channel & logo auto-analyzed.");
+  confetti();
+ },
  async book(f){await post("/api/services/book",fd(f));f.reset();toast("Booking request received!");confetti()},
  async care(f){await post("/api/care/submit",Object.assign(fd(f),{consent_granted:true}));f.reset();toast("Message sent privately");confetti()},
  async pay(f){const r=await post("/api/checkout/upi-submit",fd(f));confetti();
@@ -732,6 +879,12 @@ const FORM={
 
 document.addEventListener("click",e=>{
   if(e.target.id==="m")return closeM();
+  if(e.target.id==="cr_auto_btn"){
+    if($("cr_avatar_url"))$("cr_avatar_url").value="";
+    refreshCreatorPreview();
+    toast("Auto channel logo generated!");
+    return;
+  }
   const b=e.target.closest("[data-act]");if(!b)return;
   if(b.dataset.act==="shareHelp"&&navigator.share)e.preventDefault();
   const fn=ACT[b.dataset.act];if(!fn)return;
@@ -743,10 +896,28 @@ document.addEventListener("submit",e=>{
   Promise.resolve().then(()=>h(f)).catch(x=>toast(x.message,1)).then(()=>{if(btn)btn.disabled=false})});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
 
-document.addEventListener("input",e=>{const t=e.target;if(t&&t.matches&&t.matches("[data-utr]")){t.value=t.value.replace(/\D/g,"").slice(0,12);const n=t.value.length,hn=$("utrHint"),pb=$("payBtn");if(hn)hn.textContent=n+" / 12 digits";if(pb)pb.disabled=n!==12}});
-document.addEventListener("change",e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.up)return;const k=t.dataset.up,file=t.files&&t.files[0];if(!file)return;
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t&&t.matches&&t.matches("[data-utr]")){t.value=t.value.replace(/\D/g,"").slice(0,12);const n=t.value.length,hn=$("utrHint"),pb=$("payBtn");if(hn)hn.textContent=n+" / 12 digits";if(pb)pb.disabled=n!==12}
+  if(t&&t.closest&&t.closest('form[data-form="creator"]')){refreshCreatorPreview()}
+});
+
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t&&t.id==="cr_gallery_file"){
+    const file=t.files&&t.files[0];if(!file)return;
+    toast("Preparing photo from gallery…");
+    shrink(file,480).then(dataUrl=>{
+      if($("cr_avatar_url"))$("cr_avatar_url").value=dataUrl;
+      const pv=$("cr_pv");if(pv){pv.src=dataUrl;pv.hidden=false}
+      toast("Photo selected from gallery!");
+    }).catch(x=>toast(x.message,1));
+    return;
+  }
+  if(t&&t.closest&&t.closest('form[data-form="creator"]')){refreshCreatorPreview();return}
+  if(!t||!t.dataset||!t.dataset.up)return;const k=t.dataset.up,file=t.files&&t.files[0];if(!file)return;
   toast("Uploading photo…");
-  shrink(file).then(data=>post("/api/admin/upload",{data})).then(r=>{$("in_"+k).value=r.url;const p=$("pv_"+k);p.src=r.url;p.hidden=false;toast("Photo uploaded. Now tap Save.")}).catch(x=>toast(x.message,1))});
+  shrink(file,1200).then(data=>post("/api/admin/upload",{data})).then(r=>{$("in_"+k).value=r.url;const p=$("pv_"+k);p.src=r.url;p.hidden=false;toast("Photo uploaded. Now tap Save.")}).catch(x=>toast(x.message,1))});
 
 if("scrollRestoration"in history)history.scrollRestoration="manual";
 if(location.hash&&location.hash!=="#admin")history.replaceState(null,"",location.pathname+location.search);
