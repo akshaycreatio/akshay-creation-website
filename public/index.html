@@ -212,7 +212,7 @@ footer{padding:36px 0;text-align:center;background:#021611;border-top:1px solid 
 <form data-form="login"><label>Username</label><input name="username" autocomplete="username" required>
 <label>Password</label><input id="lp" name="password" type="password" autocomplete="current-password" required>
 <label class="chk"><input type="checkbox" data-act="pw">Show password</label>
-<button class="btn pri full">Sign in</button></form><details style="margin-top:18px"><summary style="cursor:pointer;color:var(--muted)">First-time Owner setup</summary><form data-form="setupOwner" style="margin-top:14px"><label>Setup key</label><input name="setup_key" type="password" autocomplete="off" required><label>Owner username</label><input name="username" minlength="3" required><label>New password (12+ characters)</label><input name="password" type="password" minlength="12" autocomplete="new-password" required><button class="btn pri full" style="margin-top:12px">Create Owner account</button></form></details><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
+<button class="btn pri full">Sign in</button></form><details style="margin-top:18px"><summary style="cursor:pointer;color:var(--muted)">First-time Owner setup / forgot password</summary><form data-form="setupOwner" style="margin-top:14px"><label>Setup key</label><input name="setup_key" type="password" autocomplete="off" required><label>Owner username</label><input name="username" minlength="3" required><label>New password (12+ characters)</label><input name="password" type="password" minlength="12" autocomplete="new-password" required><button class="btn pri full" style="margin-top:12px">Create Owner account</button></form></details><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
 <div id="adash" hidden>
 <div class="atop"><div class="row"><span class="brand">AKSHAY CREATION</span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
@@ -233,7 +233,7 @@ const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[]},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 
-/* ---------- Genuine active visitor presence ---------- */
+/* ---------- Genuine active visitor presence (started at the bottom of this script) ---------- */
 let presenceId=S.g("akc_presence_id");
 if(!presenceId){presenceId=crypto.randomUUID();S.s("akc_presence_id",presenceId)}
 async function updatePresence(){
@@ -244,8 +244,6 @@ const previousVisit=Number(S.g("akc_last_visit")||0);
 if(previousVisit>0){const banner=$("returnBanner");if(banner)banner.hidden=false}
 S.s("akc_last_visit",String(Date.now()));
 document.addEventListener("visibilitychange",updatePresence);
-updatePresence();
-setInterval(updatePresence,25000);
 
 /* ---------- Scroll reveal animation ---------- */
 const io="IntersectionObserver"in window?new IntersectionObserver(es=>es.forEach(e=>{
@@ -412,6 +410,8 @@ goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 
 reveal();
 loadPublic();
+updatePresence();
+setInterval(updatePresence,25000);
 if(location.hash==="#admin")ACT.portal();
 })();
 </script>
