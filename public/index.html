@@ -76,6 +76,7 @@ ul.list{margin-left:18px;color:var(--muted);line-height:1.9}
 .poll{width:100%;text-align:left;padding:12px 16px;margin-top:10px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;font:500 .95rem "Hanken Grotesk",sans-serif;transition:border-color .2s,transform .15s,background .2s}
 .poll:hover,.poll.on{border-color:var(--gold)}.poll:active{transform:scale(.985)}.poll.on{background:rgba(var(--gl),.16)}.poll.lead{border-color:rgba(var(--gl),.55)}
 .poll-meta{white-space:nowrap;color:var(--gold2);font-weight:600;font-size:.88rem}
+.real-box{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--in);border:1px dashed var(--line);font-size:.82rem;color:var(--ok)}
 .faq details{border-bottom:1px solid var(--line);padding:14px 0;max-width:800px}.faq summary{cursor:pointer;font:500 1.15rem "Bodoni Moda",serif}.faq p{color:var(--muted);margin-top:8px}
 footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px solid var(--gold);color:var(--muted);font-size:.9rem}footer strong{color:var(--gold2);letter-spacing:.1em}
 .qr{background:#fff;color:#0f172a;border-radius:14px;padding:14px;text-align:center;margin:12px 0;display:flex;flex-direction:column;align-items:center;gap:8px}.qr img{width:210px;height:210px;border-radius:8px}
@@ -239,7 +240,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <ul id="communityUpdates" class="community-updates"><li>Loading the latest community updates…</li></ul>
 <div class="btns" style="margin:18px 0 0"><a class="btn pri sm" href="#creators">Discover creators</a><a class="btn sm" href="#community-polls">Join a poll</a><a class="btn sm" target="_blank" rel="noopener" href="https://wa.me/?text=Discover%20AKSHAY%20CREATION%20-%20Create.%20Connect.%20Inspire.%20">Share this community ↗</a></div>
 </div>
-<div class="head" id="community-polls" style="margin:34px 0 18px"><div class="tag">Audience Voice</div><h2>Community Polls <span class="wig wig">🗳️</span></h2><p class="sub">Your vote helps shape what comes next.</p></div>
+<div class="head" id="community-polls" style="margin:34px 0 18px"><div class="tag">Audience Voice</div><h2>Community Polls <span class="wig wig">🗳️</span></h2><p class="sub">Tap an option below to cast your vote.</p></div>
 <div id="pollsList" class="g2"></div>
 </div></section>
 
@@ -379,25 +380,27 @@ function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
   openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
 function creatorM(){openM(head("Register for Spotlight")+`<form data-form="creator"><label>Name *</label><input name="name" required><label>Platform *</label><select name="platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select><label>Handle *</label><input name="handle" required placeholder="@handle"><label>Profile URL *</label><input name="profile_url" type="url" required placeholder="https://..."><label>Avatar URL (optional)</label><input name="avatar_url" placeholder="https://..."><label>Short bio *</label><textarea name="bio" rows="3" required></textarea><button class="btn pri full">Submit for review</button></form>`)}
 
-/* ---------- Poll Engine: Safe options parsing, starts at 0, scales 30K-50K over duration, Priority leads ---------- */
+/* ---------- Poll Engine: Safe options parsing, visitor voting, fake high count for visitors, real count in Portal ---------- */
 function parseOptionsList(raw){
   if(Array.isArray(raw))return raw.map(x=>typeof x==="object"&&x!==null?(x.text||x.label||x.option||String(x)):String(x)).map(s=>s.trim()).filter(Boolean);
   if(typeof raw==="string"&&raw.trim()){
     try{const p=JSON.parse(raw);if(Array.isArray(p))return parseOptionsList(p)}catch(e){}
     return raw.split(/\r?\n|,/).map(s=>s.trim()).filter(Boolean);
   }
-  return [];
+  return ["Option 1","Option 2"];
 }
 function hashNum(str){
   let h=2166136261;
   for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}
   return (h>>>0);
 }
+function getLocalVotedOption(pollId){
+  const v=S.g("akc_voted_"+pollId);
+  return v!==null&&v!==""?+v:null;
+}
 function computePollDisplay(poll){
-  const opts=parseOptionsList(poll.options||poll.options_json||poll.choices||["Option 1","Option 2"]);
+  const opts=parseOptionsList(poll.options||poll.options_json||poll.choices);
   const n=opts.length;
-  if(!n)return {opts:[],total:0,counts:[],percentages:[],leadIdx:-1};
-
   const rawCounts=Array.isArray(poll.counts)?poll.counts:(typeof poll.counts_json==="string"?(function(){try{return JSON.parse(poll.counts_json)}catch(e){return[]}})():[]);
   const realCounts=opts.map((_,idx)=>+(rawCounts[idx]||0));
   const realTotal=realCounts.reduce((a,b)=>a+b,0);
@@ -410,10 +413,13 @@ function computePollDisplay(poll){
   let leadIdx=Number.isInteger(+poll.priority_index)?+poll.priority_index:(Number.isInteger(+poll.lead_option)?+poll.lead_option:0);
   if(leadIdx<0||leadIdx>=n)leadIdx=0;
 
-  // Freshly created (< 10 seconds) with no real votes stays at 0
-  if(elapsedMs<10000 && realTotal===0){
+  const extraVisitorBoost=opts.map((_,i)=>+(poll._boosts&&poll._boosts[i]||0));
+  const localBoostSum=extraVisitorBoost.reduce((a,b)=>a+b,0);
+
+  // Start at 0 on brand-new poll (< 8s with zero votes)
+  if(elapsedMs<8000 && realTotal===0 && localBoostSum===0){
     const z=opts.map(()=>0);
-    return {opts,total:0,counts:z,percentages:opts.map(()=>0),leadIdx};
+    return {opts,total:0,counts:z,percentages:opts.map(()=>0),leadIdx,realCounts,realTotal};
   }
 
   const seed=hashNum(String(poll.id||poll.question||"poll"));
@@ -423,12 +429,9 @@ function computePollDisplay(poll){
   const eased=rawP<0.5?2*rawP*rawP:1-Math.pow(-2*rawP+2,2)/2;
 
   const pulseTick=Math.floor(Date.now()/4000);
-  const microJitter=elapsedMs>=10000?((hashNum(String(poll.id)+":"+pulseTick)%41)-12):0;
+  const microJitter=elapsedMs>=8000?((hashNum(String(poll.id)+":"+pulseTick)%41)-12):0;
 
-  // Visitor real clicks add a visible boost to the clicked option as well
-  const extraVisitorBoost=opts.map((_,i)=>+(poll._boosts&&poll._boosts[i]||0));
-
-  let boostedTotal=Math.max(realTotal,Math.round(finalTarget*eased)+microJitter)+extraVisitorBoost.reduce((a,b)=>a+b,0);
+  let boostedTotal=Math.max(realTotal,Math.round(finalTarget*eased)+microJitter)+localBoostSum;
 
   const weights=opts.map((_,i)=>{
     const wSeed=hashNum(String(poll.id)+":opt:"+i);
@@ -449,7 +452,6 @@ function computePollDisplay(poll){
     return Math.max(realCounts[i]||0,Math.round(share))+extraVisitorBoost[i];
   });
 
-  // Ensure lead option is always higher than every other option
   const maxOther=Math.max(...counts.filter((_,i)=>i!==leadIdx),0);
   const minLeadGap=Math.max(12,Math.round(maxOther*(0.12+((hashNum(String(poll.id)+":gap:"+pulseTick)%25)/100))));
   if(counts[leadIdx]<=maxOther+minLeadGap){
@@ -458,7 +460,7 @@ function computePollDisplay(poll){
 
   const total=counts.reduce((a,b)=>a+b,0);
   const percentages=counts.map(c=>total>0?Math.round((c/total)*100):0);
-  return {opts,total,counts,percentages,leadIdx};
+  return {opts,total,counts,percentages,leadIdx,realCounts,realTotal};
 }
 
 function renderPolls(){
@@ -470,9 +472,11 @@ function renderPolls(){
   }
   el.innerHTML=list.map(p=>{
     const m=computePollDisplay(p);
+    const votedIdx=p.user_voted!=null?p.user_voted:getLocalVotedOption(p.id);
     return `<div class="card"><h3 style="margin-top:0">${esc(p.question||"Community Poll")}</h3><p class="sub small">${m.total.toLocaleString("en-IN")} vote(s)</p>${m.opts.map((o,i)=>{
       const isLead=i===m.leadIdx;
-      return `<button type="button" class="poll${p.user_voted===i?" on":""}${isLead?" lead":""}" data-act="vote" data-id="${+p.id}" data-i="${i}"><span>${esc(o)}</span><span class="poll-meta">${m.counts[i].toLocaleString("en-IN")} (${m.percentages[i]}%)</span></button>`;
+      const isChosen=votedIdx===i;
+      return `<button type="button" class="poll${isChosen?" on":""}${isLead?" lead":""}" data-act="vote" data-id="${+p.id}" data-i="${i}"><span>${esc(o)}</span><span class="poll-meta">${m.counts[i].toLocaleString("en-IN")} (${m.percentages[i]}%)</span></button>`;
     }).join("")}</div>`;
   }).join("");
 }
@@ -527,9 +531,19 @@ const HIDE=["id","status","active","password","avatar_url","image_url","media_ur
 
 function card(k,r){const c=CFG[k];
   const kv=Object.entries(r).filter(([f,x])=>f!==c.t&&HIDE.indexOf(f)<0&&x!==""&&x!=null).slice(0,8).map(([f,x])=>`<div class="kv"><span>${esc(f.replace(/_/g," "))}</span><b>${esc((f==="created_at"?new Date(x).toLocaleString():String(x)).slice(0,300))}</b></div>`).join("");
+  let extraAdminHtml="";
+  if(k==="polls"){
+    const opts=parseOptionsList(r.options||r.options_json||[]);
+    const rawCounts=Array.isArray(r.counts)?r.counts:(typeof r.counts_json==="string"?(function(){try{return JSON.parse(r.counts_json)}catch(e){return[]}})():[]);
+    const realTotal=opts.reduce((s,_,i)=>s+(+rawCounts[i]||0),0);
+    const disp=computePollDisplay(r);
+    const realBreakdown=opts.map((o,i)=>`${o}: ${+(rawCounts[i]||0)}`).join(" • ");
+    const fakeBreakdown=disp.opts.map((o,i)=>`${o}: ${disp.counts[i].toLocaleString("en-IN")}`).join(" • ");
+    extraAdminHtml=`<div class="real-box"><div><strong>Real Visitor Votes (${realTotal.toLocaleString("en-IN")}):</strong> ${esc(realBreakdown||"0")}</div><div style="color:var(--gold2);margin-top:4px"><strong>Shown to Visitors (${disp.total.toLocaleString("en-IN")}):</strong> ${esc(fakeBreakdown||"0")}</div></div>`;
+  }
   const badge=r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"ok":"warn"}">${esc(r.status)}</span>`:(r.active!=null&&!+r.active?`<span class="badge warn">Hidden</span>`:"");
   const acts=c.acts(r).map(([l,op,v,p])=>`<button type="button" class="btn sm${p?" pri":""}" data-act="adm" data-op="${op}" data-res="${k}" data-id="${+r.id}" data-v='${esc(JSON.stringify(v==null?null:v))}'>${l}</button>`).join("");
-  return`<div class="card"><div class="row"><h3 style="margin:0">${esc(r[c.t]||"#"+r.id)}</h3>${badge}</div><div style="margin-top:8px">${kv}</div><div class="acts">${acts}</div></div>`}
+  return`<div class="card"><div class="row"><h3 style="margin:0">${esc(r[c.t]||"#"+r.id)}</h3>${badge}</div><div style="margin-top:8px">${kv}</div>${extraAdminHtml}<div class="acts">${acts}</div></div>`}
 
 function admRender(){if(!dash)return;
   $("anav").innerHTML=TABS.map(([k,l,d])=>`<button type="button" data-act="tab" data-k="${k}" class="${tab===k?"on":""}">${l}${d?`<i>${(dash[d]||[]).length}</i>`:""}</button>`).join("");
@@ -543,8 +557,19 @@ function admRender(){if(!dash)return;
   if(tab==="staff")h+=`<form class="card" data-form="staff" style="margin-bottom:16px"><h3 style="margin-top:0">Add staff</h3><label>Username *</label><input name="username" required><label>Password * (8+ characters)</label><input name="password" type="password" required minlength="8"><label>Role</label><select name="role"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn pri full">Create account</button></form>`;
   h+=list.length?`<div class="recs">${list.map(r=>card(tab,r)).join("")}</div>`:`<p class="sub">Nothing here yet.</p>`;
   b.innerHTML=h}
-function admForm(res,id){const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};
-  openM(head((id?"Edit ":"New ")+res)+`<form data-form="adm"><input type="hidden" name="res" value="${res}"><input type="hidden" name="id" value="${id?+id:""}">${F[res].filter(([k])=>!(k==="options"&&id)).map(([k,l,t])=>{const val=rec[k]!=null?rec[k]:(k==="active"&&!id?1:(k==="duration_hours"&&!id?48:(k==="priority_index"&&!id?0:"")));return`<label>${esc(l)}</label>`+(t==="t"?`<textarea name="${k}" rows="4">${esc(val)}</textarea>`:t==="i"?`<img class="cover" id="pv_${k}" src="${val?link(val):""}" alt="" ${val?"":"hidden"}><label class="btn sm" style="margin-bottom:10px">📷 Upload photo<input type="file" accept="image/*" data-up="${k}" hidden></label><input name="${k}" id="in_${k}" value="${esc(val)}" placeholder="or paste an image link">`:`<input name="${k}" ${t==="n"?'type="number" step="any" ':""}value="${esc(val)}">`)}).join("")}<button class="btn pri full">Save</button></form>`)}
+
+function admForm(res,id){
+  const rec=id?(dash[DK[res]]||[]).find(x=>x.id==id)||{}:{};
+  openM(head((id?"Edit ":"New ")+res)+`<form data-form="adm"><input type="hidden" name="res" value="${res}"><input type="hidden" name="id" value="${id?+id:""}">${F[res].map(([k,l,t])=>{
+    let val=rec[k]!=null?rec[k]:(k==="active"&&!id?1:(k==="duration_hours"&&!id?48:(k==="priority_index"&&!id?0:"")));
+    if(res==="polls"&&k==="options"){
+      const arr=parseOptionsList(rec.options||rec.options_json||[]);
+      val=arr.length?arr.join("\n"):"Secret Creator Page\nExclusive Videos\nLive Chat with Akshay\nBehind the Scenes\nSpecial Surprise";
+    }
+    return`<label>${esc(l)}</label>`+(t==="t"?`<textarea name="${k}" rows="5">${esc(val)}</textarea>`:t==="i"?`<img class="cover" id="pv_${k}" src="${val?link(val):""}" alt="" ${val?"":"hidden"}><label class="btn sm" style="margin-bottom:10px">📷 Upload photo<input type="file" accept="image/*" data-up="${k}" hidden></label><input name="${k}" id="in_${k}" value="${esc(val)}" placeholder="or paste an image link">`:`<input name="${k}" ${t==="n"?'type="number" step="any" ':""}value="${esc(val)}">`);
+  }).join("")}<button class="btn pri full">Save</button></form>`);
+}
+
 async function loadDash(){try{dash=await api("/api/admin/dashboard")}catch(e){toast(e.message,1);logout();return false}
   $("alogin").hidden=true;$("adash").hidden=false;admRender();return true}
 function logout(){token="";S.d("akc_token");dash=null;$("alogin").hidden=false;$("adash").hidden=true}
@@ -559,11 +584,14 @@ const ACT={
  creatorForm:creatorM,buy:d=>checkout(d.id),
  async vote(d){
   const pollId=+d.id,optIdx=+d.i;
+  S.s("akc_voted_"+pollId,String(optIdx));
   const pl=(st.polls||[]).find(x=>x.id==pollId);
   if(pl){
     pl.user_voted=optIdx;
     pl._boosts=Array.isArray(pl._boosts)?pl._boosts.slice():[];
     pl._boosts[optIdx]=(+pl._boosts[optIdx]||0)+1;
+    pl.counts=Array.isArray(pl.counts)?pl.counts.slice():[];
+    pl.counts[optIdx]=(+pl.counts[optIdx]||0)+1;
     renderPolls();
   }
   try{
@@ -629,6 +657,7 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll,.tab,
   if(reduce){el.textContent=words[0];return}
   let w=0,i=0,del=false;(function tick(){const cur=Array.from(words[w]);el.textContent=cur.slice(0,i).join("");
     if(!del&&i<cur.length){i++;setTimeout(tick,90)}else if(!del){del=true;setTimeout(tick,1500)}else if(i>0){i--;setTimeout(tick,40)}else{del=false;w=(w+1)%words.length;setTimeout(tick,300)}})()})();
+if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>{const to=+el.dataset.count,suf=el.dataset.suf||"";let t0=null;(function f(t){t0=t0||t;const k=Math.min(1,(t-t0)/1500);el.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(f)})(performance.now())}),900);
 (function(){const hero=$("home");if(!hero||reduce)return;for(let i=0;i<16;i++){const s=document.createElement("i");s.className="star";s.style.cssText="left:"+(Math.random()*100)+"%;top:"+(Math.random()*100)+"%;animation-delay:"+(Math.random()*3).toFixed(2)+"s;animation-duration:"+(2+Math.random()*3).toFixed(1)+"s";hero.appendChild(s)}})();
 (function(){const bar=$("progress"),top=$("topBtn");let busy=false;
   addEventListener("scroll",()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+"%";top.classList.toggle("show",scrollY>700);busy=false})},{passive:true});
