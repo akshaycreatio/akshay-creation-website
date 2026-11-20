@@ -1,4 +1,4 @@
-// AKSHAY CREATION worker. Needs secrets AUTH_SECRET and OWNER_SETUP_KEY (Cloudflare: Worker > Settings > Variables and Secrets)
+// AKSHAY CREATION worker. Needs secrets AUTH_SECRET and OWNER_SETUP_KEY (OWNER_SETUP_KEY = your owner login password) (Cloudflare: Worker > Settings > Variables and Secrets)
 const enc = new TextEncoder();
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const err = (m, s = 400) => json({ error: m }, s);
@@ -267,22 +267,17 @@ export default {
         return json({ success: true });
       }
 
-      // First-time owner setup. Also works as a reset if you forget the owner password (needs the OWNER_SETUP_KEY secret).
-      if (path === "/api/auth/setup-owner" && method === "POST") {
-        if (limited("owner-setup:" + ip, 5, 3600e3)) return err("Too many setup attempts. Try again later.", 429);
-        if (!env.AUTH_SECRET || !env.OWNER_SETUP_KEY) return err("Owner setup secrets are not configured yet", 503);
-        if (!same(String(body.setup_key || ""), env.OWNER_SETUP_KEY)) return err("Invalid setup key", 403);
-        const user = clip(body.username, 40), pw = String(body.password || "");
-        if (user.length < 3 || pw.length < 12) return err("Use a username with 3+ characters and a password with at least 12 characters");
-        await db.prepare("DELETE FROM admins").run();
-        await ins(db, "admins", { username: user, password: await hashPw(pw), role: "admin" });
-        return json({ success: true });
-      }
-
       if (path === "/api/auth/login" && method === "POST") {
         if (!env.AUTH_SECRET) return err("Login security is not configured yet", 503);
         if (limited("l:" + ip, 8, 600e3)) return err("Too many attempts, wait 10 minutes", 429);
         const user = clip(body.username, 60), pw = String(body.password || "");
+        // Owner login: username OWNER_SETUP_KEY (or OWNER_USERNAME) + the password stored in the OWNER_SETUP_KEY (or OWNER_PASSWORD) secret.
+        const ownerKeys = [env.OWNER_SETUP_KEY, env.OWNER_PASSWORD].filter(Boolean);
+        const ownerNames = ["OWNER_SETUP_KEY", env.OWNER_USERNAME].filter(Boolean);
+        if (ownerNames.some((n) => same(user, n))) {
+          if (!ownerKeys.length) return err("Owner password is not set. In Cloudflare add the secret OWNER_SETUP_KEY with your password.", 503);
+          if (ownerKeys.some((k) => same(pw, k))) return json({ token: await makeToken(env, user, "admin"), role: "admin" });
+        }
         for (const [tbl, role] of [["admins", "admin"], ["staff_users", "moderator"]]) {
           const u = await db.prepare(`SELECT * FROM ${tbl} WHERE username = ?`).bind(user).first();
           const ok = u && (await checkPw(pw, u.password));
