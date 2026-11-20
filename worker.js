@@ -34,17 +34,27 @@ const json = (data, status = 200, extraHeaders = {}) =>
     },
   });
 
-const safeJson = (str, fallback) => {
-  try {
-    if (Array.isArray(str) || (typeof str === "object" && str !== null)) return str;
-    const parsed = JSON.parse(str);
-    return parsed ?? fallback;
-  } catch {
-    return fallback;
+const safeArr = (val, fallback = []) => {
+  if (Array.isArray(val)) return val;
+  if (typeof val === "string" && val.trim()) {
+    try {
+      const p = JSON.parse(val);
+      if (Array.isArray(p)) return p;
+    } catch {}
+    return val.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
   }
+  return fallback;
 };
 
-const getDb = (env) => env.DB || env.akshay_creation_db || env.AKSHAY_CREATION_DB;
+const getDb = (env) => {
+  if (env.DB) return env.DB;
+  if (env.akshay_creation_db) return env.akshay_creation_db;
+  if (env.AKSHAY_CREATION_DB) return env.AKSHAY_CREATION_DB;
+  for (const k of Object.keys(env || {})) {
+    if (env[k] && typeof env[k].prepare === "function") return env[k];
+  }
+  return null;
+};
 
 async function sha256Hex(text) {
   const buf = new TextEncoder().encode(String(text));
@@ -133,13 +143,33 @@ async function ensureSchema(db) {
   for (const sql of stmts) {
     await db.prepare(sql).run().catch(() => {});
   }
+  await db.prepare("ALTER TABLE polls ADD COLUMN options_json TEXT").run().catch(() => {});
+  await db.prepare("ALTER TABLE polls ADD COLUMN counts_json TEXT").run().catch(() => {});
   await db.prepare("ALTER TABLE polls ADD COLUMN priority_index INTEGER DEFAULT 0").run().catch(() => {});
   await db.prepare("ALTER TABLE polls ADD COLUMN duration_hours REAL DEFAULT 48").run().catch(() => {});
   await db.prepare("ALTER TABLE polls ADD COLUMN created_at TEXT").run().catch(() => {});
   schemaReady = true;
 }
 
-/* ---------- Auth & Dashboard ---------- */
+function normalizePollRow(row) {
+  const options = safeArr(row.options_json ?? row.options ?? row.choices, []);
+  const rawCounts = safeArr(row.counts_json ?? row.counts, []);
+  const counts = options.map((_, i) => (+rawCounts[i] || 0));
+  const total_votes = counts.reduce((s, n) => s + n, 0);
+  return {
+    id: row.id,
+    question: row.question || "Community Poll",
+    options,
+    counts,
+    total_votes,
+    priority_index: Number.isFinite(+row.priority_index) ? Math.max(0, Math.floor(+row.priority_index)) : 0,
+    duration_hours: Number.isFinite(+row.duration_hours) && +row.duration_hours > 0 ? +row.duration_hours : 48,
+    created_at: row.created_at || new Date().toISOString(),
+    active: row.active == null ? 1 : +row.active,
+    user_voted: null,
+  };
+}
+
 async function handleLogin(request, env) {
   const db = getDb(env);
   await ensureSchema(db);
@@ -151,7 +181,7 @@ async function handleLogin(request, env) {
     return json({ error: "Username and password required" }, 400);
   }
 
-  const ownerKey = env.OWNER_SETUP_KEY || env.ADMIN_PASSWORD || "";
+  const ownerKey = env.OWNER_SETUP_KEY || env.ADMIN_PASSWORD || env.SETUP_KEY || "";
   const ownerUser = env.ADMIN_USERNAME || "OWNER_SETUP_KEY";
 
   if (ownerKey && (username === "OWNER_SETUP_KEY" || username === ownerUser) && password === ownerKey) {
@@ -179,11 +209,28 @@ async function handleLogin(request, env) {
     }
   }
 
+  if (!ownerKey && db) {
+    const cnt = await db.prepare("SELECT COUNT(*) as c FROM staff_users").first().catch(() => ({ c: 0 }));
+    if ((!cnt || !+cnt.c) && username === "OWNER_SETUP_KEY" && password.length >= 6) {
+      const hash = await sha256Hex(password);
+      await db
+        .prepare("INSERT INTO staff_users (username, password_hash, role, created_at) VALUES (?, ?, 'admin', ?)")
+        .bind("OWNER_SETUP_KEY", hash, new Date().toISOString())
+        .run()
+        .catch(() => {});
+      const token = await signPayload(
+        { username: "Akshay (Owner)", role: "admin", exp: Date.now() + 7 * 86400 * 1000 },
+        env.JWT_SECRET || "akc_default_secret"
+      );
+      return json({ token, username: "Akshay (Owner)", role: "admin" });
+    }
+  }
+
   return json({ error: "Invalid username or password" }, 401);
 }
 
 async function requireAuth(request, env) {
-  const ownerKey = env.OWNER_SETUP_KEY || env.ADMIN_PASSWORD || "";
+  const ownerKey = env.OWNER_SETUP_KEY || env.ADMIN_PASSWORD || env.SETUP_KEY || "";
   return verifyToken(request.headers.get("Authorization"), env.JWT_SECRET || ownerKey);
 }
 
@@ -218,17 +265,15 @@ async function handleDashboard(request, env) {
     ]);
 
   const polls = pollsRows.map((row) => {
-    const options = safeJson(row.options_json, []);
-    const counts = safeJson(row.counts_json, options.map(() => 0));
-    const realTotal = counts.reduce((s, n) => s + (+n || 0), 0);
+    const p = normalizePollRow(row);
     return {
       ...row,
-      options,
-      counts,
-      real_votes_breakdown: options.map((opt, idx) => `${opt}: ${counts[idx] || 0}`).join(" | "),
-      real_total_votes: realTotal,
-      priority_index: Number.isFinite(+row.priority_index) ? +row.priority_index : 0,
-      duration_hours: Number.isFinite(+row.duration_hours) && +row.duration_hours > 0 ? +row.duration_hours : 48,
+      options: p.options,
+      counts: p.counts,
+      real_votes_breakdown: p.options.map((opt, idx) => `${opt}: ${p.counts[idx] || 0}`).join(" | "),
+      real_total_votes: p.total_votes,
+      priority_index: p.priority_index,
+      duration_hours: p.duration_hours,
     };
   });
 
@@ -247,7 +292,6 @@ async function handleDashboard(request, env) {
   });
 }
 
-/* ---------- Public Endpoints ---------- */
 async function handlePublicOverview(env) {
   const db = getDb(env);
   if (!db) return json({ error: "D1 database binding not found" }, 500);
@@ -270,24 +314,7 @@ async function handlePublicOverview(env) {
     all("SELECT * FROM polls WHERE active = 1 ORDER BY id DESC"),
   ]);
 
-  const polls = pollsRows.map((row) => {
-    const options = safeJson(row.options_json, []);
-    const counts = safeJson(row.counts_json, options.map(() => 0));
-    const total_votes = counts.reduce((sum, n) => sum + (+n || 0), 0);
-
-    return {
-      id: row.id,
-      question: row.question,
-      options,
-      counts,
-      total_votes,
-      priority_index: Number.isFinite(+row.priority_index) ? Math.max(0, Math.floor(+row.priority_index)) : 0,
-      duration_hours: Number.isFinite(+row.duration_hours) && +row.duration_hours > 0 ? +row.duration_hours : 48,
-      created_at: row.created_at || new Date().toISOString(),
-      user_voted: null,
-    };
-  });
-
+  const polls = pollsRows.map(normalizePollRow);
   return json({ creators, ads, charities, products, polls });
 }
 
@@ -303,20 +330,19 @@ async function handlePollVote(request, env) {
     return json({ error: "Invalid vote" }, 400);
   }
 
-  const row = await db.prepare("SELECT id, options_json, counts_json FROM polls WHERE id = ?").bind(pollId).first().catch(() => null);
+  const row = await db.prepare("SELECT * FROM polls WHERE id = ?").bind(pollId).first().catch(() => null);
   if (row) {
-    const options = safeJson(row.options_json, []);
-    const counts = safeJson(row.counts_json, options.map(() => 0));
-    while (counts.length < options.length) counts.push(0);
-    if (optIdx < counts.length) {
-      counts[optIdx] = (+counts[optIdx] || 0) + 1;
-      await db.prepare("UPDATE polls SET counts_json = ? WHERE id = ?").bind(JSON.stringify(counts), pollId).run().catch(() => {});
+    const p = normalizePollRow(row);
+    if (optIdx < p.counts.length) {
+      p.counts[optIdx] = (+p.counts[optIdx] || 0) + 1;
+      const cStr = JSON.stringify(p.counts);
+      await db.prepare("UPDATE polls SET counts_json = ? WHERE id = ?").bind(cStr, pollId).run().catch(() => {});
+      await db.prepare("UPDATE polls SET counts = ? WHERE id = ?").bind(cStr, pollId).run().catch(() => {});
     }
   }
   return json({ ok: true });
 }
 
-/* ---------- Generic Admin Resource Handler ---------- */
 const TABLE_MAP = {
   creators: { table: "creators", cols: ["name", "platform", "handle", "profile_url", "avatar_url", "bio", "status"] },
   ads: { table: "ads", cols: ["title", "badge", "media_url", "target_url", "sort", "active"] },
@@ -361,20 +387,31 @@ async function handleAdminResource(resName, request, env) {
   if (resName === "polls") {
     if (body.action === "create") {
       const question = String(body.data?.question || "").trim();
-      const options = Array.isArray(body.data?.options)
-        ? body.data.options.map((s) => String(s).trim()).filter(Boolean)
-        : [];
+      const options = safeArr(body.data?.options, []);
       const priorityIndex = Math.max(0, Number.isFinite(+body.data?.priority_index) ? Math.floor(+body.data.priority_index) : 0);
       const durationHours = Math.max(1, Number.isFinite(+body.data?.duration_hours) ? +body.data.duration_hours : 48);
       if (!question || options.length < 2) return json({ error: "Question and at least 2 options required" }, 400);
       const counts = options.map(() => 0);
-      await db
-        .prepare(
-          `INSERT INTO polls (question, options_json, counts_json, priority_index, duration_hours, active, created_at)
-           VALUES (?, ?, ?, ?, ?, 1, ?)`
-        )
-        .bind(question, JSON.stringify(options), JSON.stringify(counts), priorityIndex, durationHours, new Date().toISOString())
-        .run();
+      const oStr = JSON.stringify(options);
+      const cStr = JSON.stringify(counts);
+      const now = new Date().toISOString();
+      try {
+        await db
+          .prepare(
+            `INSERT INTO polls (question, options_json, counts_json, priority_index, duration_hours, active, created_at)
+             VALUES (?, ?, ?, ?, ?, 1, ?)`
+          )
+          .bind(question, oStr, cStr, priorityIndex, durationHours, now)
+          .run();
+      } catch {
+        await db
+          .prepare(
+            `INSERT INTO polls (question, options, counts, priority_index, duration_hours, active, created_at)
+             VALUES (?, ?, ?, ?, ?, 1, ?)`
+          )
+          .bind(question, oStr, cStr, priorityIndex, durationHours, now)
+          .run();
+      }
       return json({ ok: true });
     }
     if (body.action === "update") {
@@ -383,7 +420,13 @@ async function handleAdminResource(resName, request, env) {
       const updates = [];
       const binds = [];
       if (d.question !== undefined) { updates.push("question = ?"); binds.push(String(d.question).trim()); }
-      if (Array.isArray(d.options) && d.options.length >= 2) { updates.push("options_json = ?"); binds.push(JSON.stringify(d.options)); }
+      if (d.options !== undefined) {
+        const opts = safeArr(d.options, []);
+        if (opts.length >= 2) {
+          updates.push("options_json = ?");
+          binds.push(JSON.stringify(opts));
+        }
+      }
       if (d.priority_index !== undefined && d.priority_index !== "") { updates.push("priority_index = ?"); binds.push(Math.max(0, Math.floor(+d.priority_index))); }
       if (d.duration_hours !== undefined && d.duration_hours !== "") { updates.push("duration_hours = ?"); binds.push(Math.max(1, +d.duration_hours)); }
       if (d.active !== undefined) { updates.push("active = ?"); binds.push(+d.active ? 1 : 0); }
@@ -441,7 +484,6 @@ async function handleAdminResource(resName, request, env) {
   return json({ error: "Unsupported action" }, 400);
 }
 
-/* ---------- Live Stream Endpoints ---------- */
 async function handleLiveGet(env) {
   const db = getDb(env);
   if (!db) return json({ live: null });
@@ -481,7 +523,6 @@ async function handleLiveAdmin(request, env) {
   return json({ ok: true });
 }
 
-/* ---------- Main Router ---------- */
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -491,93 +532,97 @@ export default {
       return new Response(null, { status: 204, headers: CORS });
     }
 
-    try {
-      if (pathname === "/api/auth/login" && request.method === "POST") return handleLogin(request, env);
-      if (pathname === "/api/admin/dashboard" && request.method === "GET") return handleDashboard(request, env);
-      if (pathname === "/api/admin/live-set") return handleLiveAdmin(request, env);
-      if (pathname === "/api/admin/upload" && request.method === "POST") {
-        const user = await requireAuth(request, env);
-        if (!user) return json({ error: "Unauthorized" }, 401);
-        const body = await request.json().catch(() => ({}));
-        if (!body.data) return json({ error: "No image data" }, 400);
-        return json({ url: String(body.data) });
-      }
-      if (pathname.startsWith("/api/admin/") && request.method === "POST") {
-        const resName = pathname.slice("/api/admin/".length);
-        return handleAdminResource(resName, request, env);
-      }
+    if (pathname.startsWith("/api/")) {
+      try {
+        if (pathname === "/api/auth/login" && request.method === "POST") return handleLogin(request, env);
+        if (pathname === "/api/admin/dashboard" && request.method === "GET") return handleDashboard(request, env);
+        if (pathname === "/api/admin/live-set") return handleLiveAdmin(request, env);
+        if (pathname === "/api/admin/upload" && request.method === "POST") {
+          const user = await requireAuth(request, env);
+          if (!user) return json({ error: "Unauthorized" }, 401);
+          const body = await request.json().catch(() => ({}));
+          if (!body.data) return json({ error: "No image data" }, 400);
+          return json({ url: String(body.data) });
+        }
+        if (pathname.startsWith("/api/admin/") && request.method === "POST") {
+          const resName = pathname.slice("/api/admin/".length);
+          return handleAdminResource(resName, request, env);
+        }
 
-      if (pathname === "/api/public/overview" && request.method === "GET") return handlePublicOverview(env);
-      if (pathname === "/api/public/presence" && request.method === "POST") return json({ ok: true });
-      if (pathname === "/api/public/live" && request.method === "GET") return handleLiveGet(env);
-      if (pathname === "/api/polls/vote" && request.method === "POST") return handlePollVote(request, env);
+        if (pathname === "/api/public/overview" && request.method === "GET") return handlePublicOverview(env);
+        if (pathname === "/api/public/presence" && request.method === "POST") return json({ ok: true });
+        if (pathname === "/api/public/live" && request.method === "GET") return handleLiveGet(env);
+        if (pathname === "/api/polls/vote" && request.method === "POST") return handlePollVote(request, env);
 
-      if (pathname === "/api/creators/apply" && request.method === "POST") {
-        const db = getDb(env);
-        await ensureSchema(db);
-        const d = await request.json().catch(() => ({}));
-        await db
-          .prepare("INSERT INTO creators (name, platform, handle, profile_url, avatar_url, bio, status, created_at) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)")
-          .bind(d.name || "", d.platform || "", d.handle || "", d.profile_url || "", d.avatar_url || "", d.bio || "", new Date().toISOString())
-          .run();
-        return json({ ok: true });
+        if (pathname === "/api/creators/apply" && request.method === "POST") {
+          const db = getDb(env);
+          await ensureSchema(db);
+          const d = await request.json().catch(() => ({}));
+          await db
+            .prepare("INSERT INTO creators (name, platform, handle, profile_url, avatar_url, bio, status, created_at) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)")
+            .bind(d.name || "", d.platform || "", d.handle || "", d.profile_url || "", d.avatar_url || "", d.bio || "", new Date().toISOString())
+            .run();
+          return json({ ok: true });
+        }
+
+        if (pathname === "/api/services/book" && request.method === "POST") {
+          const db = getDb(env);
+          await ensureSchema(db);
+          const d = await request.json().catch(() => ({}));
+          await db
+            .prepare("INSERT INTO bookings (service_type, client_name, client_email, client_contact, details, status, created_at) VALUES (?, ?, ?, ?, ?, 'new', ?)")
+            .bind(d.service_type || "", d.client_name || "", d.client_email || "", d.client_contact || "", d.details || "", new Date().toISOString())
+            .run();
+          return json({ ok: true });
+        }
+
+        if (pathname === "/api/care/submit" && request.method === "POST") {
+          const db = getDb(env);
+          await ensureSchema(db);
+          const d = await request.json().catch(() => ({}));
+          await db
+            .prepare("INSERT INTO care (applicant_name, contact_info, case_title, private_details, consent_granted, status, created_at) VALUES (?, ?, ?, ?, 1, 'new', ?)")
+            .bind(d.applicant_name || "", d.contact_info || "", d.case_title || "", d.private_details || "", new Date().toISOString())
+            .run();
+          return json({ ok: true });
+        }
+
+        if (pathname === "/api/checkout/upi-submit" && request.method === "POST") {
+          const db = getDb(env);
+          await ensureSchema(db);
+          const d = await request.json().catch(() => ({}));
+          const prod = await db.prepare("SELECT title, price_inr FROM products WHERE id = ?").bind(+d.product_id).first().catch(() => null);
+          const orderId = "AKC_" + Date.now().toString(36).toUpperCase();
+          await db
+            .prepare("INSERT INTO orders (order_id, product_id, product_title, amount_inr, customer_name, customer_email, utr, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'PENDING', ?)")
+            .bind(orderId, +d.product_id || 0, prod?.title || "", prod?.price_inr || 0, d.customer_name || "", d.customer_email || "", d.utr || "", new Date().toISOString())
+            .run();
+          return json({ ok: true, order_id: orderId });
+        }
+
+        if (pathname === "/api/checkout/verify" && request.method === "GET") {
+          const db = getDb(env);
+          await ensureSchema(db);
+          const q = String(url.searchParams.get("order_id") || "").trim();
+          const ord = await db
+            .prepare("SELECT o.status, p.download_url FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.order_id = ? OR o.utr = ? ORDER BY o.id DESC LIMIT 1")
+            .bind(q, q)
+            .first()
+            .catch(() => null);
+          if (!ord) return json({ status: "PENDING" });
+          return json({ status: ord.status || "PENDING", download_url: ord.status === "PAID" ? ord.download_url || "#" : "" });
+        }
+
+        return json({ error: "API route not found" }, 404);
+      } catch (err) {
+        return json({ error: err?.message || "Server error" }, 500);
       }
-
-      if (pathname === "/api/services/book" && request.method === "POST") {
-        const db = getDb(env);
-        await ensureSchema(db);
-        const d = await request.json().catch(() => ({}));
-        await db
-          .prepare("INSERT INTO bookings (service_type, client_name, client_email, client_contact, details, status, created_at) VALUES (?, ?, ?, ?, ?, 'new', ?)")
-          .bind(d.service_type || "", d.client_name || "", d.client_email || "", d.client_contact || "", d.details || "", new Date().toISOString())
-          .run();
-        return json({ ok: true });
-      }
-
-      if (pathname === "/api/care/submit" && request.method === "POST") {
-        const db = getDb(env);
-        await ensureSchema(db);
-        const d = await request.json().catch(() => ({}));
-        await db
-          .prepare("INSERT INTO care (applicant_name, contact_info, case_title, private_details, consent_granted, status, created_at) VALUES (?, ?, ?, ?, 1, 'new', ?)")
-          .bind(d.applicant_name || "", d.contact_info || "", d.case_title || "", d.private_details || "", new Date().toISOString())
-          .run();
-        return json({ ok: true });
-      }
-
-      if (pathname === "/api/checkout/upi-submit" && request.method === "POST") {
-        const db = getDb(env);
-        await ensureSchema(db);
-        const d = await request.json().catch(() => ({}));
-        const prod = await db.prepare("SELECT title, price_inr FROM products WHERE id = ?").bind(+d.product_id).first().catch(() => null);
-        const orderId = "AKC_" + Date.now().toString(36).toUpperCase();
-        await db
-          .prepare("INSERT INTO orders (order_id, product_id, product_title, amount_inr, customer_name, customer_email, utr, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'PENDING', ?)")
-          .bind(orderId, +d.product_id || 0, prod?.title || "", prod?.price_inr || 0, d.customer_name || "", d.customer_email || "", d.utr || "", new Date().toISOString())
-          .run();
-        return json({ ok: true, order_id: orderId });
-      }
-
-      if (pathname === "/api/checkout/verify" && request.method === "GET") {
-        const db = getDb(env);
-        await ensureSchema(db);
-        const q = String(url.searchParams.get("order_id") || "").trim();
-        const ord = await db
-          .prepare("SELECT o.status, p.download_url FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.order_id = ? OR o.utr = ? ORDER BY o.id DESC LIMIT 1")
-          .bind(q, q)
-          .first()
-          .catch(() => null);
-        if (!ord) return json({ status: "PENDING" });
-        return json({ status: ord.status || "PENDING", download_url: ord.status === "PAID" ? ord.download_url || "#" : "" });
-      }
-
-      if (env.ASSETS && typeof env.ASSETS.fetch === "function") {
-        return env.ASSETS.fetch(request);
-      }
-
-      return new Response("Not found", { status: 404 });
-    } catch (err) {
-      return json({ error: err?.message || "Server error" }, 500);
     }
+
+    if (env.ASSETS && typeof env.ASSETS.fetch === "function") {
+      return env.ASSETS.fetch(request);
+    }
+
+    return new Response("Not found", { status: 404 });
   },
 };
