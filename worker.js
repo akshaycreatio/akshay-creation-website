@@ -1,4 +1,4 @@
-// AKSHAY CREATION worker. Needs secret AUTH_SECRET (add it in Cloudflare: Worker > Settings > Variables and Secrets)
+// AKSHAY CREATION worker. Needs secrets AUTH_SECRET and OWNER_SETUP_KEY (Cloudflare: Worker > Settings > Variables and Secrets)
 const enc = new TextEncoder();
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const err = (m, s = 400) => json({ error: m }, s);
@@ -56,7 +56,7 @@ const init = (db) => (ready ||= (async () => {
   for (const q of [
     "CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'admin')",
     "CREATE TABLE IF NOT EXISTS staff_users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'moderator')",
-    "CREATE TABLE IF NOT EXISTS poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
+    "CREATE TABLE IF NOT EXISTS akc_poll_votes (poll_id INTEGER, voter TEXT, option_index INTEGER, PRIMARY KEY (poll_id, voter))",
     "ALTER TABLE polls ADD COLUMN active INTEGER DEFAULT 1",
     "ALTER TABLE polls ADD COLUMN options TEXT NOT NULL DEFAULT '[]'",
     "ALTER TABLE polls ADD COLUMN counts TEXT NOT NULL DEFAULT '[]'",
@@ -66,6 +66,20 @@ const init = (db) => (ready ||= (async () => {
     try { await db.prepare(q).run(); } catch (e) {}
   }
 })());
+
+// Smart insert: fills required columns (like created_at) that the old tables need but have no default for.
+const colCache = new Map();
+async function ins(db, t, row) {
+  if (!colCache.has(t)) colCache.set(t, (await db.prepare(`PRAGMA table_info(${t})`).all()).results || []);
+  const info = colCache.get(t), have = new Set(info.map((c) => c.name)), now = new Date().toISOString(), r = {};
+  for (const k of Object.keys(row)) if (!info.length || have.has(k)) r[k] = row[k];
+  for (const c of info) {
+    if (c.pk || c.notnull !== 1 || c.dflt_value != null || c.name in r) continue;
+    r[c.name] = /(_at|date|time)$/i.test(c.name) ? now : /INT|REAL|NUM/i.test(c.type || "") ? 0 : "";
+  }
+  const k = Object.keys(r);
+  return db.prepare(`INSERT INTO ${t} (${k.join(",")}) VALUES (${k.map(() => "?").join(",")})`).bind(...k.map((c) => r[c])).run();
+}
 
 // ---- photo upload (stored inside the D1 database, no extra setup) ----
 async function serveImage(db, id) {
@@ -92,7 +106,7 @@ async function adminWrite(db, sub, body, me) {
 
   if (action === "delete") {
     if (!id) return err("Missing id");
-    if (sub === "polls") await db.prepare("DELETE FROM poll_votes WHERE poll_id = ?").bind(id).run();
+    if (sub === "polls") await db.prepare("DELETE FROM akc_poll_votes WHERE poll_id = ?").bind(id).run();
     await db.prepare(`DELETE FROM ${cfg.t} WHERE id = ?`).bind(id).run();
     return json({ success: true });
   }
@@ -108,7 +122,7 @@ async function adminWrite(db, sub, body, me) {
     if (u.length < 3 || p.length < 8) return err("Username 3+ chars and password 8+ chars");
     const dup = await db.prepare("SELECT 1 AS x FROM admins WHERE username = ? UNION SELECT 1 FROM staff_users WHERE username = ?").bind(u, u).first();
     if (dup) return err("Username already exists", 409);
-    await db.prepare("INSERT INTO staff_users (username, password, role) VALUES (?, ?, ?)").bind(u, await hashPw(p), data.role === "admin" ? "admin" : "moderator").run();
+    await ins(db, "staff_users", { username: u, password: await hashPw(p), role: data.role === "admin" ? "admin" : "moderator" });
     return json({ success: true });
   }
   if (!cfg.cols.length) return err("Not editable");
@@ -128,14 +142,13 @@ async function adminWrite(db, sub, body, me) {
     if (action === "create") row.counts = JSON.stringify(o.map(() => 0));
     else {
       const cur = await db.prepare("SELECT options, counts FROM polls WHERE id = ?").bind(id).first();
-      if (cur && cur.options !== row.options) { row.counts = JSON.stringify(o.map(() => 0)); await db.prepare("DELETE FROM poll_votes WHERE poll_id = ?").bind(id).run(); }
+      if (cur && cur.options !== row.options) { row.counts = JSON.stringify(o.map(() => 0)); await db.prepare("DELETE FROM akc_poll_votes WHERE poll_id = ?").bind(id).run(); }
     }
   }
   if (action === "create") {
     const r = { ...cfg.def, ...row };
-    const k = Object.keys(r);
-    if (!k.length) return err("Nothing to save");
-    await db.prepare(`INSERT INTO ${cfg.t} (${k.join(",")}) VALUES (${k.map(() => "?").join(",")})`).bind(...k.map((c) => r[c])).run();
+    if (!Object.keys(r).length) return err("Nothing to save");
+    await ins(db, cfg.t, r);
   } else {
     const k = Object.keys(row);
     if (!id || !k.length) return err("Nothing to update");
@@ -169,13 +182,14 @@ export default {
 
       if (path === "/api/public/overview" && method === "GET") {
         const voter = env.AUTH_SECRET ? await sign(env.AUTH_SECRET, "voter:" + ip) : b64u(await crypto.subtle.digest("SHA-256", enc.encode("voter:" + ip)));
+        const S = (p) => p.catch(() => ({ results: [] }));
         const [creators, ads, products, polls, charity, mine] = await Promise.all([
-          db.prepare("SELECT id, name, platform, handle, profile_url, avatar_url, bio FROM creators WHERE status = 'approved' ORDER BY id DESC").all(),
-          db.prepare("SELECT id, title, badge, media_url, target_url FROM ads WHERE active = 1 ORDER BY sort ASC, id DESC").all(),
-          db.prepare("SELECT id, title, category, description, price_inr, image_url FROM products WHERE active = 1 ORDER BY id DESC").all(),
-          db.prepare("SELECT id, question, options, counts FROM polls WHERE COALESCE(active, 1) = 1 ORDER BY id DESC").all(),
-          db.prepare("SELECT id, title, banner_url, target_amount, raised_amount, upi_id, upi_name, donate_link, description FROM charity_campaigns WHERE active = 1 ORDER BY id DESC").all(),
-          db.prepare("SELECT poll_id, option_index FROM poll_votes WHERE voter = ?").bind(voter).all(),
+          S(db.prepare("SELECT id, name, platform, handle, profile_url, avatar_url, bio FROM creators WHERE status = 'approved' ORDER BY id DESC").all()),
+          S(db.prepare("SELECT id, title, badge, media_url, target_url FROM ads WHERE active = 1 ORDER BY sort ASC, id DESC").all()),
+          S(db.prepare("SELECT id, title, category, description, price_inr, image_url FROM products WHERE active = 1 ORDER BY id DESC").all()),
+          S(db.prepare("SELECT id, question, options, counts FROM polls WHERE COALESCE(active, 1) = 1 ORDER BY id DESC").all()),
+          S(db.prepare("SELECT id, title, banner_url, target_amount, raised_amount, upi_id, upi_name, donate_link, description FROM charity_campaigns WHERE active = 1 ORDER BY id DESC").all()),
+          S(db.prepare("SELECT poll_id, option_index FROM akc_poll_votes WHERE voter = ?").bind(voter).all()),
         ]);
         const my = Object.fromEntries((mine.results || []).map((v) => [v.poll_id, v.option_index]));
         return json({
@@ -196,24 +210,21 @@ export default {
       if (path === "/api/creators/apply" && method === "POST") {
         const name = clip(body.name, 80), handle = clip(body.handle, 80), purl = http(String(body.profile_url || ""));
         if (!name || !handle || !purl) return err("Name, handle and a valid https profile link are required");
-        await db.prepare("INSERT INTO creators (name, platform, handle, profile_url, avatar_url, bio, status) VALUES (?, ?, ?, ?, ?, ?, 'pending')")
-          .bind(name, ["YouTube", "Instagram", "Twitter"].includes(body.platform) ? body.platform : "YouTube", handle, purl, http(String(body.avatar_url || "")), clip(body.bio, 600)).run();
+        await ins(db, "creators", { name, platform: ["YouTube", "Instagram", "Twitter"].includes(body.platform) ? body.platform : "YouTube", handle, profile_url: purl, avatar_url: http(String(body.avatar_url || "")), bio: clip(body.bio, 600), status: "pending" });
         return json({ success: true });
       }
 
       if (path === "/api/services/book" && method === "POST") {
         const email = clip(body.client_email, 120);
         if (!clip(body.client_name) || !/^\S+@\S+\.\S+$/.test(email) || !clip(body.details)) return err("Name, valid email and brief are required");
-        await db.prepare("INSERT INTO bookings (service_type, client_name, client_email, client_contact, details, status) VALUES (?, ?, ?, ?, ?, 'pending')")
-          .bind(clip(body.service_type, 60) || "General", clip(body.client_name, 100), email, clip(body.client_contact, 60), clip(body.details, 2000)).run();
+        await ins(db, "bookings", { service_type: clip(body.service_type, 60) || "General", client_name: clip(body.client_name, 100), client_email: email, client_contact: clip(body.client_contact, 60), details: clip(body.details, 2000), status: "pending" });
         return json({ success: true });
       }
 
       if (path === "/api/care/submit" && method === "POST") {
         if (!clip(body.applicant_name) || !clip(body.private_details)) return err("Name and message are required");
         if (!body.consent_granted) return err("Please tick the consent box");
-        await db.prepare("INSERT INTO care_cases (applicant_name, contact_info, case_title, private_details, consent_granted, status) VALUES (?, ?, ?, ?, 1, 'pending')")
-          .bind(clip(body.applicant_name, 100), clip(body.contact_info, 120), clip(body.case_title, 150) || "Support Request", clip(body.private_details, 3000)).run();
+        await ins(db, "care_cases", { applicant_name: clip(body.applicant_name, 100), contact_info: clip(body.contact_info, 120), case_title: clip(body.case_title, 150) || "Support Request", private_details: clip(body.private_details, 3000), consent_granted: 1, status: "pending" });
         return json({ success: true });
       }
 
@@ -225,8 +236,7 @@ export default {
         if (!prod) return err("Product not available", 404);
         if (await db.prepare("SELECT 1 AS x FROM orders WHERE utr = ?").bind(utr).first()) return err("This UTR was already submitted", 409);
         const orderId = "AKC_" + b64u(crypto.getRandomValues(new Uint8Array(6))).replace(/[-_]/g, "X").toUpperCase();
-        await db.prepare("INSERT INTO orders (order_id, product_id, customer_name, customer_email, utr, status) VALUES (?, ?, ?, ?, ?, 'PENDING')")
-          .bind(orderId, prod.id, clip(body.customer_name, 100), clip(body.customer_email, 120), utr).run();
+        await ins(db, "orders", { order_id: orderId, product_id: prod.id, customer_name: clip(body.customer_name, 100), customer_email: clip(body.customer_email, 120), utr, status: "PENDING" });
         return json({ success: true, order_id: orderId });
       }
 
@@ -250,21 +260,22 @@ export default {
         const idx = parseInt(body.option_index);
         if (!(idx >= 0 && idx < o.length)) return err("Invalid option");
         const voter = await sign(env.AUTH_SECRET, "voter:" + ip);
-        try { await db.prepare("INSERT INTO poll_votes (poll_id, voter, option_index) VALUES (?, ?, ?)").bind(poll.id, voter, idx).run(); }
+        try { await db.prepare("INSERT INTO akc_poll_votes (poll_id, voter, option_index) VALUES (?, ?, ?)").bind(poll.id, voter, idx).run(); }
         catch (e) { return err("You already voted in this poll", 409); }
         c[idx]++;
         await db.prepare("UPDATE polls SET counts = ? WHERE id = ?").bind(JSON.stringify(c), poll.id).run();
         return json({ success: true });
       }
 
+      // First-time owner setup. Also works as a reset if you forget the owner password (needs the OWNER_SETUP_KEY secret).
       if (path === "/api/auth/setup-owner" && method === "POST") {
         if (limited("owner-setup:" + ip, 5, 3600e3)) return err("Too many setup attempts. Try again later.", 429);
         if (!env.AUTH_SECRET || !env.OWNER_SETUP_KEY) return err("Owner setup secrets are not configured yet", 503);
         if (!same(String(body.setup_key || ""), env.OWNER_SETUP_KEY)) return err("Invalid setup key", 403);
         const user = clip(body.username, 40), pw = String(body.password || "");
         if (user.length < 3 || pw.length < 12) return err("Use a username with 3+ characters and a password with at least 12 characters");
-        const result = await db.prepare("INSERT INTO admins (username, password, role) SELECT ?, ?, 'admin' WHERE NOT EXISTS (SELECT 1 FROM admins)").bind(user, await hashPw(pw)).run();
-        if (!result.meta?.changes) return err("Owner account is already set up", 409);
+        await db.prepare("DELETE FROM admins").run();
+        await ins(db, "admins", { username: user, password: await hashPw(pw), role: "admin" });
         return json({ success: true });
       }
 
@@ -289,7 +300,7 @@ export default {
         if (!me) return err("Unauthorized", 401);
 
         if (path === "/api/admin/dashboard" && method === "GET") {
-          const q = (s) => db.prepare(s).all().then((r) => r.results || []);
+          const q = (s) => db.prepare(s).all().then((r) => r.results || []).catch(() => []);
           const [creators, ads, products, orders, bookings, care, polls, charity, staff] = await Promise.all([
             q("SELECT * FROM creators ORDER BY id DESC"), q("SELECT * FROM ads ORDER BY id DESC"), q("SELECT * FROM products ORDER BY id DESC"),
             q("SELECT * FROM orders ORDER BY id DESC"), q("SELECT * FROM bookings ORDER BY id DESC"), q("SELECT * FROM care_cases ORDER BY id DESC"),
