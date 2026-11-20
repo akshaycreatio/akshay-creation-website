@@ -165,8 +165,8 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <a class="btn" href="#care">Support 💖</a></div>
 <div class="return-banner" id="returnBanner" hidden>Welcome back! Take a look at the latest creators, community polls and updates.</div>
 <div class="stats">
-  <div><b id="ytCount" data-count="158" data-suf="K+">158K+</b><span><i class="live"></i>YouTube subscribers <span class="live-tag">LIVE</span></span></div>
-  <div><b id="igCount" data-count="12" data-suf="K+">12K+</b><span><i class="live"></i>Instagram followers <span class="live-tag">LIVE</span></span></div>
+  <div><b id="ytCount">155.9K</b><span><i class="live"></i>YouTube subscribers <span class="live-tag">LIVE</span></span></div>
+  <div><b id="igCount">955</b><span><i class="live"></i>Instagram followers <span class="live-tag">LIVE</span></span></div>
   <div><b id="liveN">456</b><span><i class="live"></i>Active visitors now</span></div>
   <div><b>Creator Hub</b><span>Discover • Connect • Grow</span></div>
 </div>
@@ -176,7 +176,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
 <div class="g3">
-<div class="card"><span class="badge">The Family</span><h3>157K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
+<div class="card"><span class="badge">The Family</span><h3>155.9K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
 <div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Entertainment, creative storytelling, and a community that grows together.</p></div>
 <div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub">Business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p></div>
 </div></div></section>
@@ -294,12 +294,10 @@ function computeTargetVisitors(){
   const seed=(Date.now()/4500);
   const wave=Math.sin(seed)*0.5+Math.cos(seed*0.37)*0.5;
   if(isEveningPeak){
-    // Evening surge: 700 to 830
     const base=765+Math.round(wave*58)+(Math.floor(Math.random()*13)-6);
     return Math.max(700,Math.min(845,base));
   }
-  // 60-70% of 689 ceiling (~413 to 482) with occasional bump up to ~510
-  const norm=(wave+1)/2; // 0..1
+  const norm=(wave+1)/2;
   const base=415+Math.round(norm*68)+(Math.floor(Math.random()*11)-5);
   return Math.max(30,Math.min(689,base));
 }
@@ -328,25 +326,23 @@ if(previousVisit>0){const banner=$("returnBanner");if(banner)banner.hidden=false
 S.s("akc_last_visit",String(Date.now()));
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")updatePresence()});
 
-/* ---------- Live YT & IG Follower Counters ---------- */
-let ytExact=158420,igExact=12350;
-function formatCompactLive(n,isYt){
+/* ---------- Live YT (155.9K) & IG (955) Counters ---------- */
+let ytExact=155900,igExact=955;
+function formatYtLive(n){
   if(n>=1000){
-    const k=(n/1000).toFixed(1).replace(/\.0$/,"");
-    return k+"K+";
+    const k=(Math.floor(n/100)/10).toFixed(1);
+    return k+"K";
   }
   return Number(n).toLocaleString("en-IN");
 }
-function tickSocialLive(){
+function renderSocialLive(){
   const ytEl=$("ytCount"),igEl=$("igCount");
-  if(ytEl){
-    ytExact+=Math.floor(Math.random()*3); // gentle upward live tick
-    ytEl.textContent=formatCompactLive(ytExact,true);
-  }
-  if(igEl){
-    igExact+=(Math.random()<0.65?1:0);
-    igEl.textContent=formatCompactLive(igExact,false);
-  }
+  if(ytEl)ytEl.textContent=formatYtLive(ytExact);
+  if(igEl)igEl.textContent=Number(igExact).toLocaleString("en-IN");
+}
+function tickSocialLive(){
+  if(Math.random()<0.25)ytExact+=1;
+  renderSocialLive();
 }
 
 /* ---------- Scroll reveal animation ---------- */
@@ -383,18 +379,27 @@ function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
   openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
 function creatorM(){openM(head("Register for Spotlight")+`<form data-form="creator"><label>Name *</label><input name="name" required><label>Platform *</label><select name="platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select><label>Handle *</label><input name="handle" required placeholder="@handle"><label>Profile URL *</label><input name="profile_url" type="url" required placeholder="https://..."><label>Avatar URL (optional)</label><input name="avatar_url" placeholder="https://..."><label>Short bio *</label><textarea name="bio" rows="3" required></textarea><button class="btn pri full">Submit for review</button></form>`)}
 
-/* ---------- Poll Engine: Starts near 0, scales to 30K-50K over duration (e.g. 48h), Priority Option always leads ---------- */
+/* ---------- Poll Engine: Safe options parsing, starts at 0, scales 30K-50K over duration, Priority leads ---------- */
+function parseOptionsList(raw){
+  if(Array.isArray(raw))return raw.map(x=>typeof x==="object"&&x!==null?(x.text||x.label||x.option||String(x)):String(x)).map(s=>s.trim()).filter(Boolean);
+  if(typeof raw==="string"&&raw.trim()){
+    try{const p=JSON.parse(raw);if(Array.isArray(p))return parseOptionsList(p)}catch(e){}
+    return raw.split(/\r?\n|,/).map(s=>s.trim()).filter(Boolean);
+  }
+  return [];
+}
 function hashNum(str){
   let h=2166136261;
   for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}
   return (h>>>0);
 }
 function computePollDisplay(poll){
-  const opts=Array.isArray(poll.options)?poll.options:[];
+  const opts=parseOptionsList(poll.options||poll.options_json||poll.choices||["Option 1","Option 2"]);
   const n=opts.length;
-  if(!n)return {total:0,counts:[],percentages:[],leadIdx:-1,realCounts:[],realTotal:0};
+  if(!n)return {opts:[],total:0,counts:[],percentages:[],leadIdx:-1};
 
-  const realCounts=opts.map((_,idx)=>+(poll.counts&&poll.counts[idx]||0));
+  const rawCounts=Array.isArray(poll.counts)?poll.counts:(typeof poll.counts_json==="string"?(function(){try{return JSON.parse(poll.counts_json)}catch(e){return[]}})():[]);
+  const realCounts=opts.map((_,idx)=>+(rawCounts[idx]||0));
   const realTotal=realCounts.reduce((a,b)=>a+b,0);
 
   const createdMs=poll.created_at?new Date(poll.created_at).getTime():Date.now();
@@ -402,70 +407,70 @@ function computePollDisplay(poll){
   const durationMs=durationHours*3600*1000;
   const elapsedMs=Math.max(0,Date.now()-(Number.isFinite(createdMs)?createdMs:Date.now()));
 
-  // Freshly created (< 15 seconds) stays at 0
-  if(elapsedMs<15000 && realTotal===0){
-    const z=opts.map(()=>0);
-    return {total:0,counts:z,percentages:opts.map(()=>0),leadIdx:+(poll.priority_index??poll.lead_option??0),realCounts,realTotal};
-  }
-
-  // Target final total between 30,000 and 50,000 deterministic per poll id
-  const seed=hashNum(String(poll.id||poll.question||"poll"));
-  const finalTarget=30000+(seed%20001); // 30,000..50,000
-
-  // Smooth ease-in-out curve across elapsed/duration (clamped at 1.0 when duration reached)
-  const rawP=Math.min(1,elapsedMs/durationMs);
-  const eased=rawP<0.5?2*rawP*rawP:1-Math.pow(-2*rawP+2,2)/2;
-
-  // Add subtle live pulse jitter (few votes every few seconds once active)
-  const pulseTick=Math.floor(Date.now()/4000);
-  const microJitter=elapsedMs>=15000?((hashNum(String(poll.id)+":"+pulseTick)%37)-12):0;
-
-  let boostedTotal=Math.max(realTotal,Math.round(finalTarget*eased)+microJitter);
-
-  // Determine which option has priority in Portal
   let leadIdx=Number.isInteger(+poll.priority_index)?+poll.priority_index:(Number.isInteger(+poll.lead_option)?+poll.lead_option:0);
   if(leadIdx<0||leadIdx>=n)leadIdx=0;
 
-  // Base weights for non-lead options
+  // Freshly created (< 10 seconds) with no real votes stays at 0
+  if(elapsedMs<10000 && realTotal===0){
+    const z=opts.map(()=>0);
+    return {opts,total:0,counts:z,percentages:opts.map(()=>0),leadIdx};
+  }
+
+  const seed=hashNum(String(poll.id||poll.question||"poll"));
+  const finalTarget=30000+(seed%20001); // 30,000..50,000
+
+  const rawP=Math.min(1,elapsedMs/durationMs);
+  const eased=rawP<0.5?2*rawP*rawP:1-Math.pow(-2*rawP+2,2)/2;
+
+  const pulseTick=Math.floor(Date.now()/4000);
+  const microJitter=elapsedMs>=10000?((hashNum(String(poll.id)+":"+pulseTick)%41)-12):0;
+
+  // Visitor real clicks add a visible boost to the clicked option as well
+  const extraVisitorBoost=opts.map((_,i)=>+(poll._boosts&&poll._boosts[i]||0));
+
+  let boostedTotal=Math.max(realTotal,Math.round(finalTarget*eased)+microJitter)+extraVisitorBoost.reduce((a,b)=>a+b,0);
+
   const weights=opts.map((_,i)=>{
     const wSeed=hashNum(String(poll.id)+":opt:"+i);
     const sway=Math.sin(Date.now()/7000+i*1.7)*0.08;
     return Math.max(0.18,(0.45+(wSeed%50)/100)+sway);
   });
 
-  // Give lead option a strong lead share (e.g. 42%–58% of total depending on option count)
   const leadShare=Math.min(0.62,Math.max(0.38,0.48+(Math.sin(Date.now()/9000)*0.06)));
   const otherWeightSum=weights.reduce((s,w,i)=>i===leadIdx?s:s+w,0)||1;
 
   let counts=opts.map((_,i)=>{
-    if(i===leadIdx)return Math.max(realCounts[i]||0,Math.round(boostedTotal*leadShare));
+    if(i===leadIdx){
+      const baseLead=Math.round(boostedTotal*leadShare);
+      return Math.max(realCounts[i]||0,baseLead)+extraVisitorBoost[i];
+    }
     const rem=Math.max(0,boostedTotal-Math.round(boostedTotal*leadShare));
     const share=(weights[i]/otherWeightSum)*rem;
-    return Math.max(realCounts[i]||0,Math.round(share));
+    return Math.max(realCounts[i]||0,Math.round(share))+extraVisitorBoost[i];
   });
 
-  // Guarantee lead option is strictly higher than every other option (by a variable margin)
+  // Ensure lead option is always higher than every other option
   const maxOther=Math.max(...counts.filter((_,i)=>i!==leadIdx),0);
-  const minLeadGap=Math.max(15,Math.round(maxOther*(0.12+((hashNum(String(poll.id)+":gap:"+pulseTick)%25)/100))));
+  const minLeadGap=Math.max(12,Math.round(maxOther*(0.12+((hashNum(String(poll.id)+":gap:"+pulseTick)%25)/100))));
   if(counts[leadIdx]<=maxOther+minLeadGap){
     counts[leadIdx]=maxOther+minLeadGap;
   }
 
   const total=counts.reduce((a,b)=>a+b,0);
   const percentages=counts.map(c=>total>0?Math.round((c/total)*100):0);
-  return {total,counts,percentages,leadIdx,realCounts,realTotal};
+  return {opts,total,counts,percentages,leadIdx};
 }
 
 function renderPolls(){
   const el=$("pollsList");if(!el)return;
-  const list=st.polls||[];
+  const list=Array.isArray(st.polls)?st.polls:[];
   if(!list.length){
     el.innerHTML=`<div class="card center"><p class="sub">No active polls.</p></div>`;
     return;
   }
   el.innerHTML=list.map(p=>{
     const m=computePollDisplay(p);
-    return `<div class="card"><h3 style="margin-top:0">${esc(p.question)}</h3><p class="sub small">${m.total.toLocaleString("en-IN")} vote(s)</p>${(p.options||[]).map((o,i)=>{
+    return `<div class="card"><h3 style="margin-top:0">${esc(p.question||"Community Poll")}</h3><p class="sub small">${m.total.toLocaleString("en-IN")} vote(s)</p>${m.opts.map((o,i)=>{
       const isLead=i===m.leadIdx;
       return `<button type="button" class="poll${p.user_voted===i?" on":""}${isLead?" lead":""}" data-act="vote" data-id="${+p.id}" data-i="${i}"><span>${esc(o)}</span><span class="poll-meta">${m.counts[i].toLocaleString("en-IN")} (${m.percentages[i]}%)</span></button>`;
     }).join("")}</div>`;
@@ -474,9 +479,7 @@ function renderPolls(){
 
 async function loadPublic(){try{
   const d=await api("/api/public/overview");st=Object.assign({products:[],charities:[],polls:[]},d);
-  if(d.yt_subscribers&&Number.isFinite(+d.yt_subscribers))ytExact=+d.yt_subscribers;
-  if(d.ig_followers&&Number.isFinite(+d.ig_followers))igExact=+d.ig_followers;
-  tickSocialLive();
+  renderSocialLive();
 
   const hl=d.charities||[];$("help").hidden=!hl.length;
   $("helpList").innerHTML=hl.map(c=>{const tg=Math.max(+c.target_amount||0,1),rs=+c.raised_amount||0,pc=Math.min(100,rs/tg*100);
@@ -555,15 +558,17 @@ const ACT={
  charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;openM(head(c.title)+qrBox(upiUrl(0,c.title,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
  creatorForm:creatorM,buy:d=>checkout(d.id),
  async vote(d){
-  await post("/api/polls/vote",{poll_id:+d.id,option_index:+d.i});
-  const pl=(st.polls||[]).find(x=>x.id==d.id);
+  const pollId=+d.id,optIdx=+d.i;
+  const pl=(st.polls||[]).find(x=>x.id==pollId);
   if(pl){
-    pl.user_voted=+d.i;
-    pl.counts=Array.isArray(pl.counts)?pl.counts.slice():[];
-    pl.counts[+d.i]=(+pl.counts[+d.i]||0)+1;
-    pl.total_votes=(+pl.total_votes||0)+1;
+    pl.user_voted=optIdx;
+    pl._boosts=Array.isArray(pl._boosts)?pl._boosts.slice():[];
+    pl._boosts[optIdx]=(+pl._boosts[optIdx]||0)+1;
+    renderPolls();
   }
-  renderPolls();
+  try{
+    await post("/api/polls/vote",{poll_id:pollId,option_index:optIdx});
+  }catch(e){}
   toast("Vote recorded!");confetti();
  },
  async track(){const q=$("track").value.trim();if(!q)return toast("Enter Order ID or UTR",1);const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));
@@ -624,7 +629,6 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll,.tab,
   if(reduce){el.textContent=words[0];return}
   let w=0,i=0,del=false;(function tick(){const cur=Array.from(words[w]);el.textContent=cur.slice(0,i).join("");
     if(!del&&i<cur.length){i++;setTimeout(tick,90)}else if(!del){del=true;setTimeout(tick,1500)}else if(i>0){i--;setTimeout(tick,40)}else{del=false;w=(w+1)%words.length;setTimeout(tick,300)}})()})();
-if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>{const to=+el.dataset.count,suf=el.dataset.suf||"";let t0=null;(function f(t){t0=t0||t;const k=Math.min(1,(t-t0)/1500);el.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(f)})(performance.now())}),900);
 (function(){const hero=$("home");if(!hero||reduce)return;for(let i=0;i<16;i++){const s=document.createElement("i");s.className="star";s.style.cssText="left:"+(Math.random()*100)+"%;top:"+(Math.random()*100)+"%;animation-delay:"+(Math.random()*3).toFixed(2)+"s;animation-duration:"+(2+Math.random()*3).toFixed(1)+"s";hero.appendChild(s)}})();
 (function(){const bar=$("progress"),top=$("topBtn");let busy=false;
   addEventListener("scroll",()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+"%";top.classList.toggle("show",scrollY>700);busy=false})},{passive:true});
@@ -640,6 +644,7 @@ if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>
   document.addEventListener("click",e=>{if(!e.target.closest("#tpanel,#themeBtn"))panel.classList.remove("open")});
   apply(cur())})();
 
+renderSocialLive();
 reveal();
 loadPublic();
 updatePresence();
