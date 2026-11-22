@@ -91,8 +91,24 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .badge.ok{color:var(--ok);border-color:var(--ok)}.badge.warn{color:#ffc27a;border-color:#ffc27a}
 .price{font:500 1.5rem "Bodoni Moda",serif;color:var(--gold2)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}.car .card{flex:0 0 270px;scroll-snap-align:start}
-.av{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);padding:2px;background:var(--bg2)}
+
+/* ---------- Auto-Rotating Swiping Carousels (Creators, Ads, Help) ---------- */
+.rot-wrap{position:relative}
+.rot-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:12px;scrollbar-width:none}
+.rot-track::-webkit-scrollbar{display:none}
+.rot-track.single{display:grid;grid-template-columns:1fr;overflow-x:visible;scroll-snap-type:none}
+@media(min-width:760px){.rot-track.single.grid2{grid-template-columns:repeat(2,1fr)}.rot-track.single.grid3{grid-template-columns:repeat(3,1fr)}}
+.rot-track:not(.single) .card{flex:0 0 86%;max-width:340px;scroll-snap-align:start}
+@media(min-width:760px){.rot-track:not(.single) .card{flex:0 0 320px}}
+.rot-track.animating .card{transition:transform .45s cubic-bezier(.22,.8,.36,1),border-color .3s,box-shadow .3s}
+.rot-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap}
+.rot-dots{display:flex;gap:7px;align-items:center}
+.rot-dot{width:8px;height:8px;border-radius:999px;border:0;background:var(--line);cursor:pointer;padding:0;transition:width .25s,background .25s}
+.rot-dot.on{width:22px;background:var(--gold2)}
+.rot-status{font-size:.78rem;color:var(--muted)}
+.rot-status.paused{color:var(--ok);font-weight:600}
+
+.av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
 .bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
@@ -217,19 +233,37 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></div></section>
 
 <section id="creators"><div class="wrap">
-<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Emerging creators from our community — pick from gallery or auto-fetch channel logo.</p></div>
+<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Emerging creators from our community — tap or hold any card to pause (6s) while reading.</p></div>
 <button type="button" class="btn pri" data-act="creatorForm">✨ Register as Creator</button></div>
-<div class="car" id="creatorsList"></div>
+<div class="rot-wrap">
+  <div class="rot-track" id="creatorsList"></div>
+  <div class="rot-bar" id="creatorsRotBar" hidden>
+    <div class="rot-dots" id="creatorsDots"></div>
+    <span class="rot-status" id="creatorsStatus">Auto-sliding • Tap card to pause 6s</span>
+  </div>
+</div>
 </div></section>
 
 <section class="alt" id="help" hidden><div class="wrap">
 <div class="head"><div class="tag">Help &amp; Donate</div><h2>Help Someone in Need <span class="wig hb">💖</span></h2><p class="sub">Each campaign shows its own UPI ID. Your donation goes straight to them, never through this website.</p></div>
-<div class="g2" id="helpList"></div>
+<div class="rot-wrap">
+  <div class="rot-track" id="helpList"></div>
+  <div class="rot-bar" id="helpRotBar" hidden>
+    <div class="rot-dots" id="helpDots"></div>
+    <span class="rot-status" id="helpStatus">Auto-sliding • Tap card to pause 6s</span>
+  </div>
+</div>
 </div></section>
 
 <section id="ads"><div class="wrap">
 <div class="head"><div class="tag">Featured Campaigns</div><h2>Ads &amp; Brand Collaborations <span class="wig wig">📣</span></h2><p class="sub">Verified brand spots and sponsored announcements.</p></div>
-<div class="g3" id="adsList"></div>
+<div class="rot-wrap">
+  <div class="rot-track" id="adsList"></div>
+  <div class="rot-bar" id="adsRotBar" hidden>
+    <div class="rot-dots" id="adsDots"></div>
+    <span class="rot-status" id="adsStatus">Auto-sliding • Tap card to pause 6s</span>
+  </div>
+</div>
 </div></section>
 
 <section id="store"><div class="wrap">
@@ -321,7 +355,6 @@ const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[]},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 
-// Capture shared campaign ?help=ID ONLY on initial page entry (not normal refreshes without ?help=)
 const INITIAL_SHARED_HELP_ID=(function(){
   try{
     const params=new URLSearchParams(window.location.search);
@@ -337,6 +370,121 @@ const FOLLOW_GATE=[
   {id:"ig2",label:"Follow Instagram 2 (@akshaycreation_offl)",url:"https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz"},
   {id:"yt1",label:"Subscribe YouTube (@akshaycreationshorts)",url:"https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7"}
 ];
+
+/* ---------- Auto-Rotating Swiping Engine (Temporary 6s Pause on Tap/Click/Hold) ---------- */
+const rotControllers={};
+function setupRotatingTrack(trackId, barId, dotsId, statusId, intervalMs, pauseMs){
+  const track=$(trackId);
+  const bar=$(barId);
+  const dotsEl=$(dotsId);
+  const statusEl=$(statusId);
+  if(!track)return;
+
+  if(rotControllers[trackId]){
+    clearInterval(rotControllers[trackId].timer);
+    clearTimeout(rotControllers[trackId].resumeTimeout);
+  }
+
+  const cards=[...track.querySelectorAll(".card")];
+  const count=cards.length;
+  if(count<=1){
+    track.classList.add("single");
+    track.classList.remove("animating");
+    if(bar)bar.hidden=true;
+    return;
+  }
+
+  track.classList.remove("single");
+  track.classList.add("animating");
+  if(bar)bar.hidden=false;
+
+  let activeIdx=0;
+  let pauseUntil=0;
+
+  if(dotsEl){
+    dotsEl.innerHTML=cards.map((_,i)=>`<button type="button" class="rot-dot${i===0?" on":""}" data-rot-dot="${i}" aria-label="Slide ${i+1}"></button>`).join("");
+  }
+
+  function updateUI(){
+    if(dotsEl){
+      [...dotsEl.querySelectorAll(".rot-dot")].forEach((d,i)=>d.classList.toggle("on",i===activeIdx));
+    }
+    if(statusEl){
+      const isPaused=Date.now()<pauseUntil;
+      statusEl.textContent=isPaused
+        ? `Paused for reading (6s) • ${activeIdx+1}/${count}`
+        : `Auto-swiping • ${activeIdx+1}/${count} (Tap card to pause 6s)`;
+      statusEl.classList.toggle("paused",isPaused);
+    }
+  }
+
+  function goTo(idx, fromUser){
+    activeIdx=((idx%count)+count)%count;
+    const targetCard=cards[activeIdx];
+    if(targetCard){
+      const leftPos=Math.max(0,targetCard.offsetLeft-track.offsetLeft);
+      track.scrollTo({left:leftPos,behavior:"smooth"});
+    }
+    if(fromUser){
+      pauseTemporary();
+    }else{
+      updateUI();
+    }
+  }
+
+  function pauseTemporary(){
+    pauseUntil=Date.now()+(pauseMs||6000);
+    updateUI();
+    if(rotControllers[trackId]&&rotControllers[trackId].resumeTimeout){
+      clearTimeout(rotControllers[trackId].resumeTimeout);
+    }
+    rotControllers[trackId].resumeTimeout=setTimeout(()=>{
+      if(Date.now()>=pauseUntil){
+        pauseUntil=0;
+        updateUI();
+      }
+    },(pauseMs||6000)+80);
+  }
+
+  track.onpointerdown=()=>{
+    pauseTemporary();
+  };
+  track.onclick=()=>{
+    pauseTemporary();
+  };
+  track.onscroll=()=>{
+    const scrollLeft=track.scrollLeft;
+    let best=0,bestDist=Infinity;
+    cards.forEach((c,i)=>{
+      const dist=Math.abs(c.offsetLeft-track.offsetLeft-scrollLeft);
+      if(dist<bestDist){bestDist=dist;best=i}
+    });
+    if(best!==activeIdx){
+      activeIdx=best;
+      updateUI();
+    }
+  };
+
+  if(dotsEl){
+    dotsEl.onclick=e=>{
+      const btn=e.target.closest("[data-rot-dot]");
+      if(!btn)return;
+      goTo(+btn.dataset.rotDot,true);
+    };
+  }
+
+  const timer=setInterval(()=>{
+    if(document.visibilityState==="hidden")return;
+    if(Date.now()<pauseUntil){
+      updateUI();
+      return;
+    }
+    goTo(activeIdx+1,false);
+  },intervalMs||3400);
+
+  rotControllers[trackId]={timer,resumeTimeout:null,goTo,pauseTemporary};
+  updateUI();
+}
 
 /* ---------- Live Visitors (60 - 800 Range + Evening Rush 5 PM - 11:30 PM) ---------- */
 let currentVisitors=0;
@@ -771,7 +919,6 @@ async function loadPublic(){try{
     return`<div class="card" id="help-card-${+c.id}">${c.banner_url?`<img class="cover" style="height:220px" src="${link(c.banner_url)}" alt="">`:""}<span class="badge warn">Help needed 💖</span><h3>${esc(c.title)}</h3><p class="sub">${esc(c.description)}</p><div class="row small" style="margin-top:12px"><span>Raised ₹${rs.toLocaleString("en-IN")}</span><span>Target ₹${tg.toLocaleString("en-IN")} (${pc.toFixed(1)}%)</span></div><div class="bar"><i data-w="${pc}" style="width:0"></i></div><p class="sub small" style="margin-bottom:12px">Progress is updated manually from the official fundraiser.</p><div class="btns" style="margin:0">${c.upi_id?`<button type="button" class="btn pri sm" data-act="charity" data-id="${+c.id}">💖 Donate via UPI</button>`:""}${c.donate_link?`<a class="btn sm" target="_blank" rel="noopener" href="${link(c.donate_link)}">Official page ↗</a>`:""}<a class="btn sm" target="_blank" rel="noopener" href="${esc(waHref)}" data-act="shareHelp" data-title="${esc(c.title)}" data-url="${esc(shareUrl)}">Share ↗</a></div></div>`}).join("");
   setTimeout(()=>document.querySelectorAll("#helpList .bar i").forEach(i=>{i.style.width=i.dataset.w+"%"}),150);
 
-  // Scroll to campaign ONLY when opened via a shared ?help=ID link on initial entry
   if(!sharedHelpHandled&&INITIAL_SHARED_HELP_ID&&hl.length){
     sharedHelpHandled=true;
     setTimeout(()=>{
@@ -794,6 +941,11 @@ async function loadPublic(){try{
     return `<div class="card"><div class="row" style="justify-content:flex-start;gap:12px"><img class="av" src="${avSrc}" alt="${esc(c.name)}"><div><span class="badge">${esc(c.platform)}</span><div class="small sub" style="margin-top:3px">${esc(meta.channelStyle)}</div></div></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`;
   }).join(""):`<div class="card center" style="flex:1"><p class="sub">No featured creators yet. Tap Register as Creator!</p></div>`;
   $("adsList").innerHTML=d.ads.length?d.ads.map(a=>`<div class="card">${a.media_url?`<img class="cover" src="${link(a.media_url)}" alt="">`:""}<span class="badge">${esc(a.badge||"Sponsored")}</span><h3>${esc(a.title)}</h3><a class="btn pri sm" target="_blank" rel="noopener" href="${link(a.target_url)}">Explore ↗</a></div>`).join(""):`<div class="card center"><p class="sub">No active campaigns right now. Book a slot in Services.</p></div>`;
+
+  setupRotatingTrack("creatorsList","creatorsRotBar","creatorsDots","creatorsStatus",3400,6000);
+  setupRotatingTrack("helpList","helpRotBar","helpDots","helpStatus",3800,6000);
+  setupRotatingTrack("adsList","adsRotBar","adsDots","adsStatus",3400,6000);
+
   $("productsList").innerHTML=d.products.length?d.products.map(p=>`<div class="card">${p.image_url?`<img class="cover" src="${link(p.image_url)}" alt="${esc(p.title)}">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:12px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button type="button" class="btn pri sm" data-act="buy" data-id="${+p.id}">Buy via UPI</button></div></div>`).join(""):`<div class="card center"><p class="sub">Digital packs launching soon.</p></div>`;
   const communityItems=[
     d.creators.length?d.creators.length+" approved creator profile(s) are featured. Explore their work and support fellow creators.":"Creator spotlights will appear here as profiles are approved.",
@@ -1129,28 +1281,23 @@ document.addEventListener("submit",async e=>{
 </script>
 <!-- ===== AKSHAY EXTRA ANIMATIONS (paste just before </body> in public/index.html) ===== -->
 <style>
-/* ---- Nav: active section underline ---- */
 .links a{position:relative}
 .links a:after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;border-radius:2px;background:var(--gold2);transform:scaleX(0);transition:transform .3s}
 .links a.act{color:var(--gold2)}
 .links a.act:after{transform:scaleX(1)}
 
-/* ---- Button ripple ---- */
 .btn{position:relative;overflow:hidden}
 .ak-rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:akRip .6s ease-out forwards;pointer-events:none}
 @keyframes akRip{to{transform:scale(1);opacity:0}}
 
-/* ---- Headline words rise one by one ---- */
 .ak-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
 .ak-wi{display:inline-block;opacity:0;transform:translateY(110%) rotate(4deg);transform-origin:left bottom}
 .ak-in .ak-wi{animation:akWord .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms)}
 @keyframes akWord{to{opacity:1;transform:none}}
 
-/* ---- Small tag line draws itself ---- */
 .head .tag:before{transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.8,.2,1) .2s}
 .head.ak-tg .tag:before{transform:scaleX(1)}
 
-/* ---- Hero: underline under "Inspire." + scroll cue ---- */
 .hero h1 span:nth-child(3){position:relative}
 .hero h1 span:nth-child(3):after{content:"";position:absolute;left:.6em;bottom:.02em;height:.07em;width:0;max-width:62%;background:var(--gold2);border-radius:99px;animation:akUnder .9s cubic-bezier(.2,.8,.2,1) 1.5s forwards}
 @keyframes akUnder{to{width:62%}}
@@ -1160,20 +1307,17 @@ document.addEventListener("submit",async e=>{
 @keyframes akCue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(12px);opacity:0}100%{opacity:0}}
 @media(max-width:760px){.cue{display:none}}
 
-/* ---- Stats + footer ---- */
 .stats div{transition:background .3s}
 .stats div:hover{background:rgba(var(--gl),.12)}
 .stats b{transition:transform .3s;transform-origin:left}
 .stats div:hover b{transform:translateY(-3px) scale(1.05)}
 footer strong{background:linear-gradient(90deg,var(--gold2),#fff,var(--gold2));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
 
-/* ---- Poll buttons fill like a progress bar ---- */
 .poll{position:relative;overflow:hidden}
 .poll:before{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--p,0)*1%);background:linear-gradient(90deg,rgba(var(--gl),.28),rgba(var(--gl),.08));transition:width 1.3s cubic-bezier(.2,.7,.2,1);pointer-events:none}
 .poll.nt:before{transition:none}
 .poll>*{position:relative;z-index:1}
 
-/* ---- Desktop effects ---- */
 .fx-glow{position:fixed;left:0;top:0;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;pointer-events:none;z-index:45;background:radial-gradient(circle,rgba(var(--gl),.16),transparent 65%);mix-blend-mode:screen;opacity:0;transition:opacity .3s;will-change:transform}
 body.adm-open .fx-glow{display:none}
 main .card:not(.community-board){background-image:radial-gradient(260px circle at var(--mx,-300px) var(--my,-300px),rgba(var(--gl),.13),transparent 60%);background-repeat:no-repeat}
@@ -1191,7 +1335,6 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
 const ease=k=>1-Math.pow(1-k,3);
 
-/* 1. Nav highlights the section you are reading */
 T(()=>{
   const links=[...document.querySelectorAll(".links a[href^='#']")];
   const wrapEl=document.querySelector(".links");
@@ -1210,7 +1353,6 @@ T(()=>{
   addEventListener("scroll",()=>{if(scrollY<300&&cur){cur.classList.remove("act");cur=null}},{passive:true});
 });
 
-/* 2. Button ripple */
 document.addEventListener("click",e=>{
   const b=e.target.closest&&e.target.closest(".btn");
   if(!b||b.disabled||reduce)return;
@@ -1220,7 +1362,6 @@ document.addEventListener("click",e=>{
   b.appendChild(s);setTimeout(()=>s.remove(),650);
 });
 
-/* 3. Headline words rise one by one + tag line draws */
 T(()=>{
   if(reduce||!("IntersectionObserver"in window))return;
   document.querySelectorAll("main .head h2").forEach(h=>{
@@ -1246,7 +1387,6 @@ T(()=>{
   document.querySelectorAll("main .head").forEach(h=>io.observe(h));
 });
 
-/* 4. Brand name scramble (on load + hover) */
 T(()=>{
   const el=document.querySelector(".nav .brand");if(!el||reduce)return;
   const final=el.textContent.trim(),chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ";let busy=false;
@@ -1262,14 +1402,12 @@ T(()=>{
   if(fine)el.addEventListener("pointerenter",run);
 });
 
-/* 5. Scroll cue in hero */
 T(()=>{
   const hero=$("home");if(!hero)return;
   const c=document.createElement("div");c.className="cue";c.setAttribute("aria-hidden","true");c.innerHTML="<i></i>";hero.appendChild(c);
   addEventListener("scroll",()=>c.classList.toggle("gone",scrollY>80),{passive:true});
 });
 
-/* 6. Hero numbers count up once */
 T(()=>{
   if(reduce)return;
   setTimeout(()=>{
@@ -1287,7 +1425,6 @@ T(()=>{
   },1100);
 });
 
-/* 7. Community numbers count up when they come into view */
 T(()=>{
   const cp=$("communityPulse");if(!cp||reduce||!("IntersectionObserver"in window))return;
   let inView=false,done=false;
@@ -1305,7 +1442,6 @@ T(()=>{
   new MutationObserver(tryRun).observe(cp,{childList:true});
 });
 
-/* 8. Poll buttons fill to their percentage */
 T(()=>{
   const list=$("pollsList");if(!list)return;
   const seen=new Set();
@@ -1323,7 +1459,6 @@ T(()=>{
   paint();
 });
 
-/* 9. Ticker speeds up while you scroll */
 T(()=>{
   const tk=document.querySelector(".ticker div");if(!tk||reduce||!tk.getAnimations)return;
   let last=scrollY,vel=0;
@@ -1335,7 +1470,6 @@ T(()=>{
   })();
 });
 
-/* 10. Hero floating items drift with scroll */
 T(()=>{
   if(reduce)return;
   const ps=[...document.querySelectorAll("#home .orb,#home .floaty")];
@@ -1347,7 +1481,6 @@ T(()=>{
   },{passive:true});
 });
 
-/* 11. Desktop only: cursor glow, card tilt + spotlight, magnetic hero buttons */
 T(()=>{
   if(!fine||reduce)return;
   const glow=document.createElement("div");glow.className="fx-glow";document.body.appendChild(glow);
