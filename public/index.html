@@ -51,9 +51,13 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
-.brand{color:var(--gold2);font-weight:700;letter-spacing:.12em;display:inline-flex;gap:10px;align-items:center;background:linear-gradient(90deg,var(--gold2),var(--paper),var(--gold2),var(--gold));background-size:240% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandFlow 4.5s ease-in-out infinite}
-.brand:before{content:"";width:9px;height:9px;background:var(--gold2);box-shadow:0 0 10px rgba(var(--gl),.7);transform:rotate(45deg);animation:spin 7s linear infinite;flex:0 0 9px}
-@keyframes brandFlow{0%,100%{background-position:0% center;filter:drop-shadow(0 0 0 rgba(var(--gl),0))}50%{background-position:100% center;filter:drop-shadow(0 0 8px rgba(var(--gl),.35))}}
+
+/* Top Brand Creative Aura & Smooth Shimmer Animation */
+.brand{position:relative;font-weight:700;letter-spacing:.14em;display:inline-flex;gap:10px;align-items:center;background:linear-gradient(110deg,var(--gold) 0%,var(--gold2) 38%,#ffffff 50%,var(--gold2) 62%,var(--gold) 100%);background-size:260% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:topBrandAura 6s ease-in-out infinite}
+.brand:before{content:"";width:9px;height:9px;border-radius:2px;background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 12px rgba(var(--gl),.75);transform:rotate(45deg);animation:gemPulse 3.6s ease-in-out infinite;flex:0 0 9px}
+@keyframes topBrandAura{0%,100%{background-position:15% center;filter:drop-shadow(0 0 4px rgba(var(--gl),.22))}50%{background-position:85% center;filter:drop-shadow(0 0 12px rgba(var(--gl),.48))}}
+@keyframes gemPulse{0%,100%{transform:rotate(45deg) scale(1)}50%{transform:rotate(45deg) scale(1.22)}}
+
 .links{display:flex;overflow-x:auto;width:100%;order:3;scrollbar-width:none}.links::-webkit-scrollbar{display:none}
 .links a{padding:6px 14px;color:var(--muted);white-space:nowrap;font-weight:500;font-size:.92rem;transition:color .2s}.links a:hover{color:var(--gold2)}
 @media(min-width:820px){.links{width:auto;order:0}}
@@ -80,10 +84,10 @@ h1 span:nth-child(2){padding-left:.3em;animation-delay:.18s}
 h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:up .9s cubic-bezier(.2,.7,.2,1) .36s forwards,shine 4s linear infinite}
 .hero .pill,.hero p.sub,.hero .btns,.hero .stats{opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) forwards}
 .hero .pill{animation-delay:.05s}.hero p.sub{animation-delay:.5s}.hero .btns{animation-delay:.65s}.hero .stats{animation-delay:.8s}
-.hero p.sub{max-width:520px;font-size:1.1rem;margin-bottom:26px}
+.hero p.sub{max-width:520px;font-size:1.1rem;margin-bottom:22px}
+.yt-subline{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--muted);margin-bottom:20px}
+.yt-subline i{font-style:normal;color:var(--gold2);font-weight:600}
 .btns{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:38px}
-.yt-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(255,0,0,.14);border:1px solid rgba(255,0,0,.42);color:#ff8a8a;font-size:.82rem;font-weight:700;margin-bottom:16px}
-.yt-play-dot{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:#ff0000;color:#fff;font-size:.66rem;line-height:1}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 @media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
 .stats div{background:var(--bg2);padding:18px}.stats b{display:block;font:500 1.9rem "Bodoni Moda",serif;color:var(--gold2)}.stats span{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
@@ -130,7 +134,8 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.12)}
 .plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
 .plan-price{font:700 1.15rem "Bodoni Moda",serif;color:var(--gold2)}
-.promo-rate-box{margin:6px 0 14px;padding:12px 14px;border-radius:10px;border:1px solid var(--gold);background:rgba(var(--gl),.09)}
+.promo-rate-box{margin:6px 0 14px;padding:14px;border-radius:12px;border:1px solid var(--gold);background:rgba(var(--gl),.09)}
+.promo-rate-box ul{margin:8px 0 0 18px;color:var(--muted);font-size:.86rem;line-height:1.65}
 
 .bar{position:relative;height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}
 .bar i{position:relative;display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok),var(--gold2));background-size:200% 100%;animation:shine 2.6s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1);overflow:hidden}
@@ -143,6 +148,8 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .summary-row span{color:var(--muted)}
 .summary-row strong{color:var(--paper);text-align:right;overflow-wrap:anywhere;max-width:65%}
 .receipt-card{background:var(--in);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+.token-match-card{cursor:pointer;transition:transform .2s,border-color .2s}
+.token-match-card:hover{transform:translateY(-2px);border-color:var(--ok)}
 
 /* ---------- Auto-Rotating Swiping Carousels (Creators, Ads, Help) ---------- */
 .rot-wrap{position:relative}
@@ -159,6 +166,7 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
+.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -212,13 +220,13 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--ok),var(--gold2));z-index:900;box-shadow:0 0 10px rgba(var(--gl),.8)}
 .card{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .card:hover{box-shadow:0 16px 38px rgba(0,0,0,.35),0 0 0 1px rgba(var(--gl),.45),0 0 28px rgba(var(--gl),.18)}
-.floaty{position:absolute;z-index:0;font-size:1.85rem;opacity:.82;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));animation:bob 6.5s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-16px) rotate(7deg)}}
-@media(max-width:760px){.floaty{font-size:1.35rem;opacity:.38}.orb{opacity:.14}}
+.floaty{position:absolute;z-index:0;font-size:1.75rem;opacity:.75;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));animation:bob 6.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+@media(max-width:760px){.floaty{font-size:1.25rem;opacity:.32}.orb{opacity:.12}}
 .star{position:absolute;z-index:0;width:3px;height:3px;border-radius:50%;background:var(--gold2);opacity:0;animation:twinkle 3.2s ease-in-out infinite;pointer-events:none}
 @keyframes twinkle{50%{opacity:.9;transform:scale(1.8)}}
 @media(max-width:760px){.star{display:none}}
-.hero .typer{opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) .55s forwards;font-size:1.2rem;font-weight:600;color:var(--gold2);margin:-6px 0 22px;min-height:1.9em}
+.hero .typer{opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) .55s forwards;font-size:1.2rem;font-weight:600;color:var(--gold2);margin:-6px 0 20px;min-height:1.9em}
 .caret{display:inline-block;width:2px;height:1.1em;background:var(--gold2);margin-left:3px;vertical-align:-4px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .ticker{overflow:hidden;border-block:1px solid var(--line);background:linear-gradient(90deg,var(--bg2),rgba(var(--gl),.1),var(--bg2));padding:13px 0}
@@ -258,12 +266,12 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <main>
 <section class="hero" id="home"><div class="orb o1"></div><div class="orb o2"></div><span class="floaty" style="left:8%;top:12%;animation-delay:0s">🎬</span><span class="floaty" style="left:78%;top:8%;animation-delay:-1.2s">🎧</span><span class="floaty" style="left:88%;top:34%;animation-delay:-2.4s">📸</span><span class="floaty" style="left:62%;top:58%;animation-delay:-3.1s">✨</span><span class="floaty" style="left:10%;top:70%;animation-delay:-4s">💖</span><span class="floaty" style="left:80%;top:74%;animation-delay:-1.8s">🎥</span><span class="floaty" style="left:44%;top:6%;animation-delay:-2.9s">🚀</span><div class="wrap">
 <div class="pill">Official Hub • Kerala, India</div>
-<div class="yt-badge"><span class="yt-play-dot">▶</span><span>YouTube Creator • @akshaycreationshorts</span></div>
 <h1><span>Create.</span><span>Connect.</span><span>Inspire.</span></h1>
 <p class="sub">Entertainment, creative content &amp; digital storytelling. You're not just a subscriber, you're part of my story.</p>
+<div class="yt-subline"><span>YouTube:</span> <i>@akshaycreationshorts</i> • <span>Kerala Creator</span></div>
 <p class="typer">I'm a <span id="typer"></span><i class="caret"></i></p>
 <div class="btns">
-<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">▶ Subscribe on YouTube ↗</a>
+<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">YouTube Channel ↗</a>
 <a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz">Instagram ↗</a>
 <a class="btn" href="#care">Support 💖</a></div>
 <div class="return-banner" id="returnBanner" hidden>Welcome back! Take a look at the latest creators, community polls and updates.</div>
@@ -274,7 +282,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div><b>Creator Hub</b><span>Discover • Connect • Grow</span></div>
 </div>
 </div></section>
-<div class="ticker" aria-hidden="true"><div><span>▶ YouTube Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>▶ YouTube Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
+<div class="ticker" aria-hidden="true"><div><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
 
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
@@ -335,16 +343,15 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></section>
 
 <section class="alt" id="services"><div class="wrap">
-<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Instant UPI checkout for Story &amp; Post promotions, and portal approval for custom requests.</p></div>
+<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Limited-time instant UPI options for Story &amp; Post promotions, plus portal requests for custom collaborations.</p></div>
 <div class="g2">
-<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Community Story Promotion (₹199) and Community Post Promotion (₹299) can be paid right away via UPI with an instant token and confirmation mail option. Other services arrive as requests and are confirmed from the portal.</p></div>
+<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Choose <strong>Community Story Promotion (₹199)</strong> or <strong>Community Post Promotion (₹299)</strong> for limited-time fixed pricing—generate your token, pay via GPay/UPI with the token note, and receive your confirmation email once matched and approved in the portal.</p></div>
 <div class="card"><h3>Book a Service / Promotion</h3>
-<form data-form="book"><label>Promotion / Service Type *</label><select name="service_type" id="srvTypeSelect"><option value="Community Story Promotion">Community Story Promotion — ₹199 (Instant UPI)</option><option value="Community Post Promotion">Community Post Promotion — ₹299 (Instant UPI)</option><option value="Sponsored Promotion">Sponsored Promotion — Request &amp; Portal Approval</option><option value="Short-Form Video Editing">Short-Form Video Editing — Request &amp; Portal Approval</option><option value="Brand Ad Production">Brand Ad Production — Request &amp; Portal Approval</option><option value="Creator Consultation">Creator Consultation — Request &amp; Portal Approval</option></select>
+<form data-form="book"><label>Promotion / Service Type *</label><select name="service_type" id="srvTypeSelect"><option value="Community Story Promotion">Community Story Promotion — ₹199 (Limited Time)</option><option value="Community Post Promotion">Community Post Promotion — ₹299 (Limited Time)</option><option value="Sponsored Promotion">Sponsored Promotion — Request &amp; Portal Approval</option><option value="Short-Form Video Editing">Short-Form Video Editing — Request &amp; Portal Approval</option><option value="Brand Ad Production">Brand Ad Production — Request &amp; Portal Approval</option><option value="Creator Consultation">Creator Consultation — Request &amp; Portal Approval</option></select>
 <div class="promo-rate-box" id="srvDynamicBox"></div>
 <label>Name / Brand *</label><input name="client_name" required><label>Email *</label><input name="client_email" type="email" required>
 <label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project / Promotion brief *</label><textarea name="details" rows="3" required></textarea>
-<label class="chk"><input type="checkbox" name="email_report" value="1" checked>Send confirmation email with token &amp; details</label>
-<button class="btn pri full" id="srvSubmitBtn">Pay ₹199 via UPI &amp; Confirm</button></form></div>
+<button class="btn pri full" id="srvSubmitBtn">Generate Token &amp; Pay ₹199 via GPay/UPI</button></form></div>
 </div></div></section>
 
 <section id="care"><div class="wrap">
@@ -377,7 +384,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="faq">
 <details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID and instant order summary card straight away.</p></details>
 <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check in the store. When your payment is marked Paid, the download button appears.</p></details>
-<details><summary>How can I work with Akshay Creation?</summary><p>Community Story Promotion (₹199) and Community Post Promotion (₹299) support instant UPI payment with a token and confirmation email; other requests are approved from the portal first.</p></details>
+<details><summary>How do Story &amp; Post promotions work?</summary><p>Community Story Promotion (₹199) and Community Post Promotion (₹299) are limited-time offers. Submit your details to get a unique token, pay via GPay/UPI with that token, and once matched and approved in the portal, your confirmation email is sent.</p></details>
 <details><summary>How do I become Creator of the Week?</summary><p>Tap Register as Creator. Every submission is reviewed before it appears.</p></details>
 </div></div></section>
 </main>
@@ -457,6 +464,7 @@ let admFilterQuery="";
 let lastOrderSummary=null;
 const bookingPrices={};
 const bookingTokens={};
+const localPromoBookings=[];
 
 function generateUniqueToken(prefix){
   const p=(prefix||"TOK").toUpperCase();
@@ -508,11 +516,14 @@ function syncServiceFormUI(){
   if(!sel||!box||!btn)return;
   const val=sel.value;
   const instantAmt=INSTANT_PROMO_RATES[val]||0;
-  if(instantAmt>0){
-    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Fixed Amount: ₹${instantAmt}</strong><span class="badge ok">Instant UPI + Email Token</span></div><div class="small sub" style="margin-top:4px">Pay ₹${instantAmt} via UPI right after submitting and send your confirmation email with a unique token.</div>`;
-    btn.textContent=`Pay ₹${instantAmt} via UPI & Confirm`;
+  if(val==="Community Story Promotion"){
+    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Community Story Promotion • ₹199</strong><span class="badge warn">Limited Time Offer</span></div><ul><li>Featured story spotlight for your brand, page, or link</li><li>Registered in portal with a unique Token ID for GPay matching</li><li>Confirmation email sent after you match &amp; approve in portal</li></ul>`;
+    btn.textContent="Generate Token & Pay ₹199 via GPay/UPI";
+  }else if(val==="Community Post Promotion"){
+    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Community Post Promotion • ₹299</strong><span class="badge warn">Limited Time Offer</span></div><ul><li>Dedicated community post feature with your details &amp; link</li><li>Registered in portal with a unique Token ID for GPay matching</li><li>Confirmation email sent after you match &amp; approve in portal</li></ul>`;
+    btn.textContent="Generate Token & Pay ₹299 via GPay/UPI";
   }else{
-    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Portal Request Flow</strong><span class="badge warn">Approval Required</span></div><div class="small sub" style="margin-top:4px">Saved to portal first. Once you approve and enter the price in the portal, confirmation email is sent.</div>`;
+    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Portal Request Flow</strong><span class="badge ok">Approval First</span></div><div class="small sub" style="margin-top:4px">Saved to portal first. Once you set/approve the price in the portal, confirmation email is sent.</div>`;
     btn.textContent="Send Request to Portal";
   }
 }
@@ -525,8 +536,8 @@ function sendPromotionConfirmationEmail(rec){
     amt:rec.price_inr||"",
     srv:rec.service_type||"Promotion"
   });
-  const subj=`AKSHAY CREATION — Confirmation & Token [${tok}] (${rec.service_type||"Promotion"})`;
-  const body=`Hi ${rec.client_name||"there"},\n\nYour ${rec.service_type||"promotion"} details with AKSHAY CREATION are confirmed.\n\nToken ID: ${tok}\nService: ${rec.service_type||"Promotion"}\nAmount: ${amtText}\nUPI ID: ${UPI.id}\n\nConfirm / Pay Link:\n${confirmUrl}\n\nNotes:\n${rec.details||""}\n\nContact: ${BRAND_EMAIL}\nWebsite: ${location.origin}`;
+  const subj=`AKSHAY CREATION — Approved & Confirmed [${tok}] (${rec.service_type||"Promotion"})`;
+  const body=`Hi ${rec.client_name||"there"},\n\nYour ${rec.service_type||"promotion"} with AKSHAY CREATION has been matched and approved.\n\nToken ID: ${tok}\nService: ${rec.service_type||"Promotion"}\nAmount: ${amtText}\nUPI ID: ${UPI.id}\n\nWebsite / Confirmation Link:\n${confirmUrl}\n\nDetails:\n${rec.details||""}\n\nContact: ${BRAND_EMAIL}`;
   const mailHref="mailto:"+encodeURIComponent(rec.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
   window.location.href=mailHref;
 }
@@ -1006,23 +1017,20 @@ function openInstantPromoPaymentModal(data){
   const srv=data.service_type||"Community Story Promotion";
   const clientName=data.client_name||"";
   const clientEmail=data.client_email||"";
-  const noteText=buildRedirectSourceTag(`${srv} • ${clientName} • ${tok}`);
+  const noteText=`AKSHAY CREATION • ${srv} • ${clientName||"Client"} • ${tok}`;
   const directUpi=upiUrl(amt,noteText,UPI.id,UPI.name);
-  const confirmUrl=buildConfirmDeepLink({token:tok,amt,srv});
-  const subj=`AKSHAY CREATION — Payment & Confirmation [${tok}] (${srv})`;
-  const body=`Hi ${clientName||"there"},\n\nThank you for choosing ${srv} on AKSHAY CREATION.\n\nToken ID: ${tok}\nPromotion: ${srv}\nFixed Amount: ₹${amt}\nUPI ID: ${UPI.id}\n\nConfirm / Payment Link:\n${confirmUrl}\n\nContact: ${BRAND_EMAIL}\nWebsite: ${location.origin}`;
-  const mailUrl="mailto:"+encodeURIComponent(clientEmail||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
 
-  openM(head(srv)+`
+  openM(head("Token Registered • Pay via GPay")+`
     <p class="price">Fixed Amount: ₹${esc(amt)}</p>
     <div class="receipt-card">
-      <div class="summary-row"><span>Token ID</span><strong>${esc(tok)}</strong></div>
+      <div class="summary-row"><span>Token Code</span><strong>${esc(tok)}</strong></div>
       <div class="summary-row"><span>Promotion</span><strong>${esc(srv)}</strong></div>
-      <div class="summary-row"><span>Client</span><strong>${esc(clientName)}</strong></div>
-      <div class="summary-row"><span>UPI Note</span><strong>${esc(noteText)}</strong></div>
+      <div class="summary-row"><span>Sender Name</span><strong>${esc(clientName)}</strong></div>
+      <div class="summary-row"><span>GPay Note</span><strong>${esc(noteText)}</strong></div>
     </div>
-    <a class="btn pri full" href="${esc(directUpi)}">Pay ₹${amt} via UPI / GPay ↗</a>
-    ${clientEmail?`<a class="btn full" style="margin-top:10px" href="${esc(mailUrl)}">📧 Send Confirmation Email [${esc(tok)}]</a>`:""}
+    <p class="sub small" style="margin-bottom:10px">Your token is registered in the portal. Pay via GPay/UPI using this token—confirmation email is sent once matched and approved in the portal.</p>
+    <a class="btn pri full" href="${esc(directUpi)}">Pay ₹${amt} via GPay / UPI ↗</a>
+    <button type="button" class="btn full" style="margin-top:10px" data-act="copy" data-t="${esc(tok)}">Copy Token (${esc(tok)})</button>
   `);
 }
 
@@ -1412,7 +1420,7 @@ const CFG={
  creators:{t:"name",acts:r=>[...(r.status!=="approved"?[["Approve","st","approved",1]]:[]),["Edit","form"],["Delete","del"]]},
  ads:{t:"title",acts:tg},charity:{t:"title",acts:tg},products:{t:"title",acts:tg},
  orders:{t:"order_id",acts:r=>[["Mark paid","st","PAID",1],["Reject","st","REJECTED"],["Delete","del"]]},
- bookings:{t:"client_name",acts:r=>[["Set & approve price","setPrice",null,1],["Contacted","st","contacted"],["Done","st","done"],["Delete","del"]]},
+ bookings:{t:"client_name",acts:r=>[["Approve & email","setPrice",null,1],["Contacted","st","contacted"],["Done","st","done"],["Delete","del"]]},
  care:{t:"applicant_name",acts:r=>[["In progress","st","in_progress"],["Resolved","st","resolved",1],["Delete","del"]]},
  polls:{t:"question",acts:r=>[["Edit","form"],[r.active==null||+r.active?"Close":"Reopen","set",{active:r.active==null||+r.active?0:1}],["Delete","del"]]},
  staff:{t:"username",acts:r=>[["Delete","del"]]}};
@@ -1430,6 +1438,16 @@ function matchesAdminFilter(r){
   return JSON.stringify(r).toLowerCase().includes(q);
 }
 
+function getAllBookingsList(){
+  const serverList=Array.isArray(dash&&dash.bookings)?dash.bookings:[];
+  const merged=[...serverList];
+  localPromoBookings.forEach(lb=>{
+    const exists=merged.some(m=>(m.token&&lb.token&&m.token===lb.token)||(m.id&&lb.id&&m.id===lb.id));
+    if(!exists)merged.unshift(lb);
+  });
+  return merged;
+}
+
 function card(k,r){const c=CFG[k];
   const kv=Object.entries(r).filter(([f,x])=>f!==c.t&&HIDE.indexOf(f)<0&&x!==""&&x!=null).slice(0,8).map(([f,x])=>`<div class="kv"><span>${esc(f.replace(/_/g," "))}</span><b>${esc((f==="created_at"?new Date(x).toLocaleString():String(x)).slice(0,300))}</b></div>`).join("");
   let extraAdminHtml="";
@@ -1442,13 +1460,12 @@ function card(k,r){const c=CFG[k];
   if(k==="bookings"){
     const tok=bookingTokens[r.id]||r.token||generateUniqueToken("PROMO");
     bookingTokens[r.id]=tok;
-    const savedPrice=bookingPrices[r.id]||r.approved_price||INSTANT_PROMO_RATES[r.service_type]||"";
-    const isApproved=r.price_approval_status==="approved"||!!savedPrice;
-    const confirmUrl=buildConfirmDeepLink({token:tok,amt:savedPrice,srv:r.service_type||"Promotion"});
-    const mailSubj=`AKSHAY CREATION — Confirmed Pricing & Token [${tok}] (${r.service_type||"Promotion"})`;
-    const mailBody=`Hi ${r.client_name||"there"},\n\nYour request for ${r.service_type||"our service"} is approved.\n\nToken ID: ${tok}\nConfirmed Price: ₹${savedPrice||"To be confirmed"}\nUPI ID: ${UPI.id}\n\nConfirm / Payment Link:\n${confirmUrl}\n\nContact: ${BRAND_EMAIL}\nWebsite: ${location.origin}\n\nDetails:\n${r.details||""}`;
-    const mailUrl="mailto:"+encodeURIComponent(r.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(mailSubj)+"&body="+encodeURIComponent(mailBody);
-    extraAdminHtml=`<div class="analysis-box"><strong>Token:</strong> <span style="color:var(--gold2)">${esc(tok)}</span> • <strong>Price:</strong> <span style="color:var(--ok)">${isApproved?("₹"+esc(savedPrice)):"Pending Approval"}</span><div class="small sub" style="margin-top:3px">From: ${esc(BRAND_EMAIL)}</div>${isApproved&&r.client_email?`<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Send Confirmation Email</a><button type="button" class="btn sm" data-act="copy" data-t="${esc(tok)}">Copy Token</button></div>`:""}</div>`;
+    const savedPrice=bookingPrices[r.id]||r.approved_price||r.amount_inr||INSTANT_PROMO_RATES[r.service_type]||"";
+    const isApproved=r.price_approval_status==="approved";
+    extraAdminHtml=`<div class="analysis-box token-match-card" data-act="inspectTokenMatch" data-bid="${esc(r.id)}">
+      <div class="row"><strong style="color:var(--gold2)">Token Code: ${esc(tok)}</strong><span class="badge ${isApproved?"ok":"warn"}">${isApproved?"Approved":"Tap to Match & Approve"}</span></div>
+      <div class="small sub" style="margin-top:4px">Sender: <strong>${esc(r.client_name||"")}</strong> • ${esc(r.client_email||"")} • Amount: ₹${esc(savedPrice||"—")}</div>
+    </div>`;
   }
   if(k==="polls"){
     const opts=parseOptionsList(r.options||r.options_json||[]);
@@ -1460,17 +1477,24 @@ function card(k,r){const c=CFG[k];
     extraAdminHtml=`<div class="real-box"><div><strong>Real Visitor Votes (${realTotal.toLocaleString("en-IN")}):</strong> ${esc(realBreakdown||"0")}</div><div style="color:var(--gold2);margin-top:4px"><strong>Shown to Visitors (${disp.total.toLocaleString("en-IN")}):</strong> ${esc(fakeBreakdown||"0")}</div></div>`;
   }
   const badge=r.status?`<span class="badge ${/paid|approved|done|resolved/i.test(r.status)?"ok":"warn"}">${esc(r.status)}</span>`:(r.active!=null&&!+r.active?`<span class="badge warn">Hidden</span>`:"");
-  const acts=c.acts(r).map(([l,op,v,p])=>`<button type="button" class="btn sm${p?" pri":""}" data-act="adm" data-op="${op}" data-res="${k}" data-id="${+r.id}" data-v='${esc(JSON.stringify(v==null?null:v))}'>${l}</button>`).join("");
+  const acts=c.acts(r).map(([l,op,v,p])=>`<button type="button" class="btn sm${p?" pri":""}" data-act="adm" data-op="${op}" data-res="${k}" data-id="${esc(r.id)}" data-v='${esc(JSON.stringify(v==null?null:v))}'>${l}</button>`).join("");
   return`<div class="card"><div class="row"><h3 style="margin:0">${esc(r[c.t]||"#"+r.id)}</h3>${badge}</div><div style="margin-top:8px">${kv}</div>${extraAdminHtml}<div class="acts">${acts}</div></div>`}
 
 function admRender(){if(!dash)return;
-  $("anav").innerHTML=TABS.map(([k,l,d])=>`<button type="button" data-act="tab" data-k="${k}" class="${tab===k?"on":""}">${l}${d?`<i>${(dash[d]||[]).length}</i>`:""}</button>`).join("");
+  const allBookings=getAllBookingsList();
+  $("anav").innerHTML=TABS.map(([k,l,d])=>{
+    const cnt=k==="bookings"?allBookings.length:(d?(dash[d]||[]).length:null);
+    return `<button type="button" data-act="tab" data-k="${k}" class="${tab===k?"on":""}">${l}${cnt!=null?`<i>${cnt}</i>`:""}</button>`;
+  }).join("");
   $("atitle").textContent=TABS.find(t=>t[0]===tab)[1];$("auser").textContent=(dash.username||"")+" • "+(dash.role||"");
   const b=$("abody");
   if(tab==="overview"){
-    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"&&matchesAdminFilter(c)),po=(dash.orders||[]).filter(o=>o.status==="PENDING"&&matchesAdminFilter(o)),pb=(dash.bookings||[]).filter(x=>x.price_approval_status!=="approved");
-    b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>`<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${(dash[d]||[]).length}</b>${l}</button>`).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s) awaiting price confirmation.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
-  const list=(dash[DK[tab]]||[]).filter(matchesAdminFilter);
+    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"&&matchesAdminFilter(c)),po=(dash.orders||[]).filter(o=>o.status==="PENDING"&&matchesAdminFilter(o)),pb=allBookings.filter(x=>x.price_approval_status!=="approved");
+    b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>{
+      const cnt=k==="bookings"?allBookings.length:(dash[d]||[]).length;
+      return `<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${cnt}</b>${l}</button>`;
+    }).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s)/token(s) awaiting match &amp; approval.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
+  const list=(tab==="bookings"?allBookings:(dash[DK[tab]]||[])).filter(matchesAdminFilter);
   let h=NEW[tab]?`<p><button type="button" class="btn pri" data-act="adm" data-op="form" data-res="${tab}">＋ ${NEW[tab]}</button></p>`:"";
   if(tab==="staff")h+=`<form class="card" data-form="staff" style="margin-bottom:16px"><h3 style="margin-top:0">Add staff</h3><label>Username *</label><input name="username" required><label>Password * (8+ characters)</label><input name="password" type="password" required minlength="8"><label>Role</label><select name="role"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn pri full">Create account</button></form>`;
   h+=list.length?`<div class="recs">${list.map(r=>card(tab,r)).join("")}</div>`:`<p class="sub">Nothing here yet.</p>`;
@@ -1489,18 +1513,23 @@ function admForm(res,id){
 }
 
 function openBookingPriceModal(bookingId){
-  const rec=(dash&&dash.bookings||[]).find(x=>x.id==bookingId)||{};
-  const tok=bookingTokens[bookingId]||rec.token||generateUniqueToken("PROMO");
-  bookingTokens[bookingId]=tok;
-  const currentVal=bookingPrices[bookingId]||rec.approved_price||INSTANT_PROMO_RATES[rec.service_type]||"";
-  openM(head("Confirm Price & Send Email")+`
+  const rec=getAllBookingsList().find(x=>String(x.id)===String(bookingId))||{};
+  const tok=bookingTokens[rec.id]||rec.token||generateUniqueToken("PROMO");
+  bookingTokens[rec.id]=tok;
+  const currentVal=bookingPrices[rec.id]||rec.approved_price||rec.amount_inr||INSTANT_PROMO_RATES[rec.service_type]||"";
+  openM(head("Match Token & Approve")+`
     <form data-form="bookingPrice">
-      <input type="hidden" name="booking_id" value="${+bookingId}">
+      <input type="hidden" name="booking_id" value="${esc(rec.id||bookingId)}">
       <input type="hidden" name="token" value="${esc(tok)}">
-      <label>Client &amp; Token</label><div class="small sub" style="margin-bottom:10px">${esc(rec.client_name||"")} (${esc(rec.client_email||"")}) • <strong>${esc(tok)}</strong></div>
-      <label>Final Price (₹) *</label><input name="price_inr" type="number" step="any" min="0" required value="${esc(currentVal)}" placeholder="Enter final price in ₹">
-      <label>Message Note</label><textarea name="note" rows="3" placeholder="Optional confirmation note...">${esc(rec.details||"")}</textarea>
-      <button class="btn pri full">Confirm Price &amp; Open Email</button>
+      <div class="receipt-card">
+        <div class="summary-row"><span>Token Code</span><strong>${esc(tok)}</strong></div>
+        <div class="summary-row"><span>Sender Name</span><strong>${esc(rec.client_name||"")}</strong></div>
+        <div class="summary-row"><span>Client Email</span><strong>${esc(rec.client_email||"")}</strong></div>
+        <div class="summary-row"><span>Service</span><strong>${esc(rec.service_type||"Promotion")}</strong></div>
+      </div>
+      <label>Confirmed Amount (₹) *</label><input name="price_inr" type="number" step="any" min="0" required value="${esc(currentVal)}" placeholder="Enter amount in ₹">
+      <label>Message Note</label><textarea name="note" rows="3" placeholder="Confirmation message for client...">${esc(rec.details||"")}</textarea>
+      <button class="btn pri full">Approve &amp; Send Confirmation Email</button>
     </form>`);
 }
 
@@ -1519,6 +1548,7 @@ const ACT={
  selectPlanAmt(d){openPremiumMembershipModal(d.a)},
  viewOrderReceipt:openOrderReceiptModal,
  emailOrderCard:emailOrderCardToClient,
+ inspectTokenMatch(d){openBookingPriceModal(d.bid)},
  support:()=>supportM(0),amt:d=>supportM(d.a),
  charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;const tok=generateUniqueToken("DON");const note=buildRedirectSourceTag(`${c.title} • ${tok}`);openM(head(c.title)+`<div class="small sub" style="margin-bottom:6px">Token: ${esc(tok)}</div>`+qrBox(upiUrl(0,note,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
  shareHelp(d){
@@ -1575,7 +1605,7 @@ const ACT={
   if(d.op==="setPrice")return openBookingPriceModal(d.id);
   if(d.op==="form")return admForm(d.res,d.id);
   if(d.op==="del"&&!confirm("Delete this permanently?"))return;
-  const body=d.op==="del"?{action:"delete",id:+d.id}:d.op==="st"?{action:"status",id:+d.id,status:v}:{action:"update",id:+d.id,data:v};
+  const body=d.op==="del"?{action:"delete",id:d.id}:d.op==="st"?{action:"status",id:d.id,status:v}:{action:"update",id:d.id,data:v};
   await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
 const FORM={
@@ -1608,14 +1638,22 @@ const FORM={
   const raw=fd(f);
   const tok=generateUniqueToken("PROMO");
   const instantAmt=INSTANT_PROMO_RATES[raw.service_type]||0;
-  const wantEmail=!!f.querySelector('[name="email_report"]')?.checked;
   const payload=Object.assign({},raw,{
     token:tok,
     amount_inr:instantAmt||null,
-    email_report:wantEmail,
-    price_approval_status:instantAmt>0?"instant_upi":"pending"
+    price_approval_status:"pending"
   });
-  await post("/api/services/book",payload);
+  try{
+    await post("/api/services/book",payload);
+  }catch(e){}
+  const recItem=Object.assign({
+    id:"loc_"+Date.now(),
+    created_at:new Date().toISOString()
+  },payload);
+  localPromoBookings.unshift(recItem);
+  bookingTokens[recItem.id]=tok;
+  if(instantAmt)bookingPrices[recItem.id]=String(instantAmt);
+
   f.reset();
   syncServiceFormUI();
   confetti();
@@ -1627,31 +1665,26 @@ const FORM={
       client_name:raw.client_name,
       client_email:raw.client_email
     });
-    if(wantEmail&&raw.client_email){
-      setTimeout(()=>sendPromotionConfirmationEmail({
-        token:tok,
-        service_type:raw.service_type,
-        price_inr:instantAmt,
-        client_name:raw.client_name,
-        client_email:raw.client_email,
-        details:raw.details
-      }),350);
-    }
   }else{
-    toast(`Request sent to portal! Token: ${tok}. Price details will follow once approved.`);
+    toast(`Token ${tok} registered in portal! Confirmation email will be sent after approval.`);
   }
  },
  async bookingPrice(f){
   const x=fd(f);
-  const bid=+x.booking_id;
+  const bid=String(x.booking_id);
   const tok=String(x.token||bookingTokens[bid]||generateUniqueToken("PROMO")).trim();
   const priceVal=String(x.price_inr||"").trim();
   if(!priceVal)throw new Error("Enter a price amount");
   bookingPrices[bid]=priceVal;
   bookingTokens[bid]=tok;
-  const rec=(dash&&dash.bookings||[]).find(r=>r.id==bid)||{};
+  const rec=getAllBookingsList().find(r=>String(r.id)===bid)||{};
+  rec.price_approval_status="approved";
+  rec.approved_price=priceVal;
+  rec.token=tok;
   try{
-    await post("/api/admin/bookings",{action:"update",id:bid,data:{price_approval_status:"approved",approved_price:priceVal,token:tok}});
+    if(!bid.startsWith("loc_")){
+      await post("/api/admin/bookings",{action:"update",id:+bid,data:{price_approval_status:"approved",approved_price:priceVal,token:tok}});
+    }
   }catch(e){}
   closeM();
   syncHistoryTrap();
@@ -1664,7 +1697,7 @@ const FORM={
     client_email:rec.client_email,
     details:x.note||rec.details||""
   });
-  toast(`Price ₹${priceVal} confirmed (${tok}) — opening confirmation email`);
+  toast(`Approved ${tok} • Opening confirmation email`);
  },
  async care(f){await post("/api/care/submit",Object.assign(fd(f),{consent_granted:true}));f.reset();toast("Message sent privately");confetti()},
  async pay(f){
@@ -1778,7 +1811,7 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function burst(x,y,set,n){if(reduce)return;const em=set||["❤️","✨","⭐","🎉","💖","🎬"];n=n||6;for(let i=0;i<n;i++){const s=document.createElement("span");s.className="pt";s.textContent=em[(Math.random()*em.length)|0];const a=Math.random()*Math.PI*2,d=50+Math.random()*80;s.style.cssText="left:"+x+"px;top:"+y+"px;--dx:"+Math.cos(a)*d+"px;--dy:"+(Math.sin(a)*d-30)+"px;--rot:"+((Math.random()*120-60)|0)+"deg";document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
 function confetti(){burst(innerWidth/2,innerHeight/2.3,["🎉","✨","🎊","💖","⭐"],18)}
 document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll:not(:disabled),.tab,.fab,.cr-pill,.cr-lookup-btn");if(b&&!b.closest("#adm"))burst(e.clientX,e.clientY,null,5)},true);
-(function(){const el=$("typer");if(!el)return;const words=["YouTube Shorts Creator ▶","Reels Storyteller 📸","Video Editor ✂️","Kerala Creator 🌴","Community Builder 💖"];
+(function(){const el=$("typer");if(!el)return;const words=["Shorts Creator 🎬","Reels Storyteller 📸","Video Editor ✂️","Kerala Creator 🌴","Community Builder 💖"];
   if(reduce){el.textContent=words[0];return}
   let w=0,i=0,del=false;(function tick(){const cur=Array.from(words[w]);el.textContent=cur.slice(0,i).join("");
     if(!del&&i<cur.length){i++;setTimeout(tick,90)}else if(!del){del=true;setTimeout(tick,1500)}else if(i>0){i--;setTimeout(tick,40)}else{del=false;w=(w+1)%words.length;setTimeout(tick,300)}})()})();
