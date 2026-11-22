@@ -552,6 +552,7 @@ function refreshCreatorPreview(){
 }
 
 function syncCreatorGateUI(){
+  const f=document.querySelector('form[data-form="creator"]');
   const subBtn=$("cr_submit_btn");
   const statusEl=$("cr_gate_status");
   let done=0;
@@ -563,10 +564,19 @@ function syncCreatorGateUI(){
     if(row)row.classList.toggle("done",ok);
   });
   const allDone=done===FOLLOW_GATE.length;
-  if(subBtn)subBtn.disabled=!allDone;
+  let allFilled=true;
+  if(f){
+    const nameV=(f.querySelector('[name="name"]')?.value||"").trim();
+    const handleV=(f.querySelector('[name="handle"]')?.value||"").trim();
+    const instaV=(f.querySelector('[name="instagram_id"]')?.value||"").trim();
+    const urlV=(f.querySelector('[name="profile_url"]')?.value||"").trim();
+    const bioV=(f.querySelector('[name="bio"]')?.value||"").trim();
+    allFilled=!!(nameV&&handleV&&instaV&&urlV&&bioV);
+  }
+  if(subBtn)subBtn.disabled=!(allDone&&allFilled);
   if(statusEl){
     statusEl.textContent=allDone
-      ? "All 3 steps verified ✓ Ready to submit!"
+      ? (allFilled?"All 3 steps verified ✓ Ready to submit!":"All 3 steps verified ✓ Fill all required fields above.")
       : `Completed ${done} / ${FOLLOW_GATE.length} — Follow both Instagram pages & subscribe on YouTube to unlock Submit.`;
     statusEl.style.color=allDone?"var(--ok)":"var(--muted)";
   }
@@ -589,6 +599,7 @@ function creatorM(){
     <label>Name *</label><input name="name" required placeholder="Your creator name">
     <label>Platform *</label><select name="platform" id="cr_platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select>
     <label>Handle *</label><input name="handle" id="cr_handle" required placeholder="@handle">
+    <label>Your Instagram ID (for follow check) *</label><input name="instagram_id" id="cr_insta_id" required placeholder="@your_instagram_id">
     <label>Profile / Channel URL *</label><input name="profile_url" id="cr_profile_url" type="url" required placeholder="https://youtube.com/@... or https://instagram.com/...">
     <label>Creator Photo (Gallery Upload or Auto Channel Logo)</label>
     <div class="row" style="margin-bottom:10px">
@@ -791,7 +802,7 @@ const CFG={
  polls:{t:"question",acts:r=>[["Edit","form"],[r.active==null||+r.active?"Close":"Reopen","set",{active:r.active==null||+r.active?0:1}],["Delete","del"]]},
  staff:{t:"username",acts:r=>[["Delete","del"]]}};
 const F={
- creators:[["name","Name"],["platform","Platform (YouTube / Instagram / Twitter)"],["handle","Handle"],["profile_url","Profile URL"],["avatar_url","Avatar photo","i"],["bio","Bio","t"]],
+ creators:[["name","Name"],["platform","Platform (YouTube / Instagram / Twitter)"],["handle","Handle"],["instagram_id","Instagram ID (for follow check)"],["profile_url","Profile URL"],["avatar_url","Avatar photo","i"],["bio","Bio","t"]],
  ads:[["title","Title"],["badge","Badge (e.g. Sponsored)"],["media_url","Banner photo","i"],["target_url","Link URL"],["sort","Order (0 = first)","n"]],
  products:[["title","Title"],["category","Category"],["description","Description","t"],["price_inr","Price (₹)","n"],["image_url","Cover photo","i"],["download_url","Private download link (shown only after payment)"]],
  charity:[["title","Campaign title"],["banner_url","Photo of the person / cause","i"],["target_amount","Target (₹)","n"],["raised_amount","Raised so far (₹)","n"],["upi_id","Their UPI ID (donations go here)"],["upi_name","Name on that UPI account"],["donate_link","Official fundraiser link"],["description","Description","t"],["active","Active (1 = show, 0 = hide)","n"]],
@@ -803,7 +814,8 @@ function card(k,r){const c=CFG[k];
   let extraAdminHtml="";
   if(k==="creators"){
     const info=analyzeCreatorChannel(r.platform,r.handle,r.profile_url,r.name);
-    extraAdminHtml=`<div class="analysis-box"><div class="row" style="justify-content:flex-start;gap:10px"><img class="av" src="${getCreatorAvatar(r)}" alt="" style="width:42px;height:42px"><div><strong>Auto Channel Analysis</strong><div class="small sub">${esc(info.summary)}</div></div></div></div>`;
+    const instaDisp=r.instagram_id?` • IG ID: ${r.instagram_id}`:"";
+    extraAdminHtml=`<div class="analysis-box"><div class="row" style="justify-content:flex-start;gap:10px"><img class="av" src="${getCreatorAvatar(r)}" alt="" style="width:42px;height:42px"><div><strong>Auto Channel Analysis</strong><div class="small sub">${esc(info.summary+instaDisp)}</div></div></div></div>`;
   }
   if(k==="polls"){
     const opts=parseOptionsList(r.options||r.options_json||[]);
@@ -907,6 +919,9 @@ const FORM={
     throw new Error("Please follow both Instagram pages, subscribe on YouTube, and confirm all 3 ticks first.");
   }
   const data=fd(f);
+  data.instagram_id=String(data.instagram_id||"").trim();
+  if(!data.instagram_id)throw new Error("Please enter your Instagram ID.");
+  if(!data.instagram_id.startsWith("@"))data.instagram_id="@"+data.instagram_id;
   const info=analyzeCreatorChannel(data.platform,data.handle,data.profile_url,data.name);
   data.platform=info.platform;
   data.handle=info.handle||data.handle;
@@ -954,7 +969,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
 document.addEventListener("input",e=>{
   const t=e.target;
   if(t&&t.matches&&t.matches("[data-utr]")){t.value=t.value.replace(/\D/g,"").slice(0,12);const n=t.value.length,hn=$("utrHint"),pb=$("payBtn");if(hn)hn.textContent=n+" / 12 digits";if(pb)pb.disabled=n!==12}
-  if(t&&t.closest&&t.closest('form[data-form="creator"]')){refreshCreatorPreview()}
+  if(t&&t.closest&&t.closest('form[data-form="creator"]')){refreshCreatorPreview();syncCreatorGateUI()}
 });
 
 document.addEventListener("change",e=>{
@@ -973,7 +988,7 @@ document.addEventListener("change",e=>{
     }).catch(x=>toast(x.message,1));
     return;
   }
-  if(t&&t.closest&&t.closest('form[data-form="creator"]')){refreshCreatorPreview();return}
+  if(t&&t.closest&&t.closest('form[data-form="creator"]')){refreshCreatorPreview();syncCreatorGateUI();return}
   if(!t||!t.dataset||!t.dataset.up)return;const k=t.dataset.up,file=t.files&&t.files[0];if(!file)return;
   toast("Uploading photo…");
   shrink(file,1200).then(data=>post("/api/admin/upload",{data})).then(r=>{$("in_"+k).value=r.url;const p=$("pv_"+k);p.src=r.url;p.hidden=false;toast("Photo uploaded. Now tap Save.")}).catch(x=>toast(x.message,1))});
