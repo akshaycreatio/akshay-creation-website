@@ -52,7 +52,6 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
 
-/* Top Brand with YouTube Icon + Signature Glow & Sweep Animation */
 .brand{position:relative;font-weight:700;letter-spacing:.13em;display:inline-flex;gap:10px;align-items:center;padding:3px 10px 3px 4px;border-radius:999px;background:linear-gradient(110deg,var(--gold2) 0%,#ffffff 45%,var(--gold2) 90%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandShimmer 5s ease-in-out infinite}
 .brand:before{display:none}
 .yt-brand-badge{position:relative;display:inline-grid;place-items:center;width:28px;height:20px;border-radius:6px;background:linear-gradient(145deg,#ff2e2e,#c80000);box-shadow:0 0 14px rgba(255,30,30,.55),0 0 0 1px rgba(255,255,255,.18);flex:0 0 28px;animation:ytBadgeFloat 2.8s ease-in-out infinite}
@@ -430,21 +429,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="atop"><div class="row"><span class="brand"><span class="yt-brand-badge" aria-hidden="true"><span class="yt-tri"></span></span><span>AKSHAY CREATION</span></span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
-<div class="abody"><h2 id="atitle"></h2>
-<div class="card" id="socialStatsEditor" style="margin-bottom:16px">
-  <h3 style="margin-top:0">YouTube, Instagram &amp; Family Count</h3>
-  <p class="sub small" style="margin-bottom:10px">Type values and save — updates Hero stats and About Me together.</p>
-  <form id="socialStatsForm">
-    <label>YouTube Subscribers (Hero)</label>
-    <input name="yt_count" id="in_yt_count" placeholder="e.g. 157.9K">
-    <label>Instagram Followers (Hero)</label>
-    <input name="ig_count" id="in_ig_count" placeholder="e.g. 955">
-    <label>About Me Family Title</label>
-    <input name="fam_title" id="in_fam_title" placeholder="e.g. 157.9K+ Strong Fam">
-    <button class="btn pri full">Save &amp; Update Site</button>
-  </form>
-</div>
-<input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
+<div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div><div id="abottom"></div></div></div>
 </div>
 
 <div class="tpanel" id="tpanel"></div>
@@ -565,6 +550,24 @@ function tickSocialLive(){
   if(S.g(SOCIAL_STATS_KEY))return;
   if(Math.random()<0.25)ytExact+=1;
   renderSocialLive();
+}
+function renderSocialStatsEditorBottom(stats){
+  const s=stats||getSavedSocialStats();
+  const bot=$("abottom");
+  if(!bot)return;
+  bot.innerHTML=`<div class="card" id="socialStatsEditor" style="margin-top:26px">
+    <h3 style="margin-top:0">YouTube, Instagram &amp; Family Count</h3>
+    <p class="sub small" style="margin-bottom:10px">Type values and save — updates Hero stats and About Me together.</p>
+    <form id="socialStatsForm">
+      <label>YouTube Subscribers (Hero)</label>
+      <input name="yt_count" id="in_yt_count" value="${esc(s.yt)}" placeholder="e.g. 157.9K">
+      <label>Instagram Followers (Hero)</label>
+      <input name="ig_count" id="in_ig_count" value="${esc(s.ig)}" placeholder="e.g. 955">
+      <label>About Me Family Title</label>
+      <input name="fam_title" id="in_fam_title" value="${esc(s.fam)}" placeholder="e.g. 157.9K+ Strong Fam">
+      <button class="btn pri full">Save &amp; Update Site</button>
+    </form>
+  </div>`;
 }
 document.addEventListener("submit",async e=>{
   if(!e.target||e.target.id!=="socialStatsForm")return;
@@ -1525,7 +1528,6 @@ function card(k,r){const c=CFG[k];
   return`<div class="card"><div class="row"><h3 style="margin:0">${esc(r[c.t]||"#"+r.id)}</h3>${badge}</div><div style="margin-top:8px">${kv}</div>${extraAdminHtml}<div class="acts">${acts}</div></div>`}
 
 function admRender(){if(!dash)return;
-  applySocialStatsToPage(getSavedSocialStats());
   const allBookings=getAllBookingsList();
   $("anav").innerHTML=TABS.map(([k,l,d])=>{
     const cnt=k==="bookings"?allBookings.length:(d?(dash[d]||[]).length:null);
@@ -1538,7 +1540,11 @@ function admRender(){if(!dash)return;
     b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>{
       const cnt=k==="bookings"?allBookings.length:(dash[d]||[]).length;
       return `<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${cnt}</b>${l}</button>`;
-    }).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s)/token(s) awaiting match &amp; approval.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
+    }).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s)/token(s) awaiting match &amp; approval.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;
+    renderSocialStatsEditorBottom(getSavedSocialStats());
+    return;
+  }
+  if($("abottom"))$("abottom").innerHTML="";
   const list=(tab==="bookings"?allBookings:(dash[DK[tab]]||[])).filter(matchesAdminFilter);
   let h=NEW[tab]?`<p><button type="button" class="btn pri" data-act="adm" data-op="form" data-res="${tab}">＋ ${NEW[tab]}</button></p>`:"";
   if(tab==="staff")h+=`<form class="card" data-form="staff" style="margin-bottom:16px"><h3 style="margin-top:0">Add staff</h3><label>Username *</label><input name="username" required><label>Password * (8+ characters)</label><input name="password" type="password" required minlength="8"><label>Role</label><select name="role"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn pri full">Create account</button></form>`;
