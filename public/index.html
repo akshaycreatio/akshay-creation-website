@@ -1127,5 +1127,257 @@ document.addEventListener("submit",async e=>{
   catch(x){say(x.message,1)}});
 })();
 </script>
+<!-- ===== AKSHAY EXTRA ANIMATIONS (paste just before </body> in public/index.html) ===== -->
+<style>
+/* ---- Nav: active section underline ---- */
+.links a{position:relative}
+.links a:after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;border-radius:2px;background:var(--gold2);transform:scaleX(0);transition:transform .3s}
+.links a.act{color:var(--gold2)}
+.links a.act:after{transform:scaleX(1)}
+
+/* ---- Button ripple ---- */
+.btn{position:relative;overflow:hidden}
+.ak-rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:akRip .6s ease-out forwards;pointer-events:none}
+@keyframes akRip{to{transform:scale(1);opacity:0}}
+
+/* ---- Headline words rise one by one ---- */
+.ak-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+.ak-wi{display:inline-block;opacity:0;transform:translateY(110%) rotate(4deg);transform-origin:left bottom}
+.ak-in .ak-wi{animation:akWord .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms)}
+@keyframes akWord{to{opacity:1;transform:none}}
+
+/* ---- Small tag line draws itself ---- */
+.head .tag:before{transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.8,.2,1) .2s}
+.head.ak-tg .tag:before{transform:scaleX(1)}
+
+/* ---- Hero: underline under "Inspire." + scroll cue ---- */
+.hero h1 span:nth-child(3){position:relative}
+.hero h1 span:nth-child(3):after{content:"";position:absolute;left:.6em;bottom:.02em;height:.07em;width:0;max-width:62%;background:var(--gold2);border-radius:99px;animation:akUnder .9s cubic-bezier(.2,.8,.2,1) 1.5s forwards}
+@keyframes akUnder{to{width:62%}}
+.cue{position:absolute;left:50%;bottom:16px;width:22px;height:34px;margin-left:-11px;border:2px solid var(--gold2);border-radius:14px;opacity:.7;z-index:2;transition:opacity .4s;pointer-events:none}
+.cue i{position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:3px;background:var(--gold2);animation:akCue 1.6s ease-in-out infinite}
+.cue.gone{opacity:0}
+@keyframes akCue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(12px);opacity:0}100%{opacity:0}}
+@media(max-width:760px){.cue{display:none}}
+
+/* ---- Stats + footer ---- */
+.stats div{transition:background .3s}
+.stats div:hover{background:rgba(var(--gl),.12)}
+.stats b{transition:transform .3s;transform-origin:left}
+.stats div:hover b{transform:translateY(-3px) scale(1.05)}
+footer strong{background:linear-gradient(90deg,var(--gold2),#fff,var(--gold2));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+
+/* ---- Poll buttons fill like a progress bar ---- */
+.poll{position:relative;overflow:hidden}
+.poll:before{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--p,0)*1%);background:linear-gradient(90deg,rgba(var(--gl),.28),rgba(var(--gl),.08));transition:width 1.3s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.poll.nt:before{transition:none}
+.poll>*{position:relative;z-index:1}
+
+/* ---- Desktop effects ---- */
+.fx-glow{position:fixed;left:0;top:0;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;pointer-events:none;z-index:45;background:radial-gradient(circle,rgba(var(--gl),.16),transparent 65%);mix-blend-mode:screen;opacity:0;transition:opacity .3s;will-change:transform}
+body.adm-open .fx-glow{display:none}
+main .card:not(.community-board){background-image:radial-gradient(260px circle at var(--mx,-300px) var(--my,-300px),rgba(var(--gl),.13),transparent 60%);background-repeat:no-repeat}
+.hero .btns .btn{transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s,color .2s}
+
+@media(prefers-reduced-motion:reduce){.fx-glow,.cue{display:none}.head .tag:before{transform:none}.hero h1 span:nth-child(3):after{width:62%}}
+</style>
+<script>
+(function(){
+"use strict";
+if(window.__akx)return;window.__akx=1;
+const $=id=>document.getElementById(id);
+const T=fn=>{try{fn()}catch(e){}};
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
+const ease=k=>1-Math.pow(1-k,3);
+
+/* 1. Nav highlights the section you are reading */
+T(()=>{
+  const links=[...document.querySelectorAll(".links a[href^='#']")];
+  const wrapEl=document.querySelector(".links");
+  const map=new Map();
+  links.forEach(a=>{const s=document.querySelector(a.getAttribute("href"));if(s&&s.id!=="live")map.set(s,a)});
+  if(!map.size||!("IntersectionObserver"in window))return;
+  let cur=null;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const a=map.get(e.target);if(!a||a===cur)return;
+    if(cur)cur.classList.remove("act");
+    cur=a;a.classList.add("act");
+    if(wrapEl&&wrapEl.scrollWidth>wrapEl.clientWidth)wrapEl.scrollTo({left:a.offsetLeft-wrapEl.clientWidth/2+a.clientWidth/2,behavior:"smooth"});
+  }),{rootMargin:"-40% 0px -55% 0px"});
+  map.forEach((a,s)=>io.observe(s));
+  addEventListener("scroll",()=>{if(scrollY<300&&cur){cur.classList.remove("act");cur=null}},{passive:true});
+});
+
+/* 2. Button ripple */
+document.addEventListener("click",e=>{
+  const b=e.target.closest&&e.target.closest(".btn");
+  if(!b||b.disabled||reduce)return;
+  const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2;
+  const s=document.createElement("span");s.className="ak-rip";
+  s.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";
+  b.appendChild(s);setTimeout(()=>s.remove(),650);
+});
+
+/* 3. Headline words rise one by one + tag line draws */
+T(()=>{
+  if(reduce||!("IntersectionObserver"in window))return;
+  document.querySelectorAll("main .head h2").forEach(h=>{
+    let n=0;
+    [...h.childNodes].forEach(node=>{
+      if(node.nodeType!==3)return;
+      const frag=document.createDocumentFragment();
+      node.textContent.split(/(\s+)/).forEach(p=>{
+        if(!p)return;
+        if(/^\s+$/.test(p)){frag.appendChild(document.createTextNode(" "));return}
+        const w=document.createElement("span");w.className="ak-w";
+        const i=document.createElement("span");i.className="ak-wi";i.style.setProperty("--i",n++);i.textContent=p;
+        w.appendChild(i);frag.appendChild(w);
+      });
+      node.replaceWith(frag);
+    });
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;io.unobserve(e.target);
+    e.target.classList.add("ak-tg");
+    const h=e.target.querySelector("h2");if(h)h.classList.add("ak-in");
+  }),{threshold:.25});
+  document.querySelectorAll("main .head").forEach(h=>io.observe(h));
+});
+
+/* 4. Brand name scramble (on load + hover) */
+T(()=>{
+  const el=document.querySelector(".nav .brand");if(!el||reduce)return;
+  const final=el.textContent.trim(),chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ";let busy=false;
+  const run=()=>{
+    if(busy)return;busy=true;let f=0;const total=18;
+    const id=setInterval(()=>{
+      f++;
+      el.textContent=[...final].map((c,i)=>c===" "?" ":(i<f*final.length/total?c:chars[(Math.random()*26)|0])).join("");
+      if(f>=total){clearInterval(id);el.textContent=final;busy=false}
+    },45);
+  };
+  setTimeout(run,500);
+  if(fine)el.addEventListener("pointerenter",run);
+});
+
+/* 5. Scroll cue in hero */
+T(()=>{
+  const hero=$("home");if(!hero)return;
+  const c=document.createElement("div");c.className="cue";c.setAttribute("aria-hidden","true");c.innerHTML="<i></i>";hero.appendChild(c);
+  addEventListener("scroll",()=>c.classList.toggle("gone",scrollY>80),{passive:true});
+});
+
+/* 6. Hero numbers count up once */
+T(()=>{
+  if(reduce)return;
+  setTimeout(()=>{
+    ["ytCount","igCount","liveN"].forEach(id=>{
+      const el=$(id);if(!el)return;
+      const m=el.textContent.trim().match(/^([\d.,]+)(K?)$/i);if(!m)return;
+      const isK=!!m[2],to=parseFloat(m[1].replace(/,/g,""));if(!isFinite(to))return;
+      let t0=null;
+      (function f(t){
+        t0=t0||t;const k=Math.min(1,(t-t0)/1400),v=to*ease(k);
+        el.textContent=isK?v.toFixed(1)+"K":Math.round(v).toLocaleString("en-IN");
+        if(k<1)requestAnimationFrame(f);
+      })(performance.now());
+    });
+  },1100);
+});
+
+/* 7. Community numbers count up when they come into view */
+T(()=>{
+  const cp=$("communityPulse");if(!cp||reduce||!("IntersectionObserver"in window))return;
+  let inView=false,done=false;
+  const tryRun=()=>{
+    if(done||!inView)return;
+    const bs=[...cp.querySelectorAll("b")];
+    if(!bs.length||!bs.every(b=>/^[\d,]+$/.test(b.textContent.trim())))return;
+    done=true;
+    bs.forEach(b=>{
+      const to=parseInt(b.textContent.replace(/,/g,""),10);let t0=null;
+      (function f(t){t0=t0||t;const k=Math.min(1,(t-t0)/1200);b.textContent=Math.round(to*ease(k)).toLocaleString("en-IN");if(k<1)requestAnimationFrame(f)})(performance.now());
+    });
+  };
+  new IntersectionObserver(es=>{inView=es[0].isIntersecting;tryRun()},{threshold:.3}).observe(cp);
+  new MutationObserver(tryRun).observe(cp,{childList:true});
+});
+
+/* 8. Poll buttons fill to their percentage */
+T(()=>{
+  const list=$("pollsList");if(!list)return;
+  const seen=new Set();
+  const paint=()=>list.querySelectorAll(".poll").forEach(b=>{
+    const meta=b.querySelector(".poll-meta");
+    const p=meta?(meta.textContent.match(/\((\d+)%\)/)||[])[1]:null;
+    if(p==null)return;
+    const k=b.dataset.id+"-"+b.dataset.i;
+    b.classList.add("nt");
+    if(seen.has(k)||reduce){b.style.setProperty("--p",p);return}
+    seen.add(k);b.style.setProperty("--p",0);void b.offsetWidth;b.classList.remove("nt");
+    requestAnimationFrame(()=>b.style.setProperty("--p",p));
+  });
+  new MutationObserver(paint).observe(list,{childList:true});
+  paint();
+});
+
+/* 9. Ticker speeds up while you scroll */
+T(()=>{
+  const tk=document.querySelector(".ticker div");if(!tk||reduce||!tk.getAnimations)return;
+  let last=scrollY,vel=0;
+  addEventListener("scroll",()=>{const y=scrollY;vel=Math.min(60,Math.abs(y-last));last=y},{passive:true});
+  (function loop(){
+    const a=tk.getAnimations()[0];
+    if(a){a.playbackRate+=((1+vel/8)-a.playbackRate)*.15}
+    vel*=.9;requestAnimationFrame(loop);
+  })();
+});
+
+/* 10. Hero floating items drift with scroll */
+T(()=>{
+  if(reduce)return;
+  const ps=[...document.querySelectorAll("#home .orb,#home .floaty")];
+  ps.forEach((el,i)=>{el.dataset.ps=(.08+(i%4)*.05).toFixed(2)});
+  let r2=0;
+  addEventListener("scroll",()=>{
+    if(r2)return;
+    r2=requestAnimationFrame(()=>{r2=0;const y=scrollY;if(y>1000)return;ps.forEach(el=>{el.style.translate="0 "+(y*el.dataset.ps).toFixed(1)+"px"})});
+  },{passive:true});
+});
+
+/* 11. Desktop only: cursor glow, card tilt + spotlight, magnetic hero buttons */
+T(()=>{
+  if(!fine||reduce)return;
+  const glow=document.createElement("div");glow.className="fx-glow";document.body.appendChild(glow);
+  let gx=innerWidth/2,gy=innerHeight/2,px=gx,py=gy,on=false;
+  addEventListener("pointermove",e=>{
+    gx=e.clientX;gy=e.clientY;
+    if(!on){on=true;glow.style.opacity="1";(function loop(){px+=(gx-px)*.14;py+=(gy-py)*.14;glow.style.transform="translate("+px.toFixed(1)+"px,"+py.toFixed(1)+"px)";requestAnimationFrame(loop)})()}
+  },{passive:true});
+  document.addEventListener("mouseleave",()=>{glow.style.opacity="0";on=false});
+
+  let last=null;
+  const reset=c=>{if(!c)return;c.style.transform="";c.style.removeProperty("--mx");c.style.removeProperty("--my")};
+  document.addEventListener("pointermove",e=>{
+    const c=e.target.closest?e.target.closest("main .card"):null;
+    if(last&&last!==c)reset(last);
+    last=c;if(!c)return;
+    const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty("--mx",(x*100).toFixed(1)+"%");c.style.setProperty("--my",(y*100).toFixed(1)+"%");
+    if(c.classList.contains("community-board")||c.querySelector("form,input,select,textarea"))return;
+    c.style.transform="perspective(900px) rotateX("+((.5-y)*6).toFixed(2)+"deg) rotateY("+((x-.5)*8).toFixed(2)+"deg) translateY(-4px)";
+  },{passive:true});
+
+  document.querySelectorAll(".hero .btns .btn").forEach(b=>{
+    b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect();b.style.transform="translate("+((e.clientX-r.left-r.width/2)*.22).toFixed(1)+"px,"+((e.clientY-r.top-r.height/2)*.3).toFixed(1)+"px)"});
+    b.addEventListener("pointerleave",()=>{b.style.transform=""});
+  });
+});
+})();
+</script>
+<!-- ===== END AKSHAY EXTRA ANIMATIONS ===== -->
+
 
 </body></html>
