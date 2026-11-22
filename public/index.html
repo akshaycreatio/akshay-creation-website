@@ -323,6 +323,17 @@ const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[]},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 
+// Capture shared campaign ?help=ID ONLY on initial page entry (not normal refreshes without ?help=)
+const INITIAL_SHARED_HELP_ID=(function(){
+  try{
+    const params=new URLSearchParams(window.location.search);
+    const val=(params.get("help")||"").trim();
+    return val||"";
+  }catch(e){
+    return "";
+  }
+})();
+
 const FOLLOW_GATE=[
   {id:"ig1",label:"Follow Instagram 1 (@its.akshay.here_)",url:"https://www.instagram.com/its.akshay.here_?cnvx=MXBsZGN5cGppMHFsYw=="},
   {id:"ig2",label:"Follow Instagram 2 (@akshaycreation_offl)",url:"https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz"},
@@ -749,6 +760,7 @@ function renderPolls(){
   }).join("");
 }
 
+let sharedHelpHandled=false;
 async function loadPublic(){try{
   const d=await api("/api/public/overview");st=Object.assign({products:[],charities:[],polls:[]},d);
   renderSocialLive();
@@ -761,15 +773,20 @@ async function loadPublic(){try{
     return`<div class="card" id="help-card-${+c.id}">${c.banner_url?`<img class="cover" style="height:220px" src="${link(c.banner_url)}" alt="">`:""}<span class="badge warn">Help needed 💖</span><h3>${esc(c.title)}</h3><p class="sub">${esc(c.description)}</p><div class="row small" style="margin-top:12px"><span>Raised ₹${rs.toLocaleString("en-IN")}</span><span>Target ₹${tg.toLocaleString("en-IN")} (${pc.toFixed(1)}%)</span></div><div class="bar"><i data-w="${pc}" style="width:0"></i></div><p class="sub small" style="margin-bottom:12px">Progress is updated manually from the official fundraiser.</p><div class="btns" style="margin:0">${c.upi_id?`<button type="button" class="btn pri sm" data-act="charity" data-id="${+c.id}">💖 Donate via UPI</button>`:""}${c.donate_link?`<a class="btn sm" target="_blank" rel="noopener" href="${link(c.donate_link)}">Official page ↗</a>`:""}<a class="btn sm" target="_blank" rel="noopener" href="${esc(waHref)}" data-act="shareHelp" data-title="${esc(c.title)}" data-url="${esc(shareUrl)}">Share ↗</a></div></div>`}).join("");
   setTimeout(()=>document.querySelectorAll("#helpList .bar i").forEach(i=>{i.style.width=i.dataset.w+"%"}),150);
 
-  const sharedHelpId=new URLSearchParams(location.search).get("help");
-  if(sharedHelpId&&hl.length){
+  // Scroll to campaign ONLY when opened via a shared ?help=ID link on initial entry
+  if(!sharedHelpHandled&&INITIAL_SHARED_HELP_ID&&hl.length){
+    sharedHelpHandled=true;
     setTimeout(()=>{
-      const targetCard=document.getElementById("help-card-"+sharedHelpId)||$("help");
+      const targetCard=document.getElementById("help-card-"+INITIAL_SHARED_HELP_ID)||$("help");
       if(targetCard){
         targetCard.scrollIntoView({behavior:"smooth",block:"center"});
         targetCard.style.boxShadow="0 0 0 2px var(--gold2), 0 18px 40px rgba(0,0,0,.5)";
         setTimeout(()=>{targetCard.style.boxShadow=""},3200);
       }
+      try{
+        const cleanUrl=window.location.pathname+(window.location.hash||"");
+        history.replaceState(null,"",cleanUrl);
+      }catch(e){}
     },450);
   }
 
@@ -1002,7 +1019,7 @@ document.addEventListener("change",e=>{
 
 if("scrollRestoration"in history)history.scrollRestoration="manual";
 if(location.hash&&location.hash!=="#admin")history.replaceState(null,"",location.pathname+location.search);
-const goTop=()=>{if(location.hash!=="#admin"&&!new URLSearchParams(location.search).get("help"))window.scrollTo({top:0,left:0,behavior:"instant"})};
+const goTop=()=>{if(location.hash!=="#admin"&&!INITIAL_SHARED_HELP_ID)window.scrollTo({top:0,left:0,behavior:"instant"})};
 goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
