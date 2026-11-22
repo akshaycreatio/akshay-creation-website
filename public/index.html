@@ -123,12 +123,14 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .hidden-slot-blur{filter:blur(5px);user-select:none;pointer-events:none;margin:8px 0}
 .hidden-slot-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
 
-/* ---------- Membership Plans, Campaign Moving Progress & Store Summary Card ---------- */
+/* ---------- Membership Plans, Instant Promo Box, Campaign Moving Progress & Store Summary Card ---------- */
 .plan-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:var(--in);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
 .plan-card:hover{transform:translateY(-2px);border-color:var(--gold)}
 .plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.12)}
 .plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
 .plan-price{font:700 1.15rem "Bodoni Moda",serif;color:var(--gold2)}
+.promo-rate-box{margin:6px 0 14px;padding:12px 14px;border-radius:10px;border:1px solid var(--gold);background:rgba(var(--gl),.09)}
+
 .bar{position:relative;height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}
 .bar i{position:relative;display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok),var(--gold2));background-size:200% 100%;animation:shine 2.6s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1);overflow:hidden}
 .bar i:after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:barSweep 2.2s ease-in-out infinite}
@@ -156,7 +158,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
-.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -330,16 +331,16 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></section>
 
 <section class="alt" id="services"><div class="wrap">
-<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Collaborations, promotions, and creative requests crafted for your brand.</p></div>
+<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Instant UPI checkout for Story &amp; Post promotions, and portal approval for custom requests.</p></div>
 <div class="g2">
-<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Select your preferred promotion or service option in the booking form. Final price details and confirmation are sent after your request is reviewed and approved.</p></div>
+<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Community Story Promotion (₹199) and Community Post Promotion (₹299) can be paid right away via UPI with an instant token and confirmation mail option. Other services arrive as requests and are confirmed from the portal.</p></div>
 <div class="card"><h3>Book a Service / Promotion</h3>
-<form data-form="book"><label>Promotion / Service Type *</label><select name="service_type"><option>Community Story Promotion</option><option>Community Post Promotion</option><option>Sponsored Promotion</option><option>Short-Form Video Editing</option><option>Brand Ad Production</option><option>Creator Consultation</option></select>
+<form data-form="book"><label>Promotion / Service Type *</label><select name="service_type" id="srvTypeSelect"><option value="Community Story Promotion">Community Story Promotion — ₹199 (Instant UPI)</option><option value="Community Post Promotion">Community Post Promotion — ₹299 (Instant UPI)</option><option value="Sponsored Promotion">Sponsored Promotion — Request &amp; Portal Approval</option><option value="Short-Form Video Editing">Short-Form Video Editing — Request &amp; Portal Approval</option><option value="Brand Ad Production">Brand Ad Production — Request &amp; Portal Approval</option><option value="Creator Consultation">Creator Consultation — Request &amp; Portal Approval</option></select>
+<div class="promo-rate-box" id="srvDynamicBox"></div>
 <label>Name / Brand *</label><input name="client_name" required><label>Email *</label><input name="client_email" type="email" required>
 <label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project / Promotion brief *</label><textarea name="details" rows="3" required></textarea>
-<label class="chk"><input type="checkbox" name="cash_refund_offer" value="1">Include starter / early-user refund &amp; post-window option</label>
-<label class="chk"><input type="checkbox" name="email_report" value="1">Send email update &amp; report once approved</label>
-<button class="btn pri full">Send Booking Request</button></form></div>
+<label class="chk"><input type="checkbox" name="email_report" value="1" checked>Send confirmation email with token &amp; details</label>
+<button class="btn pri full" id="srvSubmitBtn">Pay ₹199 via UPI &amp; Confirm</button></form></div>
 </div></div></section>
 
 <section id="care"><div class="wrap">
@@ -372,7 +373,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="faq">
 <details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID and instant order summary card straight away.</p></details>
 <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check in the store. When your payment is marked Paid, the download button appears.</p></details>
-<details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services (including Community Story Promotion, Community Post Promotion, and Sponsored Promotion), or email collab.akshaycreation@gmail.com. Price details are sent only after your approval.</p></details>
+<details><summary>How can I work with Akshay Creation?</summary><p>Community Story Promotion (₹199) and Community Post Promotion (₹299) support instant UPI payment with a token and confirmation email; other requests are approved from the portal first.</p></details>
 <details><summary>How do I become Creator of the Week?</summary><p>Tap Register as Creator. Every submission is reviewed before it appears.</p></details>
 </div></div></section>
 </main>
@@ -441,18 +442,50 @@ let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charitie
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 const BRAND_EMAIL="collab.akshaycreation@gmail.com";
 
+const INSTANT_PROMO_RATES={
+  "Community Story Promotion":199,
+  "Community Post Promotion":299
+};
+
 let creatorFilterPlatform="All";
 let creatorSearchQuery="";
 let lastOrderSummary=null;
 const bookingPrices={};
+const bookingTokens={};
 
-const INITIAL_SHARED_HELP_ID=(function(){
+function generateUniqueToken(prefix){
+  const p=(prefix||"TOK").toUpperCase();
+  const part=Math.random().toString(36).substring(2,6).toUpperCase();
+  const num=(Date.now()%10000).toString().padStart(4,"0");
+  return `${p}-${num}${part}`;
+}
+
+function buildRedirectSourceTag(sourceLabel){
+  const host=location.host||"akshay-creation";
+  return `Redirected from AKSHAY CREATION (${host}) • ${sourceLabel||"Hub"}`;
+}
+
+function buildConfirmDeepLink(paramsObj){
+  const u=new URL(location.origin+location.pathname);
+  u.searchParams.set("confirm","1");
+  Object.entries(paramsObj||{}).forEach(([k,v])=>{
+    if(v!=null&&String(v).trim()!=="")u.searchParams.set(k,String(v).trim());
+  });
+  return u.toString();
+}
+
+const INITIAL_QUERY_PARAMS=(function(){
   try{
     const params=new URLSearchParams(window.location.search);
-    const val=(params.get("help")||"").trim();
-    return val||"";
+    return {
+      help:(params.get("help")||"").trim(),
+      confirm:(params.get("confirm")||"").trim(),
+      token:(params.get("token")||"").trim(),
+      amt:(params.get("amt")||"").trim(),
+      srv:(params.get("srv")||"").trim()
+    };
   }catch(e){
-    return "";
+    return {help:"",confirm:"",token:"",amt:"",srv:""};
   }
 })();
 
@@ -462,9 +495,35 @@ const FOLLOW_GATE=[
   {id:"yt1",label:"Subscribe YouTube (@akshaycreationshorts)",url:"https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7"}
 ];
 
-function buildRedirectSourceTag(sourceLabel){
-  const host=location.host||"akshay-creation";
-  return `Redirected from AKSHAY CREATION (${host}) • ${sourceLabel||"Hub"}`;
+/* ---------- Dynamic Service Form Rate & Action Sync ---------- */
+function syncServiceFormUI(){
+  const sel=$("srvTypeSelect");
+  const box=$("srvDynamicBox");
+  const btn=$("srvSubmitBtn");
+  if(!sel||!box||!btn)return;
+  const val=sel.value;
+  const instantAmt=INSTANT_PROMO_RATES[val]||0;
+  if(instantAmt>0){
+    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Fixed Amount: ₹${instantAmt}</strong><span class="badge ok">Instant UPI + Email Token</span></div><div class="small sub" style="margin-top:4px">Pay ₹${instantAmt} via UPI right after submitting and send your confirmation email with a unique token.</div>`;
+    btn.textContent=`Pay ₹${instantAmt} via UPI & Confirm`;
+  }else{
+    box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Portal Request Flow</strong><span class="badge warn">Approval Required</span></div><div class="small sub" style="margin-top:4px">Saved to portal first. Once you approve and enter the price in the portal, confirmation email is sent.</div>`;
+    btn.textContent="Send Request to Portal";
+  }
+}
+
+function sendPromotionConfirmationEmail(rec){
+  const tok=rec.token||generateUniqueToken("PROMO");
+  const amtText=rec.price_inr?`₹${rec.price_inr}`:"Confirmed in Portal";
+  const confirmUrl=buildConfirmDeepLink({
+    token:tok,
+    amt:rec.price_inr||"",
+    srv:rec.service_type||"Promotion"
+  });
+  const subj=`AKSHAY CREATION — Confirmation & Token [${tok}] (${rec.service_type||"Promotion"})`;
+  const body=`Hi ${rec.client_name||"there"},\n\nYour ${rec.service_type||"promotion"} details with AKSHAY CREATION are confirmed.\n\nToken ID: ${tok}\nService: ${rec.service_type||"Promotion"}\nAmount: ${amtText}\nUPI ID: ${UPI.id}\n\nConfirm / Pay Link:\n${confirmUrl}\n\nNotes:\n${rec.details||""}\n\nContact: ${BRAND_EMAIL}\nWebsite: ${location.origin}`;
+  const mailHref="mailto:"+encodeURIComponent(rec.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+  window.location.href=mailHref;
 }
 
 /* ---------- Smart Back Navigation (Closes Overlays First, Prevents Accidental App Exit) ---------- */
@@ -913,7 +972,8 @@ function closeViewAllPage(){
 
 function openPremiumMembershipModal(selectedAmt){
   const amt=[99,59,19].includes(+selectedAmt)?+selectedAmt:99;
-  const noteText=buildRedirectSourceTag(`Creator Membership ₹${amt}`);
+  const tok=generateUniqueToken("MEM");
+  const noteText=buildRedirectSourceTag(`Membership ₹${amt} • ${tok}`);
   const directUpi=upiUrl(amt,noteText,UPI.id,UPI.name);
   openM(head("Creator Membership")+`
     <p class="sub small" style="margin-bottom:8px">Choose a tier below and tap Pay through UPI.</p>
@@ -929,8 +989,34 @@ function openPremiumMembershipModal(selectedAmt){
       <div class="plan-top"><strong>Starter Tier</strong><span class="plan-price">₹19</span></div>
       <div class="small sub">Entry creator support tier</div>
     </div>
-    <div class="small sub" style="margin:8px 0 10px;opacity:.85">UPI Note: ${esc(noteText)}</div>
+    <div class="small sub" style="margin:8px 0 10px;opacity:.88">Token: ${esc(tok)} • Note: ${esc(noteText)}</div>
     <a class="btn pri full" href="${esc(directUpi)}">Pay through UPI (₹${amt}) ↗</a>
+  `);
+}
+
+function openInstantPromoPaymentModal(data){
+  const amt=+data.amount||199;
+  const tok=data.token||generateUniqueToken("PROMO");
+  const srv=data.service_type||"Community Story Promotion";
+  const clientName=data.client_name||"";
+  const clientEmail=data.client_email||"";
+  const noteText=buildRedirectSourceTag(`${srv} • ${clientName} • ${tok}`);
+  const directUpi=upiUrl(amt,noteText,UPI.id,UPI.name);
+  const confirmUrl=buildConfirmDeepLink({token:tok,amt,srv});
+  const subj=`AKSHAY CREATION — Payment & Confirmation [${tok}] (${srv})`;
+  const body=`Hi ${clientName||"there"},\n\nThank you for choosing ${srv} on AKSHAY CREATION.\n\nToken ID: ${tok}\nPromotion: ${srv}\nFixed Amount: ₹${amt}\nUPI ID: ${UPI.id}\n\nConfirm / Payment Link:\n${confirmUrl}\n\nContact: ${BRAND_EMAIL}\nWebsite: ${location.origin}`;
+  const mailUrl="mailto:"+encodeURIComponent(clientEmail||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+
+  openM(head(srv)+`
+    <p class="price">Fixed Amount: ₹${esc(amt)}</p>
+    <div class="receipt-card">
+      <div class="summary-row"><span>Token ID</span><strong>${esc(tok)}</strong></div>
+      <div class="summary-row"><span>Promotion</span><strong>${esc(srv)}</strong></div>
+      <div class="summary-row"><span>Client</span><strong>${esc(clientName)}</strong></div>
+      <div class="summary-row"><span>UPI Note</span><strong>${esc(noteText)}</strong></div>
+    </div>
+    <a class="btn pri full" href="${esc(directUpi)}">Pay ₹${amt} via UPI / GPay ↗</a>
+    ${clientEmail?`<a class="btn full" style="margin-top:10px" href="${esc(mailUrl)}">📧 Send Confirmation Email [${esc(tok)}]</a>`:""}
   `);
 }
 
@@ -951,15 +1037,16 @@ function renderInstantOrderSummary(){
         <button type="button" class="btn sm" data-act="emailOrderCard">📧 Email Card</button>
       </div>
     </div>
-    <div class="summary-row"><span>Order ID</span><strong>${esc(o.order_id)}</strong></div>
-    <div class="summary-row"><span>Digital Item</span><strong>${esc(o.product_title)}</strong></div>
+    <div class="summary-row"><span>Token / Order</span><strong>${esc(o.token)} • ${esc(o.order_id)}</strong></div>
+    <div class="summary-row"><span>Product</span><strong>${esc(o.product_title)}</strong></div>
     <div class="summary-row"><span>Amount</span><strong>₹${esc(o.price_inr)}</strong></div>
     <div class="summary-row"><span>UTR / Email</span><strong>${esc(o.utr)} • ${esc(o.customer_email)}</strong></div>
   </div>`;
 }
 
 function buildOrderReceiptText(o){
-  return `AKSHAY CREATION — ORDER CONFIRMATION & CARD\nWebsite: ${location.origin}\nContact: ${BRAND_EMAIL}\nOrder ID: ${o.order_id}\nItem: ${o.product_title}\nAmount: ₹${o.price_inr}\nCustomer: ${o.customer_name}\nEmail: ${o.customer_email}\n12-Digit UTR: ${o.utr}\nDate: ${o.created_at}`;
+  const confirmUrl=buildConfirmDeepLink({token:o.token,amt:o.price_inr,srv:o.product_title});
+  return `AKSHAY CREATION — ORDER CONFIRMATION & CARD\nToken ID: ${o.token}\nOrder ID: ${o.order_id}\nProduct: ${o.product_title}\nAmount: ₹${o.price_inr}\nCustomer: ${o.customer_name}\nEmail: ${o.customer_email}\n12-Digit UTR: ${o.utr}\nDate: ${o.created_at}\nConfirm Link: ${confirmUrl}\nContact: ${BRAND_EMAIL}`;
 }
 
 function openOrderReceiptModal(){
@@ -968,7 +1055,7 @@ function openOrderReceiptModal(){
   const receiptText=buildOrderReceiptText(o);
   openM(head("Order Confirmation & Card Details")+`
     <div class="receipt-card">
-      <div class="row" style="margin-bottom:8px"><span class="badge ok">Order Card</span><span class="small sub">${esc(o.created_at)}</span></div>
+      <div class="row" style="margin-bottom:8px"><span class="badge ok">Token: ${esc(o.token)}</span><span class="small sub">${esc(o.created_at)}</span></div>
       <div class="summary-row"><span>Order ID</span><strong>${esc(o.order_id)}</strong></div>
       <div class="summary-row"><span>Product</span><strong>${esc(o.product_title)}</strong></div>
       <div class="summary-row"><span>Amount</span><strong>₹${esc(o.price_inr)}</strong></div>
@@ -987,11 +1074,11 @@ function openOrderReceiptModal(){
 function emailOrderCardToClient(){
   const o=lastOrderSummary;
   if(!o)return toast("No order card to email",1);
-  const subject="AKSHAY CREATION Order Confirmation — "+o.order_id;
+  const subject=`AKSHAY CREATION Order Confirmation & Token [${o.token}]`;
   const body=buildOrderReceiptText(o);
   const mailHref="mailto:"+encodeURIComponent(o.customer_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   window.location.href=mailHref;
-  toast("Opening email with order confirmation & card details");
+  toast("Opening email with order confirmation & token");
 }
 
 /* ---------- Scroll reveal animation ---------- */
@@ -1026,14 +1113,16 @@ const qrBox=(u,id,nm,label)=>`<div class="qr"><div style="font-size:.78rem;font-
 
 function supportM(a){
   a=+a||0;
-  const note=buildRedirectSourceTag(a?"Support ₹"+a:"Support AKSHAY CREATION");
+  const tok=generateUniqueToken("SUP");
+  const note=buildRedirectSourceTag(a?`Support ₹${a} • ${tok}`:`Support • ${tok}`);
   const u=upiUrl(a,note,UPI.id,UPI.name);
-  openM(head("Support AKSHAY CREATION")+`<div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"));
+  openM(head("Support AKSHAY CREATION")+`<div class="small sub" style="margin-bottom:6px">Token: ${esc(tok)}</div><div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"));
 }
 function checkout(id){
   const p=st.products.find(x=>x.id==id);if(!p)return;
-  const note=buildRedirectSourceTag("Store: "+p.title);
-  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,note,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`);
+  const tok=generateUniqueToken("ORD");
+  const note=buildRedirectSourceTag(`${p.title} • ${tok}`);
+  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,note,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><input type="hidden" name="order_token" value="${esc(tok)}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`);
 }
 
 function refreshCreatorPreview(){
@@ -1268,10 +1357,10 @@ async function loadPublic(){try{
     return`<div class="card" id="help-card-${+c.id}">${c.banner_url?`<img class="cover" style="height:220px" src="${link(c.banner_url)}" alt="">`:""}<span class="badge warn">Help needed 💖</span><h3>${esc(c.title)}</h3><p class="sub">${esc(c.description)}</p><div class="row small" style="margin-top:12px"><span>Raised ₹${rs.toLocaleString("en-IN")}</span><span>Target ₹${tg.toLocaleString("en-IN")} (${pc.toFixed(1)}%)</span></div><div class="bar"><i data-w="${pc}" style="width:0"></i></div><p class="sub small" style="margin-bottom:12px">Progress is updated manually from the official fundraiser.</p><div class="btns" style="margin:0">${c.upi_id?`<button type="button" class="btn pri sm" data-act="charity" data-id="${+c.id}">💖 Donate via UPI</button>`:""}${c.donate_link?`<a class="btn sm" target="_blank" rel="noopener" href="${link(c.donate_link)}">Official page ↗</a>`:""}<a class="btn sm" target="_blank" rel="noopener" href="${esc(waHref)}" data-act="shareHelp" data-title="${esc(c.title)}" data-url="${esc(shareUrl)}">Share ↗</a></div></div>`}).join("");
   setTimeout(()=>document.querySelectorAll("#helpList .bar i").forEach(i=>{i.style.width=i.dataset.w+"%"}),150);
 
-  if(!sharedHelpHandled&&INITIAL_SHARED_HELP_ID&&hl.length){
+  if(!sharedHelpHandled&&INITIAL_QUERY_PARAMS.help&&hl.length){
     sharedHelpHandled=true;
     setTimeout(()=>{
-      const targetCard=document.getElementById("help-card-"+INITIAL_SHARED_HELP_ID)||$("help");
+      const targetCard=document.getElementById("help-card-"+INITIAL_QUERY_PARAMS.help)||$("help");
       if(targetCard){
         targetCard.scrollIntoView({behavior:"smooth",block:"center"});
         targetCard.style.boxShadow="0 0 0 2px var(--gold2), 0 18px 40px rgba(0,0,0,.5)";
@@ -1339,12 +1428,15 @@ function card(k,r){const c=CFG[k];
     extraAdminHtml=`<div class="analysis-box"><div class="row" style="justify-content:flex-start;gap:10px"><img class="av" src="${getCreatorAvatar(r)}" alt="" style="width:42px;height:42px"><div><strong>Auto Channel Analysis</strong><div class="small sub">${esc(info.summary+instaDisp+subDisp)}</div></div></div></div>`;
   }
   if(k==="bookings"){
-    const savedPrice=bookingPrices[r.id]||r.approved_price||"";
+    const tok=bookingTokens[r.id]||r.token||generateUniqueToken("PROMO");
+    bookingTokens[r.id]=tok;
+    const savedPrice=bookingPrices[r.id]||r.approved_price||INSTANT_PROMO_RATES[r.service_type]||"";
     const isApproved=r.price_approval_status==="approved"||!!savedPrice;
-    const mailSubj="AKSHAY CREATION — Confirmed Pricing & Details ("+(r.service_type||"Promotion")+")";
-    const mailBody="Hi "+(r.client_name||"there")+",\n\nYour inquiry for "+(r.service_type||"our service")+" has been approved.\nConfirmed Price: ₹"+(savedPrice||"To be confirmed")+"\nWebsite: "+location.origin+"\nContact: "+BRAND_EMAIL+"\n\nDetails:\n"+(r.details||"");
+    const confirmUrl=buildConfirmDeepLink({token:tok,amt:savedPrice,srv:r.service_type||"Promotion"});
+    const mailSubj=`AKSHAY CREATION — Confirmed Pricing & Token [${tok}] (${r.service_type||"Promotion"})`;
+    const mailBody=`Hi ${r.client_name||"there"},\n\nYour request for ${r.service_type||"our service"} is approved.\n\nToken ID: ${tok}\nConfirmed Price: ₹${savedPrice||"To be confirmed"}\nUPI ID: ${UPI.id}\n\nConfirm / Payment Link:\n${confirmUrl}\n\nContact: ${BRAND_EMAIL}\nWebsite: ${location.origin}\n\nDetails:\n${r.details||""}`;
     const mailUrl="mailto:"+encodeURIComponent(r.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(mailSubj)+"&body="+encodeURIComponent(mailBody);
-    extraAdminHtml=`<div class="analysis-box"><strong>Price Status:</strong> <span style="color:var(--gold2)">${isApproved?("Approved: ₹"+esc(savedPrice)):"Pending Your Price Entry & Approval"}</span><div class="small sub" style="margin-top:3px">From: ${esc(BRAND_EMAIL)} • Link: ${esc(location.origin)}</div>${isApproved&&r.client_email?`<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Send Price &amp; Message via Email</a><button type="button" class="btn sm" data-act="copy" data-t="${esc(r.client_email)}">Copy Email</button></div>`:""}</div>`;
+    extraAdminHtml=`<div class="analysis-box"><strong>Token:</strong> <span style="color:var(--gold2)">${esc(tok)}</span> • <strong>Price:</strong> <span style="color:var(--ok)">${isApproved?("₹"+esc(savedPrice)):"Pending Approval"}</span><div class="small sub" style="margin-top:3px">From: ${esc(BRAND_EMAIL)}</div>${isApproved&&r.client_email?`<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Send Confirmation Email</a><button type="button" class="btn sm" data-act="copy" data-t="${esc(tok)}">Copy Token</button></div>`:""}</div>`;
   }
   if(k==="polls"){
     const opts=parseOptionsList(r.options||r.options_json||[]);
@@ -1386,11 +1478,14 @@ function admForm(res,id){
 
 function openBookingPriceModal(bookingId){
   const rec=(dash&&dash.bookings||[]).find(x=>x.id==bookingId)||{};
-  const currentVal=bookingPrices[bookingId]||rec.approved_price||"";
+  const tok=bookingTokens[bookingId]||rec.token||generateUniqueToken("PROMO");
+  bookingTokens[bookingId]=tok;
+  const currentVal=bookingPrices[bookingId]||rec.approved_price||INSTANT_PROMO_RATES[rec.service_type]||"";
   openM(head("Confirm Price & Send Email")+`
     <form data-form="bookingPrice">
       <input type="hidden" name="booking_id" value="${+bookingId}">
-      <label>Client</label><div class="small sub" style="margin-bottom:10px">${esc(rec.client_name||"")} (${esc(rec.client_email||"")})</div>
+      <input type="hidden" name="token" value="${esc(tok)}">
+      <label>Client &amp; Token</label><div class="small sub" style="margin-bottom:10px">${esc(rec.client_name||"")} (${esc(rec.client_email||"")}) • <strong>${esc(tok)}</strong></div>
       <label>Final Price (₹) *</label><input name="price_inr" type="number" step="any" min="0" required value="${esc(currentVal)}" placeholder="Enter final price in ₹">
       <label>Message Note</label><textarea name="note" rows="3" placeholder="Optional confirmation note...">${esc(rec.details||"")}</textarea>
       <button class="btn pri full">Confirm Price &amp; Open Email</button>
@@ -1413,7 +1508,7 @@ const ACT={
  viewOrderReceipt:openOrderReceiptModal,
  emailOrderCard:emailOrderCardToClient,
  support:()=>supportM(0),amt:d=>supportM(d.a),
- charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;const note=buildRedirectSourceTag("Help Campaign: "+c.title);openM(head(c.title)+qrBox(upiUrl(0,note,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
+ charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;const tok=generateUniqueToken("DON");const note=buildRedirectSourceTag(`${c.title} • ${tok}`);openM(head(c.title)+`<div class="small sub" style="margin-bottom:6px">Token: ${esc(tok)}</div>`+qrBox(upiUrl(0,note,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
  shareHelp(d){
    if(navigator.share){
      navigator.share({title:d.title||"Help Campaign",text:(d.title||"Please help")+" - support here:",url:d.url}).catch(()=>{});
@@ -1488,33 +1583,64 @@ const FORM={
  },
  async book(f){
   const raw=fd(f);
+  const tok=generateUniqueToken("PROMO");
+  const instantAmt=INSTANT_PROMO_RATES[raw.service_type]||0;
+  const wantEmail=!!f.querySelector('[name="email_report"]')?.checked;
   const payload=Object.assign({},raw,{
-    email_report:!!f.querySelector('[name="email_report"]')?.checked,
-    cash_refund_offer:!!f.querySelector('[name="cash_refund_offer"]')?.checked,
-    price_approval_status:"pending"
+    token:tok,
+    amount_inr:instantAmt||null,
+    email_report:wantEmail,
+    price_approval_status:instantAmt>0?"instant_upi":"pending"
   });
   await post("/api/services/book",payload);
   f.reset();
-  toast("Request received! Price details will follow once approved in the portal.");
+  syncServiceFormUI();
   confetti();
+  if(instantAmt>0){
+    openInstantPromoPaymentModal({
+      amount:instantAmt,
+      token:tok,
+      service_type:raw.service_type,
+      client_name:raw.client_name,
+      client_email:raw.client_email
+    });
+    if(wantEmail&&raw.client_email){
+      setTimeout(()=>sendPromotionConfirmationEmail({
+        token:tok,
+        service_type:raw.service_type,
+        price_inr:instantAmt,
+        client_name:raw.client_name,
+        client_email:raw.client_email,
+        details:raw.details
+      }),350);
+    }
+  }else{
+    toast(`Request sent to portal! Token: ${tok}. Price details will follow once approved.`);
+  }
  },
  async bookingPrice(f){
   const x=fd(f);
   const bid=+x.booking_id;
+  const tok=String(x.token||bookingTokens[bid]||generateUniqueToken("PROMO")).trim();
   const priceVal=String(x.price_inr||"").trim();
   if(!priceVal)throw new Error("Enter a price amount");
   bookingPrices[bid]=priceVal;
+  bookingTokens[bid]=tok;
   const rec=(dash&&dash.bookings||[]).find(r=>r.id==bid)||{};
   try{
-    await post("/api/admin/bookings",{action:"update",id:bid,data:{price_approval_status:"approved",approved_price:priceVal}});
+    await post("/api/admin/bookings",{action:"update",id:bid,data:{price_approval_status:"approved",approved_price:priceVal,token:tok}});
   }catch(e){}
   closeM();
   admRender();
-  const subj="AKSHAY CREATION — Confirmed Pricing ("+(rec.service_type||"Promotion")+")";
-  const body="Hi "+(rec.client_name||"there")+",\n\nYour request for "+(rec.service_type||"our service")+" is approved.\nConfirmed Price: ₹"+priceVal+"\nWebsite: "+location.origin+"\nContact: "+BRAND_EMAIL+"\n\nMessage:\n"+(x.note||rec.details||"");
-  const mailHref="mailto:"+encodeURIComponent(rec.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
-  window.location.href=mailHref;
-  toast("Price ₹"+priceVal+" confirmed — opening email to client");
+  sendPromotionConfirmationEmail({
+    token:tok,
+    service_type:rec.service_type||"Promotion",
+    price_inr:priceVal,
+    client_name:rec.client_name,
+    client_email:rec.client_email,
+    details:x.note||rec.details||""
+  });
+  toast(`Price ₹${priceVal} confirmed (${tok}) — opening confirmation email`);
  },
  async care(f){await post("/api/care/submit",Object.assign(fd(f),{consent_granted:true}));f.reset();toast("Message sent privately");confetti()},
  async pay(f){
@@ -1523,7 +1649,9 @@ const FORM={
   const wantEmail=!!f.querySelector('[name="send_email_card"]')?.checked;
   const r=await post("/api/checkout/upi-submit",formData);
   const oid=r.order_id||("AKC_"+Date.now());
+  const tok=formData.order_token||generateUniqueToken("ORD");
   lastOrderSummary={
+    token:tok,
     order_id:oid,
     product_title:prod.title||"Digital Pack",
     price_inr:prod.price_inr||"—",
@@ -1534,7 +1662,7 @@ const FORM={
   };
   renderInstantOrderSummary();
   confetti();
-  openM(`<div class="center"><div class="big" style="font-size:2.6rem">🙏</div><h3>Thank you so much!</h3><p class="sub" style="margin:8px 0 14px">Instant order card generated below. Save your Order ID.</p><div class="chip">${esc(oid)}</div><div style="margin-top:14px"><button type="button" class="btn pri sm" data-act="viewOrderReceipt">📄 Card Details</button> <button type="button" class="btn sm" data-act="emailOrderCard">📧 Email Card</button> <button type="button" class="btn sm" data-act="close">Close</button></div></div>`);
+  openM(`<div class="center"><div class="big" style="font-size:2.6rem">🙏</div><h3>Thank you so much!</h3><p class="sub" style="margin:8px 0 14px">Token ${esc(tok)} &amp; order card generated below.</p><div class="chip">${esc(tok)} • ${esc(oid)}</div><div style="margin-top:14px"><button type="button" class="btn pri sm" data-act="viewOrderReceipt">📄 Card Details</button> <button type="button" class="btn sm" data-act="emailOrderCard">📧 Email Card</button> <button type="button" class="btn sm" data-act="close">Close</button></div></div>`);
   if(wantEmail&&lastOrderSummary.customer_email){
     setTimeout(()=>emailOrderCardToClient(),350);
   }
@@ -1590,6 +1718,10 @@ document.addEventListener("input",e=>{
 
 document.addEventListener("change",e=>{
   const t=e.target;
+  if(t&&t.id==="srvTypeSelect"){
+    syncServiceFormUI();
+    return;
+  }
   if(t&&t.dataset&&t.dataset.gateChk){
     syncCreatorGateUI();
     return;
@@ -1610,7 +1742,7 @@ document.addEventListener("change",e=>{
   shrink(file,1200).then(data=>post("/api/admin/upload",{data})).then(r=>{$("in_"+k).value=r.url;const p=$("pv_"+k);p.src=r.url;p.hidden=false;toast("Photo uploaded. Now tap Save.")}).catch(x=>toast(x.message,1))});
 
 if("scrollRestoration"in history)history.scrollRestoration="manual";
-const goTop=()=>{if(location.hash!=="#admin"&&!INITIAL_SHARED_HELP_ID)window.scrollTo({top:0,left:0,behavior:"instant"})};
+const goTop=()=>{if(location.hash!=="#admin"&&!INITIAL_QUERY_PARAMS.help&&!INITIAL_QUERY_PARAMS.confirm)window.scrollTo({top:0,left:0,behavior:"instant"})};
 goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1661,11 +1793,32 @@ if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>
   apply(cur());
 })();
 
+syncServiceFormUI();
 updateCurrentAppliedBadge();
 renderSocialLive();
 reveal();
 loadPublic();
 updatePresence();
+
+if(INITIAL_QUERY_PARAMS.confirm==="1"&&INITIAL_QUERY_PARAMS.token){
+  setTimeout(()=>{
+    const amt=Number(INITIAL_QUERY_PARAMS.amt)||0;
+    const tok=INITIAL_QUERY_PARAMS.token;
+    const srv=INITIAL_QUERY_PARAMS.srv||"Confirmation";
+    const note=buildRedirectSourceTag(`${srv} • ${tok}`);
+    const u=upiUrl(amt,note,UPI.id,UPI.name);
+    openM(head("Payment & Token Confirmation")+`
+      <div class="receipt-card">
+        <div class="summary-row"><span>Token ID</span><strong>${esc(tok)}</strong></div>
+        <div class="summary-row"><span>Service / Item</span><strong>${esc(srv)}</strong></div>
+        ${amt>0?`<div class="summary-row"><span>Fixed Amount</span><strong>₹${esc(amt)}</strong></div>`:""}
+        <div class="summary-row"><span>UPI Note</span><strong>${esc(note)}</strong></div>
+      </div>
+      ${amt>0?`<a class="btn pri full" href="${esc(u)}">Pay ₹${amt} via UPI / GPay ↗</a>`:`<button type="button" class="btn pri full" data-act="support">Open UPI Support</button>`}
+    `);
+  },350);
+}
+
 setInterval(updatePresence,4000);
 setInterval(renderPolls,6000);
 setInterval(tickSocialLive,6000);
