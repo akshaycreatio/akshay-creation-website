@@ -57,8 +57,8 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .links{display:flex;overflow-x:auto;width:100%;order:3;scrollbar-width:none}.links::-webkit-scrollbar{display:none}
 .links a{padding:6px 14px;color:var(--muted);white-space:nowrap;font-weight:500;font-size:.92rem;transition:color .2s}.links a:hover{color:var(--gold2)}
 @media(min-width:820px){.links{width:auto;order:0}}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:999px;font:600 .92rem "Hanken Grotesk",sans-serif;border:1px solid var(--gold);cursor:pointer;color:var(--gold2);background:transparent;transition:background .2s,transform .15s,color .2s}
-.btn:hover{background:rgba(var(--gl),.14)}.btn:active{transform:scale(.97)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:999px;font:600 .92rem "Hanken Grotesk",sans-serif;border:1px solid var(--gold);cursor:pointer;color:var(--gold2);background:transparent;transition:background .2s,transform .15s,color .2s,box-shadow .25s}
+.btn:hover{background:rgba(var(--gl),.14);box-shadow:0 6px 20px rgba(var(--gl),.16)}.btn:active{transform:scale(.97)}
 .btn.pri{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--onpri);border-color:var(--gold2);position:relative;overflow:hidden}.btn.pri:hover{filter:brightness(1.08)}
 .btn.pri:after{content:"";position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);animation:sweep 4s infinite}
 .btn.sm{padding:7px 16px;font-size:.84rem}.btn.full{width:100%}
@@ -86,7 +86,7 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 @media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
 .stats div{background:var(--bg2);padding:18px}.stats b{display:block;font:500 1.9rem "Bodoni Moda",serif;color:var(--gold2)}.stats span{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
 .live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#25c76a;margin-right:4px;vertical-align:middle;animation:pulse 1.5s infinite}.live-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;color:var(--ok);text-transform:uppercase}
-.pulse-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}.pulse-card{background:linear-gradient(145deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}.pulse-card span{display:block;color:var(--muted);font-size:.82rem}.pulse-card b{display:block;color:var(--gold2);font:500 1.9rem "Bodoni Moda",serif;margin-top:3px}.community-board{display:grid;grid-template-columns:1fr;gap:16px;background:linear-gradient(145deg,rgba(var(--c2l),.72),var(--card))}.community-board h3{font-size:1.5rem;margin:12px 0 4px}.community-updates{list-style:none;display:grid;gap:10px}.community-updates li{position:relative;padding:10px 12px 10px 34px;border:1px solid var(--line);border-radius:9px;background:var(--in);color:var(--paper);font-size:.92rem}.community-updates li:before{content:"✦";position:absolute;left:12px;color:var(--gold2)}@media(min-width:760px){.pulse-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.community-board{grid-template-columns:1fr 1.2fr;align-items:center}.community-board .btns{grid-column:1/-1}}.return-banner{margin:16px 0 0;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);color:var(--muted);font-size:.9rem}.return-banner[hidden]{display:none}
+.pulse-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}.pulse-card{background:linear-gradient(145deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0;transition:transform .3s,border-color .3s}.pulse-card:hover{transform:translateY(-3px);border-color:var(--gold)}.pulse-card span{display:block;color:var(--muted);font-size:.82rem}.pulse-card b{display:block;color:var(--gold2);font:500 1.9rem "Bodoni Moda",serif;margin-top:3px}.community-board{display:grid;grid-template-columns:1fr;gap:16px;background:linear-gradient(145deg,rgba(var(--c2l),.72),var(--card))}.community-board h3{font-size:1.5rem;margin:12px 0 4px}.community-updates{list-style:none;display:grid;gap:10px}.community-updates li{position:relative;padding:10px 12px 10px 34px;border:1px solid var(--line);border-radius:9px;background:var(--in);color:var(--paper);font-size:.92rem;transition:transform .25s,border-color .25s}.community-updates li:hover{transform:translateX(4px);border-color:var(--gold)}.community-updates li:before{content:"✦";position:absolute;left:12px;color:var(--gold2)}@media(min-width:760px){.pulse-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.community-board{grid-template-columns:1fr 1.2fr;align-items:center}.community-board .btns{grid-column:1/-1}}.return-banner{margin:16px 0 0;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);color:var(--muted);font-size:.9rem}.return-banner[hidden]{display:none}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;transition:transform .3s,border-color .3s,box-shadow .3s,background .35s}
 .card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 14px 34px rgba(0,0,0,.35)}
 .card h3{font-size:1.3rem;line-height:1.25;margin:10px 0 6px;color:var(--paper)}
@@ -100,7 +100,8 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 
 /* ---------- Creator Spotlight Clean Bar & Dedicated View All Page ---------- */
 .cr-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
-.cr-growth-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line)}
+.cr-growth-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line);animation:softPulse 2.8s ease-in-out infinite}
+@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--gl),0)}50%{box-shadow:0 0 14px rgba(var(--gl),.22)}}
 .cr-lookup-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
 .cr-lookup-btn:hover{border-color:var(--gold);color:var(--gold2)}
 .cr-sub-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:.74rem;font-weight:600;background:rgba(var(--gl),.14);color:var(--gold2);border:1px solid var(--line);margin-top:6px}
@@ -122,12 +123,18 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .hidden-slot-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
 .viewall-vip-box{margin-top:20px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
-/* ---------- Membership Plans & Digital Store Instant Summary Card ---------- */
-.plan-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:var(--in);cursor:pointer;transition:border-color .2s,background .2s}
-.plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.1)}
+/* ---------- Membership Plans, Campaign Moving Progress & Store Summary Card ---------- */
+.plan-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:var(--in);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.plan-card:hover{transform:translateY(-2px);border-color:var(--gold)}
+.plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.12)}
 .plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
 .plan-price{font:700 1.15rem "Bodoni Moda",serif;color:var(--gold2)}
-.summary-box{margin-top:16px;padding:18px;border-radius:14px;background:linear-gradient(145deg,var(--card2),var(--card));border:1px solid var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.bar{position:relative;height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}
+.bar i{position:relative;display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok),var(--gold2));background-size:200% 100%;animation:shine 2.6s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1);overflow:hidden}
+.bar i:after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:barSweep 2.2s ease-in-out infinite}
+@keyframes barSweep{0%{left:-100%}100%{left:160%}}
+
+.summary-box{margin-top:16px;padding:18px;border-radius:14px;background:linear-gradient(145deg,var(--card2),var(--card));border:1px solid var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.35);animation:pop .35s ease}
 .summary-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem}
 .summary-row:last-of-type{border-bottom:0}
 .summary-row span{color:var(--muted)}
@@ -149,7 +156,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
-.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -394,10 +400,10 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
     <div id="creatorsAllGrid" class="cr-all-grid"></div>
     <div class="viewall-vip-box">
       <div>
-        <strong style="color:var(--gold2)">👑 Creator Premium Membership</strong>
-        <div class="small sub">Select a membership plan and pay directly through UPI.</div>
+        <strong style="color:var(--gold2)">👑 Creator Membership</strong>
+        <div class="small sub">Select a membership tier and pay directly through UPI.</div>
       </div>
-      <button type="button" class="btn sm pri" data-act="premiumMembership">👑 Premium Membership</button>
+      <button type="button" class="btn sm pri" data-act="premiumMembership">👑 Creator Membership</button>
     </div>
   </div>
 </div>
@@ -454,6 +460,11 @@ const FOLLOW_GATE=[
   {id:"ig2",label:"Follow Instagram 2 (@akshaycreation_offl)",url:"https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz"},
   {id:"yt1",label:"Subscribe YouTube (@akshaycreationshorts)",url:"https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7"}
 ];
+
+function buildRedirectSourceTag(sourceLabel){
+  const host=location.host||"akshay-creation";
+  return `Redirected from AKSHAY CREATION (${host}) • ${sourceLabel||"Hub"}`;
+}
 
 /* ---------- Weekly Gradual Creator Queue Growth (Mon 8 AM -> Sun ~865 to 976+) ---------- */
 function computeWeeklyCreatorQueueCount(){
@@ -829,23 +840,25 @@ function closeViewAllPage(){
 }
 
 function openPremiumMembershipModal(selectedAmt){
-  const amt=+selectedAmt||299;
-  const directUpi=upiUrl(amt,"AKSHAY CREATION Membership ₹"+amt,UPI.id,UPI.name);
+  const amt=[99,59,19].includes(+selectedAmt)?+selectedAmt:99;
+  const noteText=buildRedirectSourceTag(`Creator Membership ₹${amt}`);
+  const directUpi=upiUrl(amt,noteText,UPI.id,UPI.name);
   openM(head("Creator Membership")+`
-    <p class="sub small" style="margin-bottom:8px">Pick a plan below and tap Pay through UPI.</p>
-    <div class="plan-card${amt===299?" feat":""}" data-act="selectPlanAmt" data-a="299">
-      <div class="plan-top"><strong>Starter Plan</strong><span class="plan-price">₹299</span></div>
-      <div class="small sub">Story &amp; post promotion option scaled to reach</div>
+    <p class="sub small" style="margin-bottom:8px">Choose a tier below and tap Pay through UPI.</p>
+    <div class="plan-card${amt===99?" feat":""}" data-act="selectPlanAmt" data-a="99">
+      <div class="plan-top"><strong>Top Tier</strong><span class="plan-price">₹99</span></div>
+      <div class="small sub">Priority spotlight &amp; creator perks</div>
     </div>
-    <div class="plan-card${amt===699?" feat":""}" data-act="selectPlanAmt" data-a="699">
-      <div class="plan-top"><strong>Growth Plan</strong><span class="plan-price">₹699</span></div>
-      <div class="small sub">Priority spotlight review &amp; promotion support</div>
+    <div class="plan-card${amt===59?" feat":""}" data-act="selectPlanAmt" data-a="59">
+      <div class="plan-top"><strong>Mid Tier</strong><span class="plan-price">₹59</span></div>
+      <div class="small sub">Creator spotlight &amp; community access</div>
     </div>
-    <div class="plan-card${amt===1499?" feat":""}" data-act="selectPlanAmt" data-a="1499">
-      <div class="plan-top"><strong>Boost Plan</strong><span class="plan-price">₹1,499</span></div>
-      <div class="small sub">Paid ad campaign allocation + platform fee</div>
+    <div class="plan-card${amt===19?" feat":""}" data-act="selectPlanAmt" data-a="19">
+      <div class="plan-top"><strong>Starter Tier</strong><span class="plan-price">₹19</span></div>
+      <div class="small sub">Entry creator support tier</div>
     </div>
-    <a class="btn pri full" style="margin-top:12px" href="${esc(directUpi)}">Pay through UPI (₹${amt}) ↗</a>
+    <div class="small sub" style="margin:8px 0 10px;opacity:.85">UPI Note: ${esc(noteText)}</div>
+    <a class="btn pri full" href="${esc(directUpi)}">Pay through UPI (₹${amt}) ↗</a>
   `);
 }
 
@@ -939,10 +952,17 @@ const closeM=()=>$("m").classList.remove("open");
 const head=t=>`<div class="row" style="margin-bottom:10px"><h3>${esc(t)}</h3><button type="button" class="btn sm" data-act="close">Close</button></div>`;
 const qrBox=(u,id,nm,label)=>`<div class="qr"><div style="font-size:.78rem;font-weight:600;color:#475569">Scan with any UPI app</div><img src="${qr(u)}" alt="UPI QR" width="210" height="210"><b>${esc(nm)}</b><div class="chip">${esc(id)} <button type="button" class="copy" data-act="copy" data-t="${esc(id)}">Copy</button></div><a class="btn pri sm" href="${esc(u)}">${esc(label)} ↗</a></div>`;
 
-function supportM(a){a=+a||0;const u=upiUrl(a,"Support AKSHAY CREATION",UPI.id,UPI.name);
-  openM(head("Support AKSHAY CREATION")+`<div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"))}
-function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
-  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
+function supportM(a){
+  a=+a||0;
+  const note=buildRedirectSourceTag(a?"Support ₹"+a:"Support AKSHAY CREATION");
+  const u=upiUrl(a,note,UPI.id,UPI.name);
+  openM(head("Support AKSHAY CREATION")+`<div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"));
+}
+function checkout(id){
+  const p=st.products.find(x=>x.id==id);if(!p)return;
+  const note=buildRedirectSourceTag("Store: "+p.title);
+  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,note,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`);
+}
 
 function refreshCreatorPreview(){
   const f=document.querySelector('form[data-form="creator"]');if(!f)return;
@@ -1316,12 +1336,12 @@ const ACT={
  close:closeM,
  openViewAllPage,
  closeViewAllPage,
- premiumMembership:()=>openPremiumMembershipModal(299),
+ premiumMembership:()=>openPremiumMembershipModal(99),
  selectPlanAmt(d){openPremiumMembershipModal(d.a)},
  viewOrderReceipt:openOrderReceiptModal,
  emailOrderCard:emailOrderCardToClient,
  support:()=>supportM(0),amt:d=>supportM(d.a),
- charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;openM(head(c.title)+qrBox(upiUrl(0,c.title,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
+ charity(d){const c=(st.charities||[]).find(x=>x.id==d.id);if(!c||!c.upi_id)return;const note=buildRedirectSourceTag("Help Campaign: "+c.title);openM(head(c.title)+qrBox(upiUrl(0,note,c.upi_id,c.upi_name||c.title),c.upi_id,c.upi_name||c.title,"Open UPI app & pay")+(c.donate_link?`<a class="btn full" target="_blank" rel="noopener" href="${link(c.donate_link)}">Open official fundraising page ↗</a>`:""))},
  shareHelp(d){
    if(navigator.share){
      navigator.share({title:d.title||"Help Campaign",text:(d.title||"Please help")+" - support here:",url:d.url}).catch(()=>{});
