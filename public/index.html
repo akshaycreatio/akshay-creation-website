@@ -52,7 +52,6 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
 
-/* Top Brand Creative Aura & Smooth Shimmer Animation */
 .brand{position:relative;font-weight:700;letter-spacing:.14em;display:inline-flex;gap:10px;align-items:center;background:linear-gradient(110deg,var(--gold) 0%,var(--gold2) 38%,#ffffff 50%,var(--gold2) 62%,var(--gold) 100%);background-size:260% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:topBrandAura 6s ease-in-out infinite}
 .brand:before{content:"";width:9px;height:9px;border-radius:2px;background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 12px rgba(var(--gl),.75);transform:rotate(45deg);animation:gemPulse 3.6s ease-in-out infinite;flex:0 0 9px}
 @keyframes topBrandAura{0%,100%{background-position:15% center;filter:drop-shadow(0 0 4px rgba(var(--gl),.22))}50%{background-position:85% center;filter:drop-shadow(0 0 12px rgba(var(--gl),.48))}}
@@ -104,7 +103,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .price{font:500 1.5rem "Bodoni Moda",serif;color:var(--gold2)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 
-/* ---------- Creator Spotlight Clean Bar & Dedicated View All Page ---------- */
 .cr-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
 .cr-applied-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line)}
 .cr-lookup-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
@@ -128,7 +126,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .hidden-slot-blur{filter:blur(5px);user-select:none;pointer-events:none;margin:8px 0}
 .hidden-slot-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
 
-/* ---------- Membership Plans, Instant Promo Box, Campaign Moving Progress & Store Summary Card ---------- */
 .plan-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:var(--in);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
 .plan-card:hover{transform:translateY(-2px);border-color:var(--gold)}
 .plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.12)}
@@ -151,7 +148,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .token-match-card{cursor:pointer;transition:transform .2s,border-color .2s}
 .token-match-card:hover{transform:translateY(-2px);border-color:var(--ok)}
 
-/* ---------- Auto-Rotating Swiping Carousels (Creators, Ads, Help) ---------- */
 .rot-wrap{position:relative}
 .rot-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .rot-track::-webkit-scrollbar{display:none}
@@ -166,7 +162,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
-.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -287,7 +282,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
 <div class="g3">
-<div class="card"><span class="badge">The Family</span><h3>155.9K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
+<div class="card"><span class="badge">The Family</span><h3 id="aboutFamTitle">155.9K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
 <div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Entertainment, creative storytelling, and a community that grows together.</p></div>
 <div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub">Business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p></div>
 </div></div></section>
@@ -391,7 +386,6 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 
 <footer><div class="wrap"><p><strong>AKSHAY CREATION</strong> • Create. Connect. Inspire.</p><p>Business: collab.akshaycreation@gmail.com</p></div></footer>
 
-<!-- Separate View All & YT/IG Creator Lookup Page -->
 <div class="viewall-page" id="viewAllPage" hidden>
   <div class="viewall-top">
     <div class="wrap row">
@@ -433,7 +427,21 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="atop"><div class="row"><span class="brand">AKSHAY CREATION</span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
-<div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
+<div class="abody"><h2 id="atitle"></h2>
+<div class="card" id="socialStatsEditor" style="margin-bottom:16px">
+  <h3 style="margin-top:0">YouTube, Instagram &amp; Family Count</h3>
+  <p class="sub small" style="margin-bottom:10px">Type values and save — updates Hero stats and About Me together.</p>
+  <form id="socialStatsForm">
+    <label>YouTube Subscribers (Hero)</label>
+    <input name="yt_count" id="in_yt_count" placeholder="e.g. 157.9K">
+    <label>Instagram Followers (Hero)</label>
+    <input name="ig_count" id="in_ig_count" placeholder="e.g. 955">
+    <label>About Me Family Title</label>
+    <input name="fam_title" id="in_fam_title" placeholder="e.g. 157.9K+ Strong Fam">
+    <button class="btn pri full">Save &amp; Update Site</button>
+  </form>
+</div>
+<input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
 </div>
 
 <div class="tpanel" id="tpanel"></div>
@@ -452,6 +460,7 @@ const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[],creators:[],applied_count:0},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 const BRAND_EMAIL="collab.akshaycreation@gmail.com";
+const SOCIAL_STATS_KEY="akc_social_stats_v1";
 
 const INSTANT_PROMO_RATES={
   "Community Story Promotion":199,
@@ -508,7 +517,68 @@ const FOLLOW_GATE=[
   {id:"yt1",label:"Subscribe YouTube (@akshaycreationshorts)",url:"https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7"}
 ];
 
-/* ---------- Dynamic Service Form Rate & Action Sync ---------- */
+let ytExact=155900,igExact=955;
+function formatYtLive(n){
+  if(n>=1000){
+    const k=(Math.floor(n/100)/10).toFixed(1);
+    return k+"K";
+  }
+  return Number(n).toLocaleString("en-IN");
+}
+function getSavedSocialStats(){
+  try{
+    const raw=S.g(SOCIAL_STATS_KEY);
+    if(raw){
+      const parsed=JSON.parse(raw);
+      return {
+        yt:String(parsed.yt||formatYtLive(ytExact)),
+        ig:String(parsed.ig||Number(igExact).toLocaleString("en-IN")),
+        fam:String(parsed.fam||(formatYtLive(ytExact)+"+ Strong Fam"))
+      };
+    }
+  }catch(e){}
+  return {
+    yt:formatYtLive(ytExact),
+    ig:Number(igExact).toLocaleString("en-IN"),
+    fam:formatYtLive(ytExact)+"+ Strong Fam"
+  };
+}
+function applySocialStatsToPage(stats){
+  const s=stats||getSavedSocialStats();
+  const ytEl=$("ytCount");
+  const igEl=$("igCount");
+  const famEl=$("aboutFamTitle");
+  if(ytEl&&s.yt)ytEl.textContent=s.yt;
+  if(igEl&&s.ig)igEl.textContent=s.ig;
+  if(famEl&&s.fam)famEl.textContent=s.fam;
+  if($("in_yt_count"))("in_yt_count")&&($("in_yt_count").value=s.yt||"");
+  if($("in_ig_count"))("in_ig_count")&&($("in_ig_count").value=s.ig||"");
+  if($("in_fam_title"))("in_fam_title")&&($("in_fam_title").value=s.fam||"");
+}
+function renderSocialLive(){
+  applySocialStatsToPage(getSavedSocialStats());
+}
+function tickSocialLive(){
+  if(S.g(SOCIAL_STATS_KEY))return;
+  if(Math.random()<0.25)ytExact+=1;
+  renderSocialLive();
+}
+document.addEventListener("submit",async e=>{
+  if(!e.target||e.target.id!=="socialStatsForm")return;
+  e.preventDefault();
+  const data=fd(e.target);
+  const ytVal=(data.yt_count||"").trim()||formatYtLive(ytExact);
+  const igVal=(data.ig_count||"").trim()||Number(igExact).toLocaleString("en-IN");
+  const famVal=(data.fam_title||"").trim()||(ytVal+"+ Strong Fam");
+  const nextStats={yt:ytVal,ig:igVal,fam:famVal};
+  S.s(SOCIAL_STATS_KEY,JSON.stringify(nextStats));
+  applySocialStatsToPage(nextStats);
+  try{
+    await post("/api/admin/settings",{action:"update",data:{yt_count:ytVal,ig_count:igVal,fam_title:famVal}});
+  }catch(err){}
+  toast("YouTube, Instagram & Family counts updated!");
+});
+
 function syncServiceFormUI(){
   const sel=$("srvTypeSelect");
   const box=$("srvDynamicBox");
@@ -542,7 +612,6 @@ function sendPromotionConfirmationEmail(rec){
   window.location.href=mailHref;
 }
 
-/* ---------- Smooth Back Navigation (Closes Overlays First, Double-Back Exit Guard on Home) ---------- */
 let ignoreNextPop=false;
 let exitArmedUntil=0;
 function isAnyOverlayOpen(){
@@ -611,7 +680,6 @@ addEventListener("popstate",()=>{
   toast("Press back again to exit AKSHAY CREATION");
 });
 
-/* ---------- Current Applied Count (Gradual Weekly Curve + Live Submissions) ---------- */
 function computeCurrentAppliedCount(){
   const now=new Date();
   const day=now.getDay();
@@ -634,7 +702,6 @@ function updateCurrentAppliedBadge(){
   el.textContent=`✨ Current Applied: ${n.toLocaleString("en-IN")}`;
 }
 
-/* ---------- Auto-Rotating Swiping Engine (Silent Brief Pause on Touch/Swipe) ---------- */
 const rotControllers={};
 function setupRotatingTrack(trackId, barId, dotsId, intervalMs, pauseMs){
   const track=$(trackId);
@@ -730,7 +797,6 @@ function setupRotatingTrack(trackId, barId, dotsId, intervalMs, pauseMs){
   updateDots();
 }
 
-/* ---------- Live Visitors (60 - 800 Range + Evening Rush 5 PM - 11:30 PM) ---------- */
 let currentVisitors=0;
 function computeTargetVisitors(){
   const now=new Date();
@@ -787,26 +853,6 @@ if(previousVisit>0){const banner=$("returnBanner");if(banner)banner.hidden=false
 S.s("akc_last_visit",String(Date.now()));
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")updatePresence()});
 
-/* ---------- Live YT (155.9K) & IG (955) Counters ---------- */
-let ytExact=155900,igExact=955;
-function formatYtLive(n){
-  if(n>=1000){
-    const k=(Math.floor(n/100)/10).toFixed(1);
-    return k+"K";
-  }
-  return Number(n).toLocaleString("en-IN");
-}
-function renderSocialLive(){
-  const ytEl=$("ytCount"),igEl=$("igCount");
-  if(ytEl)ytEl.textContent=formatYtLive(ytExact);
-  if(igEl)igEl.textContent=Number(igExact).toLocaleString("en-IN");
-}
-function tickSocialLive(){
-  if(Math.random()<0.25)ytExact+=1;
-  renderSocialLive();
-}
-
-/* ---------- Creator Link Analyzer & Auto Logo Generator ---------- */
 function analyzeCreatorChannel(platform, handle, profileUrl, name){
   const rawUrl=String(profileUrl||"").trim();
   const rawHandle=String(handle||"").trim();
@@ -1016,7 +1062,6 @@ function openInstantPromoPaymentModal(data){
   const tok=data.token||generateUniqueToken("PROMO");
   const srv=data.service_type||"Community Story Promotion";
   const clientName=data.client_name||"";
-  const clientEmail=data.client_email||"";
   const noteText=`AKSHAY CREATION • ${srv} • ${clientName||"Client"} • ${tok}`;
   const directUpi=upiUrl(amt,noteText,UPI.id,UPI.name);
 
@@ -1034,7 +1079,6 @@ function openInstantPromoPaymentModal(data){
   `);
 }
 
-/* ---------- Digital Store Instant Summary & Card Details + Email Option ---------- */
 function renderInstantOrderSummary(){
   const box=$("instantOrderCard");
   if(!box)return;
@@ -1095,7 +1139,6 @@ function emailOrderCardToClient(){
   toast("Opening email with order confirmation & token");
 }
 
-/* ---------- Scroll reveal animation ---------- */
 const io="IntersectionObserver"in window?new IntersectionObserver(es=>es.forEach(e=>{
   if(!e.isIntersecting)return;const el=e.target;io.unobserve(el);
   setTimeout(()=>{el.classList.add("in");setTimeout(()=>el.classList.remove("rv","in"),900)},+el.dataset.d||0)}),{threshold:.12}):null;
@@ -1236,7 +1279,6 @@ function creatorM(){
   syncCreatorGateUI();
 }
 
-/* ---------- Poll Engine (Max 5 Votes per Device/Poll + Slow Organic Lead Growth) ---------- */
 const MAX_VOTES_PER_POLL=5;
 const pollDripState={};
 
@@ -1411,7 +1453,6 @@ async function loadPublic(){try{
   reveal();
 }catch(e){toast("Could not load site data: "+e.message,1)}}
 
-/* ---------- Admin ---------- */
 const TABS=[["overview","Overview"],["creators","Creators","creators"],["ads","Ads","ads"],["charity","Help campaigns","charity_campaigns"],["products","Products","products"],["orders","Orders","orders"],["bookings","Bookings","bookings"],["care","Support","care"],["polls","Polls","polls"],["staff","Staff","staff_users"]];
 const NEW={creators:"Add creator",ads:"New ad",charity:"New campaign",products:"New product",polls:"New poll"};
 const DK={creators:"creators",ads:"ads",charity:"charity_campaigns",products:"products",orders:"orders",bookings:"bookings",care:"care",polls:"polls",staff:"staff_users"};
@@ -1481,6 +1522,7 @@ function card(k,r){const c=CFG[k];
   return`<div class="card"><div class="row"><h3 style="margin:0">${esc(r[c.t]||"#"+r.id)}</h3>${badge}</div><div style="margin-top:8px">${kv}</div>${extraAdminHtml}<div class="acts">${acts}</div></div>`}
 
 function admRender(){if(!dash)return;
+  applySocialStatsToPage(getSavedSocialStats());
   const allBookings=getAllBookingsList();
   $("anav").innerHTML=TABS.map(([k,l,d])=>{
     const cnt=k==="bookings"?allBookings.length:(d?(dash[d]||[]).length:null);
@@ -1537,9 +1579,8 @@ async function loadDash(){try{dash=await api("/api/admin/dashboard")}catch(e){to
   $("alogin").hidden=true;$("adash").hidden=false;admRender();return true}
 function logout(){token="";S.d("akc_token");dash=null;$("alogin").hidden=false;$("adash").hidden=true}
 
-/* ---------- Actions ---------- */
 const ACT={
- portal(){document.body.classList.add("adm-open");$("adm").hidden=false;document.body.style.overflow="hidden";if(token)loadDash();syncHistoryTrap()},
+ portal(){document.body.classList.add("adm-open");$("adm").hidden=false;document.body.style.overflow="hidden";applySocialStatsToPage(getSavedSocialStats());if(token)loadDash();syncHistoryTrap()},
  closeAdm(){document.body.classList.remove("adm-open");$("adm").hidden=true;document.body.style.overflow="";syncHistoryTrap()},
  close(){closeM();syncHistoryTrap()},
  openViewAllPage,
