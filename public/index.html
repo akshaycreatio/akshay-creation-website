@@ -82,6 +82,8 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .hero .pill{animation-delay:.05s}.hero p.sub{animation-delay:.5s}.hero .btns{animation-delay:.65s}.hero .stats{animation-delay:.8s}
 .hero p.sub{max-width:520px;font-size:1.1rem;margin-bottom:26px}
 .btns{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:38px}
+.yt-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(255,0,0,.14);border:1px solid rgba(255,0,0,.42);color:#ff8a8a;font-size:.82rem;font-weight:700;margin-bottom:16px}
+.yt-play-dot{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:#ff0000;color:#fff;font-size:.66rem;line-height:1}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 @media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
 .stats div{background:var(--bg2);padding:18px}.stats b{display:block;font:500 1.9rem "Bodoni Moda",serif;color:var(--gold2)}.stats span{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
@@ -100,8 +102,7 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 
 /* ---------- Creator Spotlight Clean Bar & Dedicated View All Page ---------- */
 .cr-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
-.cr-applied-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line);animation:softPulse 2.8s ease-in-out infinite}
-@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--gl),0)}50%{box-shadow:0 0 14px rgba(var(--gl),.22)}}
+.cr-applied-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line)}
 .cr-lookup-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
 .cr-lookup-btn:hover{border-color:var(--gold);color:var(--gold2)}
 .cr-sub-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:.74rem;font-weight:600;background:rgba(var(--gl),.14);color:var(--gold2);border:1px solid var(--line);margin-top:6px}
@@ -192,6 +193,7 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .anav{display:flex;gap:6px;overflow-x:auto;padding-top:10px;scrollbar-width:none}.anav::-webkit-scrollbar{display:none}
 .anav button{white-space:nowrap;padding:8px 14px;border-radius:8px;background:none;border:0;color:var(--muted);font:600 .88rem "Hanken Grotesk",sans-serif;cursor:pointer}.anav button.on{background:rgba(var(--gl),.15);color:var(--gold2)}.anav i{font-style:normal;opacity:.7;margin-left:6px;font-size:.76rem}
 .abody{padding:20px 16px 60px;max-width:1100px;margin:0 auto}.abody h2{font-size:1.8rem;margin:0 0 16px}
+.adm-filter{width:100%;padding:10px 14px;margin:0 0 14px;border-radius:999px;background:var(--in);border:1px solid var(--line);color:var(--paper);font-size:.9rem}
 .recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:14px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
 .tile{display:flex;flex-direction:column;gap:2px;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--paper);font:500 .88rem "Hanken Grotesk",sans-serif}.tile b{font:500 2rem "Bodoni Moda",serif;color:var(--gold2)}
@@ -200,7 +202,7 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .login{max-width:380px;margin:12vh auto;padding:0 18px}.login h2{margin:0 0 6px}
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
 @keyframes up{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
-@keyframes float{50%{transform:translate(24px,-30px) scale(1.12)}}
+@keyframes float{50%{transform:translate(18px,-22px) scale(1.08)}}
 @keyframes shine{to{background-position:200% center}}
 @keyframes sweep{55%,100%{left:140%}}
 @keyframes spin{to{transform:rotate(405deg)}}
@@ -210,11 +212,12 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--ok),var(--gold2));z-index:900;box-shadow:0 0 10px rgba(var(--gl),.8)}
 .card{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .card:hover{box-shadow:0 16px 38px rgba(0,0,0,.35),0 0 0 1px rgba(var(--gl),.45),0 0 28px rgba(var(--gl),.18)}
-.floaty{position:absolute;z-index:0;font-size:2.1rem;opacity:.9;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));animation:bob 6s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-24px) rotate(9deg)}}
-@media(max-width:760px){.floaty{font-size:1.6rem;opacity:.55}}
-.star{position:absolute;z-index:0;width:3px;height:3px;border-radius:50%;background:var(--gold2);opacity:0;animation:twinkle 3s ease-in-out infinite;pointer-events:none}
-@keyframes twinkle{50%{opacity:.95;transform:scale(2)}}
+.floaty{position:absolute;z-index:0;font-size:1.85rem;opacity:.82;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));animation:bob 6.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-16px) rotate(7deg)}}
+@media(max-width:760px){.floaty{font-size:1.35rem;opacity:.38}.orb{opacity:.14}}
+.star{position:absolute;z-index:0;width:3px;height:3px;border-radius:50%;background:var(--gold2);opacity:0;animation:twinkle 3.2s ease-in-out infinite;pointer-events:none}
+@keyframes twinkle{50%{opacity:.9;transform:scale(1.8)}}
+@media(max-width:760px){.star{display:none}}
 .hero .typer{opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) .55s forwards;font-size:1.2rem;font-weight:600;color:var(--gold2);margin:-6px 0 22px;min-height:1.9em}
 .caret{display:inline-block;width:2px;height:1.1em;background:var(--gold2);margin-left:3px;vertical-align:-4px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
@@ -223,12 +226,12 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .ticker span{white-space:nowrap;font:500 1.1rem "Bodoni Moda",serif;color:var(--gold2);display:inline-flex;gap:10px;align-items:center}
 .ticker:hover div{animation-play-state:paused}
 @keyframes marq{to{transform:translateX(-50%)}}
-.wig{display:inline-block;transform-origin:70% 80%;animation:wiggle 2.4s ease-in-out infinite}
-.wig.hb{animation:heartbeat 1.3s ease-in-out infinite}
-.wig.bn{animation:bounce 1.8s ease-in-out infinite}
-@keyframes wiggle{0%,100%{transform:rotate(0)}15%{transform:rotate(14deg)}30%{transform:rotate(-12deg)}45%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}75%{transform:rotate(0)}}
-@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.3)}30%{transform:scale(1)}45%{transform:scale(1.2)}}
-@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-10px)}60%{transform:translateY(0)}80%{transform:translateY(-4px)}}
+.wig{display:inline-block;transform-origin:70% 80%;animation:wiggle 2.6s ease-in-out infinite}
+.wig.hb{animation:heartbeat 1.5s ease-in-out infinite}
+.wig.bn{animation:bounce 2s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0)}15%{transform:rotate(12deg)}30%{transform:rotate(-10deg)}45%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}75%{transform:rotate(0)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}60%{transform:translateY(0)}80%{transform:translateY(-3px)}}
 .pt{position:fixed;z-index:950;pointer-events:none;font-size:1.25rem;animation:fly .95s ease-out forwards}
 @keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.6);opacity:0}}
 .fab{position:fixed;right:14px;z-index:560;width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);background:var(--card2);color:var(--gold2);font-size:1.35rem;cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 22px rgba(0,0,0,.4);transition:transform .2s,opacity .3s}
@@ -255,11 +258,12 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <main>
 <section class="hero" id="home"><div class="orb o1"></div><div class="orb o2"></div><span class="floaty" style="left:8%;top:12%;animation-delay:0s">🎬</span><span class="floaty" style="left:78%;top:8%;animation-delay:-1.2s">🎧</span><span class="floaty" style="left:88%;top:34%;animation-delay:-2.4s">📸</span><span class="floaty" style="left:62%;top:58%;animation-delay:-3.1s">✨</span><span class="floaty" style="left:10%;top:70%;animation-delay:-4s">💖</span><span class="floaty" style="left:80%;top:74%;animation-delay:-1.8s">🎥</span><span class="floaty" style="left:44%;top:6%;animation-delay:-2.9s">🚀</span><div class="wrap">
 <div class="pill">Official Hub • Kerala, India</div>
+<div class="yt-badge"><span class="yt-play-dot">▶</span><span>YouTube Creator • @akshaycreationshorts</span></div>
 <h1><span>Create.</span><span>Connect.</span><span>Inspire.</span></h1>
 <p class="sub">Entertainment, creative content &amp; digital storytelling. You're not just a subscriber, you're part of my story.</p>
 <p class="typer">I'm a <span id="typer"></span><i class="caret"></i></p>
 <div class="btns">
-<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">YouTube Channel ↗</a>
+<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">▶ Subscribe on YouTube ↗</a>
 <a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz">Instagram ↗</a>
 <a class="btn" href="#care">Support 💖</a></div>
 <div class="return-banner" id="returnBanner" hidden>Welcome back! Take a look at the latest creators, community polls and updates.</div>
@@ -270,7 +274,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div><b>Creator Hub</b><span>Discover • Connect • Grow</span></div>
 </div>
 </div></section>
-<div class="ticker" aria-hidden="true"><div><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
+<div class="ticker" aria-hidden="true"><div><span>▶ YouTube Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>▶ YouTube Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
 
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
@@ -422,7 +426,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="atop"><div class="row"><span class="brand">AKSHAY CREATION</span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
-<div class="abody"><h2 id="atitle"></h2><div id="abody"></div></div></div>
+<div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
 </div>
 
 <div class="tpanel" id="tpanel"></div>
@@ -449,6 +453,7 @@ const INSTANT_PROMO_RATES={
 
 let creatorFilterPlatform="All";
 let creatorSearchQuery="";
+let admFilterQuery="";
 let lastOrderSummary=null;
 const bookingPrices={};
 const bookingTokens={};
@@ -526,9 +531,9 @@ function sendPromotionConfirmationEmail(rec){
   window.location.href=mailHref;
 }
 
-/* ---------- Smart Back Navigation (Closes Overlays First, Prevents Accidental App Exit) ---------- */
+/* ---------- Smooth Back Navigation (Closes Overlays First, Double-Back Exit Guard on Home) ---------- */
 let ignoreNextPop=false;
-let lastExitWarning=0;
+let exitArmedUntil=0;
 function isAnyOverlayOpen(){
   const mOpen=!!($("m")&&$("m").classList.contains("open"));
   const vaOpen=!!($("viewAllPage")&&!$("viewAllPage").hidden);
@@ -582,16 +587,17 @@ addEventListener("popstate",()=>{
     }catch(e){}
     return;
   }
+  const now=Date.now();
+  if(now<exitArmedUntil){
+    return;
+  }
+  exitArmedUntil=now+2200;
   try{
     ignoreNextPop=true;
     history.pushState({akcTrap:2,overlay:false},document.title,location.pathname+location.search);
     setTimeout(()=>{ignoreNextPop=false},60);
   }catch(e){}
-  const now=Date.now();
-  if(now-lastExitWarning>1800){
-    lastExitWarning=now;
-    toast("You're on AKSHAY CREATION home");
-  }
+  toast("Press back again to exit AKSHAY CREATION");
 });
 
 /* ---------- Current Applied Count (Gradual Weekly Curve + Live Submissions) ---------- */
@@ -1418,6 +1424,12 @@ const F={
  polls:[["question","Question"],["options","Options (one per line, 2 to 6)","t"],["priority_index","Priority / Lead Option index (0 = 1st option, 1 = 2nd, etc.)","n"],["duration_hours","Poll duration in hours (e.g. 48 for 30K-50K target)","n"]]};
 const HIDE=["id","status","active","password","avatar_url","image_url","media_url","banner_url","download_url","options","counts"];
 
+function matchesAdminFilter(r){
+  const q=admFilterQuery.trim().toLowerCase();
+  if(!q)return true;
+  return JSON.stringify(r).toLowerCase().includes(q);
+}
+
 function card(k,r){const c=CFG[k];
   const kv=Object.entries(r).filter(([f,x])=>f!==c.t&&HIDE.indexOf(f)<0&&x!==""&&x!=null).slice(0,8).map(([f,x])=>`<div class="kv"><span>${esc(f.replace(/_/g," "))}</span><b>${esc((f==="created_at"?new Date(x).toLocaleString():String(x)).slice(0,300))}</b></div>`).join("");
   let extraAdminHtml="";
@@ -1456,9 +1468,9 @@ function admRender(){if(!dash)return;
   $("atitle").textContent=TABS.find(t=>t[0]===tab)[1];$("auser").textContent=(dash.username||"")+" • "+(dash.role||"");
   const b=$("abody");
   if(tab==="overview"){
-    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING"),pb=(dash.bookings||[]).filter(x=>x.price_approval_status!=="approved");
+    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"&&matchesAdminFilter(c)),po=(dash.orders||[]).filter(o=>o.status==="PENDING"&&matchesAdminFilter(o)),pb=(dash.bookings||[]).filter(x=>x.price_approval_status!=="approved");
     b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>`<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${(dash[d]||[]).length}</b>${l}</button>`).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s) awaiting price confirmation.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
-  const list=dash[DK[tab]]||[];
+  const list=(dash[DK[tab]]||[]).filter(matchesAdminFilter);
   let h=NEW[tab]?`<p><button type="button" class="btn pri" data-act="adm" data-op="form" data-res="${tab}">＋ ${NEW[tab]}</button></p>`:"";
   if(tab==="staff")h+=`<form class="card" data-form="staff" style="margin-bottom:16px"><h3 style="margin-top:0">Add staff</h3><label>Username *</label><input name="username" required><label>Password * (8+ characters)</label><input name="password" type="password" required minlength="8"><label>Role</label><select name="role"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn pri full">Create account</button></form>`;
   h+=list.length?`<div class="recs">${list.map(r=>card(tab,r)).join("")}</div>`:`<p class="sub">Nothing here yet.</p>`;
@@ -1542,8 +1554,19 @@ const ACT={
   toast(left>0?`Vote recorded! (${left} vote${left===1?"":"s"} left on this poll)`:"Vote recorded! (5/5 limit reached for this poll)");
   confetti();
  },
- async track(){const q=$("track").value.trim();if(!q)return toast("Enter Order ID or UTR",1);const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));
-  $("trackOut").innerHTML=r.status==="PAID"?`<span class="badge ok">Paid</span> <a class="btn pri sm" target="_blank" rel="noopener" href="${link(r.download_url)}">Download ↗</a>`:`<span class="badge warn">${r.status==="REJECTED"?"Rejected":"Pending verification"}</span>`},
+ async track(){
+  const q=$("track").value.trim();
+  if(!q)return toast("Enter Order ID or UTR",1);
+  const r=await api("/api/checkout/verify?order_id="+encodeURIComponent(q));
+  if(r.status==="PAID"){
+    const dlHref=r.download_url?link(r.download_url):"#";
+    $("trackOut").innerHTML=`<div class="receipt-card"><div class="row"><span class="badge ok">✓ Payment Verified • Ready</span><span class="small sub">Ref: ${esc(q)}</span></div><p class="sub small" style="margin:8px 0 10px">Your payment is confirmed. Use the download link below to access your digital asset.</p>${r.download_url?`<a class="btn pri sm" target="_blank" rel="noopener" href="${dlHref}">⬇ Download Asset ↗</a>`:`<span class="small sub">Download link is being prepared by admin.</span>`}</div>`;
+  }else if(r.status==="REJECTED"){
+    $("trackOut").innerHTML=`<div class="receipt-card"><span class="badge warn">Payment Rejected</span><p class="sub small" style="margin-top:6px">UTR/Order ${esc(q)} was marked rejected. Contact ${esc(BRAND_EMAIL)} with your payment proof.</p></div>`;
+  }else{
+    $("trackOut").innerHTML=`<div class="receipt-card"><span class="badge warn">⏳ Pending Verification</span><p class="sub small" style="margin-top:6px">Order/UTR ${esc(q)} is awaiting admin verification. Once marked Paid, the download button unlocks here automatically.</p></div>`;
+  }
+ },
  copy(d){if(navigator.clipboard)navigator.clipboard.writeText(d.t).then(()=>toast("Copied"),()=>toast("Copy failed",1));else toast(d.t)},
  pw(d,b){$("lp").type=b.checked?"text":"password"},
  tab(d){tab=d.k;admRender();$("adm").scrollTo(0,0)},
@@ -1631,6 +1654,7 @@ const FORM={
     await post("/api/admin/bookings",{action:"update",id:bid,data:{price_approval_status:"approved",approved_price:priceVal,token:tok}});
   }catch(e){}
   closeM();
+  syncHistoryTrap();
   admRender();
   sendPromotionConfirmationEmail({
     token:tok,
@@ -1675,7 +1699,7 @@ const FORM={
     if(x.priority_index!==undefined&&x.priority_index!=="")x.priority_index=+x.priority_index;
     if(x.duration_hours!==undefined&&x.duration_hours!=="")x.duration_hours=+x.duration_hours;
   }
-  await post("/api/admin/"+res,{action:id?"update":"create",id:id?+id:undefined,data:x});closeM();toast("Saved");await loadDash();loadPublic()}};
+  await post("/api/admin/"+res,{action:id?"update":"create",id:id?+id:undefined,data:x});closeM();syncHistoryTrap();toast("Saved");await loadDash();loadPublic()}};
 
 document.addEventListener("click",e=>{
   if(e.target.id==="m"){closeM();syncHistoryTrap();return}
@@ -1707,6 +1731,11 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTopOverlay(fals
 
 document.addEventListener("input",e=>{
   const t=e.target;
+  if(t&&t.id==="admSearchInput"){
+    admFilterQuery=t.value||"";
+    admRender();
+    return;
+  }
   if(t&&t.id==="creatorSearch"){
     creatorSearchQuery=t.value||"";
     renderCreatorsSpotlightAndDirectory();
@@ -1749,12 +1778,12 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function burst(x,y,set,n){if(reduce)return;const em=set||["❤️","✨","⭐","🎉","💖","🎬"];n=n||6;for(let i=0;i<n;i++){const s=document.createElement("span");s.className="pt";s.textContent=em[(Math.random()*em.length)|0];const a=Math.random()*Math.PI*2,d=50+Math.random()*80;s.style.cssText="left:"+x+"px;top:"+y+"px;--dx:"+Math.cos(a)*d+"px;--dy:"+(Math.sin(a)*d-30)+"px;--rot:"+((Math.random()*120-60)|0)+"deg";document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
 function confetti(){burst(innerWidth/2,innerHeight/2.3,["🎉","✨","🎊","💖","⭐"],18)}
 document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll:not(:disabled),.tab,.fab,.cr-pill,.cr-lookup-btn");if(b&&!b.closest("#adm"))burst(e.clientX,e.clientY,null,5)},true);
-(function(){const el=$("typer");if(!el)return;const words=["Shorts Creator 🎬","Reels Storyteller 📸","Video Editor ✂️","Kerala Creator 🌴","Community Builder 💖"];
+(function(){const el=$("typer");if(!el)return;const words=["YouTube Shorts Creator ▶","Reels Storyteller 📸","Video Editor ✂️","Kerala Creator 🌴","Community Builder 💖"];
   if(reduce){el.textContent=words[0];return}
   let w=0,i=0,del=false;(function tick(){const cur=Array.from(words[w]);el.textContent=cur.slice(0,i).join("");
     if(!del&&i<cur.length){i++;setTimeout(tick,90)}else if(!del){del=true;setTimeout(tick,1500)}else if(i>0){i--;setTimeout(tick,40)}else{del=false;w=(w+1)%words.length;setTimeout(tick,300)}})()})();
 if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>{const to=+el.dataset.count,suf=el.dataset.suf||"";let t0=null;(function f(t){t0=t0||t;const k=Math.min(1,(t-t0)/1500);el.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(f)})(performance.now())}),900);
-(function(){const hero=$("home");if(!hero||reduce)return;for(let i=0;i<16;i++){const s=document.createElement("i");s.className="star";s.style.cssText="left:"+(Math.random()*100)+"%;top:"+(Math.random()*100)+"%;animation-delay:"+(Math.random()*3).toFixed(2)+"s;animation-duration:"+(2+Math.random()*3).toFixed(1)+"s";hero.appendChild(s)}})();
+(function(){const hero=$("home");if(!hero||reduce)return;for(let i=0;i<14;i++){const s=document.createElement("i");s.className="star";s.style.cssText="left:"+(Math.random()*100)+"%;top:"+(Math.random()*100)+"%;animation-delay:"+(Math.random()*3).toFixed(2)+"s;animation-duration:"+(2+Math.random()*3).toFixed(1)+"s";hero.appendChild(s)}})();
 (function(){const bar=$("progress"),top=$("topBtn");let busy=false;
   addEventListener("scroll",()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+"%";top.classList.toggle("show",scrollY>700);busy=false})},{passive:true});
   top.addEventListener("click",()=>{burst(innerWidth-40,innerHeight-40,["🚀","✨","💨"],8);scrollTo({top:0,behavior:"smooth"})})})();
