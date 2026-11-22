@@ -100,7 +100,7 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 
 /* ---------- Creator Spotlight Clean Bar & Dedicated View All Page ---------- */
 .cr-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
-.cr-growth-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line);animation:softPulse 2.8s ease-in-out infinite}
+.cr-applied-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line);animation:softPulse 2.8s ease-in-out infinite}
 @keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--gl),0)}50%{box-shadow:0 0 14px rgba(var(--gl),.22)}}
 .cr-lookup-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
 .cr-lookup-btn:hover{border-color:var(--gold);color:var(--gold2)}
@@ -109,7 +109,8 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .viewall-page{position:fixed;inset:0;z-index:450;background:var(--bg);overflow-y:auto;padding:0 0 64px}
 .viewall-page[hidden]{display:none!important}
 .viewall-top{position:sticky;top:0;z-index:10;background:var(--navbg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 18px}
-.viewall-search{width:100%;padding:12px 16px;margin:14px 0 10px;border-radius:999px;background:var(--in);border:1px solid var(--line);color:var(--paper);font-size:.95rem}
+.viewall-vip-top{margin:14px 0 10px;padding:12px 14px;border-radius:12px;border:1px solid var(--gold);background:linear-gradient(145deg,rgba(var(--c2l),.55),var(--card));display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.viewall-search{width:100%;padding:12px 16px;margin:8px 0 10px;border-radius:999px;background:var(--in);border:1px solid var(--line);color:var(--paper);font-size:.95rem}
 .cr-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
 .cr-pill{padding:6px 14px;border-radius:999px;font:600 .82rem "Hanken Grotesk",sans-serif;cursor:pointer;background:var(--in);border:1px solid var(--line);color:var(--muted);transition:all .2s}
 .cr-pill:hover{border-color:var(--gold);color:var(--gold2)}
@@ -121,7 +122,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .hidden-slot{position:relative;border-style:dashed;opacity:.88}
 .hidden-slot-blur{filter:blur(5px);user-select:none;pointer-events:none;margin:8px 0}
 .hidden-slot-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
-.viewall-vip-box{margin-top:20px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 /* ---------- Membership Plans, Campaign Moving Progress & Store Summary Card ---------- */
 .plan-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:var(--in);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
@@ -156,6 +156,7 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
+.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -286,7 +287,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></div>
 
 <div class="cr-bar">
-  <span class="cr-growth-pill" id="weeklyCreatorQueueBadge">📈 865+ Creators in Weekly Queue</span>
+  <span class="cr-applied-pill" id="currentAppliedCountBadge">✨ Current Applied: 0</span>
   <button type="button" class="cr-lookup-btn" data-act="openViewAllPage">🔎 Creator Lookup &amp; Directory ↗</button>
 </div>
 
@@ -371,7 +372,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="faq">
 <details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID and instant order summary card straight away.</p></details>
 <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check in the store. When your payment is marked Paid, the download button appears.</p></details>
-<details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services (including Community Story Promotion, Community Post Promotion, and Sponsored Promotion), or email collab.akshaycreation@gmail.com. Price details are sent after approval.</p></details>
+<details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services (including Community Story Promotion, Community Post Promotion, and Sponsored Promotion), or email collab.akshaycreation@gmail.com. Price details are sent only after your approval.</p></details>
 <details><summary>How do I become Creator of the Week?</summary><p>Tap Register as Creator. Every submission is reviewed before it appears.</p></details>
 </div></div></section>
 </main>
@@ -390,6 +391,13 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
     </div>
   </div>
   <div class="wrap">
+    <div class="viewall-vip-top">
+      <div>
+        <strong style="color:var(--gold2)">👑 Creator Membership</strong>
+        <div class="small sub">₹99 • ₹59 • ₹19 — Select a plan &amp; pay through UPI</div>
+      </div>
+      <button type="button" class="btn sm pri" data-act="premiumMembership">👑 Creator Membership</button>
+    </div>
     <input type="search" class="viewall-search" id="creatorSearch" placeholder="Search approved creator name, YouTube or Instagram @handle...">
     <div class="cr-filters" id="creatorPlatformFilters">
       <button type="button" class="cr-pill on" data-plat="All">All</button>
@@ -398,13 +406,6 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
       <button type="button" class="cr-pill" data-plat="Twitter">Twitter</button>
     </div>
     <div id="creatorsAllGrid" class="cr-all-grid"></div>
-    <div class="viewall-vip-box">
-      <div>
-        <strong style="color:var(--gold2)">👑 Creator Membership</strong>
-        <div class="small sub">Select a membership tier and pay directly through UPI.</div>
-      </div>
-      <button type="button" class="btn sm pri" data-act="premiumMembership">👑 Creator Membership</button>
-    </div>
   </div>
 </div>
 
@@ -436,7 +437,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;"
 const link=u=>{try{if(/^data:image\//.test(u))return esc(u);const x=new URL(u,location.origin);return /^https?:$/.test(x.protocol)?esc(x.href.replace(/'/g,"%27")):"#"}catch(e){return"#"}};
 const S={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},d:k=>{try{localStorage.removeItem(k)}catch(e){}}};
 const fd=f=>Object.fromEntries(new FormData(f));
-let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[],creators:[]},tt;
+let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[],creators:[],applied_count:0},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 const BRAND_EMAIL="collab.akshaycreation@gmail.com";
 
@@ -466,8 +467,76 @@ function buildRedirectSourceTag(sourceLabel){
   return `Redirected from AKSHAY CREATION (${host}) • ${sourceLabel||"Hub"}`;
 }
 
-/* ---------- Weekly Gradual Creator Queue Growth (Mon 8 AM -> Sun ~865 to 976+) ---------- */
-function computeWeeklyCreatorQueueCount(){
+/* ---------- Smart Back Navigation (Closes Overlays First, Prevents Accidental App Exit) ---------- */
+let ignoreNextPop=false;
+let lastExitWarning=0;
+function isAnyOverlayOpen(){
+  const mOpen=!!($("m")&&$("m").classList.contains("open"));
+  const vaOpen=!!($("viewAllPage")&&!$("viewAllPage").hidden);
+  const admOpen=!!($("adm")&&!$("adm").hidden);
+  const tpOpen=!!($("tpanel")&&$("tpanel").classList.contains("open"));
+  return mOpen||vaOpen||admOpen||tpOpen;
+}
+function closeTopOverlay(fromPop){
+  if($("m")&&$("m").classList.contains("open")){
+    closeM();
+    if(!fromPop)syncHistoryTrap();
+    return true;
+  }
+  if($("tpanel")&&$("tpanel").classList.contains("open")){
+    $("tpanel").classList.remove("open");
+    if(!fromPop)syncHistoryTrap();
+    return true;
+  }
+  if($("viewAllPage")&&!$("viewAllPage").hidden){
+    closeViewAllPage();
+    if(!fromPop)syncHistoryTrap();
+    return true;
+  }
+  if($("adm")&&!$("adm").hidden){
+    document.body.classList.remove("adm-open");
+    $("adm").hidden=true;
+    document.body.style.overflow="";
+    if(!fromPop)syncHistoryTrap();
+    return true;
+  }
+  return false;
+}
+function syncHistoryTrap(){
+  try{
+    ignoreNextPop=true;
+    history.pushState({akcTrap:1,overlay:isAnyOverlayOpen()},document.title,location.pathname+location.search);
+    setTimeout(()=>{ignoreNextPop=false},60);
+  }catch(e){}
+}
+try{
+  history.replaceState({akcTrap:1,overlay:false},document.title,location.pathname+location.search);
+  history.pushState({akcTrap:2,overlay:false},document.title,location.pathname+location.search);
+}catch(e){}
+addEventListener("popstate",()=>{
+  if(ignoreNextPop){ignoreNextPop=false;return}
+  if(closeTopOverlay(true)){
+    try{
+      ignoreNextPop=true;
+      history.pushState({akcTrap:2,overlay:false},document.title,location.pathname+location.search);
+      setTimeout(()=>{ignoreNextPop=false},60);
+    }catch(e){}
+    return;
+  }
+  try{
+    ignoreNextPop=true;
+    history.pushState({akcTrap:2,overlay:false},document.title,location.pathname+location.search);
+    setTimeout(()=>{ignoreNextPop=false},60);
+  }catch(e){}
+  const now=Date.now();
+  if(now-lastExitWarning>1800){
+    lastExitWarning=now;
+    toast("You're on AKSHAY CREATION home");
+  }
+});
+
+/* ---------- Current Applied Count (Gradual Weekly Curve + Live Submissions) ---------- */
+function computeCurrentAppliedCount(){
   const now=new Date();
   const day=now.getDay();
   const daysSinceMon=(day+6)%7;
@@ -477,16 +546,16 @@ function computeWeeklyCreatorQueueCount(){
   const progress=Math.max(0,Math.min(1,totalHoursSinceMon/weekSpanHours));
   const weekNumber=Math.floor(Date.now()/(7*24*3600*1000));
   const endTarget=865+((weekNumber*17)%112);
-  const startBase=120+((weekNumber*11)%65);
+  const startBase=110+((weekNumber*11)%60);
   const eased=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
-  const microPulse=Math.floor((Date.now()/28000)%4);
-  return Math.max(85,startBase+Math.round((endTarget-startBase)*eased)+microPulse);
+  const liveBonus=Math.max(+(st.applied_count||0),(st.creators||[]).length);
+  return Math.max(40,startBase+Math.round((endTarget-startBase)*eased)+liveBonus);
 }
-function updateWeeklyCreatorBadge(){
-  const el=$("weeklyCreatorQueueBadge");
+function updateCurrentAppliedBadge(){
+  const el=$("currentAppliedCountBadge");
   if(!el)return;
-  const n=computeWeeklyCreatorQueueCount();
-  el.textContent=`📈 ${n.toLocaleString("en-IN")}+ Creators in Weekly Queue`;
+  const n=computeCurrentAppliedCount();
+  el.textContent=`✨ Current Applied: ${n.toLocaleString("en-IN")}`;
 }
 
 /* ---------- Auto-Rotating Swiping Engine (Silent Brief Pause on Touch/Swipe) ---------- */
@@ -779,18 +848,20 @@ function renderCreatorCardHtml(c){
   return `<div class="card"><div class="row" style="justify-content:flex-start;gap:12px"><img class="av" src="${avSrc}" alt="${esc(c.name)}"><div><span class="badge">${esc(c.platform)}</span><div class="small sub" style="margin-top:3px">${esc(meta.channelStyle)}</div>${subBadge?`<div class="cr-sub-chip">${esc(subBadge)}</div>`:""}</div></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`;
 }
 
-function renderHiddenQueueSlotsHtml(queueTotal, approvedCount){
-  const hiddenCount=Math.max(6,Math.min(15,queueTotal-approvedCount));
+function renderHiddenQueueSlotsHtml(appliedTotal, approvedCount){
+  const plats=["YouTube","Instagram","YouTube","Instagram","YouTube","Instagram"];
+  const count=Math.max(4,Math.min(6,appliedTotal-approvedCount));
   let slots="";
-  for(let i=0;i<hiddenCount;i++){
+  for(let i=0;i<count;i++){
+    const plat=plats[i%plats.length];
     slots+=`<div class="card hidden-slot">
-      <span class="hidden-slot-tag">🔒 Pending Approval • Hidden</span>
+      <div class="row"><span class="badge">${esc(plat)}</span><span class="hidden-slot-tag">🔒 Hidden Until Approved</span></div>
       <div class="hidden-slot-blur">
-        <h3>Creator Entry #${i+1}</h3>
-        <p class="sub">@hidden_creator_handle</p>
-        <p class="sub small">Profile &amp; identity hidden until admin approval.</p>
+        <h3>Creator Profile #${i+1}</h3>
+        <p class="sub">@creator_id_hidden</p>
+        <p class="sub small">${esc(plat)} profile details hidden pending approval.</p>
       </div>
-      <div class="small sub">Awaiting review before public reveal</div>
+      <div class="small sub">Visible publicly once approved in portal</div>
     </div>`;
   }
   return slots;
@@ -798,7 +869,7 @@ function renderHiddenQueueSlotsHtml(queueTotal, approvedCount){
 
 function renderCreatorsSpotlightAndDirectory(){
   const approved=Array.isArray(st.creators)?st.creators:[];
-  updateWeeklyCreatorBadge();
+  updateCurrentAppliedBadge();
 
   if($("creatorsList")){
     $("creatorsList").innerHTML=approved.length
@@ -808,14 +879,14 @@ function renderCreatorsSpotlightAndDirectory(){
   }
 
   const filtered=getFilteredCreators();
-  const queueTotal=computeWeeklyCreatorQueueCount();
+  const appliedTotal=computeCurrentAppliedCount();
   if($("viewAllMeta")){
-    $("viewAllMeta").textContent=`Approved: ${filtered.length} • ${queueTotal.toLocaleString("en-IN")}+ in queue (unapproved names & profiles hidden)`;
+    $("viewAllMeta").textContent=`Approved: ${filtered.length} • Current Applied: ${appliedTotal.toLocaleString("en-IN")} (unapproved YouTube & Instagram profiles hidden)`;
   }
   if($("creatorsAllGrid")){
     const approvedHtml=filtered.map(renderCreatorCardHtml).join("");
     const hasSearchOrPlat=creatorFilterPlatform!=="All"||creatorSearchQuery.trim()!=="";
-    const hiddenHtml=hasSearchOrPlat?"":renderHiddenQueueSlotsHtml(queueTotal,approved.length);
+    const hiddenHtml=hasSearchOrPlat?"":renderHiddenQueueSlotsHtml(appliedTotal,approved.length);
     const combined=approvedHtml+hiddenHtml;
     $("creatorsAllGrid").innerHTML=combined||`<div class="card center"><p class="sub">No matching approved creators found.</p></div>`;
   }
@@ -828,6 +899,7 @@ function openViewAllPage(){
   pg.hidden=false;
   document.body.style.overflow="hidden";
   renderCreatorsSpotlightAndDirectory();
+  syncHistoryTrap();
   const inp=$("creatorSearch");
   if(inp)setTimeout(()=>inp.focus(),60);
 }
@@ -947,7 +1019,7 @@ async function shrink(file,maxSize){
   const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);return c.toDataURL("image/jpeg",.82)}
 const upiUrl=(a,n,id,nm)=>"upi://pay?pa="+encodeURIComponent(id)+"&pn="+encodeURIComponent(nm)+(a>0?"&am="+a:"")+"&cu=INR&tn="+encodeURIComponent(n);
 const qr=u=>"https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&data="+encodeURIComponent(u);
-const openM=h=>{$("mbody").innerHTML=h;$("m").classList.add("open")};
+const openM=h=>{$("mbody").innerHTML=h;$("m").classList.add("open");syncHistoryTrap()};
 const closeM=()=>$("m").classList.remove("open");
 const head=t=>`<div class="row" style="margin-bottom:10px"><h3>${esc(t)}</h3><button type="button" class="btn sm" data-act="close">Close</button></div>`;
 const qrBox=(u,id,nm,label)=>`<div class="qr"><div style="font-size:.78rem;font-weight:600;color:#475569">Scan with any UPI app</div><img src="${qr(u)}" alt="UPI QR" width="210" height="210"><b>${esc(nm)}</b><div class="chip">${esc(id)} <button type="button" class="copy" data-act="copy" data-t="${esc(id)}">Copy</button></div><a class="btn pri sm" href="${esc(u)}">${esc(label)} ↗</a></div>`;
@@ -1185,7 +1257,7 @@ function renderPolls(){
 
 let sharedHelpHandled=false;
 async function loadPublic(){try{
-  const d=await api("/api/public/overview");st=Object.assign({products:[],charities:[],polls:[],creators:[]},d);
+  const d=await api("/api/public/overview");st=Object.assign({products:[],charities:[],polls:[],creators:[],applied_count:0},d);
   renderSocialLive();
 
   const hl=d.charities||[];$("help").hidden=!hl.length;
@@ -1272,7 +1344,7 @@ function card(k,r){const c=CFG[k];
     const mailSubj="AKSHAY CREATION — Confirmed Pricing & Details ("+(r.service_type||"Promotion")+")";
     const mailBody="Hi "+(r.client_name||"there")+",\n\nYour inquiry for "+(r.service_type||"our service")+" has been approved.\nConfirmed Price: ₹"+(savedPrice||"To be confirmed")+"\nWebsite: "+location.origin+"\nContact: "+BRAND_EMAIL+"\n\nDetails:\n"+(r.details||"");
     const mailUrl="mailto:"+encodeURIComponent(r.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(mailSubj)+"&body="+encodeURIComponent(mailBody);
-    extraAdminHtml=`<div class="analysis-box"><strong>Price Status:</strong> <span style="color:var(--gold2)">${isApproved?("Approved: ₹"+esc(savedPrice)):"Pending Your Price Entry & Approval"}</span><div class="small sub" style="margin-top:3px">From: ${esc(BRAND_EMAIL)} • Link: ${esc(location.origin)}</div>${isApproved&&r.client_email?`<div style="margin-top:8px"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Send Price &amp; Message via Email</a></div>`:""}</div>`;
+    extraAdminHtml=`<div class="analysis-box"><strong>Price Status:</strong> <span style="color:var(--gold2)">${isApproved?("Approved: ₹"+esc(savedPrice)):"Pending Your Price Entry & Approval"}</span><div class="small sub" style="margin-top:3px">From: ${esc(BRAND_EMAIL)} • Link: ${esc(location.origin)}</div>${isApproved&&r.client_email?`<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Send Price &amp; Message via Email</a><button type="button" class="btn sm" data-act="copy" data-t="${esc(r.client_email)}">Copy Email</button></div>`:""}</div>`;
   }
   if(k==="polls"){
     const opts=parseOptionsList(r.options||r.options_json||[]);
@@ -1292,8 +1364,8 @@ function admRender(){if(!dash)return;
   $("atitle").textContent=TABS.find(t=>t[0]===tab)[1];$("auser").textContent=(dash.username||"")+" • "+(dash.role||"");
   const b=$("abody");
   if(tab==="overview"){
-    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING");
-    b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>`<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${(dash[d]||[]).length}</b>${l}</button>`).join("")}</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
+    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING"),pb=(dash.bookings||[]).filter(x=>x.price_approval_status!=="approved");
+    b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>`<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${(dash[d]||[]).length}</b>${l}</button>`).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s) awaiting price confirmation.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;return}
   const list=dash[DK[tab]]||[];
   let h=NEW[tab]?`<p><button type="button" class="btn pri" data-act="adm" data-op="form" data-res="${tab}">＋ ${NEW[tab]}</button></p>`:"";
   if(tab==="staff")h+=`<form class="card" data-form="staff" style="margin-bottom:16px"><h3 style="margin-top:0">Add staff</h3><label>Username *</label><input name="username" required><label>Password * (8+ characters)</label><input name="password" type="password" required minlength="8"><label>Role</label><select name="role"><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="btn pri full">Create account</button></form>`;
@@ -1331,11 +1403,11 @@ function logout(){token="";S.d("akc_token");dash=null;$("alogin").hidden=false;$
 
 /* ---------- Actions ---------- */
 const ACT={
- portal(){document.body.classList.add("adm-open");$("adm").hidden=false;document.body.style.overflow="hidden";if(token)loadDash()},
- closeAdm(){document.body.classList.remove("adm-open");$("adm").hidden=true;document.body.style.overflow=""},
- close:closeM,
+ portal(){document.body.classList.add("adm-open");$("adm").hidden=false;document.body.style.overflow="hidden";if(token)loadDash();syncHistoryTrap()},
+ closeAdm(){document.body.classList.remove("adm-open");$("adm").hidden=true;document.body.style.overflow="";syncHistoryTrap()},
+ close(){closeM();syncHistoryTrap()},
  openViewAllPage,
- closeViewAllPage,
+ closeViewAllPage(){closeViewAllPage();syncHistoryTrap()},
  premiumMembership:()=>openPremiumMembershipModal(99),
  selectPlanAmt(d){openPremiumMembershipModal(d.a)},
  viewOrderReceipt:openOrderReceiptModal,
@@ -1407,7 +1479,10 @@ const FORM={
     data.avatar_url=info.ytThumb||info.autoAvatarUrl;
   }
   await post("/api/creators/apply",data);
+  st.applied_count=(+(st.applied_count||0))+1;
+  updateCurrentAppliedBadge();
   closeM();
+  syncHistoryTrap();
   toast("Submitted for review! Channel & logo auto-analyzed.");
   confetti();
  },
@@ -1475,7 +1550,7 @@ const FORM={
   await post("/api/admin/"+res,{action:id?"update":"create",id:id?+id:undefined,data:x});closeM();toast("Saved");await loadDash();loadPublic()}};
 
 document.addEventListener("click",e=>{
-  if(e.target.id==="m")return closeM();
+  if(e.target.id==="m"){closeM();syncHistoryTrap();return}
   if(e.target.id==="cr_auto_btn"){
     if($("cr_avatar_url"))$("cr_avatar_url").value="";
     refreshCreatorPreview();
@@ -1500,7 +1575,7 @@ document.addEventListener("submit",e=>{
   const h=FORM[f.dataset.form];if(!h)return;
   const btn=f.querySelector("button:not([type])");if(btn)btn.disabled=true;
   Promise.resolve().then(()=>h(f)).catch(x=>toast(x.message,1)).then(()=>{if(btn&&!btn.id)btn.disabled=false;syncCreatorGateUI()})});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeM();closeViewAllPage()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTopOverlay(false)});
 
 document.addEventListener("input",e=>{
   const t=e.target;
@@ -1535,7 +1610,6 @@ document.addEventListener("change",e=>{
   shrink(file,1200).then(data=>post("/api/admin/upload",{data})).then(r=>{$("in_"+k).value=r.url;const p=$("pv_"+k);p.src=r.url;p.hidden=false;toast("Photo uploaded. Now tap Save.")}).catch(x=>toast(x.message,1))});
 
 if("scrollRestoration"in history)history.scrollRestoration="manual";
-if(location.hash&&location.hash!=="#admin")history.replaceState(null,"",location.pathname+location.search);
 const goTop=()=>{if(location.hash!=="#admin"&&!INITIAL_SHARED_HELP_ID)window.scrollTo({top:0,left:0,behavior:"instant"})};
 goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 
@@ -1581,13 +1655,13 @@ if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>
     if(m)m.content=getComputedStyle(document.documentElement).getPropertyValue("--bg").trim()||"#0B0B0C";
     paint();
   }
-  btn.addEventListener("click",()=>{paint();panel.classList.toggle("open")});
+  btn.addEventListener("click",()=>{paint();panel.classList.toggle("open");if(panel.classList.contains("open"))syncHistoryTrap()});
   panel.addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(b){apply(b.dataset.t);confetti()}});
   document.addEventListener("click",e=>{if(!e.target.closest("#tpanel,#themeBtn"))panel.classList.remove("open")});
   apply(cur());
 })();
 
-updateWeeklyCreatorBadge();
+updateCurrentAppliedBadge();
 renderSocialLive();
 reveal();
 loadPublic();
@@ -1595,7 +1669,7 @@ updatePresence();
 setInterval(updatePresence,4000);
 setInterval(renderPolls,6000);
 setInterval(tickSocialLive,6000);
-setInterval(updateWeeklyCreatorBadge,15000);
+setInterval(updateCurrentAppliedBadge,15000);
 if(location.hash==="#admin")ACT.portal();
 })();
 </script>
