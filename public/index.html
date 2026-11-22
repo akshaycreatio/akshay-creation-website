@@ -56,6 +56,7 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .btn.pri{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--onpri);border-color:var(--gold2);position:relative;overflow:hidden}.btn.pri:hover{filter:brightness(1.08)}
 .btn.pri:after{content:"";position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);animation:sweep 4s infinite}
 .btn.sm{padding:7px 16px;font-size:.84rem}.btn.full{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
 section{padding:64px 0;border-top:1px solid var(--line)}.alt{background:var(--bg2)}
 .tag{color:var(--gold);font-weight:600;font-size:.9rem;display:flex;gap:12px;align-items:center}.tag:before{content:"";width:32px;height:1px;background:var(--gold)}
 h2{font-size:clamp(1.9rem,5vw,3.1rem);line-height:1.1;margin:10px 0}
@@ -105,6 +106,11 @@ ul.list{margin-left:18px;color:var(--muted);line-height:1.9}
 .poll-meta{white-space:nowrap;color:var(--gold2);font-weight:600;font-size:.88rem}
 .real-box{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--in);border:1px dashed var(--line);font-size:.82rem;color:var(--ok)}
 .analysis-box{margin-top:10px;padding:10px 12px;border-radius:8px;background:rgba(var(--gl),.08);border:1px solid var(--line);font-size:.82rem;color:var(--paper)}
+.gate-box{border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0 14px;background:var(--in)}
+.gate-step{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:8px;border:1px solid var(--line);margin-top:8px;background:rgba(255,255,255,.02)}
+.gate-step.done{border-color:var(--ok);background:rgba(var(--okl),.1)}
+.gate-tick{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;font-weight:600;color:var(--muted);cursor:pointer;margin:0}
+.gate-step.done .gate-tick{color:var(--ok)}
 .faq details{border-bottom:1px solid var(--line);padding:14px 0;max-width:800px}.faq summary{cursor:pointer;font:500 1.15rem "Bodoni Moda",serif}.faq p{color:var(--muted);margin-top:8px}
 footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px solid var(--gold);color:var(--muted);font-size:.9rem}footer strong{color:var(--gold2);letter-spacing:.1em}
 .qr{background:#fff;color:#0f172a;border-radius:14px;padding:14px;text-align:center;margin:12px 0;display:flex;flex-direction:column;align-items:center;gap:8px}.qr img{width:210px;height:210px;border-radius:8px}
@@ -189,8 +195,8 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <p class="sub">Entertainment, creative content &amp; digital storytelling. You're not just a subscriber, you're part of my story.</p>
 <p class="typer">I'm a <span id="typer"></span><i class="caret"></i></p>
 <div class="btns">
-<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts">YouTube Channel ↗</a>
-<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/akshaycreation_offl">Instagram ↗</a>
+<a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">YouTube Channel ↗</a>
+<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz">Instagram ↗</a>
 <a class="btn" href="#care">Support 💖</a></div>
 <div class="return-banner" id="returnBanner" hidden>Welcome back! Take a look at the latest creators, community polls and updates.</div>
 <div class="stats">
@@ -314,6 +320,12 @@ const S={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)
 const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[]},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
+
+const FOLLOW_GATE=[
+  {id:"ig1",label:"Follow Instagram 1 (@its.akshay.here_)",url:"https://www.instagram.com/its.akshay.here_?cnvx=MXBsZGN5cGppMHFsYw=="},
+  {id:"ig2",label:"Follow Instagram 2 (@akshaycreation_offl)",url:"https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz"},
+  {id:"yt1",label:"Subscribe YouTube (@akshaycreationshorts)",url:"https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7"}
+];
 
 /* ---------- Live Visitors (60 - 800 Range + Evening Rush 5 PM - 11:30 PM) ---------- */
 let currentVisitors=0;
@@ -539,7 +551,40 @@ function refreshCreatorPreview(){
   }
 }
 
+function syncCreatorGateUI(){
+  const subBtn=$("cr_submit_btn");
+  const statusEl=$("cr_gate_status");
+  let done=0;
+  FOLLOW_GATE.forEach(item=>{
+    const cb=$("gate_chk_"+item.id);
+    const row=$("gate_row_"+item.id);
+    const ok=!!(cb&&cb.checked);
+    if(ok)done++;
+    if(row)row.classList.toggle("done",ok);
+  });
+  const allDone=done===FOLLOW_GATE.length;
+  if(subBtn)subBtn.disabled=!allDone;
+  if(statusEl){
+    statusEl.textContent=allDone
+      ? "All 3 steps verified ✓ Ready to submit!"
+      : `Completed ${done} / ${FOLLOW_GATE.length} — Follow both Instagram pages & subscribe on YouTube to unlock Submit.`;
+    statusEl.style.color=allDone?"var(--ok)":"var(--muted)";
+  }
+}
+
 function creatorM(){
+  const gateHtml=FOLLOW_GATE.map(item=>`
+    <div class="gate-step" id="gate_row_${item.id}">
+      <div style="flex:1;min-width:0">
+        <div class="small" style="font-weight:600;color:var(--gold2)">${esc(item.label)}</div>
+        <label class="gate-tick" style="margin-top:4px">
+          <input type="checkbox" id="gate_chk_${item.id}" data-gate-chk="${item.id}">
+          <span>✓ Confirmed</span>
+        </label>
+      </div>
+      <a class="btn sm" target="_blank" rel="noopener" href="${link(item.url)}" data-gate-open="${item.id}">Open ↗</a>
+    </div>`).join("");
+
   openM(head("Register for Spotlight")+`<form data-form="creator">
     <label>Name *</label><input name="name" required placeholder="Your creator name">
     <label>Platform *</label><select name="platform" id="cr_platform"><option>YouTube</option><option>Instagram</option><option>Twitter</option></select>
@@ -553,9 +598,15 @@ function creatorM(){
     </div>
     <input name="avatar_url" id="cr_avatar_url" placeholder="Auto-filled from gallery or channel link (optional)">
     <label>Short bio *</label><textarea name="bio" rows="3" required placeholder="Tell us about your content..."></textarea>
-    <button class="btn pri full">Submit for review</button>
+    <div class="gate-box">
+      <div style="font-size:.88rem;font-weight:700;color:var(--gold2)">Mandatory Follow &amp; Subscribe (3/3)</div>
+      <div class="small" id="cr_gate_status" style="margin-top:2px"></div>
+      ${gateHtml}
+    </div>
+    <button class="btn pri full" id="cr_submit_btn" disabled>Submit for review</button>
   </form>`);
   refreshCreatorPreview();
+  syncCreatorGateUI();
 }
 
 /* ---------- Poll Engine (Max 5 Votes per Device/Poll + Slow Organic Lead Growth) ---------- */
@@ -850,6 +901,11 @@ const ACT={
 
 const FORM={
  async creator(f){
+  const done=FOLLOW_GATE.filter(item=>{const cb=$("gate_chk_"+item.id);return cb&&cb.checked}).length;
+  if(done<FOLLOW_GATE.length){
+    syncCreatorGateUI();
+    throw new Error("Please follow both Instagram pages, subscribe on YouTube, and confirm all 3 ticks first.");
+  }
   const data=fd(f);
   const info=analyzeCreatorChannel(data.platform,data.handle,data.profile_url,data.name);
   data.platform=info.platform;
@@ -892,7 +948,7 @@ document.addEventListener("submit",e=>{
   const f=e.target.closest("form[data-form]");if(!f)return;e.preventDefault();
   const h=FORM[f.dataset.form];if(!h)return;
   const btn=f.querySelector("button:not([type])");if(btn)btn.disabled=true;
-  Promise.resolve().then(()=>h(f)).catch(x=>toast(x.message,1)).then(()=>{if(btn)btn.disabled=false})});
+  Promise.resolve().then(()=>h(f)).catch(x=>toast(x.message,1)).then(()=>{if(btn&&!btn.id)btn.disabled=false;syncCreatorGateUI()})});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
 
 document.addEventListener("input",e=>{
@@ -903,6 +959,10 @@ document.addEventListener("input",e=>{
 
 document.addEventListener("change",e=>{
   const t=e.target;
+  if(t&&t.dataset&&t.dataset.gateChk){
+    syncCreatorGateUI();
+    return;
+  }
   if(t&&t.id==="cr_gallery_file"){
     const file=t.files&&t.files[0];if(!file)return;
     toast("Preparing photo from gallery…");
