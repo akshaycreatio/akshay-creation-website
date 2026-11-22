@@ -67,7 +67,7 @@ section{padding:64px 0;border-top:1px solid var(--line)}.alt{background:var(--bg
 .tag{color:var(--gold2);font-weight:600;font-size:.9rem;display:flex;gap:12px;align-items:center}.tag:before{content:"";width:32px;height:1px;background:var(--gold)}
 h2{font-size:clamp(1.9rem,5vw,3.1rem);line-height:1.1;margin:10px 0;color:var(--paper)}
 .sub{color:var(--muted)}.small{font-size:.85rem}.center{text-align:center}
-.head{margin-bottom:32px}.head .sub{max-width:620px}
+.head{margin-bottom:24px}.head .sub{max-width:620px}
 .hero{position:relative;overflow:hidden;padding:70px 0 60px;border:0;background:radial-gradient(circle at 80% 10%,rgba(var(--gl),.22),transparent 52%),radial-gradient(circle at 10% 90%,rgba(var(--okl),.14),transparent 52%)}
 .hero .wrap{position:relative;z-index:1}
 .orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;animation:float 10s ease-in-out infinite}
@@ -98,11 +98,12 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .price{font:500 1.5rem "Bodoni Moda",serif;color:var(--gold2)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 
-/* ---------- Creator Spotlight Bar, Lookup Trigger & Dedicated View All Page Overlay ---------- */
-.cr-strip{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
-.cr-queue-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line)}
-.cr-lookup-link{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
-.cr-lookup-link:hover{border-color:var(--gold);color:var(--gold2)}
+/* ---------- Creator Spotlight Clean Bar, Lookup Trigger & Dedicated View All Page ---------- */
+.cr-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+.cr-growth-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line)}
+.cr-actions-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.cr-lookup-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
+.cr-lookup-btn:hover{border-color:var(--gold);color:var(--gold2)}
 .cr-sub-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:.74rem;font-weight:600;background:rgba(var(--gl),.14);color:var(--gold2);border:1px solid var(--line);margin-top:6px}
 
 .viewall-page{position:fixed;inset:0;z-index:450;background:var(--bg);overflow-y:auto;padding:0 0 64px}
@@ -113,11 +114,19 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .cr-pill{padding:6px 14px;border-radius:999px;font:600 .82rem "Hanken Grotesk",sans-serif;cursor:pointer;background:var(--in);border:1px solid var(--line);color:var(--muted);transition:all .2s}
 .cr-pill:hover{border-color:var(--gold);color:var(--gold2)}
 .cr-pill.on{background:var(--gold);color:var(--onpri);border-color:var(--gold)}
-.cr-all-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.cr-all-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:10px}
 @media(min-width:640px){.cr-all-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:960px){.cr-all-grid{grid-template-columns:repeat(3,1fr)}}
 
-/* ---------- Offer Banner & Digital Store Instant Summary Card ---------- */
+.hidden-slot{position:relative;border-style:dashed;opacity:.88}
+.hidden-slot-blur{filter:blur(5px);user-select:none;pointer-events:none;margin:8px 0}
+.hidden-slot-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
+
+/* ---------- Membership Plans & Digital Store Instant Summary Card ---------- */
+.plan-card{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:var(--in)}
+.plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.08)}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.plan-price{font:700 1.2rem "Bodoni Moda",serif;color:var(--gold2)}
 .offer-note{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(var(--gl),.08);border:1px solid var(--line);font-size:.86rem;color:var(--paper)}
 .summary-box{margin-top:16px;padding:18px;border-radius:14px;background:linear-gradient(145deg,var(--card2),var(--card));border:1px solid var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .summary-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem}
@@ -265,16 +274,18 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></div></section>
 
 <section id="creators"><div class="wrap">
-<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Emerging creators from our community — pick from gallery or auto-fetch channel logo.</p></div>
+<div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Approved community creators appear here once reviewed and published.</p></div>
 <div class="btns" style="margin:0">
   <button type="button" class="btn sm" data-act="openViewAllPage">👥 View All</button>
   <button type="button" class="btn sm" data-act="premiumMembership">👑 Premium Membership</button>
   <button type="button" class="btn pri" data-act="creatorForm">✨ Register as Creator</button>
 </div></div>
 
-<div class="cr-strip">
-  <span class="cr-queue-badge">🔥 500+ Creators Joined &amp; Queue Active</span>
-  <button type="button" class="cr-lookup-link" data-act="openViewAllPage" title="Open View All & Creator Lookup">🔍 YT / IG Lookup &amp; Directory ↗</button>
+<div class="cr-bar">
+  <span class="cr-growth-pill" id="weeklyCreatorQueueBadge">📈 865+ Weekly Creator Queue</span>
+  <div class="cr-actions-row">
+    <button type="button" class="cr-lookup-btn" data-act="openViewAllPage">🔎 Creator Lookup &amp; Directory ↗</button>
+  </div>
 </div>
 
 <div class="rot-wrap">
@@ -319,13 +330,13 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Video editing, community story &amp; post promotions, and custom creative production.</p></div>
 <ol class="steps"><li><b>Share your brief</b><span>Goal, timeline and deliverables.</span></li><li><b>Plan together</b><span>We agree on idea and format.</span></li><li><b>Review &amp; publish</b><span>You approve, then it goes live.</span></li></ol>
 <div class="g2">
-<div class="card"><h3>Available Services &amp; Promotions</h3><ul class="list"><li><strong>Sponsored Promotion:</strong> YouTube / Reels integrations.</li><li><strong>Community Story Promotion:</strong> Direct story spotlight to the community.</li><li><strong>Community Post Promotion:</strong> Dedicated post feature with your brand details.</li><li><strong>Short-Form Editing:</strong> Retention-focused Reels &amp; Shorts.</li><li><strong>Brand Ad Production:</strong> Script-to-screen showcase videos.</li><li><strong>Creator Consultation:</strong> Channel audit &amp; growth plan.</li></ul>
-<div class="offer-note"><strong>🎁 Starter &amp; Cash Refund Offer:</strong> Story Promotion &amp; Community Post Promotion start with a small starter rate scaled to current sub counts (155.9K+ fam). Pay after the agreed window, with cash refunds available for the first few early users. Final price details are sent only after your approval.</div></div>
+<div class="card"><h3>Available Services &amp; Promotions</h3><ul class="list"><li><strong>Community Story Promotion:</strong> Instagram &amp; community story spotlight scaled to current audience size.</li><li><strong>Community Post Promotion:</strong> Dedicated post feature with your brand details.</li><li><strong>Sponsored Promotion:</strong> YouTube / Reels integrations.</li><li><strong>Short-Form Editing:</strong> Retention-focused Reels &amp; Shorts.</li><li><strong>Brand Ad Production:</strong> Script-to-screen showcase videos.</li><li><strong>Creator Consultation:</strong> Channel audit &amp; growth plan.</li></ul>
+<div class="offer-note"><strong>🎁 Starter Rate &amp; First-Few Cash Refund Offer:</strong> Story Promotion &amp; Community Post Promotion start with an accessible starter tier aligned with current follower/subscriber counts. Pay after the agreed window, with cash refunds for the first few eligible users. Price details are sent only after your approval.</div></div>
 <div class="card"><h3>Book a Service / Promotion</h3>
 <form data-form="book"><label>Promotion / Service Type *</label><select name="service_type"><option>Community Story Promotion</option><option>Community Post Promotion</option><option>Sponsored Promotion</option><option>Short-Form Video Editing</option><option>Brand Ad Production</option><option>Creator Consultation</option></select>
 <label>Name / Brand *</label><input name="client_name" required><label>Email *</label><input name="client_email" type="email" required>
 <label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project / Promotion brief *</label><textarea name="details" rows="3" required></textarea>
-<label class="chk"><input type="checkbox" name="cash_refund_offer" value="1">Apply starter rate &amp; eligible first-few cash refund / post-window terms</label>
+<label class="chk"><input type="checkbox" name="cash_refund_offer" value="1">Apply starter rate &amp; first-few cash refund / post-window terms</label>
 <label class="chk"><input type="checkbox" name="email_report" value="1">Send me an email report of this inquiry</label>
 <button class="btn pri full">Send Booking Request</button></form></div>
 </div></div></section>
@@ -373,20 +384,20 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
     <div class="wrap row">
       <div>
         <span class="brand">CREATOR DIRECTORY &amp; LOOKUP</span>
-        <div class="small sub" id="viewAllMeta">Approved creators &amp; YT / IG ID search</div>
+        <div class="small sub" id="viewAllMeta">Approved creators &amp; hidden pending queue slots</div>
       </div>
       <button type="button" class="btn sm pri" data-act="closeViewAllPage">← Back to Main Page</button>
     </div>
   </div>
   <div class="wrap">
-    <input type="search" class="viewall-search" id="creatorSearch" placeholder="Search creator name, YouTube or Instagram @handle...">
+    <input type="search" class="viewall-search" id="creatorSearch" placeholder="Search approved creator name, YouTube or Instagram @handle...">
     <div class="cr-filters" id="creatorPlatformFilters">
       <button type="button" class="cr-pill on" data-plat="All">All</button>
       <button type="button" class="cr-pill" data-plat="YouTube">YouTube</button>
       <button type="button" class="cr-pill" data-plat="Instagram">Instagram</button>
       <button type="button" class="cr-pill" data-plat="Twitter">Twitter</button>
     </div>
-    <div class="cr-all-grid" id="creatorsAllGrid"></div>
+    <div id="creatorsAllGrid" class="cr-all-grid"></div>
   </div>
 </div>
 
@@ -440,6 +451,29 @@ const FOLLOW_GATE=[
   {id:"ig2",label:"Follow Instagram 2 (@akshaycreation_offl)",url:"https://www.instagram.com/akshaycreation_offl?evlk=cXVmeWdsaWJ0aXpz"},
   {id:"yt1",label:"Subscribe YouTube (@akshaycreationshorts)",url:"https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7"}
 ];
+
+/* ---------- Weekly Gradual Creator Queue Growth (Mon 8 AM -> Sun ~865 to 976+) ---------- */
+function computeWeeklyCreatorQueueCount(){
+  const now=new Date();
+  const day=now.getDay(); // 0=Sun, 1=Mon ... 6=Sat
+  const daysSinceMon=(day+6)%7;
+  const hourInDay=now.getHours()+(now.getMinutes()/60);
+  const totalHoursSinceMon=(daysSinceMon*24)+hourInDay;
+  const weekSpanHours=7*24; // 168h
+  const progress=Math.max(0,Math.min(1,totalHoursSinceMon/weekSpanHours));
+  const weekNumber=Math.floor(Date.now()/(7*24*3600*1000));
+  const endTarget=865+((weekNumber*17)%112); // ~865 to 976 by Sunday
+  const startBase=120+((weekNumber*11)%65);
+  const eased=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
+  const microPulse=Math.floor((Date.now()/28000)%4);
+  return Math.max(85,startBase+Math.round((endTarget-startBase)*eased)+microPulse);
+}
+function updateWeeklyCreatorBadge(){
+  const el=$("weeklyCreatorQueueBadge");
+  if(!el)return;
+  const n=computeWeeklyCreatorQueueCount();
+  el.textContent=`📈 ${n.toLocaleString("en-IN")}+ Creators in Weekly Queue`;
+}
 
 /* ---------- Auto-Rotating Swiping Engine (Silent Brief Pause on Touch/Swipe) ---------- */
 const rotControllers={};
@@ -731,23 +765,45 @@ function renderCreatorCardHtml(c){
   return `<div class="card"><div class="row" style="justify-content:flex-start;gap:12px"><img class="av" src="${avSrc}" alt="${esc(c.name)}"><div><span class="badge">${esc(c.platform)}</span><div class="small sub" style="margin-top:3px">${esc(meta.channelStyle)}</div>${subBadge?`<div class="cr-sub-chip">${esc(subBadge)}</div>`:""}</div></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`;
 }
 
+function renderHiddenQueueSlotsHtml(queueTotal, approvedCount){
+  const hiddenCount=Math.max(6,Math.min(18,queueTotal-approvedCount));
+  let slots="";
+  for(let i=0;i<hiddenCount;i++){
+    slots+=`<div class="card hidden-slot">
+      <span class="hidden-slot-tag">🔒 Pending Approval • Hidden</span>
+      <div class="hidden-slot-blur">
+        <h3>Creator Entry #${i+1}</h3>
+        <p class="sub">@hidden_creator_handle</p>
+        <p class="sub small">Profile &amp; identity hidden until admin approval.</p>
+      </div>
+      <div class="small sub">Awaiting review before public reveal</div>
+    </div>`;
+  }
+  return slots;
+}
+
 function renderCreatorsSpotlightAndDirectory(){
   const approved=Array.isArray(st.creators)?st.creators:[];
+  updateWeeklyCreatorBadge();
+
   if($("creatorsList")){
     $("creatorsList").innerHTML=approved.length
       ? approved.map(renderCreatorCardHtml).join("")
-      : `<div class="card center" style="flex:1"><p class="sub">No featured creators yet. Tap Register as Creator!</p></div>`;
+      : `<div class="card center" style="flex:1"><p class="sub">No approved creators featured yet. Approved profiles will appear here automatically.</p></div>`;
     setupRotatingTrack("creatorsList","creatorsRotBar","creatorsDots",2600,4500);
   }
 
   const filtered=getFilteredCreators();
+  const queueTotal=computeWeeklyCreatorQueueCount();
   if($("viewAllMeta")){
-    $("viewAllMeta").textContent=`Showing ${filtered.length} approved creator(s) • 500+ in community queue`;
+    $("viewAllMeta").textContent=`Approved: ${filtered.length} • ${queueTotal.toLocaleString("en-IN")}+ in queue (unapproved names & profiles hidden)`;
   }
   if($("creatorsAllGrid")){
-    $("creatorsAllGrid").innerHTML=filtered.length
-      ? filtered.map(renderCreatorCardHtml).join("")
-      : `<div class="card center"><p class="sub">No matching creators found for your search/filter.</p></div>`;
+    const approvedHtml=filtered.map(renderCreatorCardHtml).join("");
+    const hasSearchOrPlat=creatorFilterPlatform!=="All"||creatorSearchQuery.trim()!=="";
+    const hiddenHtml=hasSearchOrPlat?"":renderHiddenQueueSlotsHtml(queueTotal,approved.length);
+    const combined=approvedHtml+hiddenHtml;
+    $("creatorsAllGrid").innerHTML=combined||`<div class="card center"><p class="sub">No matching approved creators found.</p></div>`;
   }
   reveal();
 }
@@ -769,15 +825,27 @@ function closeViewAllPage(){
   if($("adm")&&$("adm").hidden)document.body.style.overflow="";
 }
 
-function openPremiumMembershipModal(){
+function openPremiumMembershipModal(preAmt){
+  const amt=+preAmt||299;
+  const u=upiUrl(amt,"Creator Premium Membership",UPI.id,UPI.name);
   openM(head("Creator Premium Membership")+`
-    <p class="sub small" style="margin-bottom:10px">Optional creator membership for priority spotlight consideration and community perks.</p>
-    <div class="receipt-card">
-      <div class="summary-row"><span>Spotlight Priority</span><strong>Featured Rotation</strong></div>
-      <div class="summary-row"><span>Community Access</span><strong>Creator Hub &amp; Polls</strong></div>
-      <div class="summary-row"><span>Direct UPI</span><strong>${esc(UPI.id)}</strong></div>
+    <p class="sub small" style="margin-bottom:8px">Choose a plan to support the community and unlock promotion &amp; spotlight perks.</p>
+    <div class="plan-card${amt===299?" feat":""}">
+      <div class="plan-top"><strong>1. Starter Story &amp; Post</strong><span class="plan-price">₹299</span></div>
+      <div class="small sub">Instagram / community story &amp; post promotion support scaled to current reach (955 IG • 155.9K+ YT).</div>
+      <div style="margin-top:8px"><button type="button" class="btn sm${amt===299?" pri":""}" data-act="selectPlanAmt" data-a="299">Select ₹299</button></div>
     </div>
-    <button type="button" class="btn pri full" data-act="support">👑 Join via Direct UPI</button>
+    <div class="plan-card${amt===699?" feat":""}">
+      <div class="plan-top"><strong>2. Spotlight &amp; Growth</strong><span class="plan-price">₹699</span></div>
+      <div class="small sub">Priority spotlight review, story + post combo option &amp; early-user cash refund eligibility.</div>
+      <div style="margin-top:8px"><button type="button" class="btn sm${amt===699?" pri":""}" data-act="selectPlanAmt" data-a="699">Select ₹699</button></div>
+    </div>
+    <div class="plan-card${amt===1499?" feat":""}">
+      <div class="plan-top"><strong>3. Pro Paid Ad Boost</strong><span class="plan-price">₹1,499</span></div>
+      <div class="small sub">Includes dedicated paid ad campaign allocation plus platform fee.</div>
+      <div style="margin-top:8px"><button type="button" class="btn sm${amt===1499?" pri":""}" data-act="selectPlanAmt" data-a="1499">Select ₹1,499</button></div>
+    </div>
+    ${qrBox(u,UPI.id,UPI.name,"Pay ₹"+amt+" via UPI")}
   `);
 }
 
@@ -1235,7 +1303,8 @@ const ACT={
  close:closeM,
  openViewAllPage,
  closeViewAllPage,
- premiumMembership:openPremiumMembershipModal,
+ premiumMembership:()=>openPremiumMembershipModal(299),
+ selectPlanAmt(d){openPremiumMembershipModal(d.a)},
  viewOrderReceipt:openOrderReceiptModal,
  emailOrderCard:emailOrderCardToClient,
  support:()=>supportM(0),amt:d=>supportM(d.a),
@@ -1421,7 +1490,7 @@ goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function burst(x,y,set,n){if(reduce)return;const em=set||["❤️","✨","⭐","🎉","💖","🎬"];n=n||6;for(let i=0;i<n;i++){const s=document.createElement("span");s.className="pt";s.textContent=em[(Math.random()*em.length)|0];const a=Math.random()*Math.PI*2,d=50+Math.random()*80;s.style.cssText="left:"+x+"px;top:"+y+"px;--dx:"+Math.cos(a)*d+"px;--dy:"+(Math.sin(a)*d-30)+"px;--rot:"+((Math.random()*120-60)|0)+"deg";document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
 function confetti(){burst(innerWidth/2,innerHeight/2.3,["🎉","✨","🎊","💖","⭐"],18)}
-document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll:not(:disabled),.tab,.fab,.cr-pill,.cr-lookup-link");if(b&&!b.closest("#adm"))burst(e.clientX,e.clientY,null,5)},true);
+document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll:not(:disabled),.tab,.fab,.cr-pill,.cr-lookup-btn");if(b&&!b.closest("#adm"))burst(e.clientX,e.clientY,null,5)},true);
 (function(){const el=$("typer");if(!el)return;const words=["Shorts Creator 🎬","Reels Storyteller 📸","Video Editor ✂️","Kerala Creator 🌴","Community Builder 💖"];
   if(reduce){el.textContent=words[0];return}
   let w=0,i=0,del=false;(function tick(){const cur=Array.from(words[w]);el.textContent=cur.slice(0,i).join("");
@@ -1466,6 +1535,7 @@ if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>
   apply(cur());
 })();
 
+updateWeeklyCreatorBadge();
 renderSocialLive();
 reveal();
 loadPublic();
@@ -1473,6 +1543,7 @@ updatePresence();
 setInterval(updatePresence,4000);
 setInterval(renderPolls,6000);
 setInterval(tickSocialLive,6000);
+setInterval(updateWeeklyCreatorBadge,15000);
 if(location.hash==="#admin")ACT.portal();
 })();
 </script>
