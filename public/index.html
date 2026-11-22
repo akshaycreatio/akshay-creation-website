@@ -98,10 +98,9 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .price{font:500 1.5rem "Bodoni Moda",serif;color:var(--gold2)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 
-/* ---------- Creator Spotlight Clean Bar, Lookup Trigger & Dedicated View All Page ---------- */
+/* ---------- Creator Spotlight Clean Bar & Dedicated View All Page ---------- */
 .cr-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;padding:12px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
 .cr-growth-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:.83rem;font-weight:700;color:var(--gold2);background:rgba(var(--gl),.14);border:1px solid var(--line)}
-.cr-actions-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .cr-lookup-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);cursor:pointer;transition:all .2s}
 .cr-lookup-btn:hover{border-color:var(--gold);color:var(--gold2)}
 .cr-sub-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:.74rem;font-weight:600;background:rgba(var(--gl),.14);color:var(--gold2);border:1px solid var(--line);margin-top:6px}
@@ -121,13 +120,13 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .hidden-slot{position:relative;border-style:dashed;opacity:.88}
 .hidden-slot-blur{filter:blur(5px);user-select:none;pointer-events:none;margin:8px 0}
 .hidden-slot-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--line)}
+.viewall-vip-box{margin-top:20px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 /* ---------- Membership Plans & Digital Store Instant Summary Card ---------- */
-.plan-card{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:var(--in)}
-.plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.08)}
-.plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
-.plan-price{font:700 1.2rem "Bodoni Moda",serif;color:var(--gold2)}
-.offer-note{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(var(--gl),.08);border:1px solid var(--line);font-size:.86rem;color:var(--paper)}
+.plan-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:var(--in);cursor:pointer;transition:border-color .2s,background .2s}
+.plan-card.feat{border-color:var(--gold);background:rgba(var(--gl),.1)}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.plan-price{font:700 1.15rem "Bodoni Moda",serif;color:var(--gold2)}
 .summary-box{margin-top:16px;padding:18px;border-radius:14px;background:linear-gradient(145deg,var(--card2),var(--card));border:1px solid var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .summary-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem}
 .summary-row:last-of-type{border-bottom:0}
@@ -277,15 +276,12 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="head row" style="align-items:flex-end"><div><div class="tag">Creator Spotlight</div><h2>Creators of the Week <span class="wig wig">🌟</span></h2><p class="sub">Approved community creators appear here once reviewed and published.</p></div>
 <div class="btns" style="margin:0">
   <button type="button" class="btn sm" data-act="openViewAllPage">👥 View All</button>
-  <button type="button" class="btn sm" data-act="premiumMembership">👑 Premium Membership</button>
   <button type="button" class="btn pri" data-act="creatorForm">✨ Register as Creator</button>
 </div></div>
 
 <div class="cr-bar">
-  <span class="cr-growth-pill" id="weeklyCreatorQueueBadge">📈 865+ Weekly Creator Queue</span>
-  <div class="cr-actions-row">
-    <button type="button" class="cr-lookup-btn" data-act="openViewAllPage">🔎 Creator Lookup &amp; Directory ↗</button>
-  </div>
+  <span class="cr-growth-pill" id="weeklyCreatorQueueBadge">📈 865+ Creators in Weekly Queue</span>
+  <button type="button" class="cr-lookup-btn" data-act="openViewAllPage">🔎 Creator Lookup &amp; Directory ↗</button>
 </div>
 
 <div class="rot-wrap">
@@ -327,17 +323,15 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></section>
 
 <section class="alt" id="services"><div class="wrap">
-<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Video editing, community story &amp; post promotions, and custom creative production.</p></div>
-<ol class="steps"><li><b>Share your brief</b><span>Goal, timeline and deliverables.</span></li><li><b>Plan together</b><span>We agree on idea and format.</span></li><li><b>Review &amp; publish</b><span>You approve, then it goes live.</span></li></ol>
+<div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Collaborations, promotions, and creative requests crafted for your brand.</p></div>
 <div class="g2">
-<div class="card"><h3>Available Services &amp; Promotions</h3><ul class="list"><li><strong>Community Story Promotion:</strong> Instagram &amp; community story spotlight scaled to current audience size.</li><li><strong>Community Post Promotion:</strong> Dedicated post feature with your brand details.</li><li><strong>Sponsored Promotion:</strong> YouTube / Reels integrations.</li><li><strong>Short-Form Editing:</strong> Retention-focused Reels &amp; Shorts.</li><li><strong>Brand Ad Production:</strong> Script-to-screen showcase videos.</li><li><strong>Creator Consultation:</strong> Channel audit &amp; growth plan.</li></ul>
-<div class="offer-note"><strong>🎁 Starter Rate &amp; First-Few Cash Refund Offer:</strong> Story Promotion &amp; Community Post Promotion start with an accessible starter tier aligned with current follower/subscriber counts. Pay after the agreed window, with cash refunds for the first few eligible users. Price details are sent only after your approval.</div></div>
+<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Select your preferred promotion or service option in the booking form. Final price details and confirmation are sent after your request is reviewed and approved.</p></div>
 <div class="card"><h3>Book a Service / Promotion</h3>
 <form data-form="book"><label>Promotion / Service Type *</label><select name="service_type"><option>Community Story Promotion</option><option>Community Post Promotion</option><option>Sponsored Promotion</option><option>Short-Form Video Editing</option><option>Brand Ad Production</option><option>Creator Consultation</option></select>
 <label>Name / Brand *</label><input name="client_name" required><label>Email *</label><input name="client_email" type="email" required>
 <label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project / Promotion brief *</label><textarea name="details" rows="3" required></textarea>
-<label class="chk"><input type="checkbox" name="cash_refund_offer" value="1">Apply starter rate &amp; first-few cash refund / post-window terms</label>
-<label class="chk"><input type="checkbox" name="email_report" value="1">Send me an email report of this inquiry</label>
+<label class="chk"><input type="checkbox" name="cash_refund_offer" value="1">Include starter / early-user refund &amp; post-window option</label>
+<label class="chk"><input type="checkbox" name="email_report" value="1">Send email update &amp; report once approved</label>
 <button class="btn pri full">Send Booking Request</button></form></div>
 </div></div></section>
 
@@ -369,9 +363,9 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <section id="faq"><div class="wrap">
 <div class="head"><div class="tag">Good to know</div><h2>Questions, answered <span class="wig bn">💡</span></h2></div>
 <div class="faq">
-<details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID, instant summary card, and email receipt option straight away.</p></details>
+<details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID and instant order summary card straight away.</p></details>
 <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check in the store. When your payment is marked Paid, the download button appears.</p></details>
-<details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services (including Community Story Promotion, Community Post Promotion, and Sponsored Promotion), or email collab.akshaycreation@gmail.com. Price details are sent only after your approval.</p></details>
+<details><summary>How can I work with Akshay Creation?</summary><p>Use the booking form in Services (including Community Story Promotion, Community Post Promotion, and Sponsored Promotion), or email collab.akshaycreation@gmail.com. Price details are sent after approval.</p></details>
 <details><summary>How do I become Creator of the Week?</summary><p>Tap Register as Creator. Every submission is reviewed before it appears.</p></details>
 </div></div></section>
 </main>
@@ -398,6 +392,13 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
       <button type="button" class="cr-pill" data-plat="Twitter">Twitter</button>
     </div>
     <div id="creatorsAllGrid" class="cr-all-grid"></div>
+    <div class="viewall-vip-box">
+      <div>
+        <strong style="color:var(--gold2)">👑 Creator Premium Membership</strong>
+        <div class="small sub">Select a membership plan and pay directly through UPI.</div>
+      </div>
+      <button type="button" class="btn sm pri" data-act="premiumMembership">👑 Premium Membership</button>
+    </div>
   </div>
 </div>
 
@@ -431,10 +432,12 @@ const S={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)
 const fd=f=>Object.fromEntries(new FormData(f));
 let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charities:[],polls:[],creators:[]},tt;
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
+const BRAND_EMAIL="collab.akshaycreation@gmail.com";
 
 let creatorFilterPlatform="All";
 let creatorSearchQuery="";
 let lastOrderSummary=null;
+const bookingPrices={};
 
 const INITIAL_SHARED_HELP_ID=(function(){
   try{
@@ -455,14 +458,14 @@ const FOLLOW_GATE=[
 /* ---------- Weekly Gradual Creator Queue Growth (Mon 8 AM -> Sun ~865 to 976+) ---------- */
 function computeWeeklyCreatorQueueCount(){
   const now=new Date();
-  const day=now.getDay(); // 0=Sun, 1=Mon ... 6=Sat
+  const day=now.getDay();
   const daysSinceMon=(day+6)%7;
   const hourInDay=now.getHours()+(now.getMinutes()/60);
   const totalHoursSinceMon=(daysSinceMon*24)+hourInDay;
-  const weekSpanHours=7*24; // 168h
+  const weekSpanHours=7*24;
   const progress=Math.max(0,Math.min(1,totalHoursSinceMon/weekSpanHours));
   const weekNumber=Math.floor(Date.now()/(7*24*3600*1000));
-  const endTarget=865+((weekNumber*17)%112); // ~865 to 976 by Sunday
+  const endTarget=865+((weekNumber*17)%112);
   const startBase=120+((weekNumber*11)%65);
   const eased=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
   const microPulse=Math.floor((Date.now()/28000)%4);
@@ -766,7 +769,7 @@ function renderCreatorCardHtml(c){
 }
 
 function renderHiddenQueueSlotsHtml(queueTotal, approvedCount){
-  const hiddenCount=Math.max(6,Math.min(18,queueTotal-approvedCount));
+  const hiddenCount=Math.max(6,Math.min(15,queueTotal-approvedCount));
   let slots="";
   for(let i=0;i<hiddenCount;i++){
     slots+=`<div class="card hidden-slot">
@@ -825,27 +828,24 @@ function closeViewAllPage(){
   if($("adm")&&$("adm").hidden)document.body.style.overflow="";
 }
 
-function openPremiumMembershipModal(preAmt){
-  const amt=+preAmt||299;
-  const u=upiUrl(amt,"Creator Premium Membership",UPI.id,UPI.name);
-  openM(head("Creator Premium Membership")+`
-    <p class="sub small" style="margin-bottom:8px">Choose a plan to support the community and unlock promotion &amp; spotlight perks.</p>
-    <div class="plan-card${amt===299?" feat":""}">
-      <div class="plan-top"><strong>1. Starter Story &amp; Post</strong><span class="plan-price">₹299</span></div>
-      <div class="small sub">Instagram / community story &amp; post promotion support scaled to current reach (955 IG • 155.9K+ YT).</div>
-      <div style="margin-top:8px"><button type="button" class="btn sm${amt===299?" pri":""}" data-act="selectPlanAmt" data-a="299">Select ₹299</button></div>
+function openPremiumMembershipModal(selectedAmt){
+  const amt=+selectedAmt||299;
+  const directUpi=upiUrl(amt,"AKSHAY CREATION Membership ₹"+amt,UPI.id,UPI.name);
+  openM(head("Creator Membership")+`
+    <p class="sub small" style="margin-bottom:8px">Pick a plan below and tap Pay through UPI.</p>
+    <div class="plan-card${amt===299?" feat":""}" data-act="selectPlanAmt" data-a="299">
+      <div class="plan-top"><strong>Starter Plan</strong><span class="plan-price">₹299</span></div>
+      <div class="small sub">Story &amp; post promotion option scaled to reach</div>
     </div>
-    <div class="plan-card${amt===699?" feat":""}">
-      <div class="plan-top"><strong>2. Spotlight &amp; Growth</strong><span class="plan-price">₹699</span></div>
-      <div class="small sub">Priority spotlight review, story + post combo option &amp; early-user cash refund eligibility.</div>
-      <div style="margin-top:8px"><button type="button" class="btn sm${amt===699?" pri":""}" data-act="selectPlanAmt" data-a="699">Select ₹699</button></div>
+    <div class="plan-card${amt===699?" feat":""}" data-act="selectPlanAmt" data-a="699">
+      <div class="plan-top"><strong>Growth Plan</strong><span class="plan-price">₹699</span></div>
+      <div class="small sub">Priority spotlight review &amp; promotion support</div>
     </div>
-    <div class="plan-card${amt===1499?" feat":""}">
-      <div class="plan-top"><strong>3. Pro Paid Ad Boost</strong><span class="plan-price">₹1,499</span></div>
-      <div class="small sub">Includes dedicated paid ad campaign allocation plus platform fee.</div>
-      <div style="margin-top:8px"><button type="button" class="btn sm${amt===1499?" pri":""}" data-act="selectPlanAmt" data-a="1499">Select ₹1,499</button></div>
+    <div class="plan-card${amt===1499?" feat":""}" data-act="selectPlanAmt" data-a="1499">
+      <div class="plan-top"><strong>Boost Plan</strong><span class="plan-price">₹1,499</span></div>
+      <div class="small sub">Paid ad campaign allocation + platform fee</div>
     </div>
-    ${qrBox(u,UPI.id,UPI.name,"Pay ₹"+amt+" via UPI")}
+    <a class="btn pri full" style="margin-top:12px" href="${esc(directUpi)}">Pay through UPI (₹${amt}) ↗</a>
   `);
 }
 
@@ -874,7 +874,7 @@ function renderInstantOrderSummary(){
 }
 
 function buildOrderReceiptText(o){
-  return `AKSHAY CREATION — ORDER CONFIRMATION & CARD\nOrder ID: ${o.order_id}\nItem: ${o.product_title}\nAmount: ₹${o.price_inr}\nCustomer: ${o.customer_name}\nEmail: ${o.customer_email}\n12-Digit UTR: ${o.utr}\nDate: ${o.created_at}`;
+  return `AKSHAY CREATION — ORDER CONFIRMATION & CARD\nWebsite: ${location.origin}\nContact: ${BRAND_EMAIL}\nOrder ID: ${o.order_id}\nItem: ${o.product_title}\nAmount: ₹${o.price_inr}\nCustomer: ${o.customer_name}\nEmail: ${o.customer_email}\n12-Digit UTR: ${o.utr}\nDate: ${o.created_at}`;
 }
 
 function openOrderReceiptModal(){
@@ -883,13 +883,14 @@ function openOrderReceiptModal(){
   const receiptText=buildOrderReceiptText(o);
   openM(head("Order Confirmation & Card Details")+`
     <div class="receipt-card">
-      <div class="row" style="margin-bottom:8px"><span class="badge ok">Verified Submission</span><span class="small sub">${esc(o.created_at)}</span></div>
+      <div class="row" style="margin-bottom:8px"><span class="badge ok">Order Card</span><span class="small sub">${esc(o.created_at)}</span></div>
       <div class="summary-row"><span>Order ID</span><strong>${esc(o.order_id)}</strong></div>
       <div class="summary-row"><span>Product</span><strong>${esc(o.product_title)}</strong></div>
       <div class="summary-row"><span>Amount</span><strong>₹${esc(o.price_inr)}</strong></div>
       <div class="summary-row"><span>Customer Name</span><strong>${esc(o.customer_name)}</strong></div>
       <div class="summary-row"><span>Client Email</span><strong>${esc(o.customer_email)}</strong></div>
       <div class="summary-row"><span>12-Digit UTR</span><strong>${esc(o.utr)}</strong></div>
+      <div class="summary-row"><span>Website</span><strong>${esc(location.origin)}</strong></div>
     </div>
     <div class="btns" style="margin:12px 0 0">
       <button type="button" class="btn pri sm" data-act="emailOrderCard">📧 Send via Email</button>
@@ -903,9 +904,9 @@ function emailOrderCardToClient(){
   if(!o)return toast("No order card to email",1);
   const subject="AKSHAY CREATION Order Confirmation — "+o.order_id;
   const body=buildOrderReceiptText(o);
-  const mailHref="mailto:"+encodeURIComponent(o.customer_email||"")+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+  const mailHref="mailto:"+encodeURIComponent(o.customer_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   window.location.href=mailHref;
-  toast("Opening email app with order confirmation & card details");
+  toast("Opening email with order confirmation & card details");
 }
 
 /* ---------- Scroll reveal animation ---------- */
@@ -941,7 +942,7 @@ const qrBox=(u,id,nm,label)=>`<div class="qr"><div style="font-size:.78rem;font-
 function supportM(a){a=+a||0;const u=upiUrl(a,"Support AKSHAY CREATION",UPI.id,UPI.name);
   openM(head("Support AKSHAY CREATION")+`<div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"))}
 function checkout(id){const p=st.products.find(x=>x.id==id);if(!p)return;
-  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1" checked>Send order confirmation &amp; card details via email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
+  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,p.title,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`)}
 
 function refreshCreatorPreview(){
   const f=document.querySelector('form[data-form="creator"]');if(!f)return;
@@ -1224,7 +1225,7 @@ const CFG={
  creators:{t:"name",acts:r=>[...(r.status!=="approved"?[["Approve","st","approved",1]]:[]),["Edit","form"],["Delete","del"]]},
  ads:{t:"title",acts:tg},charity:{t:"title",acts:tg},products:{t:"title",acts:tg},
  orders:{t:"order_id",acts:r=>[["Mark paid","st","PAID",1],["Reject","st","REJECTED"],["Delete","del"]]},
- bookings:{t:"client_name",acts:r=>[...(r.price_approval_status!=="approved"?[["Approve & email price","set",{price_approval_status:"approved"},1]]:[["Price approved ✓","set",{price_approval_status:"pending"}]]),["Contacted","st","contacted"],["Done","st","done"],["Delete","del"]]},
+ bookings:{t:"client_name",acts:r=>[["Set & approve price","setPrice",null,1],["Contacted","st","contacted"],["Done","st","done"],["Delete","del"]]},
  care:{t:"applicant_name",acts:r=>[["In progress","st","in_progress"],["Resolved","st","resolved",1],["Delete","del"]]},
  polls:{t:"question",acts:r=>[["Edit","form"],[r.active==null||+r.active?"Close":"Reopen","set",{active:r.active==null||+r.active?0:1}],["Delete","del"]]},
  staff:{t:"username",acts:r=>[["Delete","del"]]}};
@@ -1246,13 +1247,12 @@ function card(k,r){const c=CFG[k];
     extraAdminHtml=`<div class="analysis-box"><div class="row" style="justify-content:flex-start;gap:10px"><img class="av" src="${getCreatorAvatar(r)}" alt="" style="width:42px;height:42px"><div><strong>Auto Channel Analysis</strong><div class="small sub">${esc(info.summary+instaDisp+subDisp)}</div></div></div></div>`;
   }
   if(k==="bookings"){
-    const priceState=r.price_approval_status==="approved"?"Approved — Ready to Email Price":"Locked — Waiting for Your Approval";
-    const refundState=r.cash_refund_offer?"Starter / Refund Offer Requested":"Standard Inquiry";
-    const repState=r.email_report?"Email Report Requested":"No Report Requested";
-    const mailSubj="AKSHAY CREATION — Approved Pricing & Details ("+(r.service_type||"Promotion")+")";
-    const mailBody="Hi "+(r.client_name||"there")+",\n\nYour inquiry for "+(r.service_type||"our service")+" has been reviewed and approved.\n\nShared Details:\n"+(r.details||"");
-    const mailUrl="mailto:"+encodeURIComponent(r.client_email||"")+"?subject="+encodeURIComponent(mailSubj)+"&body="+encodeURIComponent(mailBody);
-    extraAdminHtml=`<div class="analysis-box"><strong>Price Status:</strong> <span style="color:var(--gold2)">${esc(priceState)}</span><div class="small sub" style="margin-top:3px">${esc(refundState)} • ${esc(repState)}</div>${r.price_approval_status==="approved"&&r.client_email?`<div style="margin-top:8px"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Email Client Now</a></div>`:""}</div>`;
+    const savedPrice=bookingPrices[r.id]||r.approved_price||"";
+    const isApproved=r.price_approval_status==="approved"||!!savedPrice;
+    const mailSubj="AKSHAY CREATION — Confirmed Pricing & Details ("+(r.service_type||"Promotion")+")";
+    const mailBody="Hi "+(r.client_name||"there")+",\n\nYour inquiry for "+(r.service_type||"our service")+" has been approved.\nConfirmed Price: ₹"+(savedPrice||"To be confirmed")+"\nWebsite: "+location.origin+"\nContact: "+BRAND_EMAIL+"\n\nDetails:\n"+(r.details||"");
+    const mailUrl="mailto:"+encodeURIComponent(r.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(mailSubj)+"&body="+encodeURIComponent(mailBody);
+    extraAdminHtml=`<div class="analysis-box"><strong>Price Status:</strong> <span style="color:var(--gold2)">${isApproved?("Approved: ₹"+esc(savedPrice)):"Pending Your Price Entry & Approval"}</span><div class="small sub" style="margin-top:3px">From: ${esc(BRAND_EMAIL)} • Link: ${esc(location.origin)}</div>${isApproved&&r.client_email?`<div style="margin-top:8px"><a class="btn pri sm" href="${esc(mailUrl)}">✉ Send Price &amp; Message via Email</a></div>`:""}</div>`;
   }
   if(k==="polls"){
     const opts=parseOptionsList(r.options||r.options_json||[]);
@@ -1290,6 +1290,19 @@ function admForm(res,id){
     }
     return`<label>${esc(l)}</label>`+(t==="t"?`<textarea name="${k}" rows="5">${esc(val)}</textarea>`:t==="i"?`<img class="cover" id="pv_${k}" src="${val?link(val):""}" alt="" ${val?"":"hidden"}><label class="btn sm" style="margin-bottom:10px">📷 Upload photo<input type="file" accept="image/*" data-up="${k}" hidden></label><input name="${k}" id="in_${k}" value="${esc(val)}" placeholder="or paste an image link">`:`<input name="${k}" ${t==="n"?'type="number" step="any" ':""}value="${esc(val)}">`);
   }).join("")}<button class="btn pri full">Save</button></form>`);
+}
+
+function openBookingPriceModal(bookingId){
+  const rec=(dash&&dash.bookings||[]).find(x=>x.id==bookingId)||{};
+  const currentVal=bookingPrices[bookingId]||rec.approved_price||"";
+  openM(head("Confirm Price & Send Email")+`
+    <form data-form="bookingPrice">
+      <input type="hidden" name="booking_id" value="${+bookingId}">
+      <label>Client</label><div class="small sub" style="margin-bottom:10px">${esc(rec.client_name||"")} (${esc(rec.client_email||"")})</div>
+      <label>Final Price (₹) *</label><input name="price_inr" type="number" step="any" min="0" required value="${esc(currentVal)}" placeholder="Enter final price in ₹">
+      <label>Message Note</label><textarea name="note" rows="3" placeholder="Optional confirmation note...">${esc(rec.details||"")}</textarea>
+      <button class="btn pri full">Confirm Price &amp; Open Email</button>
+    </form>`);
 }
 
 async function loadDash(){try{dash=await api("/api/admin/dashboard")}catch(e){toast(e.message,1);logout();return false}
@@ -1349,10 +1362,11 @@ const ACT={
  tab(d){tab=d.k;admRender();$("adm").scrollTo(0,0)},
  refresh:()=>loadDash(),logout,
  async adm(d){const v=d.v?JSON.parse(d.v):null;
+  if(d.op==="setPrice")return openBookingPriceModal(d.id);
   if(d.op==="form")return admForm(d.res,d.id);
   if(d.op==="del"&&!confirm("Delete this permanently?"))return;
   const body=d.op==="del"?{action:"delete",id:+d.id}:d.op==="st"?{action:"status",id:+d.id,status:v}:{action:"update",id:+d.id,data:v};
-  await post("/api/admin/"+d.res,body);toast(v&&v.price_approval_status==="approved"?"Price approved — ready to email client":"Saved");await loadDash();loadPublic()}};
+  await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
 const FORM={
  async creator(f){
@@ -1388,6 +1402,24 @@ const FORM={
   f.reset();
   toast("Request received! Price details will follow once approved in the portal.");
   confetti();
+ },
+ async bookingPrice(f){
+  const x=fd(f);
+  const bid=+x.booking_id;
+  const priceVal=String(x.price_inr||"").trim();
+  if(!priceVal)throw new Error("Enter a price amount");
+  bookingPrices[bid]=priceVal;
+  const rec=(dash&&dash.bookings||[]).find(r=>r.id==bid)||{};
+  try{
+    await post("/api/admin/bookings",{action:"update",id:bid,data:{price_approval_status:"approved",approved_price:priceVal}});
+  }catch(e){}
+  closeM();
+  admRender();
+  const subj="AKSHAY CREATION — Confirmed Pricing ("+(rec.service_type||"Promotion")+")";
+  const body="Hi "+(rec.client_name||"there")+",\n\nYour request for "+(rec.service_type||"our service")+" is approved.\nConfirmed Price: ₹"+priceVal+"\nWebsite: "+location.origin+"\nContact: "+BRAND_EMAIL+"\n\nMessage:\n"+(x.note||rec.details||"");
+  const mailHref="mailto:"+encodeURIComponent(rec.client_email||BRAND_EMAIL)+"?cc="+encodeURIComponent(BRAND_EMAIL)+"&subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+  window.location.href=mailHref;
+  toast("Price ₹"+priceVal+" confirmed — opening email to client");
  },
  async care(f){await post("/api/care/submit",Object.assign(fd(f),{consent_granted:true}));f.reset();toast("Message sent privately");confetti()},
  async pay(f){
