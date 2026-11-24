@@ -2327,5 +2327,168 @@ T(()=>{
 </script>
 <!-- ===== END AKSHAY EXTRA ANIMATIONS ===== -->
 
+<!-- ===== AKSHAY CREATION • REDESIGN LAYER (paste just before </body>, after the last </script>) ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;500;600;700&display=swap">
+<style id="akc-redesign">
+/* ---------- palette: poster yellow + ink black + play-button red (from your logo) ---------- */
+html[data-theme]:root{--bg2:#fff;--card:#fff;--paper:#0a0a0a;--muted:#3d3d3d;--ok:#0a7a3b;--red:#d10000;--line:#0a0a0a;--in:#fff;--navbg:#fff;--modal:#fff;--foot:#0a0a0a;--gold2:#0a0a0a;--gl:229,9,20;--okl:10,122,59;--c2l:255,255,255;--onpri:#fff;--d:"Anton","Noto Sans Malayalam",Impact,sans-serif;--b:"Outfit","Noto Sans Malayalam",system-ui,sans-serif}
+html[data-theme="midnightlime"]:root{--bg:#FFD600;--gold:#E50914;--card2:#FFF08A}
+html[data-theme="ocean"]:root{--bg:#7DD3FC;--gold:#1D4ED8;--card2:#BAE6FD}
+html[data-theme="cyberneon"]:root{--bg:#5EEAD4;--gold:#7C3AED;--card2:#CCFBF1}
+html[data-theme="solaramber"]:root{--bg:#FDBA74;--gold:#B91C1C;--card2:#FED7AA}
+html[data-theme="jetcherry"]:root{--bg:#FDA4AF;--gold:#0A0A0A;--card2:#FECDD3}
+html[data-theme="auroramint"]:root{--bg:#86EFAC;--gold:#047857;--card2:#BBF7D0}
+html[data-theme="violet"]:root{--bg:#C4B5FD;--gold:#6D28D9;--card2:#DDD6FE}
+html[data-theme="inkcoral"]:root{--bg:#FFB4A8;--gold:#1E3A8A;--card2:#FFD5CD}
+
+body{font-family:var(--b);background:var(--bg);color:#0a0a0a;background-image:radial-gradient(rgba(0,0,0,.12) 1.2px,transparent 1.4px);background-size:18px 18px}
+h1,h2,h3,.brand,.big,.stats b,.price,.pulse-card b,.plan-price,.tile b,.steps li:before,.faq summary,.ticker span,.community-board h3{font-family:var(--d)!important;font-weight:400!important;letter-spacing:.02em}
+.sub,.small{color:var(--muted)}
+.fx-glow,.orb,.star{display:none!important}
+
+/* ---------- header + logo ---------- */
+.nav{background:#fff;border-bottom:4px solid #000;backdrop-filter:none}
+.brand{background:none!important;-webkit-text-fill-color:#000;color:#000;animation:none!important;filter:none;font-size:1.45rem;letter-spacing:.05em;gap:10px;padding:2px 6px 2px 2px}
+.brand em{font-style:normal;color:var(--gold);-webkit-text-fill-color:var(--gold)}
+.yt-brand-badge{width:38px;height:27px;flex:0 0 38px;border-radius:8px;background:#E50914;border:3px solid #000;box-shadow:3px 3px 0 #000;rotate:-7deg;animation:none;transition:rotate .25s}
+.brand:hover .yt-brand-badge{rotate:6deg}
+.yt-brand-badge:after{inset:-9px;border:2px dashed #000;border-radius:12px;opacity:.5;animation:akSpin 8s linear infinite}
+@keyframes akSpin{to{transform:rotate(360deg)}}
+.yt-tri{border-width:5.5px 0 5.5px 9px;margin-left:2px}
+.links a{color:#000;font-weight:600;border-radius:999px;padding:6px 13px;margin-right:2px}
+.links a:hover{color:#000;background:var(--bg)}
+.links a.act{background:#000;color:var(--bg)}
+.links a:after{display:none}
+.progress{background:linear-gradient(90deg,#E50914,#000);height:5px;box-shadow:none}
+
+/* ---------- buttons / tags / badges ---------- */
+.btn{background:#fff;color:#000;border:3px solid #000;border-radius:14px;box-shadow:4px 4px 0 #000;font-family:var(--b);font-weight:700;transition:translate .15s,box-shadow .15s,background .2s}
+.btn:hover{background:var(--bg);box-shadow:7px 7px 0 #000;translate:-3px -3px}
+.btn:active{box-shadow:0 0 0 #000;translate:4px 4px}
+.btn.pri{background:var(--gold);color:var(--onpri);border-color:#000}
+.btn.pri:hover{background:var(--gold);filter:brightness(1.12)}
+.btn.sm{border-radius:11px;box-shadow:3px 3px 0 #000}
+.hero .btns .btn{transform:none!important}
+.btn:disabled{box-shadow:none;background:#ddd;color:#777}
+.tag{display:inline-flex;background:#000;color:var(--bg);padding:5px 14px;border-radius:8px;rotate:-2deg;font-weight:700;letter-spacing:.02em}
+.tag:before{display:none}
+.badge{background:#fff;color:#000;border:2px solid #000;border-radius:8px;font-weight:700;padding:1px 10px}
+.badge.ok{background:#B7F7C8;color:#06461f;border-color:#000}.badge.warn{background:#FFE08A;color:#4a2b00;border-color:#000}
+.cr-pill,.tab{border:2px solid #000;color:#000;background:#fff;font-weight:700}.cr-pill.on,.tab.on{background:#000;color:var(--bg);border-color:#000}
+
+/* ---------- hero: the poster ---------- */
+.hero{background:transparent;padding:64px 0 90px}
+.hero:before{content:"";position:absolute;left:-5%;right:-5%;top:46%;height:70px;background:repeating-linear-gradient(-45deg,#000 0 18px,var(--bg) 18px 36px);opacity:.1;rotate:-4deg;pointer-events:none}
+.pill{background:#fff;color:#000;border:3px solid #000;box-shadow:3px 3px 0 #000;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+.pill:before{content:"";width:10px;height:10px;border-radius:50%;background:#E50914;animation:pulse2 1.2s infinite}
+@keyframes pulse2{50%{opacity:.25}}
+h1{font-size:clamp(3.4rem,14vw,9.5rem);line-height:.9;text-transform:uppercase;letter-spacing:.01em;color:#000}
+h1 span:nth-child(2){color:transparent;-webkit-text-stroke:3px #000}
+h1 span:nth-child(3){background:none!important;-webkit-text-fill-color:currentColor;color:var(--gold)!important;text-shadow:5px 5px 0 #000}
+.hero h1 span:nth-child(3):after{background:#000;height:.09em}
+.hero p.sub{color:#111;font-weight:500;max-width:500px}
+.hero .typer{display:inline-block;background:#000;color:var(--bg);padding:5px 18px;border-radius:999px;rotate:-1.5deg;margin:0 0 22px}
+.caret{background:var(--bg)!important}
+.floaty{opacity:.9;font-size:2rem;z-index:0}
+.stats{background:#000;border:3px solid #000;border-radius:18px;box-shadow:7px 7px 0 #000;gap:3px}
+.stats div{background:#fff}.stats div:hover{background:var(--bg)}
+.stats b{font-size:2.3rem;color:#000}.stats span{color:var(--muted)}.live-tag{color:#E50914}
+.return-banner{background:#fff;border:3px solid #000;color:#000;border-radius:12px;font-weight:600}
+.hero-sticker{position:absolute;right:3%;top:42px;width:min(300px,28vw);z-index:2;display:none}
+.hero-sticker .pic{rotate:6deg;border:4px solid #000;border-radius:26px;box-shadow:10px 10px 0 #000;overflow:hidden;background:#050505;animation:bobS 5s ease-in-out infinite}
+.hero-sticker svg{display:block;width:100%}
+.hero-sticker .spin{position:absolute;left:-46px;bottom:-34px;width:112px;height:112px;animation:akSpin 14s linear infinite}
+@keyframes bobS{50%{translate:0 -12px;rotate:3deg}}
+@media(min-width:1000px){.hero-sticker{display:block}.hero .wrap>h1,.hero .wrap>p.sub{max-width:62%}}
+
+/* ---------- ticker tape ---------- */
+.ticker{background:#000;border:0;border-block:4px solid #000;rotate:-1.3deg;margin:-18px -14px 6px;padding:10px 0;position:relative;z-index:3}
+.ticker span{color:var(--bg);font-size:1.5rem}
+.ticker span:after{content:"✦";color:#E50914;margin-left:22px}
+
+/* ---------- sections + cards ---------- */
+section{border-top:4px solid #000;background:transparent}
+.alt{background:#fff}
+section.hero{border:0}
+h2{color:#000;text-transform:uppercase;line-height:.98}
+main .card,.card{background:#fff!important;background-image:none!important;border:3px solid #000;border-radius:20px;box-shadow:6px 6px 0 #000;backdrop-filter:none;transform:none!important;transition:translate .18s,box-shadow .18s,rotate .18s}
+main .card:hover{translate:-3px -3px;box-shadow:10px 10px 0 #000;border-color:#000}
+.g3>.card:nth-child(3n+1),#pollsList>.card:nth-child(odd){rotate:-.7deg}.g3>.card:nth-child(3n),#pollsList>.card:nth-child(even){rotate:.7deg}
+.g3>.card:hover,#pollsList>.card:hover{rotate:0deg}
+.card h3{color:#000;font-size:1.5rem}
+.cover,.av{border:3px solid #000;border-radius:14px}.av{border-radius:50%;box-shadow:3px 3px 0 #000;padding:0}
+.price{color:#000;font-size:1.9rem}
+.card.center[style*="card2"],.community-board{background:var(--card2)!important}
+.pulse-card{background:#fff;border:3px solid #000;border-radius:16px;box-shadow:4px 4px 0 #000}.pulse-card b{color:#000;font-size:2.2rem}
+.community-updates li{background:#fff;border:2px solid #000;color:#000;font-weight:500}.community-updates li:before{color:#E50914}
+.cr-bar,.viewall-vip-top{background:#fff;border:3px solid #000;box-shadow:4px 4px 0 #000;border-radius:16px}
+.cr-applied-pill{background:#000;color:var(--bg);border-color:#000}
+.cr-lookup-btn{background:#fff;color:#000;border:2px solid #000}
+.cr-sub-chip{background:var(--bg);color:#000;border:2px solid #000}
+.hidden-slot{background:#f1f1f1!important;border-style:dashed}.hidden-slot-tag{background:#000;color:var(--bg)}
+.viewall-page{background:var(--bg)}.viewall-top{background:#fff;border-bottom:4px solid #000}
+
+/* ---------- polls / bars ---------- */
+.poll{background:#fff;border:3px solid #000;border-radius:14px;color:#000;box-shadow:3px 3px 0 #000;font-weight:600}
+.poll:before{background:var(--bg)!important;opacity:.95}
+.poll:hover:not(:disabled){box-shadow:5px 5px 0 #000}.poll.on{background:#fff;border-color:var(--gold);box-shadow:3px 3px 0 var(--gold)}.poll.lead{border-color:#000}
+.poll-meta{color:#000;font-family:var(--d);letter-spacing:.04em}
+.bar{height:20px;background:#fff;border:3px solid #000}
+.bar i{background:repeating-linear-gradient(-45deg,var(--gold) 0 10px,#000 10px 20px);background-size:auto;animation:barMove 1s linear infinite}
+.bar i:after{display:none}@keyframes barMove{to{background-position:28px 0}}
+
+/* ---------- forms / modals / toast ---------- */
+input,select,textarea{background:#fff;border:3px solid #000;border-radius:12px;color:#000;font-family:var(--b);font-weight:500}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:4px 4px 0 #000}
+label,label.chk{color:#000}
+.m{background:rgba(0,0,0,.72)}
+.mbox,.tpanel{background:#fff;border:4px solid #000;border-radius:22px;box-shadow:10px 10px 0 var(--bg);color:#000}
+.tpanel b{color:var(--muted)}.topt{background:#fff;color:#000;border:2px solid #000}.topt.on{background:var(--bg)}
+.gate-box,.receipt-card,.promo-rate-box,.plan-card{background:#fff;border:2px solid #000;color:#000}
+.plan-card.feat,.gate-step.done{background:var(--card2);border-color:#000}.plan-price{color:#000}
+.summary-box{background:var(--card2);border:3px solid #000;box-shadow:6px 6px 0 #000}.summary-row{border-color:#000}
+.copy{background:#000;color:#fff}
+.toast{background:#000;color:var(--bg);border:3px solid var(--bg);border-radius:14px;font-weight:600}
+.toast.bad{background:#E50914;color:#fff;border-color:#000}
+.fab{background:var(--bg);color:#000;border:3px solid #000;box-shadow:4px 4px 0 #000}
+.faq details{border-bottom:3px dashed #000}.faq summary{color:#000;font-size:1.35rem}.faq p{color:var(--muted)}
+.steps li{border-left:4px solid #000}.steps li:before{color:var(--gold)}
+ul.list{color:var(--muted)}
+
+/* ---------- live + footer + admin ---------- */
+.siren{display:inline-flex;align-items:center;gap:8px;background:#E50914;color:#fff;border:3px solid #000;border-radius:999px;padding:3px 14px;font-weight:700;box-shadow:3px 3px 0 #000}
+.siren i{width:10px;height:10px;border-radius:50%;background:#fff;animation:pulse2 1s infinite}
+.livebox{border:4px solid #000;border-radius:20px;box-shadow:8px 8px 0 #000}
+footer{background:#000;color:#ddd;border-top:6px solid var(--gold)}
+footer strong{background:none!important;-webkit-text-fill-color:var(--bg);color:var(--bg);animation:none;font-family:var(--d);font-size:1.5rem;font-weight:400}
+.adm,.atop{background:var(--bg)}.atop{background:#fff;border-bottom:4px solid #000}
+.anav button{color:#000}.anav button.on{background:#000;color:var(--bg)}
+.tile{background:#fff;border:3px solid #000;box-shadow:4px 4px 0 #000;color:#000}.kv{border-color:#000}.kv span{color:var(--muted)}
+.real-box,.analysis-box{background:#fff;border:2px dashed #000;color:#000}
+::selection{background:#000;color:var(--bg)}
+:focus-visible{outline:3px solid #000;outline-offset:3px}
+</style>
+<script>
+(function(){
+  try{
+    /* brand text: AKSHAY + red CREATION */
+    document.querySelectorAll(".brand > span:last-child").forEach(function(s){
+      var t=s.textContent.trim();var m=t.match(/^(\S+)\s+(.+)$/);
+      if(m)s.innerHTML=m[1]+" <em>"+m[2]+"</em>";
+    });
+    var mt=document.querySelector('meta[name="theme-color"]');if(mt)mt.content="#FFD600";
+
+    /* hero poster sticker built from the channel logo */
+    var hero=document.querySelector("#home .wrap");
+    if(hero&&!document.querySelector(".hero-sticker")){
+      var d=document.createElement("div");d.className="hero-sticker";d.setAttribute("aria-hidden","true");
+      d.innerHTML='<div class="pic"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><rect width="512" height="512" fill="#050505"/><polygon points="410,96 438,58 422,104" fill="#ffd600"/><polygon points="434,114 470,90 442,126" fill="#ffd600"/><text x="256" y="198" text-anchor="middle" fill="#fff" font-family="Anton,Impact,sans-serif" font-size="92">ARE YOU</text><text x="256" y="312" text-anchor="middle" fill="#ffd600" font-family="Anton,Impact,sans-serif" font-size="124">READY?</text><path d="M64,340 Q256,322 448,340" stroke="#ffd600" stroke-width="10" fill="none" stroke-linecap="round"/><rect x="70" y="384" width="70" height="48" rx="11" fill="#E50914"/><polygon points="97,396 97,420 118,408" fill="#fff"/><text x="318" y="418" text-anchor="middle" fill="#fff" font-family="Outfit,Arial,sans-serif" font-style="italic" font-size="30" font-weight="700" letter-spacing="2">AKSHAY CREATION</text></svg></div><svg class="spin" viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#E50914" stroke="#000" stroke-width="4"/><defs><path id="akcc" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text fill="#fff" font-family="Anton,Impact,sans-serif" font-size="15" letter-spacing="2"><textPath href="#akcc">SHORTS • REELS • KERALA • </textPath></text><polygon points="52,46 52,74 76,60" fill="#fff"/></svg>';
+      hero.appendChild(d);
+    }
+  }catch(e){}
+})();
+</script>
+<!-- ===== END REDESIGN LAYER ===== -->
 
 </body></html>
