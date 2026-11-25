@@ -30,7 +30,7 @@
 })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700;1,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
 (function(){
   try{
@@ -72,25 +72,30 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
 
-/* New Custom AK Creator Emblem & Animated Signature Typography */
-.brand{position:relative;font-weight:700;letter-spacing:.15em;display:inline-flex;gap:10px;align-items:center;padding:4px 14px 4px 5px;border-radius:999px;border:1px solid rgba(var(--gl),.38);background:linear-gradient(135deg,rgba(var(--gl),.14),rgba(var(--c2l),.28));box-shadow:0 0 22px rgba(var(--gl),.22),inset 0 1px 0 rgba(255,255,255,.16);transition:transform .25s ease,box-shadow .3s ease}
-.brand:hover{transform:translateY(-1px) scale(1.015);box-shadow:0 6px 28px rgba(var(--gl),.38),inset 0 1px 0 rgba(255,255,255,.25)}
+/* Fresh Top Brand Logo & Stylized Typography Animation */
+.brand{position:relative;font-family:"Bodoni Moda",Georgia,serif;font-weight:700;font-style:italic;letter-spacing:.14em;display:inline-flex;gap:11px;align-items:center;padding:5px 15px 5px 6px;border-radius:14px;border:1px solid rgba(var(--gl),.45);background:linear-gradient(135deg,rgba(var(--gl),.16),rgba(var(--c2l),.36));box-shadow:0 0 24px rgba(var(--gl),.22),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .25s ease,box-shadow .3s ease}
+.brand:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(var(--gl),.38),inset 0 1px 0 rgba(255,255,255,.28)}
 .brand:before{display:none}
-.ak-emblem{position:relative;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:0 0 30px;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold));color:var(--onpri);box-shadow:0 0 14px rgba(var(--gl),.65)}
-.ak-emblem:before{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed rgba(var(--gl),.75);animation:akOrbitSpin 9s linear infinite}
-.ak-emblem svg{width:18px;height:18px;display:block;animation:akEmblemPulse 2.8s ease-in-out infinite}
-.brand-txt{position:relative;font-size:.94rem;background:linear-gradient(115deg,#ffffff 0%,var(--gold2) 28%,#ffffff 50%,var(--gold2) 72%,#ffffff 100%);background-size:240% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandLiquidText 4.5s linear infinite;filter:drop-shadow(0 0 8px rgba(var(--gl),.35))}
-.brand-dot{width:5px;height:5px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px var(--gold2);animation:pulse 1.6s infinite}
-@keyframes brandLiquidText{0%{background-position:0% center}100%{background-position:240% center}}
-@keyframes akOrbitSpin{to{transform:rotate(360deg)}}
-@keyframes akEmblemPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.ak-logo-mark{position:relative;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 32px;background:linear-gradient(145deg,var(--gold2),var(--gold));color:var(--onpri);box-shadow:0 0 16px rgba(var(--gl),.65);animation:akMarkRock 3.6s ease-in-out infinite}
+.ak-logo-mark:after{content:"";position:absolute;inset:-3px;border-radius:12px;border:1.5px solid rgba(var(--gl),.7);animation:akMarkHalo 2.5s ease-out infinite}
+.ak-logo-mark svg{width:18px;height:18px;display:block}
+.brand-txt{position:relative;font-size:.98rem;background:linear-gradient(110deg,#ffffff 0%,var(--gold2) 25%,#ffffff 50%,var(--gold2) 75%,#ffffff 100%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandWaveShift 4.5s linear infinite;filter:drop-shadow(0 0 8px rgba(var(--gl),.32))}
+.brand-spark{font-style:normal;font-size:.82rem;color:var(--gold2);animation:akSparkSpin 3s ease-in-out infinite}
+@keyframes brandWaveShift{0%{background-position:0% center}100%{background-position:250% center}}
+@keyframes akMarkRock{0%,100%{transform:rotate(-3deg) scale(1)}50%{transform:rotate(4deg) scale(1.07)}}
+@keyframes akMarkHalo{0%{transform:scale(.94);opacity:.85}100%{transform:scale(1.36);opacity:0}}
+@keyframes akSparkSpin{0%,100%{transform:scale(1) rotate(0deg);opacity:.8}50%{transform:scale(1.25) rotate(20deg);opacity:1}}
 
 /* Quick Jump Action Strip */
 .quick-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--line);scrollbar-width:none}
 .quick-strip::-webkit-scrollbar{display:none}
 .quick-strip .wrap{display:flex;gap:8px;align-items:center;width:100%;padding:0}
-.q-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;white-space:nowrap;color:var(--paper);background:var(--in);border:1px solid var(--line);transition:all .2s}
+.q-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;white-space:nowrap;color:var(--paper);background:var(--in);border:1px solid var(--line);transition:all .2s;cursor:pointer}
 .q-chip:hover{border-color:var(--gold);color:var(--gold2);transform:translateY(-1px);background:rgba(var(--gl),.12)}
+
+/* Milestone Card */
+.milestone-box{margin-top:16px;padding:16px 18px;border-radius:12px;background:linear-gradient(145deg,rgba(var(--c2l),.45),var(--card));border:1px solid var(--line)}
+.milestone-box .bar{margin:8px 0 6px;height:12px}
 
 /* Poll Timestamp Badge */
 .poll-head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:4px}
@@ -208,7 +213,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
-.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -302,7 +306,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <body>
 <div class="progress" id="progress"></div>
 <header class="nav"><div class="wrap">
-<a href="#home" class="brand"><span class="ak-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 20,12 8,19"/><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="18" r="1.5"/></svg></span><span class="brand-txt">AKSHAY CREATION</span><span class="brand-dot" aria-hidden="true"></span></a>
+<a href="#home" class="brand"><span class="ak-logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 20,12 9,18"/><rect x="4" y="6" width="2.5" height="12" rx="1"/></svg></span><span class="brand-txt">AKSHAY CREATION</span><span class="brand-spark" aria-hidden="true">✦</span></a>
 <button type="button" class="btn sm" data-act="portal">Portal</button>
 <nav class="links"><a href="#about">About</a><a href="#creators">Creators</a><a href="#help">Help</a><a href="#store">Store</a><a href="#services">Services</a><a href="#care">Support</a><a href="#community">Community</a><a href="#faq">FAQ</a></nav>
 </div></header>
@@ -312,7 +316,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="pill">Official Hub • Kerala, India</div>
 <h1><span>Create.</span><span>Connect.</span><span>Inspire.</span></h1>
 <p class="sub">Entertainment, creative content &amp; digital storytelling. You're not just a subscriber, you're part of my story.</p>
-<div class="creator-ribbon"><span class="ribbon-chip">⚡ 155.9K+ Fam</span><span class="ribbon-chip">🎬 Shorts &amp; Reels</span><span class="ribbon-chip">🔒 Token &amp; Direct UPI</span></div>
+<div class="creator-ribbon"><span class="ribbon-chip">⚡ 155.9K+ Fam</span><span class="ribbon-chip">🎬 Shorts &amp; Reels</span><span class="ribbon-chip">🔒 Token &amp; Direct UPI</span><button type="button" class="ribbon-chip" style="cursor:pointer" data-act="mediaKit">📊 Media Kit</button></div>
 <p class="typer">I'm a <span id="typer"></span><i class="caret"></i></p>
 <div class="btns">
 <a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">YouTube Channel ↗</a>
@@ -325,16 +329,21 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div><b id="liveN">456</b><span><i class="live"></i>Active visitors now</span></div>
   <div><b>Creator Hub</b><span>Discover • Connect • Grow</span></div>
 </div>
+<div class="milestone-box">
+  <div class="row small"><span>🎯 Road to <strong>200K Subscribers</strong></span><strong id="goalPctText" style="color:var(--gold2)">78.0%</strong></div>
+  <div class="bar"><i id="goalBarFill" style="width:78%"></i></div>
+  <div class="small sub">Every subscription &amp; share helps unlock the next milestone!</div>
+</div>
 </div></section>
 <div class="ticker" aria-hidden="true"><div><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
-<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><a class="q-chip" href="#care">💖 Support</a></div></div>
+<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><button type="button" class="q-chip" data-act="mediaKit">📊 Media Kit</button><button type="button" class="q-chip" data-act="shareSiteQr">📲 Site QR</button></div></div>
 
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
 <div class="g3">
 <div class="card"><span class="badge">The Family</span><h3 id="aboutFamTitle">155.9K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
 <div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Entertainment, creative storytelling, and a community that grows together.</p></div>
-<div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub">Business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p></div>
+<div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub" style="margin-bottom:12px">Business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p><button type="button" class="btn sm" data-act="mediaKit">📊 Open Brand Media Kit</button></div>
 </div></div></section>
 
 <section id="creators"><div class="wrap">
@@ -393,6 +402,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Tap an instant option below to select it quickly, generate your token, pay via GPay/UPI with the token note, and receive your confirmation email once matched and approved in the portal.</p>
 <button type="button" class="quick-pick-btn" data-act="quickSelectService" data-srv="Community Story Promotion"><div class="row"><strong style="color:var(--gold2)">Community Story Promotion</strong><span class="badge warn">₹199 • Quick Select ↗</span></div><div class="small sub" style="margin-top:3px">24-hour story feature with link or @handle</div></button>
 <button type="button" class="quick-pick-btn" data-act="quickSelectService" data-srv="Community Post Promotion"><div class="row"><strong style="color:var(--gold2)">Community Post Promotion</strong><span class="badge warn">₹299 • Quick Select ↗</span></div><div class="small sub" style="margin-top:3px">Dedicated community post spotlight for your page/brand</div></button>
+<button type="button" class="quick-pick-btn" data-act="joinTeamModal"><div class="row"><strong style="color:var(--ok)">✂️ Apply as Video / Photo Editor</strong><span class="badge ok">Team Screening ↗</span></div><div class="small sub" style="margin-top:3px">Submit your name, age, place &amp; Reels/Shorts portfolio sample</div></button>
 </div>
 <div class="card" id="bookingFormCard"><h3>Book a Service / Promotion</h3>
 <form data-form="book"><label>Promotion / Service Type *</label><select name="service_type" id="srvTypeSelect"><option value="Community Story Promotion">Community Story Promotion — ₹199 (Limited Time)</option><option value="Community Post Promotion">Community Post Promotion — ₹299 (Limited Time)</option><option value="Sponsored Promotion">Sponsored Promotion — Request &amp; Portal Approval</option><option value="Short-Form Video Editing">Short-Form Video Editing — Request &amp; Portal Approval</option><option value="Brand Ad Production">Brand Ad Production — Request &amp; Portal Approval</option><option value="Creator Consultation">Creator Consultation — Request &amp; Portal Approval</option></select>
@@ -421,7 +431,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="community-board card">
 <div><span class="badge ok">Community board</span><h3>What's happening now</h3><p class="sub">Updates are based on content currently published on this website.</p></div>
 <ul id="communityUpdates" class="community-updates"><li>Loading the latest community updates…</li></ul>
-<div class="btns" style="margin:18px 0 0"><a class="btn pri sm" href="#creators">Discover creators</a><a class="btn sm" href="#community-polls">Join a poll</a><a class="btn sm" target="_blank" rel="noopener" href="https://wa.me/?text=Discover%20AKSHAY%20CREATION%20-%20Create.%20Connect.%20Inspire.%20">Share this community ↗</a></div>
+<div class="btns" style="margin:18px 0 0"><a class="btn pri sm" href="#creators">Discover creators</a><a class="btn sm" href="#community-polls">Join a poll</a><button type="button" class="btn sm" data-act="shareSiteQr">📲 Share Site QR</button></div>
 </div>
 <div class="head" id="community-polls" style="margin:34px 0 18px"><div class="tag">Audience Voice</div><h2>Community Polls <span class="wig wig">🗳️</span></h2><p class="sub">Tap an option below to cast your vote (up to 5 votes per poll).</p></div>
 <div id="pollsList" class="g2"></div>
@@ -443,7 +453,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div class="viewall-top">
     <div class="wrap row">
       <div>
-        <span class="brand"><span class="ak-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 20,12 8,19"/><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="18" r="1.5"/></svg></span><span class="brand-txt">CREATOR DIRECTORY</span></span>
+        <span class="brand"><span class="ak-logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 20,12 9,18"/><rect x="4" y="6" width="2.5" height="12" rx="1"/></svg></span><span class="brand-txt">CREATOR DIRECTORY</span><span class="brand-spark" aria-hidden="true">✦</span></span>
         <div class="small sub" id="viewAllMeta">Approved creators &amp; hidden pending queue slots</div>
       </div>
       <button type="button" class="btn sm pri" data-act="closeViewAllPage">← Back to Main Page</button>
@@ -477,7 +487,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <label class="chk"><input type="checkbox" data-act="pw">Show password</label>
 <button class="btn pri full">Sign in</button></form><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
 <div id="adash" hidden>
-<div class="atop"><div class="row"><span class="brand"><span class="ak-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 20,12 8,19"/><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="18" r="1.5"/></svg></span><span class="brand-txt">AKSHAY CREATION</span></span><span class="sub small" id="auser"></span>
+<div class="atop"><div class="row"><span class="brand"><span class="ak-logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 20,12 9,18"/><rect x="4" y="6" width="2.5" height="12" rx="1"/></svg></span><span class="brand-txt">AKSHAY CREATION</span><span class="brand-spark" aria-hidden="true">✦</span></span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
 <div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
@@ -611,6 +621,16 @@ function formatYtLive(n){
   }
   return Number(n).toLocaleString("en-IN");
 }
+function parseNumericSubs(ytStr){
+  const s=String(ytStr||"").trim().toUpperCase();
+  const m=s.match(/^([\d.,]+)\s*(K|M)?/);
+  if(!m)return ytExact;
+  let v=parseFloat(m[1].replace(/,/g,""));
+  if(!Number.isFinite(v))return ytExact;
+  if(m[2]==="K")v*=1000;
+  if(m[2]==="M")v*=1000000;
+  return v;
+}
 function getSavedSocialStats(){
   try{
     const raw=S.g(SOCIAL_STATS_KEY);
@@ -640,6 +660,10 @@ function applySocialStatsToPage(stats){
   if($("in_yt_count"))$("in_yt_count").value=s.yt||"";
   if($("in_ig_count"))$("in_ig_count").value=s.ig||"";
   if($("in_fam_title"))$("in_fam_title").value=s.fam||"";
+  const numSubs=parseNumericSubs(s.yt);
+  const pct=Math.min(100,Math.max(1,(numSubs/200000)*100));
+  if($("goalPctText"))$("goalPctText").textContent=pct.toFixed(1)+"%";
+  if($("goalBarFill"))$("goalBarFill").style.width=pct.toFixed(1)+"%";
 }
 function renderSocialLive(){
   applySocialStatsToPage(getSavedSocialStats());
@@ -1095,6 +1119,50 @@ function closeViewAllPage(){
   if(!pg)return;
   pg.hidden=true;
   if($("adm")&&$("adm").hidden)document.body.style.overflow="";
+}
+
+function openMediaKitModal(){
+  const s=getSavedSocialStats();
+  const pitch=`AKSHAY CREATION — CREATOR MEDIA KIT\nLocation: Kerala, India\nYouTube: ${s.yt} Subscribers (@akshaycreationshorts)\nInstagram: ${s.ig} Followers (@akshaycreation_offl)\nContent: Entertainment, Tech, Movie Reviews, Shorts & Reels\nEmail: ${BRAND_EMAIL}\nWebsite: ${location.origin}`;
+  openM(head("Brand Media Kit • AKSHAY CREATION")+`
+    <div class="receipt-card">
+      <div class="summary-row"><span>YouTube Family</span><strong>${esc(s.yt)} Subscribers</strong></div>
+      <div class="summary-row"><span>Instagram</span><strong>${esc(s.ig)} Followers</strong></div>
+      <div class="summary-row"><span>Region &amp; Audience</span><strong>Kerala, India • Youth &amp; Tech</strong></div>
+      <div class="summary-row"><span>Formats</span><strong>Shorts, Reels, Sponsored Posts, Web</strong></div>
+      <div class="summary-row"><span>Business Email</span><strong>${esc(BRAND_EMAIL)}</strong></div>
+    </div>
+    <div class="btns" style="margin:12px 0 0">
+      <button type="button" class="btn pri sm" data-act="copy" data-t="${esc(pitch)}">Copy Media Kit</button>
+      <a class="btn sm" href="#services" data-act="close">Book Promotion</a>
+    </div>
+  `);
+}
+
+function openShareSiteQrModal(){
+  const siteUrl=location.origin+"/";
+  openM(head("Share AKSHAY CREATION")+`
+    <p class="sub small" style="margin-bottom:8px">Scan this QR code or copy the official link to share AKSHAY CREATION.</p>
+    <div class="qr">
+      <div style="font-size:.78rem;font-weight:600;color:#475569">Official Creator Hub QR</div>
+      <img src="${qr(siteUrl)}" alt="Website QR" width="210" height="210">
+      <b>AKSHAY CREATION</b>
+      <div class="chip">${esc(siteUrl)} <button type="button" class="copy" data-act="copy" data-t="${esc(siteUrl)}">Copy</button></div>
+    </div>
+  `);
+}
+
+function openJoinTeamModal(){
+  openM(head("Join AKSHAY CREATION Team")+`
+    <p class="sub small" style="margin-bottom:10px">Applying as freelance/part-time Video or Photo Editor? Share your details and portfolio sample below.</p>
+    <form data-form="editorApply">
+      <label>Full Name *</label><input name="name" required placeholder="Your name">
+      <label>Age &amp; Place *</label><input name="age_place" required placeholder="e.g. 20, Malappuram, Kerala">
+      <label>WhatsApp / Instagram ID *</label><input name="contact" required placeholder="+91 ... or @handle">
+      <label>Short-Form Portfolio Link (Reels / Shorts) *</label><input name="portfolio" type="url" required placeholder="https://drive.google.com/... or https://instagram.com/...">
+      <button class="btn pri full">Submit Application</button>
+    </form>
+  `);
 }
 
 function openPremiumMembershipModal(selectedAmt){
@@ -1625,7 +1693,7 @@ function renderThemeAndStatsTabHtml(){
 
     <div class="card" id="socialStatsEditor">
       <h3 style="margin-top:0">YouTube, Instagram &amp; Family Count</h3>
-      <p class="sub small" style="margin-bottom:10px">Type values and save — updates Hero stats and About Me together.</p>
+      <p class="sub small" style="margin-bottom:10px">Type values and save — updates Hero stats, Milestone bar and About Me together.</p>
       <form id="socialStatsForm">
         <label>YouTube Subscribers (Hero)</label>
         <input name="yt_count" id="in_yt_count" value="${esc(s.yt)}" placeholder="e.g. 157.9K">
@@ -1742,6 +1810,9 @@ const ACT={
  close(){closeM()},
  openViewAllPage,
  closeViewAllPage(){closeViewAllPage()},
+ mediaKit:openMediaKitModal,
+ shareSiteQr:openShareSiteQrModal,
+ joinTeamModal:openJoinTeamModal,
  quickSelectService(d){
    const sel=$("srvTypeSelect");
    const cardEl=$("bookingFormCard");
@@ -1837,6 +1908,19 @@ const ACT={
   await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
 const FORM={
+ async editorApply(f){
+  const raw=fd(f);
+  await post("/api/care/submit",{
+    applicant_name:raw.name,
+    contact_info:raw.contact,
+    case_title:"Editor Application ("+raw.age_place+")",
+    private_details:"Portfolio: "+raw.portfolio+"\nAge & Place: "+raw.age_place,
+    consent_granted:true
+  });
+  closeM();
+  toast("Editor application sent! We will review your portfolio.");
+  confetti();
+ },
  async creator(f){
   const done=FOLLOW_GATE.filter(item=>{const cb=$("gate_chk_"+item.id);return cb&&cb.checked}).length;
   if(done<FOLLOW_GATE.length){
