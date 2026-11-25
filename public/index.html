@@ -72,22 +72,35 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:10px;padding-bottom:6px}
 
-/* Upgraded Top Brand Logo & Liquid Shimmer Text Animation */
-.brand{position:relative;font-weight:700;letter-spacing:.14em;display:inline-flex;gap:10px;align-items:center;padding:4px 12px 4px 5px;border-radius:999px;border:1px solid rgba(var(--gl),.28);background:rgba(var(--gl),.06);box-shadow:0 0 18px rgba(var(--gl),.14);animation:brandFloatLift 4.2s ease-in-out infinite}
+/* New Custom AK Creator Emblem & Animated Signature Typography */
+.brand{position:relative;font-weight:700;letter-spacing:.15em;display:inline-flex;gap:10px;align-items:center;padding:4px 14px 4px 5px;border-radius:999px;border:1px solid rgba(var(--gl),.38);background:linear-gradient(135deg,rgba(var(--gl),.14),rgba(var(--c2l),.28));box-shadow:0 0 22px rgba(var(--gl),.22),inset 0 1px 0 rgba(255,255,255,.16);transition:transform .25s ease,box-shadow .3s ease}
+.brand:hover{transform:translateY(-1px) scale(1.015);box-shadow:0 6px 28px rgba(var(--gl),.38),inset 0 1px 0 rgba(255,255,255,.25)}
 .brand:before{display:none}
-.brand-txt{background:linear-gradient(120deg,var(--gold2) 0%,#ffffff 32%,var(--gold2) 55%,#ffffff 78%,var(--gold2) 100%);background-size:260% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandLiquidText 5.5s linear infinite}
-.yt-brand-badge{position:relative;display:inline-grid;place-items:center;width:30px;height:22px;border-radius:8px;background:linear-gradient(145deg,#ff2424,#b50000);box-shadow:0 0 16px rgba(255,24,24,.65),inset 0 1px 1px rgba(255,255,255,.45);flex:0 0 30px;animation:ytBadgeSpinPulse 3.2s ease-in-out infinite}
-.yt-brand-badge:after{content:"";position:absolute;inset:-4px;border-radius:10px;border:1.5px solid rgba(var(--gl),.65);animation:ytHaloRing 2.6s ease-out infinite}
-.yt-tri{width:0;height:0;margin-left:2px;border-style:solid;border-width:5px 0 5px 9px;border-color:transparent transparent transparent #ffffff;filter:drop-shadow(0 0 4px rgba(255,255,255,.6))}
-@keyframes brandLiquidText{0%{background-position:0% center}100%{background-position:260% center}}
-@keyframes brandFloatLift{0%,100%{transform:translateY(0);box-shadow:0 0 16px rgba(var(--gl),.14)}50%{transform:translateY(-1.5px);box-shadow:0 4px 22px rgba(var(--gl),.3)}}
-@keyframes ytBadgeSpinPulse{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.09) rotate(-3deg)}}
-@keyframes ytHaloRing{0%{transform:scale(.94);opacity:.85}100%{transform:scale(1.42);opacity:0}}
+.ak-emblem{position:relative;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:0 0 30px;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold));color:var(--onpri);box-shadow:0 0 14px rgba(var(--gl),.65)}
+.ak-emblem:before{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed rgba(var(--gl),.75);animation:akOrbitSpin 9s linear infinite}
+.ak-emblem svg{width:18px;height:18px;display:block;animation:akEmblemPulse 2.8s ease-in-out infinite}
+.brand-txt{position:relative;font-size:.94rem;background:linear-gradient(115deg,#ffffff 0%,var(--gold2) 28%,#ffffff 50%,var(--gold2) 72%,#ffffff 100%);background-size:240% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brandLiquidText 4.5s linear infinite;filter:drop-shadow(0 0 8px rgba(var(--gl),.35))}
+.brand-dot{width:5px;height:5px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px var(--gold2);animation:pulse 1.6s infinite}
+@keyframes brandLiquidText{0%{background-position:0% center}100%{background-position:240% center}}
+@keyframes akOrbitSpin{to{transform:rotate(360deg)}}
+@keyframes akEmblemPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
 
-/* Extra Creative Ribbon & Card Sheen */
+/* Quick Jump Action Strip */
+.quick-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--line);scrollbar-width:none}
+.quick-strip::-webkit-scrollbar{display:none}
+.quick-strip .wrap{display:flex;gap:8px;align-items:center;width:100%;padding:0}
+.q-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;white-space:nowrap;color:var(--paper);background:var(--in);border:1px solid var(--line);transition:all .2s}
+.q-chip:hover{border-color:var(--gold);color:var(--gold2);transform:translateY(-1px);background:rgba(var(--gl),.12)}
+
+/* Poll Timestamp Badge */
+.poll-head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.poll-time-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:600;color:var(--gold2);background:rgba(var(--gl),.12);border:1px solid var(--line);white-space:nowrap}
+
 .creator-ribbon{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) .58s forwards}
 .ribbon-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:.78rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);transition:transform .25s,border-color .25s}
 .ribbon-chip:hover{transform:translateY(-2px);border-color:var(--gold);color:var(--gold2)}
+.quick-pick-btn{cursor:pointer;background:var(--in);border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-align:left;width:100%;color:var(--paper);transition:border-color .2s,transform .2s,background .2s;margin-top:10px}
+.quick-pick-btn:hover{border-color:var(--gold);transform:translateY(-2px);background:rgba(var(--gl),.1)}
 .card{position:relative;overflow:hidden}
 .card:before{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.06),transparent);transition:left .75s ease;pointer-events:none}
 .card:hover:before{left:140%}
@@ -289,7 +302,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <body>
 <div class="progress" id="progress"></div>
 <header class="nav"><div class="wrap">
-<a href="#home" class="brand"><span class="yt-brand-badge" aria-hidden="true"><span class="yt-tri"></span></span><span class="brand-txt">AKSHAY CREATION</span></a>
+<a href="#home" class="brand"><span class="ak-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 20,12 8,19"/><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="18" r="1.5"/></svg></span><span class="brand-txt">AKSHAY CREATION</span><span class="brand-dot" aria-hidden="true"></span></a>
 <button type="button" class="btn sm" data-act="portal">Portal</button>
 <nav class="links"><a href="#about">About</a><a href="#creators">Creators</a><a href="#help">Help</a><a href="#store">Store</a><a href="#services">Services</a><a href="#care">Support</a><a href="#community">Community</a><a href="#faq">FAQ</a></nav>
 </div></header>
@@ -314,6 +327,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div>
 </div></section>
 <div class="ticker" aria-hidden="true"><div><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
+<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><a class="q-chip" href="#care">💖 Support</a></div></div>
 
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
@@ -376,12 +390,15 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <section class="alt" id="services"><div class="wrap">
 <div class="head"><div class="tag">Work With AKSHAY CREATION</div><h2>Services &amp; Bookings <span class="wig wig">🎬</span></h2><p class="sub">Limited-time instant UPI options for Story &amp; Post promotions, plus portal requests for custom collaborations.</p></div>
 <div class="g2">
-<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Choose <strong>Community Story Promotion (₹199)</strong> or <strong>Community Post Promotion (₹299)</strong> for limited-time fixed pricing—generate your token, pay via GPay/UPI with the token note, and receive your confirmation email once matched and approved in the portal.</p></div>
-<div class="card"><h3>Book a Service / Promotion</h3>
+<div class="card"><h3>Collaborate &amp; Grow</h3><p class="sub" style="margin-top:8px">Tap an instant option below to select it quickly, generate your token, pay via GPay/UPI with the token note, and receive your confirmation email once matched and approved in the portal.</p>
+<button type="button" class="quick-pick-btn" data-act="quickSelectService" data-srv="Community Story Promotion"><div class="row"><strong style="color:var(--gold2)">Community Story Promotion</strong><span class="badge warn">₹199 • Quick Select ↗</span></div><div class="small sub" style="margin-top:3px">24-hour story feature with link or @handle</div></button>
+<button type="button" class="quick-pick-btn" data-act="quickSelectService" data-srv="Community Post Promotion"><div class="row"><strong style="color:var(--gold2)">Community Post Promotion</strong><span class="badge warn">₹299 • Quick Select ↗</span></div><div class="small sub" style="margin-top:3px">Dedicated community post spotlight for your page/brand</div></button>
+</div>
+<div class="card" id="bookingFormCard"><h3>Book a Service / Promotion</h3>
 <form data-form="book"><label>Promotion / Service Type *</label><select name="service_type" id="srvTypeSelect"><option value="Community Story Promotion">Community Story Promotion — ₹199 (Limited Time)</option><option value="Community Post Promotion">Community Post Promotion — ₹299 (Limited Time)</option><option value="Sponsored Promotion">Sponsored Promotion — Request &amp; Portal Approval</option><option value="Short-Form Video Editing">Short-Form Video Editing — Request &amp; Portal Approval</option><option value="Brand Ad Production">Brand Ad Production — Request &amp; Portal Approval</option><option value="Creator Consultation">Creator Consultation — Request &amp; Portal Approval</option></select>
 <div class="promo-rate-box" id="srvDynamicBox"></div>
 <label>Name / Brand *</label><input name="client_name" required><label>Email *</label><input name="client_email" type="email" required>
-<label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project / Promotion brief *</label><textarea name="details" rows="3" required></textarea>
+<label>Phone / WhatsApp</label><input name="client_contact" placeholder="+91 ..."><label>Project / Promotion brief *</label><textarea name="details" id="srvBriefInput" rows="3" required placeholder="Share your @handle, link, caption or project brief..."></textarea>
 <button class="btn pri full" id="srvSubmitBtn">Generate Token &amp; Pay ₹199 via GPay/UPI</button></form></div>
 </div></div></section>
 
@@ -426,7 +443,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div class="viewall-top">
     <div class="wrap row">
       <div>
-        <span class="brand"><span class="yt-brand-badge" aria-hidden="true"><span class="yt-tri"></span></span><span class="brand-txt">CREATOR DIRECTORY</span></span>
+        <span class="brand"><span class="ak-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 20,12 8,19"/><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="18" r="1.5"/></svg></span><span class="brand-txt">CREATOR DIRECTORY</span></span>
         <div class="small sub" id="viewAllMeta">Approved creators &amp; hidden pending queue slots</div>
       </div>
       <button type="button" class="btn sm pri" data-act="closeViewAllPage">← Back to Main Page</button>
@@ -460,7 +477,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <label class="chk"><input type="checkbox" data-act="pw">Show password</label>
 <button class="btn pri full">Sign in</button></form><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
 <div id="adash" hidden>
-<div class="atop"><div class="row"><span class="brand"><span class="yt-brand-badge" aria-hidden="true"><span class="yt-tri"></span></span><span class="brand-txt">AKSHAY CREATION</span></span><span class="sub small" id="auser"></span>
+<div class="atop"><div class="row"><span class="brand"><span class="ak-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 20,12 8,19"/><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="18" r="1.5"/></svg></span><span class="brand-txt">AKSHAY CREATION</span></span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
 <div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
@@ -652,18 +669,21 @@ function syncServiceFormUI(){
   const sel=$("srvTypeSelect");
   const box=$("srvDynamicBox");
   const btn=$("srvSubmitBtn");
+  const brief=$("srvBriefInput");
   if(!sel||!box||!btn)return;
   const val=sel.value;
-  const instantAmt=INSTANT_PROMO_RATES[val]||0;
   if(val==="Community Story Promotion"){
     box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Community Story Promotion • ₹199</strong><span class="badge warn">Limited Time Offer</span></div><ul><li>Featured story spotlight for your brand, page, or link</li><li>Registered in portal with a unique Token ID for GPay matching</li><li>Confirmation email sent after you match &amp; approve in portal</li></ul>`;
     btn.textContent="Generate Token & Pay ₹199 via GPay/UPI";
+    if(brief)brief.placeholder="Share your Story link / @handle / preferred timing...";
   }else if(val==="Community Post Promotion"){
     box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Community Post Promotion • ₹299</strong><span class="badge warn">Limited Time Offer</span></div><ul><li>Dedicated community post feature with your details &amp; link</li><li>Registered in portal with a unique Token ID for GPay matching</li><li>Confirmation email sent after you match &amp; approve in portal</li></ul>`;
     btn.textContent="Generate Token & Pay ₹299 via GPay/UPI";
+    if(brief)brief.placeholder="Share your Post text, @handle, link & details...";
   }else{
     box.innerHTML=`<div class="row"><strong style="color:var(--gold2)">Portal Request Flow</strong><span class="badge ok">Approval First</span></div><div class="small sub" style="margin-top:4px">Saved to portal first. Once you set/approve the price in the portal, confirmation email is sent.</div>`;
     btn.textContent="Send Request to Portal";
+    if(brief)brief.placeholder="Describe your collaboration, editing, ad or consultation needs...";
   }
 }
 
@@ -1010,7 +1030,8 @@ function renderCreatorCardHtml(c){
   const avSrc=getCreatorAvatar(c);
   const meta=analyzeCreatorChannel(c.platform,c.handle,c.profile_url,c.name);
   const subBadge=formatSubCount(c);
-  return `<div class="card"><div class="row" style="justify-content:flex-start;gap:12px"><img class="av" src="${avSrc}" alt="${esc(c.name)}"><div><span class="badge">${esc(c.platform)}</span><div class="small sub" style="margin-top:3px">${esc(meta.channelStyle)}</div>${subBadge?`<div class="cr-sub-chip">${esc(subBadge)}</div>`:""}</div></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(c.handle)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><a class="btn sm full" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a></div>`;
+  const hdl=String(c.handle||"").trim();
+  return `<div class="card"><div class="row" style="justify-content:flex-start;gap:12px"><img class="av" src="${avSrc}" alt="${esc(c.name)}"><div><span class="badge">${esc(c.platform)}</span><div class="small sub" style="margin-top:3px">${esc(meta.channelStyle)}</div>${subBadge?`<div class="cr-sub-chip">${esc(subBadge)}</div>`:""}</div></div><h3>${esc(c.name)}</h3><p style="color:var(--gold2);font-weight:600;font-size:.9rem">${esc(hdl)}</p><p class="sub" style="margin:6px 0 12px">${esc(c.bio)}</p><div class="btns" style="margin:0"><a class="btn sm pri" target="_blank" rel="noopener" href="${link(c.profile_url)}">Visit profile ↗</a>${hdl?`<button type="button" class="btn sm" data-act="copy" data-t="${esc(hdl)}">Copy Handle</button>`:""}</div></div>`;
 }
 
 function renderHiddenQueueSlotsHtml(appliedTotal, approvedCount){
@@ -1135,6 +1156,7 @@ function renderInstantOrderSummary(){
       <span class="badge ok">✓ Instant Order Summary</span>
       <div class="row" style="gap:6px">
         <button type="button" class="btn sm pri" data-act="viewOrderReceipt">📄 Card Details</button>
+        <button type="button" class="btn sm" data-act="copy" data-t="${esc(o.token)}">Copy Token</button>
         <button type="button" class="btn sm" data-act="emailOrderCard">📧 Email Card</button>
       </div>
     </div>
@@ -1325,6 +1347,21 @@ function creatorM(){
 const MAX_VOTES_PER_POLL=5;
 const pollDripState={};
 
+function formatTimeAgo(dateInput){
+  const ms=dateInput?new Date(dateInput).getTime():NaN;
+  if(!Number.isFinite(ms))return "Posted recently";
+  const diffSec=Math.max(0,Math.floor((Date.now()-ms)/1000));
+  if(diffSec<60)return "Posted just now";
+  const mins=Math.floor(diffSec/60);
+  if(mins<60)return `Posted ${mins} min${mins===1?"":"s"} ago`;
+  const hrs=Math.floor(mins/60);
+  if(hrs<24)return `Posted ${hrs} hr${hrs===1?"":"s"} ago`;
+  const days=Math.floor(hrs/24);
+  if(days<30)return `Posted ${days} day${days===1?"":"s"} ago`;
+  const months=Math.floor(days/30);
+  return `Posted ${months} mo${months===1?"":"s"} ago`;
+}
+
 function parseOptionsList(raw){
   if(Array.isArray(raw))return raw.map(x=>typeof x==="object"&&x!==null?(x.text||x.label||x.option||String(x)):String(x)).map(s=>s.trim()).filter(Boolean);
   if(typeof raw==="string"&&raw.trim()){
@@ -1432,10 +1469,12 @@ function renderPolls(){
     const usedCount=myVotes.length;
     const isMaxed=usedCount>=MAX_VOTES_PER_POLL;
     const lastChosen=usedCount?myVotes[usedCount-1]:null;
+    const postedAgo=formatTimeAgo(p.created_at);
+    const exactDate=p.created_at?new Date(p.created_at).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}):"";
     const statusLabel=isMaxed
       ? `${m.total.toLocaleString("en-IN")} vote(s) • Limit reached (5/5 votes used — next poll open soon)`
       : `${m.total.toLocaleString("en-IN")} vote(s) • Your votes: ${usedCount}/${MAX_VOTES_PER_POLL}`;
-    return `<div class="card"><h3 style="margin-top:0">${esc(p.question||"Community Poll")}</h3><p class="sub small">${statusLabel}</p>${m.opts.map((o,i)=>{
+    return `<div class="card"><div class="poll-head-row"><h3 style="margin-top:0">${esc(p.question||"Community Poll")}</h3><span class="poll-time-pill" title="${esc(exactDate)}">🕒 ${esc(postedAgo)}${exactDate?" • "+esc(exactDate):""}</span></div><p class="sub small">${statusLabel}</p>${m.opts.map((o,i)=>{
       const isLead=i===m.leadIdx;
       const isChosen=myVotes.includes(i)||lastChosen===i;
       return `<button type="button" class="poll${isChosen?" on":""}${isLead?" lead":""}" ${isMaxed?"disabled":""} data-act="vote" data-id="${+p.id}" data-i="${i}"><span>${esc(o)}</span><span class="poll-meta">${m.counts[i].toLocaleString("en-IN")} (${m.percentages[i]}%)</span></button>`;
@@ -1703,6 +1742,16 @@ const ACT={
  close(){closeM()},
  openViewAllPage,
  closeViewAllPage(){closeViewAllPage()},
+ quickSelectService(d){
+   const sel=$("srvTypeSelect");
+   const cardEl=$("bookingFormCard");
+   if(sel&&d.srv){
+     sel.value=d.srv;
+     syncServiceFormUI();
+   }
+   if(cardEl)cardEl.scrollIntoView({behavior:"smooth",block:"center"});
+   toast(`Selected: ${d.srv||"Service"}`);
+ },
  toggleMidnightLock(){
    const curLock=isDefaultMidnightLocked();
    if(curLock){
@@ -1987,7 +2036,7 @@ goTop();addEventListener("pageshow",goTop);addEventListener("load",goTop);
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function burst(x,y,set,n){if(reduce)return;const em=set||["❤️","✨","⭐","🎉","💖","🎬"];n=n||6;for(let i=0;i<n;i++){const s=document.createElement("span");s.className="pt";s.textContent=em[(Math.random()*em.length)|0];const a=Math.random()*Math.PI*2,d=50+Math.random()*80;s.style.cssText="left:"+x+"px;top:"+y+"px;--dx:"+Math.cos(a)*d+"px;--dy:"+(Math.sin(a)*d-30)+"px;--rot:"+((Math.random()*120-60)|0)+"deg";document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
 function confetti(){burst(innerWidth/2,innerHeight/2.3,["🎉","✨","🎊","💖","⭐"],18)}
-document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll:not(:disabled),.tab,.fab,.cr-pill,.cr-lookup-btn");if(b&&!b.closest("#adm"))burst(e.clientX,e.clientY,null,5)},true);
+document.addEventListener("click",e=>{const b=e.target.closest(".btn,.poll:not(:disabled),.tab,.fab,.cr-pill,.cr-lookup-btn,.q-chip");if(b&&!b.closest("#adm"))burst(e.clientX,e.clientY,null,5)},true);
 (function(){const el=$("typer");if(!el)return;const words=["Shorts Creator 🎬","Reels Storyteller 📸","Video Editor ✂️","Kerala Creator 🌴","Community Builder 💖"];
   if(reduce){el.textContent=words[0];return}
   let w=0,i=0,del=false;(function tick(){const cur=Array.from(words[w]);el.textContent=cur.slice(0,i).join("");
