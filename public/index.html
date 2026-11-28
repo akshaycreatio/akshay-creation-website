@@ -84,7 +84,17 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;fon
 @keyframes ytBadgeFloat{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.08) translateY(-1px)}}
 @keyframes ytRingPulse{0%{transform:scale(.92);opacity:.85}100%{transform:scale(1.38);opacity:0}}
 
-/* Color Picker Swatches Showing Actual Color Clearly */
+/* Visual Swatch Picker Cards (No Native Browser Select) */
+.color-swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:10px 0 14px}
+.sw-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:11px;border:1px solid var(--line);background:var(--in);cursor:pointer;text-align:left;color:var(--paper);transition:transform .18s,border-color .2s,box-shadow .2s}
+.sw-card:hover{transform:translateY(-2px);border-color:var(--gold)}
+.sw-card.picked{border-color:var(--gold);background:rgba(var(--gl),.16);box-shadow:0 0 0 1px var(--gold)}
+.sw-pair{display:inline-flex;align-items:center;flex:0 0 auto}
+.sw-c1{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.35)}
+.sw-c2{width:20px;height:20px;border-radius:50%;margin-left:-7px;border:1px solid rgba(255,255,255,.45)}
+.sw-name{font-size:.84rem;font-weight:700;line-height:1.2}
+.sw-hex{font-size:.72rem;color:var(--muted)}
+
 .tpanel{position:fixed;right:14px;bottom:136px;z-index:561;background:var(--modal);border:1px solid var(--gold);border-radius:16px;padding:12px;display:none;flex-direction:column;gap:7px;min-width:248px;max-height:70vh;overflow-y:auto;box-shadow:0 16px 42px rgba(0,0,0,.6)}
 .tpanel.open{display:flex;animation:pop .22s cubic-bezier(.2,.7,.2,1)}
 .tpanel b{font:700 .76rem "Hanken Grotesk",sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:0 2px}
@@ -94,6 +104,14 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;fon
 .topt-left{display:flex;align-items:center;gap:10px;min-width:0}
 .topt-swatch{width:24px;height:24px;flex:0 0 24px;border-radius:7px;border:1px solid rgba(255,255,255,.32);box-shadow:0 2px 8px rgba(0,0,0,.35)}
 .topt-dot{width:11px;height:11px;flex:0 0 11px;border-radius:50%;border:1px solid rgba(255,255,255,.45)}
+
+/* Creator Presence Card in About */
+.creator-bio-card{display:flex;align-items:center;gap:14px;padding:12px;border-radius:12px;background:var(--in);border:1px solid var(--line);margin-bottom:12px}
+.creator-bio-card img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex:0 0 60px}
+
+/* Universal Code Decoder Box in Portal */
+.decoder-box{padding:14px;border-radius:12px;background:linear-gradient(145deg,rgba(var(--c2l),.45),var(--card));border:1px solid var(--gold);margin-bottom:18px}
+.decoder-result{margin-top:10px;padding:12px;border-radius:10px;background:var(--in);border:1px solid var(--line)}
 
 /* Quick Jump Action Strip */
 .quick-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--line);scrollbar-width:none}
@@ -113,9 +131,6 @@ h1,h2,h3,.brand,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500;fon
 /* Creator Marketplace & Payout Ledger */
 .calc-preview{padding:12px 14px;border-radius:10px;background:rgba(var(--gl),.1);border:1px solid var(--gold);margin:-4px 0 14px;font-size:.84rem}
 .creator-tag-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:.8rem}
-.group-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
-.group-opt{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--in);font-size:.82rem;cursor:pointer}
-.group-opt i{width:14px;height:14px;border-radius:50%;flex:0 0 14px;border:1px solid rgba(255,255,255,.4)}
 .payout-highlight{margin-top:10px;padding:12px;border-radius:10px;background:rgba(var(--gl),.12);border:1px solid var(--gold)}
 
 .creator-ribbon{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) .58s forwards}
@@ -230,7 +245,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
-.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -310,8 +324,6 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .fab:active{transform:scale(.9)}
 #themeBtn{bottom:78px}#themeBtn span{display:inline-block;animation:wiggle 3s ease-in-out infinite}
 #topBtn{bottom:18px;opacity:0;pointer-events:none}#topBtn.show{opacity:1;pointer-events:auto}
-.wk-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--in);margin-bottom:8px}
-.wk-card.active-wk{border-color:var(--gold);background:rgba(var(--gl),.12)}
 body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 @media(prefers-reduced-motion:reduce){.hero .typer{opacity:1!important}*{animation:none!important;transition:none!important}.rv,h1 span,.hero .pill,.hero p.sub,.hero .btns,.hero .stats{opacity:1!important;transform:none!important}h1 span:nth-child(3){color:var(--gold2)!important;background:none!important}}
 </style></head>
@@ -353,7 +365,13 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
 <div class="g3">
-<div class="card"><span class="badge">The Family</span><h3 id="aboutFamTitle">155.9K+ Strong Fam</h3><p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p></div>
+<div class="card">
+  <div class="creator-bio-card">
+    <img id="aboutCreatorAvatar" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' rx='80' fill='%230D1324'/%3E%3Ccircle cx='80' cy='62' r='28' fill='%23D4FF24'/%3E%3Cpath d='M30,140 C30,108 52,94 80,94 C108,94 130,108 130,140' fill='%231558C9'/%3E%3C/svg%3E" alt="AKSHAY CREATION">
+    <div><span class="badge">The Family</span><h3 id="aboutFamTitle" style="margin:4px 0 0">155.9K+ Strong Fam</h3></div>
+  </div>
+  <p class="sub">You're part of my story. Your time and trust will never be taken for granted.</p>
+</div>
 <div class="card"><span class="badge">The Content</span><h3>Fresh Ideas &amp; Vibes</h3><p class="sub">Entertainment, creative storytelling, and a community that grows together.</p></div>
 <div class="card"><span class="badge">Collaborations</span><h3>Let's Connect</h3><p class="sub" style="margin-bottom:12px">Business inquiries: <strong>collab.akshaycreation@gmail.com</strong></p><button type="button" class="btn sm" data-act="mediaKit">📊 Open Brand Media Kit</button></div>
 </div></div></section>
@@ -563,6 +581,10 @@ const THEME_META={
   sunsetgold:["Sunset Gold","#140804","#FB923C"]
 };
 const ALL_THEME_KEYS=Object.keys(THEME_META);
+
+let selectedSingleDraft=null;
+let selectedGroupDraft=null;
+let codeLookupQuery="";
 
 function getThemeConfig(){
   const mode=S.g(THEME_MODE_KEY)||"single";
@@ -1797,6 +1819,97 @@ function getAllBookingsList(){
   return merged;
 }
 
+/* ---------- Universal Code / Token Decoder (Identifies Category, Source & Details) ---------- */
+function decodeAnyCode(rawCode){
+  const q=String(rawCode||"").trim();
+  if(!q)return null;
+  const low=q.toLowerCase();
+
+  const packs=getCreatorSubmittedPacks();
+  const matchedPack=packs.find(pk=>String(pk.pack_code||"").toLowerCase()===low||JSON.stringify(pk).toLowerCase().includes(low));
+  if(matchedPack){
+    const sp=calculatePackMarkup(matchedPack.base_price||matchedPack.price_inr);
+    return {
+      category:"Co-Creator Digital Pack",
+      code:matchedPack.pack_code,
+      title:matchedPack.title,
+      party:`${matchedPack.creator_name} (${matchedPack.creator_handle})`,
+      amount:`Store ₹${sp.storePrice} • Creator Base ₹${sp.creatorPayout} • Profit ₹${sp.platformProfit}`,
+      extra:`Creator UPI: ${matchedPack.creator_upi}`
+    };
+  }
+
+  const orders=Array.isArray(dash&&dash.orders)?dash.orders:[];
+  const matchedOrder=orders.find(o=>String(o.order_id||"").toLowerCase()===low||String(o.utr||"").toLowerCase()===low||JSON.stringify(o).toLowerCase().includes(low));
+  if(matchedOrder){
+    return {
+      category:"Store Order / UTR Payment",
+      code:matchedOrder.order_id||matchedOrder.utr||q,
+      title:`Order Status: ${matchedOrder.status||"PENDING"}`,
+      party:`${matchedOrder.customer_name||"Buyer"} (${matchedOrder.customer_email||""})`,
+      amount:`Amount: ₹${matchedOrder.amount_inr||matchedOrder.price_inr||"—"}`,
+      extra:`UTR: ${matchedOrder.utr||"—"}`
+    };
+  }
+
+  const bookings=getAllBookingsList();
+  const matchedBooking=bookings.find(b=>{
+    const tok=bookingTokens[b.id]||b.token||"";
+    return tok.toLowerCase()===low||JSON.stringify(b).toLowerCase().includes(low);
+  });
+  if(matchedBooking){
+    const tok=bookingTokens[matchedBooking.id]||matchedBooking.token||q;
+    const amt=bookingPrices[matchedBooking.id]||matchedBooking.approved_price||matchedBooking.amount_inr||INSTANT_PROMO_RATES[matchedBooking.service_type]||"—";
+    return {
+      category:"Promotion / Service Token",
+      code:tok,
+      title:matchedBooking.service_type||"Service Booking",
+      party:`${matchedBooking.client_name||"Client"} (${matchedBooking.client_email||""})`,
+      amount:`Amount: ₹${amt}`,
+      extra:`Status: ${matchedBooking.price_approval_status||matchedBooking.status||"Pending"}`
+    };
+  }
+
+  let prefixType="General / Payment Token";
+  if(/^ord[-_]/i.test(q))prefixType="Store Order Token";
+  else if(/^pack[-_]/i.test(q))prefixType="Creator Pack Code";
+  else if(/^promo[-_]/i.test(q))prefixType="Promotion / GPay Token";
+  else if(/^sup[-_]/i.test(q))prefixType="Creator Support Token";
+  else if(/^don[-_]/i.test(q))prefixType="Help Campaign Token";
+  else if(/^mem[-_]/i.test(q))prefixType="Creator Membership Token";
+  else if(/^\d{12}$/.test(q))prefixType="12-Digit UPI UTR Reference";
+
+  return {
+    category:prefixType,
+    code:q.toUpperCase(),
+    title:"Token / Reference Code",
+    party:"AKSHAY CREATION Hub",
+    amount:"Check Orders / Bookings / Creator Packs",
+    extra:"No matching record found yet or awaiting sync."
+  };
+}
+
+function renderCodeDecoderBoxHtml(){
+  const res=decodeAnyCode(codeLookupQuery);
+  const resHtml=res
+    ? `<div class="decoder-result">
+        <div class="row"><span class="badge ok">${esc(res.category)}</span><strong style="color:var(--gold2)">${esc(res.code)}</strong></div>
+        <div style="font-weight:700;margin-top:6px">${esc(res.title)}</div>
+        <div class="small sub" style="margin-top:2px">${esc(res.party)} • ${esc(res.amount)}</div>
+        <div class="small" style="color:var(--ok);margin-top:4px">${esc(res.extra)}</div>
+      </div>`
+    : "";
+  return `<div class="decoder-box">
+    <div class="row"><strong style="color:var(--gold2)">🔎 Universal Code &amp; Token Lookup</strong><span class="small sub">Orders • UTR • Packs • Tokens</span></div>
+    <p class="sub small" style="margin:4px 0 8px">Enter any Token Code, Pack Code, Order ID, or 12-digit UTR to identify where it came from and who it belongs to.</p>
+    <div class="row" style="flex-wrap:nowrap;gap:8px">
+      <input id="portalCodeDecoderInput" value="${esc(codeLookupQuery)}" placeholder="e.g. ORD-..., PACK-..., PROMO-..., or 12-digit UTR" style="margin:0">
+      <button type="button" class="btn sm pri" data-act="runCodeDecoder">Decode</button>
+    </div>
+    ${resHtml}
+  </div>`;
+}
+
 function computePackPayoutSummary(pk){
   const allOrders=Array.isArray(dash&&dash.orders)?dash.orders:[];
   const codeNeedle=String(pk.pack_code||"").toLowerCase();
@@ -1858,26 +1971,42 @@ function renderCreatorPacksTabHtml(){
   }).join("")}</div>`;
 }
 
+/* Visual Color Swatch Grid for Portal (Single Fixed & Multi-Color Group) */
 function renderThemeAndStatsTabHtml(){
   const s=getSavedSocialStats();
   const cfg=getThemeConfig();
   const curTheme=document.documentElement.getAttribute("data-theme")||"midnightlime";
+  const activeSingleKey=selectedSingleDraft||cfg.fixed;
+  const activeGroupArr=selectedGroupDraft||cfg.group;
 
-  const optionsHtml=ALL_THEME_KEYS.map(k=>{
+  const singleCardsHtml=ALL_THEME_KEYS.map(k=>{
     const m=THEME_META[k];
-    return `<option value="${esc(k)}"${cfg.fixed===k?" selected":""}>${esc(m[0])}</option>`;
+    const isPicked=activeSingleKey===k;
+    return `<button type="button" class="sw-card${isPicked?" picked":""}" data-pick-single="${esc(k)}">
+      <div style="min-width:0">
+        <div class="sw-name">${esc(m[0])}</div>
+        <div class="sw-hex">${esc(m[2])}</div>
+      </div>
+      <span class="sw-pair"><span class="sw-c1" style="background:${esc(m[1])}"></span><span class="sw-c2" style="background:${esc(m[2])}"></span></span>
+    </button>`;
   }).join("");
 
-  const groupChecksHtml=ALL_THEME_KEYS.map(k=>{
+  const groupCardsHtml=ALL_THEME_KEYS.map(k=>{
     const m=THEME_META[k];
-    const checked=cfg.group.indexOf(k)!==-1;
-    return `<label class="group-opt"><input type="checkbox" name="grp_theme" value="${esc(k)}"${checked?" checked":""}><i style="background:linear-gradient(135deg,${m[1]} 50%,${m[2]} 50%)"></i><span>${esc(m[0])}</span></label>`;
+    const isInGroup=activeGroupArr.indexOf(k)!==-1;
+    return `<button type="button" class="sw-card${isInGroup?" picked":""}" data-toggle-group-color="${esc(k)}">
+      <div style="min-width:0">
+        <div class="sw-name">${esc(m[0])}</div>
+        <div class="sw-hex">${isInGroup?"In Group ✓":"Tap to Add"}</div>
+      </div>
+      <span class="sw-pair"><span class="sw-c1" style="background:${esc(m[1])}"></span><span class="sw-c2" style="background:${esc(m[2])}"></span></span>
+    </button>`;
   }).join("");
 
   return `<div class="g2">
     <div class="card">
-      <div class="row"><h3 style="margin:0">Website Color Theme Control</h3><span class="badge ok">Active: ${esc((THEME_META[curTheme]||[curTheme])[0])}</span></div>
-      <p class="sub small" style="margin:8px 0 12px">Choose a single fixed color for everyone visiting the site, or select a curated group of colors that visitors can switch between.</p>
+      <div class="row"><h3 style="margin:0">Visual Color Theme Switcher</h3><span class="badge ok">Live: ${esc((THEME_META[curTheme]||[curTheme])[0])}</span></div>
+      <p class="sub small" style="margin:8px 0 12px">Tap any color card below to preview &amp; pick clearly with real color swatches.</p>
 
       <label>Theme Mode</label>
       <select id="admThemeModeSelect">
@@ -1886,15 +2015,15 @@ function renderThemeAndStatsTabHtml(){
       </select>
 
       <div id="admSingleColorBox"${cfg.mode==="group"?" hidden":""}>
-        <label>Select Website Color (14 Themes) ▼</label>
-        <select id="admFixedColorSelect">${optionsHtml}</select>
-        <button type="button" class="btn pri full" data-act="saveSingleTheme">Apply Color to Website</button>
+        <label>Tap a Color Swatch (14 Themes)</label>
+        <div class="color-swatch-grid">${singleCardsHtml}</div>
+        <button type="button" class="btn pri full" data-act="saveSingleTheme">Apply Selected Color to Website</button>
       </div>
 
       <div id="admGroupColorBox"${cfg.mode!=="group"?" hidden":""}>
-        <label>Select Allowed Color Group</label>
-        <div class="group-grid" id="admGroupChecks">${groupChecksHtml}</div>
-        <button type="button" class="btn pri full" data-act="saveGroupThemes">Save Color Group</button>
+        <label>Tap Color Swatches to Include in Group</label>
+        <div class="color-swatch-grid">${groupCardsHtml}</div>
+        <button type="button" class="btn pri full" data-act="saveGroupThemes">Save Color Group (${activeGroupArr.length})</button>
       </div>
     </div>
 
@@ -1977,7 +2106,7 @@ function admRender(){if(!dash)return;
   }
   if(tab==="overview"){
     const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING"),pb=allBookings.filter(x=>x.price_approval_status!=="approved"),pp=cPacks.filter(x=>x.status!=="approved");
-    b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>{
+    b.innerHTML=renderCodeDecoderBoxHtml()+`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>{
       const cnt=k==="bookings"?allBookings.length:(k==="creatorpacks"?cPacks.length:(d?(dash[d]||[]).length:null));
       return `<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${cnt!=null?cnt:"14"}</b>${l}</button>`;
     }).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) • ${pp.length} creator pack(s) • ${po.length} order(s) • ${pb.length} booking(s) awaiting review.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;
@@ -2034,6 +2163,11 @@ const ACT={
  closeViewAllPage(){closeViewAllPage()},
  shoutoutModal:openShoutoutModal,
  listProductModal:openListProductModal,
+ runCodeDecoder(){
+   const inp=$("portalCodeDecoderInput");
+   if(inp)codeLookupQuery=inp.value||"";
+   admRender();
+ },
  approveCreatorPack(d){
    const list=getCreatorSubmittedPacks();
    const item=list.find(x=>String(x.id)===String(d.pid));
@@ -2065,23 +2199,26 @@ const ACT={
    toast("Creator pack removed.");
  },
  saveSingleTheme(){
-   const sel=$("admFixedColorSelect");
-   const val=sel?sel.value:"midnightlime";
+   const cfg=getThemeConfig();
+   const val=selectedSingleDraft||cfg.fixed||"midnightlime";
    S.s(THEME_MODE_KEY,"single");
    S.s(FIXED_THEME_KEY,val);
+   selectedSingleDraft=null;
    applyConfiguredTheme(val);
    admRender();
-   toast(`Website color locked to ${(THEME_META[val]||[val])[0]}!`);
+   toast(`Website color set to ${(THEME_META[val]||[val])[0]}!`);
    confetti();
  },
  saveGroupThemes(){
-   const checked=[...document.querySelectorAll('#admGroupChecks input[name="grp_theme"]:checked')].map(x=>x.value);
-   if(!checked.length)return toast("Select at least one color for the group.",1);
+   const cfg=getThemeConfig();
+   const arr=(selectedGroupDraft&&selectedGroupDraft.length)?selectedGroupDraft:cfg.group;
+   if(!arr.length)return toast("Select at least one color for the group.",1);
    S.s(THEME_MODE_KEY,"group");
-   S.s(THEME_GROUP_KEY,JSON.stringify(checked));
-   applyConfiguredTheme(checked[0]);
+   S.s(THEME_GROUP_KEY,JSON.stringify(arr));
+   selectedGroupDraft=null;
+   applyConfiguredTheme(arr[0]);
    admRender();
-   toast(`Saved ${checked.length} color(s) for visitor theme switcher!`);
+   toast(`Saved ${arr.length} color(s) for visitor theme switcher!`);
    confetti();
  },
  mediaKit:openMediaKitModal,
@@ -2362,6 +2499,28 @@ document.addEventListener("click",e=>{
     toast("Auto channel logo generated!");
     return;
   }
+  const pickSingleBtn=e.target.closest("[data-pick-single]");
+  if(pickSingleBtn){
+    selectedSingleDraft=pickSingleBtn.dataset.pickSingle;
+    document.documentElement.setAttribute("data-theme",selectedSingleDraft);
+    admRender();
+    return;
+  }
+  const toggleGrpBtn=e.target.closest("[data-toggle-group-color]");
+  if(toggleGrpBtn){
+    const k=toggleGrpBtn.dataset.toggleGroupColor;
+    const base=(selectedGroupDraft||getThemeConfig().group).slice();
+    const idx=base.indexOf(k);
+    if(idx!==-1){
+      if(base.length>1)base.splice(idx,1);
+      else return toast("At least 1 color must remain in the group.",1);
+    }else{
+      base.push(k);
+    }
+    selectedGroupDraft=base;
+    admRender();
+    return;
+  }
   const platBtn=e.target.closest("#creatorPlatformFilters [data-plat]");
   if(platBtn){
     creatorFilterPlatform=platBtn.dataset.plat||"All";
@@ -2384,6 +2543,10 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTopOverlay(fals
 
 document.addEventListener("input",e=>{
   const t=e.target;
+  if(t&&t.id==="portalCodeDecoderInput"){
+    codeLookupQuery=t.value||"";
+    return;
+  }
   if(t&&t.id==="storeSearchInput"){
     storeSearchQuery=t.value||"";
     renderStoreProductsGrid();
@@ -2411,8 +2574,15 @@ document.addEventListener("change",e=>{
   const t=e.target;
   if(t&&t.id==="admThemeModeSelect"){
     const isGroup=t.value==="group";
-    if($("admSingleColorBox"))$("admSingleColorBox").hidden=isGroup;
-    if($("admGroupColorBox"))$("admGroupColorBox").hidden=!isGroup;
+    S.s(THEME_MODE_KEY,isGroup?"group":"single");
+    if(!isGroup){
+      const fix=selectedSingleDraft||getThemeConfig().fixed;
+      applyConfiguredTheme(fix);
+    }else{
+      const grp=selectedGroupDraft||getThemeConfig().group;
+      applyConfiguredTheme(grp[0]);
+    }
+    admRender();
     return;
   }
   if(t&&t.id==="srvTypeSelect"){
