@@ -30,25 +30,20 @@
 })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <script>
 (function(){
   try{
-    var ALLOWED=["midnightlime","ocean","cyberneon","solaramber","jetcherry","auroramint","violet","inkcoral"];
-    var WEEK_A=["midnightlime","ocean","cyberneon","solaramber"];
-    var WEEK_B=["jetcherry","auroramint","violet","inkcoral"];
-    var msPerWeek=7*24*3600*1000;
-    var wkNum=Math.floor(Date.now()/msPerWeek);
-    var activeWeek=(wkNum%2===0)?WEEK_A:WEEK_B;
-    var lockDefault=localStorage.getItem("akc_lock_midnightlime");
-    if(lockDefault===null){localStorage.setItem("akc_lock_midnightlime","1");lockDefault="1"}
-    var chosen=localStorage.getItem("akc_theme")||"midnightlime";
-    if(lockDefault==="1"){
-      chosen="midnightlime";
-      localStorage.setItem("akc_theme","midnightlime");
-    }else if(ALLOWED.indexOf(chosen)===-1||activeWeek.indexOf(chosen)===-1){
-      chosen=activeWeek[0];
-      localStorage.setItem("akc_theme",chosen);
+    var ALL=["midnightlime","ocean","cyberneon","solaramber","jetcherry","auroramint","violet","inkcoral","emeraldgold","neonmagenta","arcticfrost","obsidianrose","electricindigo","sunsetgold"];
+    var mode=localStorage.getItem("akc_theme_mode")||"single";
+    var fixed=localStorage.getItem("akc_fixed_theme")||"midnightlime";
+    if(ALL.indexOf(fixed)===-1)fixed="midnightlime";
+    var chosen=fixed;
+    if(mode==="group"){
+      var grpRaw=localStorage.getItem("akc_theme_group");
+      var grp=grpRaw?JSON.parse(grpRaw):["midnightlime","cyberneon","ocean","emeraldgold"];
+      var userPick=localStorage.getItem("akc_theme");
+      chosen=(userPick&&grp.indexOf(userPick)!==-1)?userPick:(grp[0]||fixed);
     }
     document.documentElement.setAttribute("data-theme",chosen);
   }catch(e){}
@@ -63,6 +58,13 @@ html[data-theme="jetcherry"]{--bg:#0B0B0C;--bg2:#121316;--card:#17181C;--card2:#
 html[data-theme="auroramint"]{--bg:#041614;--bg2:#07221F;--card:#0B2F2B;--card2:#10423C;--gold:#10B981;--gold2:#6EE7B7;--paper:#ECFDF5;--muted:#99C7BC;--ok:#38BDF8;--red:#FB7185;--line:rgba(16,185,129,.36);--in:rgba(16,185,129,.07);--navbg:rgba(4,22,20,.95);--modal:#092723;--foot:#020C0B;--onpri:#031812;--gl:16,185,129;--okl:56,189,248;--c2l:16,66,60}
 html[data-theme="violet"]{--bg:#130a26;--bg2:#1b1036;--card:#241546;--card2:#33205f;--gold:#f7b955;--gold2:#ffe0a3;--paper:#f5f0ff;--muted:#b8aad6;--ok:#6ee7d8;--red:#ff9a8a;--line:rgba(247,185,85,.3);--in:rgba(0,0,0,.28);--navbg:rgba(19,10,38,.95);--modal:#1d1140;--foot:#0c0618;--onpri:#2a1500;--gl:247,185,85;--okl:110,231,216;--c2l:51,32,95}
 html[data-theme="inkcoral"]{--bg:#141B2D;--bg2:#1A233A;--card:#1F2A44;--card2:#283657;--gold:#FF5A4E;--gold2:#FF8A80;--paper:#F4F1EA;--muted:#B4BDCB;--ok:#5EEAD4;--red:#FF8A80;--line:rgba(255,90,78,.34);--in:rgba(10,14,24,.36);--navbg:rgba(20,27,45,.95);--modal:#192238;--foot:#0D121F;--onpri:#FFFFFF;--gl:255,90,78;--okl:94,234,212;--c2l:40,54,87}
+html[data-theme="emeraldgold"]{--bg:#04120C;--bg2:#071E15;--card:#0C2B1E;--card2:#133F2D;--gold:#EAB308;--gold2:#FDE047;--paper:#F0FDF4;--muted:#9CA3AF;--ok:#34D399;--red:#F87171;--line:rgba(234,179,8,.38);--in:rgba(234,179,8,.08);--navbg:rgba(4,18,12,.95);--modal:#092218;--foot:#020A06;--onpri:#140E00;--gl:234,179,8;--okl:52,211,153;--c2l:19,63,45}
+html[data-theme="neonmagenta"]{--bg:#0D0414;--bg2:#160821;--card:#210D31;--card2:#311349;--gold:#F43F5E;--gold2:#FDA4AF;--paper:#FFF1F2;--muted:#C4B5FD;--ok:#38BDF8;--red:#FB7185;--line:rgba(244,63,94,.4);--in:rgba(244,63,94,.08);--navbg:rgba(13,4,20,.95);--modal:#1A0A26;--foot:#07020B;--onpri:#FFFFFF;--gl:244,63,94;--okl:56,189,248;--c2l:49,19,73}
+html[data-theme="arcticfrost"]{--bg:#06111A;--bg2:#0B1B28;--card:#112638;--card2:#193752;--gold:#38BDF8;--gold2:#BAE6FD;--paper:#F0F9FF;--muted:#94A3B8;--ok:#4ADE80;--red:#FB7185;--line:rgba(56,189,248,.36);--in:rgba(56,189,248,.08);--navbg:rgba(6,17,26,.95);--modal:#0E2030;--foot:#03090E;--onpri:#031521;--gl:56,189,248;--okl:74,222,128;--c2l:25,55,82}
+html[data-theme="obsidianrose"]{--bg:#0B070A;--bg2:#140D12;--card:#1F141C;--card2:#2E1E2A;--gold:#FB7185;--gold2:#FECDD3;--paper:#FFF1F2;--muted:#A8A29E;--ok:#34D399;--red:#F43F5E;--line:rgba(251,113,133,.36);--in:rgba(251,113,133,.07);--navbg:rgba(11,7,10,.95);--modal:#191016;--foot:#060305;--onpri:#1F050A;--gl:251,113,133;--okl:52,211,153;--c2l:46,30,42}
+html[data-theme="electricindigo"]{--bg:#070818;--bg2:#0E102B;--card:#15183E;--card2:#20255C;--gold:#818CF8;--gold2:#C7D2FE;--paper:#EEF2FF;--muted:#94A3B8;--ok:#34D399;--red:#FB7185;--line:rgba(129,140,248,.4);--in:rgba(129,140,248,.09);--navbg:rgba(7,8,24,.95);--modal:#111333;--foot:#03040D;--onpri:#090B24;--gl:129,140,248;--okl:52,211,153;--c2l:32,37,92}
+html[data-theme="sunsetgold"]{--bg:#140804;--bg2:#200D07;--card:#2E130B;--card2:#451D11;--gold:#FB923C;--gold2:#FED7AA;--paper:#FFF7ED;--muted:#D6C4B8;--ok:#4ADE80;--red:#F87171;--line:rgba(251,146,60,.4);--in:rgba(251,146,60,.08);--navbg:rgba(20,8,4,.95);--modal:#240F08;--foot:#0B0402;--onpri:#1F0B02;--gl:251,146,60;--okl:74,222,128;--c2l:69,29,17}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:120px}
 body{font:400 16px/1.65 "Hanken Grotesk",system-ui,sans-serif;background:var(--bg);color:var(--paper);overflow-x:hidden;transition:background .35s ease,color .35s ease}
@@ -72,16 +74,19 @@ h1,h2,h3,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;padding-bottom:8px}
 
-/* Refined Modern Creator Brand Logo & Clean Shimmer Typography */
-.brand{position:relative;display:inline-flex;align-items:center;gap:10px;padding:4px 8px 4px 2px;border-radius:10px;transition:transform .25s ease}
+/* Brand Logo & Space Grotesk Shimmer Typography */
+.brand{position:relative;display:inline-flex;align-items:center;gap:10px;padding:4px 10px 4px 2px;border-radius:12px;transition:transform .25s ease}
 .brand:hover{transform:translateY(-1px)}
 .brand:before{display:none}
-.ak-crest{position:relative;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:0 0 30px;background:linear-gradient(145deg,var(--gold2),var(--gold));color:var(--onpri);box-shadow:0 4px 16px rgba(var(--gl),.38)}
-.ak-crest svg{width:16px;height:16px;display:block;transition:transform .35s ease}
-.brand:hover .ak-crest svg{transform:scale(1.1)}
-.brand-name{font-family:"Hanken Grotesk",system-ui,sans-serif;font-weight:700;font-style:normal;font-size:.98rem;letter-spacing:.14em;background:linear-gradient(95deg,var(--paper) 0%,var(--gold2) 48%,var(--paper) 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cleanBrandShimmer 6s ease-in-out infinite}
-.brand-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px rgba(var(--gl),.75);animation:pulse 1.8s infinite}
-@keyframes cleanBrandShimmer{0%,100%{background-position:0% center}50%{background-position:100% center}}
+.ak-orb-logo{position:relative;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:0 0 32px;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold));color:var(--onpri);box-shadow:0 0 18px rgba(var(--gl),.55)}
+.ak-orb-logo:before{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed rgba(var(--gl),.75);animation:akOrbitSpin 10s linear infinite}
+.ak-orb-logo svg{width:17px;height:17px;display:block;animation:akLogoPulse 2.8s ease-in-out infinite}
+.brand-name{font-family:"Space Grotesk","Hanken Grotesk",sans-serif;font-weight:700;font-style:normal;font-size:1.02rem;letter-spacing:.12em;background:linear-gradient(100deg,var(--paper) 0%,var(--gold2) 35%,#ffffff 52%,var(--gold2) 70%,var(--paper) 100%);background-size:240% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cleanBrandShimmer 4.5s linear infinite}
+.brand-spark-emoji{font-size:.92rem;display:inline-block;animation:akSparkFloat 2.4s ease-in-out infinite}
+@keyframes cleanBrandShimmer{0%{background-position:0% center}100%{background-position:240% center}}
+@keyframes akOrbitSpin{to{transform:rotate(360deg)}}
+@keyframes akLogoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
+@keyframes akSparkFloat{0%,100%{transform:translateY(0) rotate(0deg) scale(1)}50%{transform:translateY(-2px) rotate(14deg) scale(1.18)}}
 
 /* Quick Jump Action Strip */
 .quick-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--line);scrollbar-width:none}
@@ -97,6 +102,13 @@ h1,h2,h3,.big{font-family:"Bodoni Moda",Georgia,serif;font-weight:500}
 /* Poll Timestamp Badge */
 .poll-head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:4px}
 .poll-time-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:600;color:var(--gold2);background:rgba(var(--gl),.12);border:1px solid var(--line);white-space:nowrap}
+
+/* Creator Marketplace & Commission Calc Box */
+.calc-preview{padding:12px 14px;border-radius:10px;background:rgba(var(--gl),.1);border:1px solid var(--gold);margin:-4px 0 14px;font-size:.84rem}
+.creator-tag-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:.8rem}
+.group-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.group-opt{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--in);font-size:.82rem;cursor:pointer}
+.group-opt i{width:14px;height:14px;border-radius:50%;flex:0 0 14px;border:1px solid rgba(255,255,255,.4)}
 
 .creator-ribbon{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) .58s forwards}
 .ribbon-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:.78rem;font-weight:600;color:var(--paper);background:var(--in);border:1px solid var(--line);transition:transform .25s,border-color .25s}
@@ -210,7 +222,6 @@ h1 span:nth-child(3){padding-left:.6em;background:linear-gradient(90deg,var(--go
 .rot-dot.on{width:22px;background:var(--gold2)}
 
 .av{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);padding:2px;background:var(--bg2);box-shadow:0 0 18px rgba(var(--gl),.22)}
-.bar{height:14px;border-radius:99px;background:var(--in);border:1px solid var(--line);margin:10px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));background-size:200% 100%;animation:shine 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 input,select,textarea{width:100%;padding:12px 14px;border-radius:8px;background:var(--in);border:1px solid var(--line);color:var(--paper);font:400 .95rem "Hanken Grotesk",sans-serif;margin:6px 0 14px}
 input::placeholder,textarea::placeholder{color:var(--muted)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 input[type=checkbox]{width:auto;margin:0 8px 0 0}select option{background:var(--modal);color:var(--paper)}
@@ -296,15 +307,13 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .topt{display:flex;align-items:center;gap:10px;background:none;border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--paper);font:600 .86rem "Hanken Grotesk",sans-serif;cursor:pointer;text-align:left}
 .topt.on{border-color:var(--gold);background:rgba(var(--gl),.14)}
 .topt i{width:20px;height:20px;flex:0 0 20px;border-radius:50%;border:2px solid rgba(255,255,255,.45)}
-.wk-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--in);margin-bottom:8px}
-.wk-card.active-wk{border-color:var(--gold);background:rgba(var(--gl),.12)}
 body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 @media(prefers-reduced-motion:reduce){.hero .typer{opacity:1!important}*{animation:none!important;transition:none!important}.rv,h1 span,.hero .pill,.hero p.sub,.hero .btns,.hero .stats{opacity:1!important;transform:none!important}h1 span:nth-child(3){color:var(--gold2)!important;background:none!important}}
 </style></head>
 <body>
 <div class="progress" id="progress"></div>
 <header class="nav"><div class="wrap">
-<a href="#home" class="brand"><span class="ak-crest" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5L19 12L8 18.5V5.5Z"/></svg></span><span class="brand-name">AKSHAY CREATION</span><span class="brand-badge-dot" aria-hidden="true"></span></a>
+<a href="#home" class="brand"><span class="ak-orb-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.8 9.2L22 12L14.8 14.8L12 22L9.2 14.8L2 12L9.2 9.2L12 2Z"/></svg></span><span class="brand-name">AKSHAY CREATION</span><span class="brand-spark-emoji" aria-hidden="true">✨</span></a>
 <button type="button" class="btn sm" data-act="portal">Portal</button>
 <nav class="links"><a href="#about">About</a><a href="#creators">Creators</a><a href="#help">Help</a><a href="#store">Store</a><a href="#services">Services</a><a href="#care">Support</a><a href="#community">Community</a><a href="#faq">FAQ</a></nav>
 </div></header>
@@ -314,7 +323,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="pill">Official Hub • Kerala, India</div>
 <h1><span>Create.</span><span>Connect.</span><span>Inspire.</span></h1>
 <p class="sub">Entertainment, creative content &amp; digital storytelling. You're not just a subscriber, you're part of my story.</p>
-<div class="creator-ribbon"><span class="ribbon-chip">⚡ 155.9K+ Fam</span><span class="ribbon-chip">🎬 Shorts &amp; Reels</span><span class="ribbon-chip">🔒 Token &amp; Direct UPI</span><button type="button" class="ribbon-chip" style="cursor:pointer" data-act="mediaKit">📊 Media Kit</button></div>
+<div class="creator-ribbon"><span class="ribbon-chip">⚡ 155.9K+ Fam</span><span class="ribbon-chip">🎬 Shorts &amp; Reels</span><span class="ribbon-chip">🛍️ Co-Creator Store (80% Share)</span><button type="button" class="ribbon-chip" style="cursor:pointer" data-act="mediaKit">📊 Media Kit</button></div>
 <p class="typer">I'm a <span id="typer"></span><i class="caret"></i></p>
 <div class="btns">
 <a class="btn pri" target="_blank" rel="noopener" href="https://youtube.com/@akshaycreationshorts?si=qHtFcSW7z8Z2S7u7">YouTube Channel ↗</a>
@@ -334,7 +343,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div>
 </div></section>
 <div class="ticker" aria-hidden="true"><div><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
-<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><button type="button" class="q-chip" data-act="mediaKit">📊 Media Kit</button><button type="button" class="q-chip" data-act="shareSiteQr">📲 Site QR</button></div></div>
+<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><button type="button" class="q-chip" data-act="listProductModal">＋ Sell Digital Pack</button><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><button type="button" class="q-chip" data-act="mediaKit">📊 Media Kit</button><button type="button" class="q-chip" data-act="shareSiteQr">📲 Site QR</button></div></div>
 
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
@@ -385,12 +394,29 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div></section>
 
 <section id="store"><div class="wrap">
-<div class="head"><div class="tag">Creator Assets • Direct UPI</div><h2>Digital Store <span class="wig bn">🛍️</span></h2><p class="sub">Pay directly via any UPI app and unlock your creator assets.</p></div>
-<div class="card" style="margin-bottom:22px"><strong>Already paid via UPI?</strong>
-<p class="sub small">Enter your Order ID or 12-digit UTR to check status and download.</p>
-<div class="row" style="flex-wrap:nowrap;margin-top:8px"><input id="track" placeholder="AKC_... or 12-digit UTR" style="margin:0"><button type="button" class="btn sm" data-act="track">Check</button></div>
-<div id="trackOut" style="margin-top:12px"></div>
-<div id="instantOrderCard"></div></div>
+<div class="head row" style="align-items:flex-end">
+  <div>
+    <div class="tag">Creator Assets • Direct UPI</div>
+    <h2>Digital Store <span class="wig bn">🛍️</span></h2>
+    <p class="sub">Buy official &amp; co-creator digital packs via UPI, or list your own digital pack and earn 80% per sale.</p>
+  </div>
+  <div class="btns" style="margin:0">
+    <button type="button" class="btn pri" data-act="listProductModal">＋ List Your Digital Product</button>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:22px">
+  <div class="row">
+    <div>
+      <strong>Already paid via UPI?</strong>
+      <p class="sub small">Enter your Order ID or 12-digit UTR to check status and download.</p>
+    </div>
+    <span class="badge ok">Co-Creator Split: 80% Creator • 20% Platform</span>
+  </div>
+  <div class="row" style="flex-wrap:nowrap;margin-top:8px"><input id="track" placeholder="AKC_... or 12-digit UTR" style="margin:0"><button type="button" class="btn sm" data-act="track">Check</button></div>
+  <div id="trackOut" style="margin-top:12px"></div>
+  <div id="instantOrderCard"></div>
+</div>
 <div id="productsList" class="g3"></div>
 </div></section>
 
@@ -438,10 +464,10 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <section id="faq"><div class="wrap">
 <div class="head"><div class="tag">Good to know</div><h2>Questions, answered <span class="wig bn">💡</span></h2></div>
 <div class="faq">
+<details><summary>How does listing a Creator Digital Product work?</summary><p>Tap "List Your Digital Product" in the Store, fill in your creator profile (YouTube/Instagram), product details, image, download link, and UPI ID. Buyers pay AKSHAY CREATION first; once verified and delivered, 80% is sent to your UPI ID (20% platform fee).</p></details>
 <details><summary>How do I buy a digital pack?</summary><p>Tap Buy via UPI, pay the exact amount, then submit your name, email and the 12-digit UTR. You get an Order ID and instant order summary card straight away.</p></details>
 <details><summary>How do I download after paying?</summary><p>Paste your Order ID or UTR into Check in the store. When your payment is marked Paid, the download button appears.</p></details>
 <details><summary>How do Story &amp; Post promotions work?</summary><p>Community Story Promotion (₹199) and Community Post Promotion (₹299) are limited-time offers. Submit your details to get a unique token, pay via GPay/UPI with that token, and once matched and approved in the portal, your confirmation email is sent.</p></details>
-<details><summary>How do I become Creator of the Week?</summary><p>Tap Register as Creator. Every submission is reviewed before it appears.</p></details>
 </div></div></section>
 </main>
 
@@ -451,7 +477,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div class="viewall-top">
     <div class="wrap row">
       <div>
-        <span class="brand"><span class="ak-crest" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5L19 12L8 18.5V5.5Z"/></svg></span><span class="brand-name">CREATOR DIRECTORY</span><span class="brand-badge-dot" aria-hidden="true"></span></span>
+        <span class="brand"><span class="ak-orb-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.8 9.2L22 12L14.8 14.8L12 22L9.2 14.8L2 12L9.2 9.2L12 2Z"/></svg></span><span class="brand-name">CREATOR DIRECTORY</span><span class="brand-spark-emoji" aria-hidden="true">✨</span></span>
         <div class="small sub" id="viewAllMeta">Approved creators &amp; hidden pending queue slots</div>
       </div>
       <button type="button" class="btn sm pri" data-act="closeViewAllPage">← Back to Main Page</button>
@@ -485,10 +511,10 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <label class="chk"><input type="checkbox" data-act="pw">Show password</label>
 <button class="btn pri full">Sign in</button></form><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
 <div id="adash" hidden>
-<div class="atop"><div class="row"><span class="brand"><span class="ak-crest" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5L19 12L8 18.5V5.5Z"/></svg></span><span class="brand-name">AKSHAY CREATION</span><span class="brand-badge-dot" aria-hidden="true"></span></span><span class="sub small" id="auser"></span>
+<div class="atop"><div class="row"><span class="brand"><span class="ak-orb-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.8 9.2L22 12L14.8 14.8L12 22L9.2 14.8L2 12L9.2 9.2L12 2Z"/></svg></span><span class="brand-name">AKSHAY CREATION</span><span class="brand-spark-emoji" aria-hidden="true">✨</span></span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
-<div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Token, UTR, Name, Email or Status..."><div id="abody"></div></div></div>
+<div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Code, Token, UTR, Creator, Name, Email or Status..."><div id="abody"></div></div></div>
 </div>
 
 <div class="tpanel" id="tpanel"></div>
@@ -508,7 +534,11 @@ let token=S.g("akc_token")||"",dash=null,tab="overview",st={products:[],charitie
 const UPI={id:"akshaycreation7@naviaxis",name:"Akshay K P"};
 const BRAND_EMAIL="collab.akshaycreation@gmail.com";
 const SOCIAL_STATS_KEY="akc_social_stats_v1";
-const LOCK_DEFAULT_KEY="akc_lock_midnightlime";
+const THEME_MODE_KEY="akc_theme_mode";
+const FIXED_THEME_KEY="akc_fixed_theme";
+const THEME_GROUP_KEY="akc_theme_group";
+const CREATOR_PACKS_KEY="akc_creator_packs_v1";
+const PLATFORM_FEE_PCT=20;
 
 const THEME_META={
   midnightlime:["Midnight Lime","#030407","#D4FF24"],
@@ -518,42 +548,56 @@ const THEME_META={
   jetcherry:["Jet Cherry","#0B0B0C","#C8102E"],
   auroramint:["Aurora Mint","#041614","#10B981"],
   violet:["Royal Violet","#130a26","#f7b955"],
-  inkcoral:["Ink Coral","#141B2D","#FF5A4E"]
+  inkcoral:["Ink Coral","#141B2D","#FF5A4E"],
+  emeraldgold:["Emerald Gold","#04120C","#EAB308"],
+  neonmagenta:["Neon Magenta","#0D0414","#F43F5E"],
+  arcticfrost:["Arctic Frost","#06111A","#38BDF8"],
+  obsidianrose:["Obsidian Rose","#0B070A","#FB7185"],
+  electricindigo:["Electric Indigo","#070818","#818CF8"],
+  sunsetgold:["Sunset Gold","#140804","#FB923C"]
 };
-const WEEK_A_THEMES=["midnightlime","ocean","cyberneon","solaramber"];
-const WEEK_B_THEMES=["jetcherry","auroramint","violet","inkcoral"];
+const ALL_THEME_KEYS=Object.keys(THEME_META);
 
-function isDefaultMidnightLocked(){
-  const v=S.g(LOCK_DEFAULT_KEY);
-  if(v===null){S.s(LOCK_DEFAULT_KEY,"1");return true}
-  return v==="1";
+function getThemeConfig(){
+  const mode=S.g(THEME_MODE_KEY)||"single";
+  let fixed=S.g(FIXED_THEME_KEY)||"midnightlime";
+  if(!THEME_META[fixed])fixed="midnightlime";
+  let group=["midnightlime","cyberneon","ocean","emeraldgold"];
+  try{
+    const raw=S.g(THEME_GROUP_KEY);
+    if(raw){
+      const parsed=JSON.parse(raw);
+      if(Array.isArray(parsed)&&parsed.length){
+        group=parsed.filter(k=>!!THEME_META[k]);
+      }
+    }
+  }catch(e){}
+  if(!group.length)group=["midnightlime"];
+  return {mode,fixed,group};
 }
-function getWeeklyComboThemes(){
-  const wkNum=Math.floor(Date.now()/(7*24*3600*1000));
-  return (wkNum%2===0)?WEEK_A_THEMES:WEEK_B_THEMES;
-}
-function getWeeklySheetLabel(){
-  const wkNum=Math.floor(Date.now()/(7*24*3600*1000));
-  return (wkNum%2===0)?"Week 1 Combo (4 Colors)":"Week 2 Combo (4 Colors)";
-}
-function applyThemeSelection(themeKey, forceUnlockDefault){
-  if(forceUnlockDefault){
-    S.s(LOCK_DEFAULT_KEY,"0");
-  }
-  const locked=isDefaultMidnightLocked();
-  const combo=getWeeklyComboThemes();
-  let target="midnightlime";
-  if(locked){
-    target="midnightlime";
-  }else if(THEME_META[themeKey]&&combo.indexOf(themeKey)!==-1){
-    target=themeKey;
-  }else{
-    target=combo[0];
+
+function applyConfiguredTheme(userChoice){
+  const cfg=getThemeConfig();
+  let target=cfg.fixed;
+  if(cfg.mode==="group"){
+    const pick=userChoice||S.g("akc_theme")||cfg.group[0];
+    target=cfg.group.indexOf(pick)!==-1?pick:cfg.group[0];
   }
   document.documentElement.setAttribute("data-theme",target);
   S.s("akc_theme",target);
   const metaEl=document.querySelector('meta[name="theme-color"]');
   if(metaEl&&THEME_META[target])metaEl.content=THEME_META[target][1];
+}
+
+function getCreatorSubmittedPacks(){
+  try{
+    const raw=S.g(CREATOR_PACKS_KEY);
+    const arr=raw?JSON.parse(raw):[];
+    return Array.isArray(arr)?arr:[];
+  }catch(e){return []}
+}
+function saveCreatorSubmittedPacks(list){
+  S.s(CREATOR_PACKS_KEY,JSON.stringify(list||[]));
 }
 
 const INSTANT_PROMO_RATES={
@@ -1119,6 +1163,62 @@ function closeViewAllPage(){
   if($("adm")&&$("adm").hidden)document.body.style.overflow="";
 }
 
+/* ---------- Co-Creator Digital Product Listing Modal & Live Commission Calculator ---------- */
+function calculatePackPricing(rawBase){
+  const base=Math.max(10,Math.round(Number(rawBase)||0));
+  const platformFee=Math.round((base*PLATFORM_FEE_PCT)/100);
+  const creatorShare=Math.max(0,base-platformFee);
+  return {buyerPrice:base,platformFee,creatorShare};
+}
+function syncListProductCalc(){
+  const inp=$("lp_base_price");
+  const box=$("lp_calc_box");
+  if(!inp||!box)return;
+  const val=Number(inp.value)||0;
+  if(val<=0){
+    box.innerHTML=`<span class="sub">Enter a price (e.g. ₹49 or ₹99) to see the instant 80% / 20% split.</span>`;
+    return;
+  }
+  const c=calculatePackPricing(val);
+  box.innerHTML=`
+    <div class="row"><span>Buyer Pays (on Store):</span><strong style="color:var(--gold2)">₹${c.buyerPrice}</strong></div>
+    <div class="row" style="margin-top:4px"><span>Your Creator Payout (80%):</span><strong style="color:var(--ok)">₹${c.creatorShare}</strong></div>
+    <div class="row" style="margin-top:4px"><span>AKSHAY CREATION Platform Share (20%):</span><strong>₹${c.platformFee}</strong></div>
+  `;
+}
+function openListProductModal(){
+  const code=generateUniqueToken("PACK");
+  openM(head("List Your Digital Product")+`
+    <p class="sub small" style="margin-bottom:10px">Sell your presets, LUTs, templates or overlays on AKSHAY CREATION. Buyers pay AKSHAY CREATION first; once verified, 80% is sent to your UPI ID.</p>
+    <form data-form="creatorListPack">
+      <input type="hidden" name="pack_code" value="${esc(code)}">
+      <div class="receipt-card" style="padding:10px 12px;margin:0 0 12px">
+        <div class="row"><span class="small sub">Listing Tracking Code</span><strong style="color:var(--gold2)">${esc(code)}</strong></div>
+      </div>
+      <label>Your Creator Name *</label><input name="creator_name" required placeholder="e.g. Rahul Edits">
+      <label>Creator Platform (YouTube / Instagram) *</label><select name="creator_platform"><option>YouTube</option><option>Instagram</option></select>
+      <label>Creator @Handle *</label><input name="creator_handle" required placeholder="@yourhandle">
+      <label>Creator Profile Link (YouTube or Instagram URL) *</label><input name="creator_profile_url" type="url" required placeholder="https://youtube.com/@... or https://instagram.com/...">
+      <label>Product Title *</label><input name="title" required placeholder="e.g. 15 Cinematic Moody LUTs Pack">
+      <label>Category *</label><select name="category"><option>LUTs &amp; Presets</option><option>CapCut / Alight Templates</option><option>Overlays &amp; SFX</option><option>Thumbnails &amp; PSD</option><option>Guide / E-Book</option></select>
+      <label>Product Details *</label><textarea name="description" rows="3" required placeholder="What's inside this pack, format, compatibility..."></textarea>
+      <label>Product Price (₹) *</label><input name="price_inr" id="lp_base_price" type="number" min="10" step="1" required placeholder="e.g. 49">
+      <div class="calc-preview" id="lp_calc_box"></div>
+      <label>Product Cover Photo *</label>
+      <div class="row" style="margin-bottom:8px">
+        <img class="cover" id="lp_pv" src="" alt="" hidden style="height:120px">
+        <label class="btn sm" style="margin:0">📷 Upload Cover Image<input type="file" accept="image/*" id="lp_cover_file" hidden></label>
+      </div>
+      <input name="image_url" id="lp_image_url" required placeholder="Upload photo above or paste cover image link">
+      <label>Private Download File Link (Drive / Telegram / Cloud) *</label><input name="download_url" type="url" required placeholder="https://drive.google.com/...">
+      <label>Your UPI ID (for 80% Payout) *</label><input name="creator_upi" required placeholder="yourname@okaxis / @ybl">
+      <label class="chk"><input type="checkbox" name="terms_ok" required>I confirm this is my original content and agree that AKSHAY CREATION collects buyer payment first and sends me 80% (after 20% platform fee) upon verification.</label>
+      <button class="btn pri full">Submit Pack for Portal Review</button>
+    </form>
+  `);
+  syncListProductCalc();
+}
+
 function openMediaKitModal(){
   const s=getSavedSocialStats();
   const pitch=`AKSHAY CREATION — CREATOR MEDIA KIT\nLocation: Kerala, India\nYouTube: ${s.yt} Subscribers (@akshaycreationshorts)\nInstagram: ${s.ig} Followers (@akshaycreation_offl)\nContent: Entertainment, Tech, Movie Reviews, Shorts & Reels\nEmail: ${BRAND_EMAIL}\nWebsite: ${location.origin}`;
@@ -1306,11 +1406,19 @@ function supportM(a){
   const u=upiUrl(a,note,UPI.id,UPI.name);
   openM(head("Support AKSHAY CREATION")+`<div class="small sub" style="margin-bottom:6px">Token: ${esc(tok)}</div><div class="tabs">${[50,100,500,1000,0].map(x=>`<button type="button" class="tab${x===a?" on":""}" data-act="amt" data-a="${x}">${x?"₹"+x:"Any"}</button>`).join("")}</div>`+qrBox(u,UPI.id,UPI.name,a?"Donate ₹"+a:"Open UPI app & pay"));
 }
+function getAllStoreProducts(){
+  const serverProds=Array.isArray(st.products)?st.products:[];
+  const approvedCreatorProds=getCreatorSubmittedPacks().filter(p=>p.status==="approved");
+  return [...serverProds,...approvedCreatorProds];
+}
 function checkout(id){
-  const p=st.products.find(x=>x.id==id);if(!p)return;
+  const p=getAllStoreProducts().find(x=>String(x.id)===String(id));if(!p)return;
   const tok=generateUniqueToken("ORD");
-  const note=buildRedirectSourceTag(`${p.title} • ${tok}`);
-  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>`+qrBox(upiUrl(p.price_inr,note,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${+p.id}"><input type="hidden" name="order_token" value="${esc(tok)}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`);
+  const packTag=p.pack_code?` [${p.pack_code}]`:"";
+  const creatorTag=p.creator_name?` by ${p.creator_name}`:"";
+  const note=buildRedirectSourceTag(`${p.title}${packTag}${creatorTag} • ${tok}`);
+  const hiddenProdId=String(p.id).startsWith("cp_")?0:+p.id;
+  openM(head(p.title)+`<p class="price">Pay exact amount: ₹${esc(p.price_inr)}</p>${p.creator_name?`<p class="small sub" style="margin-bottom:8px">Listed by <strong>${esc(p.creator_name)}</strong> (${esc(p.creator_handle||"")}) • Code: <strong>${esc(p.pack_code||"")}</strong></p>`:""}`+qrBox(upiUrl(p.price_inr,note,UPI.id,UPI.name),UPI.id,UPI.name,"Open UPI app & pay")+`<form data-form="pay"><input type="hidden" name="product_id" value="${hiddenProdId}"><input type="hidden" name="pack_ref_title" value="${esc(p.title+(p.pack_code?" ["+p.pack_code+"]":""))}"><input type="hidden" name="pack_code" value="${esc(p.pack_code||"")}"><input type="hidden" name="order_token" value="${esc(tok)}"><label>Full name *</label><input name="customer_name" required><label>Email *</label><input name="customer_email" type="email" required><label>12-digit UPI UTR *</label><input name="utr" required pattern="[0-9]{12}" minlength="12" maxlength="12" inputmode="numeric" autocomplete="off" data-utr placeholder="12 digits only"><div class="small sub" id="utrHint" style="margin:-8px 0 12px">0 / 12 digits</div><label class="chk"><input type="checkbox" name="send_email_card" value="1">Send order confirmation &amp; card details to my email</label><button class="btn pri full" id="payBtn" disabled>Confirm payment &amp; submit</button></form>`);
 }
 
 function refreshCreatorPreview(){
@@ -1548,6 +1656,17 @@ function renderPolls(){
   }).join("");
 }
 
+function renderStoreProductsGrid(){
+  const allProds=getAllStoreProducts();
+  $("productsList").innerHTML=allProds.length?allProds.map(p=>{
+    const isCreatorPack=!!p.creator_name;
+    const creatorFooter=isCreatorPack
+      ? `<div class="creator-tag-row"><span>By <strong>${esc(p.creator_name)}</strong> (${esc(p.creator_platform||"Creator")})</span>${p.creator_profile_url?`<a class="badge" target="_blank" rel="noopener" href="${link(p.creator_profile_url)}">${esc(p.creator_handle||"Profile")} ↗</a>`:""}</div>`
+      : "";
+    return `<div class="card">${p.image_url?`<img class="cover" src="${link(p.image_url)}" alt="${esc(p.title)}">`:""}<div class="row"><span class="badge">${esc(p.category)}</span>${p.pack_code?`<span class="small sub">${esc(p.pack_code)}</span>`:""}</div><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:12px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button type="button" class="btn pri sm" data-act="buy" data-id="${esc(p.id)}">Buy via UPI</button></div>${creatorFooter}</div>`;
+  }).join(""):`<div class="card center"><p class="sub">Digital packs launching soon.</p></div>`;
+}
+
 let sharedHelpHandled=false;
 async function loadPublic(){try{
   const d=await api("/api/public/overview");st=Object.assign({products:[],charities:[],polls:[],creators:[],applied_count:0},d);
@@ -1584,16 +1703,17 @@ async function loadPublic(){try{
   setupRotatingTrack("helpList","helpRotBar","helpDots",3000,4500);
   setupRotatingTrack("adsList","adsRotBar","adsDots",2600,4500);
 
-  $("productsList").innerHTML=d.products.length?d.products.map(p=>`<div class="card">${p.image_url?`<img class="cover" src="${link(p.image_url)}" alt="${esc(p.title)}">`:""}<span class="badge">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p class="sub" style="margin-bottom:12px">${esc(p.description)}</p><div class="row"><span class="price">₹${esc(p.price_inr)}</span><button type="button" class="btn pri sm" data-act="buy" data-id="${+p.id}">Buy via UPI</button></div></div>`).join(""):`<div class="card center"><p class="sub">Digital packs launching soon.</p></div>`;
+  renderStoreProductsGrid();
+  const totalStoreCount=getAllStoreProducts().length;
   const communityItems=[
     d.creators.length?d.creators.length+" approved creator profile(s) are featured. Explore their work and support fellow creators.":"Creator spotlights will appear here as profiles are approved.",
     d.polls.length?d.polls.length+" community poll(s) are open. Cast your vote and help shape future content.":"New audience polls will appear here when published.",
-    d.products.length?d.products.length+" digital product(s) are available in the store.":"New creator resources will be listed in the digital store when available.",
+    totalStoreCount?totalStoreCount+" digital product(s) are available in the store.":"New creator resources will be listed in the digital store when available.",
     d.ads.length?d.ads.length+" brand campaign(s) are currently featured.":"Brand collaboration opportunities will be shown here when active."
   ];
   $("communityPulse").innerHTML=[
     ["Featured creators",d.creators.length],["Open polls",d.polls.length],
-    ["Digital products",d.products.length],["Live campaigns",d.ads.length]
+    ["Digital products",totalStoreCount],["Live campaigns",d.ads.length]
   ].map(([label,value])=>'<div class="pulse-card"><span>'+label+'</span><b>'+Number(value).toLocaleString("en-IN")+'</b></div>').join("");
   $("communityUpdates").innerHTML=communityItems.map(x=>"<li>"+esc(x)+"</li>").join("");
   renderPolls();
@@ -1604,6 +1724,7 @@ async function loadPublic(){try{
 const TABS=[
   ["overview","Overview"],
   ["creators","Creators","creators"],
+  ["creatorpacks","Creator Packs"],
   ["ads","Ads","ads"],
   ["charity","Help campaigns","charity_campaigns"],
   ["products","Products","products"],
@@ -1650,42 +1771,72 @@ function getAllBookingsList(){
   return merged;
 }
 
+function renderCreatorPacksTabHtml(){
+  const packs=getCreatorSubmittedPacks().filter(matchesAdminFilter);
+  const allOrders=Array.isArray(dash&&dash.orders)?dash.orders:[];
+  if(!packs.length)return `<p class="sub">No co-creator digital packs submitted yet.</p>`;
+  return `<div class="recs">${packs.map(pk=>{
+    const c=calculatePackPricing(pk.price_inr);
+    const matchingOrders=allOrders.filter(o=>JSON.stringify(o).toLowerCase().includes(String(pk.pack_code||"").toLowerCase())||JSON.stringify(o).toLowerCase().includes(String(pk.title||"").toLowerCase()));
+    const isApproved=pk.status==="approved";
+    return `<div class="card">
+      <div class="row"><h3 style="margin:0">${esc(pk.title)}</h3><span class="badge ${isApproved?"ok":"warn"}">${isApproved?"Live in Store":"Pending Review"}</span></div>
+      <div style="margin-top:8px">
+        <div class="kv"><span>Pack Code</span><b>${esc(pk.pack_code)}</b></div>
+        <div class="kv"><span>Creator</span><b>${esc(pk.creator_name)} (${esc(pk.creator_handle)})</b></div>
+        <div class="kv"><span>Profile</span><b><a target="_blank" rel="noopener" href="${link(pk.creator_profile_url)}">Open ${esc(pk.creator_platform)} ↗</a></b></div>
+        <div class="kv"><span>Buyer Price</span><b>₹${c.buyerPrice}</b></div>
+        <div class="kv"><span>Creator Payout (80%)</span><b style="color:var(--ok)">₹${c.creatorShare}</b></div>
+        <div class="kv"><span>Platform Share (20%)</span><b>₹${c.platformFee}</b></div>
+        <div class="kv"><span>Creator UPI ID</span><b>${esc(pk.creator_upi)}</b></div>
+        <div class="kv"><span>Sales Matched</span><b>${matchingOrders.length} order(s)</b></div>
+      </div>
+      <div class="acts">
+        ${!isApproved?`<button type="button" class="btn sm pri" data-act="approveCreatorPack" data-pid="${esc(pk.id)}">Approve &amp; Publish</button>`:""}
+        <button type="button" class="btn sm" data-act="copy" data-t="${esc(pk.creator_upi)}">Copy Creator UPI</button>
+        <button type="button" class="btn sm" data-act="deleteCreatorPack" data-pid="${esc(pk.id)}">Delete</button>
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
 function renderThemeAndStatsTabHtml(){
   const s=getSavedSocialStats();
-  const locked=isDefaultMidnightLocked();
-  const combo=getWeeklyComboThemes();
-  const wkLabel=getWeeklySheetLabel();
+  const cfg=getThemeConfig();
   const curTheme=document.documentElement.getAttribute("data-theme")||"midnightlime";
 
-  const wkCardsHtml=combo.map(k=>{
-    const meta=THEME_META[k]||[k,"#030407","#D4FF24"];
-    const isCurrent=!locked&&curTheme===k;
-    return `<div class="wk-card${isCurrent?" active-wk":""}">
-      <div style="display:flex;align-items:center;gap:10px">
-        <i style="width:22px;height:22px;flex:0 0 22px;border-radius:50%;border:2px solid rgba(255,255,255,.45);background:linear-gradient(135deg,${meta[1]} 50%,${meta[2]} 50%)"></i>
-        <div>
-          <strong>${esc(meta[0])}</strong>
-          <div class="small sub">${isCurrent?"Active on site":"Weekly combo option"}</div>
-        </div>
-      </div>
-      <button type="button" class="btn sm${isCurrent?" pri":""}" data-act="setWeekTheme" data-t="${esc(k)}">${isCurrent?"Active ✓":"Turn On"}</button>
-    </div>`;
+  const optionsHtml=ALL_THEME_KEYS.map(k=>{
+    const m=THEME_META[k];
+    return `<option value="${esc(k)}"${cfg.fixed===k?" selected":""}>${esc(m[0])}</option>`;
+  }).join("");
+
+  const groupChecksHtml=ALL_THEME_KEYS.map(k=>{
+    const m=THEME_META[k];
+    const checked=cfg.group.indexOf(k)!==-1;
+    return `<label class="group-opt"><input type="checkbox" name="grp_theme" value="${esc(k)}"${checked?" checked":""}><i style="background:linear-gradient(135deg,${m[1]} 50%,${m[2]} 50%)"></i><span>${esc(m[0])}</span></label>`;
   }).join("");
 
   return `<div class="g2">
     <div class="card">
-      <div class="row"><h3 style="margin:0">Weekly Theme Switch &amp; Default Lock</h3><span class="badge ${locked?"ok":"warn"}">${locked?"Midnight Lime Default ON":"Weekly Switch ON"}</span></div>
-      <p class="sub small" style="margin:8px 0 12px">In-built default is <strong>Midnight Lime</strong>. Turn OFF Midnight Lime lock to switch colors from this week's 4-color sheet (<strong>${esc(wkLabel)}</strong>).</p>
-      <div class="wk-card${locked?" active-wk":""}">
-        <div>
-          <strong>In-Built Default: Midnight Lime</strong>
-          <div class="small sub">Keep Midnight Lime active on website open</div>
-        </div>
-        <button type="button" class="btn sm${locked?" pri":""}" data-act="toggleMidnightLock">${locked?"ON (Locked)":"OFF (Unlocked)"}</button>
+      <div class="row"><h3 style="margin:0">Website Color Theme Control</h3><span class="badge ok">Active: ${esc((THEME_META[curTheme]||[curTheme])[0])}</span></div>
+      <p class="sub small" style="margin:8px 0 12px">Choose a single fixed color for everyone visiting the site, or select a curated group of colors that visitors can switch between.</p>
+
+      <label>Theme Mode</label>
+      <select id="admThemeModeSelect">
+        <option value="single"${cfg.mode==="single"?" selected":""}>Single Fixed Color (Everyone sees this color)</option>
+        <option value="group"${cfg.mode==="group"?" selected":""}>Curated Color Group (Visitors switch within selected group)</option>
+      </select>
+
+      <div id="admSingleColorBox"${cfg.mode==="group"?" hidden":""}>
+        <label>Select Website Color (14 Themes) ▼</label>
+        <select id="admFixedColorSelect">${optionsHtml}</select>
+        <button type="button" class="btn pri full" data-act="saveSingleTheme">Apply Color to Website</button>
       </div>
-      <div style="margin-top:12px">
-        <div class="small" style="font-weight:700;color:var(--gold2);margin-bottom:8px">${esc(wkLabel)} (Rotates Weekly)</div>
-        ${wkCardsHtml}
+
+      <div id="admGroupColorBox"${cfg.mode!=="group"?" hidden":""}>
+        <label>Select Allowed Color Group</label>
+        <div class="group-grid" id="admGroupChecks">${groupChecksHtml}</div>
+        <button type="button" class="btn pri full" data-act="saveGroupThemes">Save Color Group</button>
       </div>
     </div>
 
@@ -1714,6 +1865,14 @@ function card(k,r){const c=CFG[k];
     const subDisp=r.sub_count?` • ${r.sub_count}`:"";
     extraAdminHtml=`<div class="analysis-box"><div class="row" style="justify-content:flex-start;gap:10px"><img class="av" src="${getCreatorAvatar(r)}" alt="" style="width:42px;height:42px"><div><strong>Auto Channel Analysis</strong><div class="small sub">${esc(info.summary+instaDisp+subDisp)}</div></div></div></div>`;
   }
+  if(k==="orders"){
+    const packs=getCreatorSubmittedPacks();
+    const matchedPack=packs.find(pk=>JSON.stringify(r).toLowerCase().includes(String(pk.pack_code||"").toLowerCase())||JSON.stringify(r).toLowerCase().includes(String(pk.title||"").toLowerCase()));
+    if(matchedPack){
+      const sp=calculatePackPricing(matchedPack.price_inr);
+      extraAdminHtml=`<div class="analysis-box"><div class="row"><strong style="color:var(--ok)">Co-Creator Pack: ${esc(matchedPack.pack_code)}</strong><span class="badge ok">Pay ₹${sp.creatorShare} to Creator</span></div><div class="small sub" style="margin-top:4px">Creator: <strong>${esc(matchedPack.creator_name)}</strong> • UPI: <strong>${esc(matchedPack.creator_upi)}</strong></div></div>`;
+    }
+  }
   if(k==="bookings"){
     const tok=bookingTokens[r.id]||r.token||generateUniqueToken("PROMO");
     bookingTokens[r.id]=tok;
@@ -1739,8 +1898,9 @@ function card(k,r){const c=CFG[k];
 
 function admRender(){if(!dash)return;
   const allBookings=getAllBookingsList();
+  const cPacks=getCreatorSubmittedPacks();
   $("anav").innerHTML=TABS.map(([k,l,d])=>{
-    const cnt=k==="bookings"?allBookings.length:(d?(dash[d]||[]).length:null);
+    const cnt=k==="bookings"?allBookings.length:(k==="creatorpacks"?cPacks.length:(d?(dash[d]||[]).length:null));
     return `<button type="button" data-act="tab" data-k="${k}" class="${tab===k?"on":""}">${l}${cnt!=null?`<i>${cnt}</i>`:""}</button>`;
   }).join("");
   $("atitle").textContent=TABS.find(t=>t[0]===tab)[1];$("auser").textContent=(dash.username||"")+" • "+(dash.role||"");
@@ -1751,12 +1911,16 @@ function admRender(){if(!dash)return;
     b.innerHTML=renderThemeAndStatsTabHtml();
     return;
   }
+  if(tab==="creatorpacks"){
+    b.innerHTML=renderCreatorPacksTabHtml();
+    return;
+  }
   if(tab==="overview"){
-    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING"),pb=allBookings.filter(x=>x.price_approval_status!=="approved");
+    const pc=(dash.creators||[]).filter(c=>c.status!=="approved"),po=(dash.orders||[]).filter(o=>o.status==="PENDING"),pb=allBookings.filter(x=>x.price_approval_status!=="approved"),pp=cPacks.filter(x=>x.status!=="approved");
     b.innerHTML=`<div class="tiles">${TABS.slice(1).map(([k,l,d])=>{
-      const cnt=k==="bookings"?allBookings.length:(d?(dash[d]||[]).length:null);
-      return `<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${cnt!=null?cnt:"8"}</b>${l}</button>`;
-    }).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) awaiting approval • ${po.length} order(s) awaiting UTR verification • ${pb.length} booking(s)/token(s) awaiting match &amp; approval.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;
+      const cnt=k==="bookings"?allBookings.length:(k==="creatorpacks"?cPacks.length:(d?(dash[d]||[]).length:null));
+      return `<button type="button" class="tile" data-act="tab" data-k="${k}"><b>${cnt!=null?cnt:"14"}</b>${l}</button>`;
+    }).join("")}</div><div class="real-box" style="margin-bottom:18px"><strong>Portal Quick Pulse:</strong> ${pc.length} creator(s) • ${pp.length} creator pack(s) • ${po.length} order(s) • ${pb.length} booking(s) awaiting review.</div><h3>Creators waiting for approval (${pc.length})</h3>${pc.length?`<div class="recs">${pc.map(r=>card("creators",r)).join("")}</div>`:`<p class="sub">Nothing waiting.</p>`}<h3 style="margin-top:22px">Orders waiting for payment check (${po.length})</h3>${po.length?`<div class="recs">${po.map(r=>card("orders",r)).join("")}</div>`:`<p class="sub">No pending orders.</p>`}`;
     return;
   }
   const list=(tab==="bookings"?allBookings:(dash[DK[tab]]||[])).filter(matchesAdminFilter);
@@ -1808,6 +1972,46 @@ const ACT={
  close(){closeM()},
  openViewAllPage,
  closeViewAllPage(){closeViewAllPage()},
+ listProductModal:openListProductModal,
+ approveCreatorPack(d){
+   const list=getCreatorSubmittedPacks();
+   const item=list.find(x=>String(x.id)===String(d.pid));
+   if(!item)return;
+   item.status="approved";
+   saveCreatorSubmittedPacks(list);
+   renderStoreProductsGrid();
+   admRender();
+   toast("Creator pack published to Digital Store!");
+   confetti();
+ },
+ deleteCreatorPack(d){
+   if(!confirm("Delete this creator pack?"))return;
+   const next=getCreatorSubmittedPacks().filter(x=>String(x.id)!==String(d.pid));
+   saveCreatorSubmittedPacks(next);
+   renderStoreProductsGrid();
+   admRender();
+   toast("Creator pack removed.");
+ },
+ saveSingleTheme(){
+   const sel=$("admFixedColorSelect");
+   const val=sel?sel.value:"midnightlime";
+   S.s(THEME_MODE_KEY,"single");
+   S.s(FIXED_THEME_KEY,val);
+   applyConfiguredTheme(val);
+   admRender();
+   toast(`Website color locked to ${(THEME_META[val]||[val])[0]}!`);
+   confetti();
+ },
+ saveGroupThemes(){
+   const checked=[...document.querySelectorAll('#admGroupChecks input[name="grp_theme"]:checked')].map(x=>x.value);
+   if(!checked.length)return toast("Select at least one color for the group.",1);
+   S.s(THEME_MODE_KEY,"group");
+   S.s(THEME_GROUP_KEY,JSON.stringify(checked));
+   applyConfiguredTheme(checked[0]);
+   admRender();
+   toast(`Saved ${checked.length} color(s) for visitor theme switcher!`);
+   confetti();
+ },
  mediaKit:openMediaKitModal,
  shareSiteQr:openShareSiteQrModal,
  joinTeamModal:openJoinTeamModal,
@@ -1820,26 +2024,6 @@ const ACT={
    }
    if(cardEl)cardEl.scrollIntoView({behavior:"smooth",block:"center"});
    toast(`Selected: ${d.srv||"Service"}`);
- },
- toggleMidnightLock(){
-   const curLock=isDefaultMidnightLocked();
-   if(curLock){
-     const combo=getWeeklyComboThemes();
-     applyThemeSelection(combo[0],true);
-     toast("Midnight Lime lock OFF — Weekly 4-color switch enabled!");
-   }else{
-     S.s(LOCK_DEFAULT_KEY,"1");
-     applyThemeSelection("midnightlime",false);
-     toast("Midnight Lime default ON!");
-   }
-   admRender();
-   confetti();
- },
- setWeekTheme(d){
-   applyThemeSelection(d.t,true);
-   admRender();
-   toast("Theme turned ON for website!");
-   confetti();
  },
  premiumMembership:()=>openPremiumMembershipModal(99),
  selectPlanAmt(d){openPremiumMembershipModal(d.a)},
@@ -1906,6 +2090,46 @@ const ACT={
   await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
 const FORM={
+ async creatorListPack(f){
+  const raw=fd(f);
+  const pricing=calculatePackPricing(raw.price_inr);
+  let hdl=String(raw.creator_handle||"").trim();
+  if(hdl&&!hdl.startsWith("@"))hdl="@"+hdl;
+  const newItem={
+    id:"cp_"+Date.now(),
+    pack_code:raw.pack_code||generateUniqueToken("PACK"),
+    creator_name:String(raw.creator_name||"").trim(),
+    creator_platform:raw.creator_platform||"YouTube",
+    creator_handle:hdl,
+    creator_profile_url:String(raw.creator_profile_url||"").trim(),
+    title:String(raw.title||"").trim(),
+    category:raw.category||"Digital Pack",
+    description:String(raw.description||"").trim(),
+    price_inr:pricing.buyerPrice,
+    creator_share:pricing.creatorShare,
+    platform_fee:pricing.platformFee,
+    image_url:String(raw.image_url||"").trim(),
+    download_url:String(raw.download_url||"").trim(),
+    creator_upi:String(raw.creator_upi||"").trim(),
+    status:"pending",
+    created_at:new Date().toISOString()
+  };
+  const list=getCreatorSubmittedPacks();
+  list.unshift(newItem);
+  saveCreatorSubmittedPacks(list);
+  try{
+    await post("/api/care/submit",{
+      applicant_name:newItem.creator_name,
+      contact_info:newItem.creator_upi+" • "+newItem.creator_handle,
+      case_title:`New Creator Pack [${newItem.pack_code}]: ${newItem.title} (₹${newItem.price_inr})`,
+      private_details:`Code: ${newItem.pack_code}\nCreator: ${newItem.creator_name} (${newItem.creator_profile_url})\nPrice: ₹${newItem.price_inr} (Creator 80%: ₹${newItem.creator_share}, Platform 20%: ₹${newItem.platform_fee})\nUPI: ${newItem.creator_upi}\nDownload: ${newItem.download_url}`,
+      consent_granted:true
+    });
+  }catch(e){}
+  closeM();
+  toast(`Pack [${newItem.pack_code}] submitted for review! Will appear in Store once approved.`);
+  confetti();
+ },
  async editorApply(f){
   const raw=fd(f);
   await post("/api/care/submit",{
@@ -2010,7 +2234,7 @@ const FORM={
  async care(f){await post("/api/care/submit",Object.assign(fd(f),{consent_granted:true}));f.reset();toast("Message sent privately");confetti()},
  async pay(f){
   const formData=fd(f);
-  const prod=st.products.find(x=>x.id==formData.product_id)||{};
+  const prod=getAllStoreProducts().find(x=>String(x.id)===String(formData.product_id))||{title:formData.pack_ref_title||"Digital Pack",price_inr:"—"};
   const wantEmail=!!f.querySelector('[name="send_email_card"]')?.checked;
   const r=await post("/api/checkout/upi-submit",formData);
   const oid=r.order_id||("AKC_"+Date.now());
@@ -2018,7 +2242,7 @@ const FORM={
   lastOrderSummary={
     token:tok,
     order_id:oid,
-    product_title:prod.title||"Digital Pack",
+    product_title:formData.pack_ref_title||prod.title||"Digital Pack",
     price_inr:prod.price_inr||"—",
     customer_name:formData.customer_name||"",
     customer_email:formData.customer_email||"",
@@ -2072,6 +2296,10 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTopOverlay(fals
 
 document.addEventListener("input",e=>{
   const t=e.target;
+  if(t&&t.id==="lp_base_price"){
+    syncListProductCalc();
+    return;
+  }
   if(t&&t.id==="admSearchInput"){
     admFilterQuery=t.value||"";
     admRender();
@@ -2088,12 +2316,28 @@ document.addEventListener("input",e=>{
 
 document.addEventListener("change",e=>{
   const t=e.target;
+  if(t&&t.id==="admThemeModeSelect"){
+    const isGroup=t.value==="group";
+    if($("admSingleColorBox"))$("admSingleColorBox").hidden=isGroup;
+    if($("admGroupColorBox"))$("admGroupColorBox").hidden=!isGroup;
+    return;
+  }
   if(t&&t.id==="srvTypeSelect"){
     syncServiceFormUI();
     return;
   }
   if(t&&t.dataset&&t.dataset.gateChk){
     syncCreatorGateUI();
+    return;
+  }
+  if(t&&t.id==="lp_cover_file"){
+    const file=t.files&&t.files[0];if(!file)return;
+    toast("Preparing cover image…");
+    shrink(file,900).then(dataUrl=>{
+      if($("lp_image_url"))$("lp_image_url").value=dataUrl;
+      const pv=$("lp_pv");if(pv){pv.src=dataUrl;pv.hidden=false}
+      toast("Cover photo ready!");
+    }).catch(x=>toast(x.message,1));
     return;
   }
   if(t&&t.id==="cr_gallery_file"){
@@ -2131,36 +2375,33 @@ if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>
 (function(){
   const panel=$("tpanel"),btn=$("themeBtn");
   function paint(){
-    const locked=isDefaultMidnightLocked();
-    const combo=getWeeklyComboThemes();
-    const wkLabel=getWeeklySheetLabel();
-    const cur=document.documentElement.getAttribute("data-theme")||"midnightlime";
-    if(locked){
-      panel.innerHTML=`<b>In-built default active</b><button type="button" class="topt on" data-t="midnightlime"><i style="background:linear-gradient(135deg,#030407 50%,#D4FF24 50%)"></i>Midnight Lime (Default)</button><div class="small sub" style="padding:4px 6px">Change via Portal → Theme &amp; Stats</div>`;
+    const cfg=getThemeConfig();
+    const cur=document.documentElement.getAttribute("data-theme")||cfg.fixed;
+    if(cfg.mode==="single"){
+      const m=THEME_META[cfg.fixed]||["Midnight Lime","#030407","#D4FF24"];
+      panel.innerHTML=`<b>Active Site Theme</b><button type="button" class="topt on" data-t="${esc(cfg.fixed)}"><i style="background:linear-gradient(135deg,${m[1]} 50%,${m[2]} 50%)"></i>${esc(m[0])}</button><div class="small sub" style="padding:4px 6px">Controlled in Portal → Theme &amp; Stats</div>`;
       return;
     }
-    panel.innerHTML=`<b>${esc(wkLabel)}</b>`+combo.map(k=>{
+    panel.innerHTML=`<b>Choose Color (${cfg.group.length})</b>`+cfg.group.map(k=>{
       const m=THEME_META[k]||[k,"#030407","#D4FF24"];
       return '<button type="button" class="topt'+(cur===k?" on":"")+'" data-t="'+k+'"><i style="background:linear-gradient(135deg,'+m[1]+' 50%,'+m[2]+' 50%)"></i>'+esc(m[0])+'</button>';
     }).join("");
-  }
-  function apply(k){
-    applyThemeSelection(k,false);
-    paint();
   }
   btn.addEventListener("click",()=>{paint();panel.classList.toggle("open");if(panel.classList.contains("open"))syncHistoryTrap()});
   panel.addEventListener("click",e=>{
     const b=e.target.closest("[data-t]");
     if(!b)return;
-    if(isDefaultMidnightLocked()){
-      toast("Midnight Lime is locked as default. Switch it in Portal → Theme & Stats.");
+    const cfg=getThemeConfig();
+    if(cfg.mode==="single"){
+      toast("Single color mode is active in Portal.");
       return;
     }
-    apply(b.dataset.t);
+    applyConfiguredTheme(b.dataset.t);
+    paint();
     confetti();
   });
   document.addEventListener("click",e=>{if(!e.target.closest("#tpanel,#themeBtn"))panel.classList.remove("open")});
-  apply(S.g("akc_theme")||"midnightlime");
+  applyConfiguredTheme(S.g("akc_theme")||"midnightlime");
 })();
 
 syncServiceFormUI();
