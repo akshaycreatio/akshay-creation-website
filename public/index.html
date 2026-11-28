@@ -30,7 +30,7 @@
 })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <script>
 (function(){
   try{
@@ -74,19 +74,26 @@ h1,h2,h3,.big{font-family:"Syne","Plus Jakarta Sans",sans-serif;font-weight:700;
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;padding-bottom:8px}
 
-/* Premium Syne Brand Logo & Shimmer Typography */
-.brand{position:relative;display:inline-flex;align-items:center;gap:10px;padding:4px 10px 4px 2px;border-radius:12px;transition:transform .25s ease}
+/* Simple & Crisp Creator Brand Mark */
+.brand{position:relative;display:inline-flex;align-items:center;gap:10px;padding:3px 6px 3px 2px;border-radius:10px;transition:transform .25s ease}
 .brand:hover{transform:translateY(-1px)}
 .brand:before{display:none}
-.ak-orb-logo{position:relative;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:0 0 32px;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold));color:var(--onpri);box-shadow:0 0 18px rgba(var(--gl),.55)}
-.ak-orb-logo:before{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed rgba(var(--gl),.75);animation:akOrbitSpin 10s linear infinite}
-.ak-orb-logo svg{width:17px;height:17px;display:block;animation:akLogoPulse 2.8s ease-in-out infinite}
-.brand-name{font-family:"Syne",sans-serif;font-weight:800;font-style:normal;font-size:.98rem;letter-spacing:.1em;background:linear-gradient(100deg,var(--paper) 0%,var(--gold2) 35%,#ffffff 52%,var(--gold2) 70%,var(--paper) 100%);background-size:240% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cleanBrandShimmer 4.5s linear infinite}
-.brand-spark-emoji{font-size:.92rem;display:inline-block;animation:akSparkFloat 2.4s ease-in-out infinite}
-@keyframes cleanBrandShimmer{0%{background-position:0% center}100%{background-position:240% center}}
-@keyframes akOrbitSpin{to{transform:rotate(360deg)}}
-@keyframes akLogoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
-@keyframes akSparkFloat{0%,100%{transform:translateY(0) rotate(0deg) scale(1)}50%{transform:translateY(-2px) rotate(14deg) scale(1.18)}}
+.ak-simple-mark{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:0 0 28px;background:var(--gold);color:var(--onpri);box-shadow:0 0 16px rgba(var(--gl),.35);transition:transform .3s ease,box-shadow .3s ease}
+.brand:hover .ak-simple-mark{transform:rotate(6deg) scale(1.06);box-shadow:0 0 22px rgba(var(--gl),.55)}
+.ak-simple-mark svg{width:15px;height:15px;display:block}
+.brand-name{font-family:"Syne",sans-serif;font-weight:800;font-style:normal;font-size:.96rem;letter-spacing:.11em;background:linear-gradient(105deg,var(--paper) 0%,var(--gold2) 50%,var(--paper) 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cleanBrandShimmer 5s ease-in-out infinite}
+@keyframes cleanBrandShimmer{0%,100%{background-position:0% center}50%{background-position:100% center}}
+
+/* Color Picker Swatches Showing Actual Color Clearly */
+.tpanel{position:fixed;right:14px;bottom:136px;z-index:561;background:var(--modal);border:1px solid var(--gold);border-radius:16px;padding:12px;display:none;flex-direction:column;gap:7px;min-width:248px;max-height:70vh;overflow-y:auto;box-shadow:0 16px 42px rgba(0,0,0,.6)}
+.tpanel.open{display:flex;animation:pop .22s cubic-bezier(.2,.7,.2,1)}
+.tpanel b{font:700 .76rem "Plus Jakarta Sans",sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:0 2px}
+.topt{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--in);border:1px solid var(--line);border-radius:11px;padding:8px 10px;color:var(--paper);font:600 .85rem "Plus Jakarta Sans",sans-serif;cursor:pointer;text-align:left;transition:transform .15s,border-color .2s}
+.topt:hover{transform:translateX(2px);border-color:var(--gold)}
+.topt.on{border-color:var(--gold);background:rgba(var(--gl),.14)}
+.topt-left{display:flex;align-items:center;gap:10px;min-width:0}
+.topt-swatch{width:24px;height:24px;flex:0 0 24px;border-radius:7px;border:1px solid rgba(255,255,255,.32);box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.topt-dot{width:11px;height:11px;flex:0 0 11px;border-radius:50%;border:1px solid rgba(255,255,255,.45)}
 
 /* Quick Jump Action Strip */
 .quick-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--line);scrollbar-width:none}
@@ -302,19 +309,15 @@ footer{padding:36px 0;text-align:center;background:var(--foot);border-top:1px so
 .fab:active{transform:scale(.9)}
 #themeBtn{bottom:78px}#themeBtn span{display:inline-block;animation:wiggle 3s ease-in-out infinite}
 #topBtn{bottom:18px;opacity:0;pointer-events:none}#topBtn.show{opacity:1;pointer-events:auto}
-.tpanel{position:fixed;right:14px;bottom:136px;z-index:561;background:var(--modal);border:1px solid var(--gold);border-radius:14px;padding:12px;display:none;flex-direction:column;gap:6px;min-width:225px;max-height:68vh;overflow-y:auto;box-shadow:0 14px 40px rgba(0,0,0,.5)}
-.tpanel.open{display:flex;animation:pop .25s cubic-bezier(.2,.7,.2,1)}
-.tpanel b{font:600 .8rem "Plus Jakarta Sans",sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.topt{display:flex;align-items:center;gap:10px;background:none;border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--paper);font:600 .86rem "Plus Jakarta Sans",sans-serif;cursor:pointer;text-align:left}
-.topt.on{border-color:var(--gold);background:rgba(var(--gl),.14)}
-.topt i{width:20px;height:20px;flex:0 0 20px;border-radius:50%;border:2px solid rgba(255,255,255,.45)}
+.wk-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--in);margin-bottom:8px}
+.wk-card.active-wk{border-color:var(--gold);background:rgba(var(--gl),.12)}
 body.adm-open .fab,body.adm-open .tpanel{display:none!important}
-@media(prefers-reduced-motion:reduce){.fx-glow,.cue,.brand{display:none}.head .tag:before{transform:none}.hero h1 span:nth-child(3):after{width:62%}}
+@media(prefers-reduced-motion:reduce){.hero .typer{opacity:1!important}*{animation:none!important;transition:none!important}.rv,h1 span,.hero .pill,.hero p.sub,.hero .btns,.hero .stats{opacity:1!important;transform:none!important}h1 span:nth-child(3){color:var(--gold2)!important;background:none!important}}
 </style></head>
 <body>
 <div class="progress" id="progress"></div>
 <header class="nav"><div class="wrap">
-<a href="#home" class="brand"><span class="ak-orb-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.8 9.2L22 12L14.8 14.8L12 22L9.2 14.8L2 12L9.2 9.2L12 2Z"/></svg></span><span class="brand-name">AKSHAY CREATION</span><span class="brand-spark-emoji" aria-hidden="true">✨</span></a>
+<a href="#home" class="brand"><span class="ak-simple-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 20,12 9,18"/></svg></span><span class="brand-name">AKSHAY CREATION</span></a>
 <button type="button" class="btn sm" data-act="portal">Portal</button>
 <nav class="links"><a href="#about">About</a><a href="#creators">Creators</a><a href="#help">Help</a><a href="#store">Store</a><a href="#services">Services</a><a href="#care">Support</a><a href="#community">Community</a><a href="#faq">FAQ</a></nav>
 </div></header>
@@ -344,7 +347,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 </div>
 </div></section>
 <div class="ticker" aria-hidden="true"><div><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span><span>🎬 Shorts</span><span>📸 Reels</span><span>✨ Creativity</span><span>🌴 Kerala</span><span>💖 Community</span><span>🎧 Vibes</span><span>🚀 Growth</span></div></div>
-<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><button type="button" class="q-chip" data-act="listProductModal">＋ Sell Digital Pack</button><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><button type="button" class="q-chip" data-act="mediaKit">📊 Media Kit</button><button type="button" class="q-chip" data-act="shareSiteQr">📲 Site QR</button></div></div>
+<div class="quick-strip"><div class="wrap"><a class="q-chip" href="#creators">🌟 Creators</a><a class="q-chip" href="#store">🛍️ Digital Store</a><button type="button" class="q-chip" data-act="listProductModal">＋ Sell Digital Pack</button><a class="q-chip" href="#services">⚡ Story ₹199</a><a class="q-chip" href="#community-polls">🗳️ Live Polls</a><button type="button" class="q-chip" data-act="shoutoutModal">💬 Video Idea / Shoutout</button><button type="button" class="q-chip" data-act="mediaKit">📊 Media Kit</button><button type="button" class="q-chip" data-act="shareSiteQr">📲 Site QR</button></div></div>
 
 <section class="alt" id="about"><div class="wrap">
 <div class="head"><div class="tag">About Me</div><h2>One Vision. One Journey. <span class="wig bn">🚀</span></h2><p class="sub">Proudly from Kerala, India. Every subscriber matters, and every bit of support means the world.</p></div>
@@ -457,7 +460,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <div class="community-board card">
 <div><span class="badge ok">Community board</span><h3>What's happening now</h3><p class="sub">Updates are based on content currently published on this website.</p></div>
 <ul id="communityUpdates" class="community-updates"><li>Loading the latest community updates…</li></ul>
-<div class="btns" style="margin:18px 0 0"><a class="btn pri sm" href="#creators">Discover creators</a><a class="btn sm" href="#community-polls">Join a poll</a><button type="button" class="btn sm" data-act="shareSiteQr">📲 Share Site QR</button></div>
+<div class="btns" style="margin:18px 0 0"><a class="btn pri sm" href="#creators">Discover creators</a><a class="btn sm" href="#community-polls">Join a poll</a><button type="button" class="btn sm" data-act="shoutoutModal">💬 Video Idea / Shoutout</button><button type="button" class="btn sm" data-act="shareSiteQr">📲 Share Site QR</button></div>
 </div>
 <div class="head" id="community-polls" style="margin:34px 0 18px"><div class="tag">Audience Voice</div><h2>Community Polls <span class="wig wig">🗳️</span></h2><p class="sub">Tap an option below to cast your vote (up to 5 votes per poll).</p></div>
 <div id="pollsList" class="g2"></div>
@@ -479,7 +482,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
   <div class="viewall-top">
     <div class="wrap row">
       <div>
-        <span class="brand"><span class="ak-orb-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.8 9.2L22 12L14.8 14.8L12 22L9.2 14.8L2 12L9.2 9.2L12 2Z"/></svg></span><span class="brand-name">CREATOR DIRECTORY</span><span class="brand-spark-emoji" aria-hidden="true">✨</span></span>
+        <span class="brand"><span class="ak-simple-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 20,12 9,18"/></svg></span><span class="brand-name">CREATOR DIRECTORY</span></span>
         <div class="small sub" id="viewAllMeta">Approved creators &amp; hidden pending queue slots</div>
       </div>
       <button type="button" class="btn sm pri" data-act="closeViewAllPage">← Back to Main Page</button>
@@ -513,7 +516,7 @@ body.adm-open .fab,body.adm-open .tpanel{display:none!important}
 <label class="chk"><input type="checkbox" data-act="pw">Show password</label>
 <button class="btn pri full">Sign in</button></form><button type="button" class="btn full" style="margin-top:10px" data-act="closeAdm">Back to website</button></div>
 <div id="adash" hidden>
-<div class="atop"><div class="row"><span class="brand"><span class="ak-orb-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.8 9.2L22 12L14.8 14.8L12 22L9.2 14.8L2 12L9.2 9.2L12 2Z"/></svg></span><span class="brand-name">AKSHAY CREATION</span><span class="brand-spark-emoji" aria-hidden="true">✨</span></span><span class="sub small" id="auser"></span>
+<div class="atop"><div class="row"><span class="brand"><span class="ak-simple-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 20,12 9,18"/></svg></span><span class="brand-name">AKSHAY CREATION</span></span><span class="sub small" id="auser"></span>
 <span style="display:flex;gap:8px"><button type="button" class="btn sm" data-act="refresh">Refresh</button><button type="button" class="btn sm" data-act="closeAdm">Site</button><button type="button" class="btn sm" data-act="logout">Log out</button></span></div>
 <nav class="anav" id="anav"></nav></div>
 <div class="abody"><h2 id="atitle"></h2><input type="search" class="adm-filter" id="admSearchInput" placeholder="Search by Code, Token, UTR, Creator, Name, Email or Status..."><div id="abody"></div></div></div>
@@ -1166,7 +1169,17 @@ function closeViewAllPage(){
   if($("adm")&&$("adm").hidden)document.body.style.overflow="";
 }
 
-/* ---------- Markup Pricing Calculator (Creator Base + 20% Platform Markup) ---------- */
+function openShoutoutModal(){
+  openM(head("Video Idea / Fan Shoutout")+`
+    <p class="sub small" style="margin-bottom:10px">Drop a video idea or shoutout note for AKSHAY CREATION — copy it or send it directly.</p>
+    <form data-form="shoutoutSubmit">
+      <label>Your Name / @Handle *</label><input name="fan_name" required placeholder="e.g. @rahul_kerala">
+      <label>Idea or Shoutout Message *</label><textarea name="idea_text" rows="3" required placeholder="Suggest a Shorts/Reels topic, review, or challenge..."></textarea>
+      <button class="btn pri full">Send Idea to Akshay</button>
+    </form>
+  `);
+}
+
 function calculatePackMarkup(rawCreatorBase){
   const creatorPayout=Math.max(10,Math.round(Number(rawCreatorBase)||0));
   const platformProfit=Math.max(1,Math.round((creatorPayout*PLATFORM_MARKUP_PCT)/100));
@@ -1783,7 +1796,6 @@ function getAllBookingsList(){
   return merged;
 }
 
-/* ---------- Automatic Creator Payout Calculation & One-Click UPI Redirect ---------- */
 function computePackPayoutSummary(pk){
   const allOrders=Array.isArray(dash&&dash.orders)?dash.orders:[];
   const codeNeedle=String(pk.pack_code||"").toLowerCase();
@@ -2019,6 +2031,7 @@ const ACT={
  close(){closeM()},
  openViewAllPage,
  closeViewAllPage(){closeViewAllPage()},
+ shoutoutModal:openShoutoutModal,
  listProductModal:openListProductModal,
  approveCreatorPack(d){
    const list=getCreatorSubmittedPacks();
@@ -2148,6 +2161,21 @@ const ACT={
   await post("/api/admin/"+d.res,body);toast("Saved");await loadDash();loadPublic()}};
 
 const FORM={
+ async shoutoutSubmit(f){
+  const raw=fd(f);
+  try{
+    await post("/api/care/submit",{
+      applicant_name:raw.fan_name,
+      contact_info:"Shoutout / Idea",
+      case_title:"Audience Video Idea / Shoutout",
+      private_details:raw.idea_text,
+      consent_granted:true
+    });
+  }catch(e){}
+  closeM();
+  toast("Shoutout / video idea shared!");
+  confetti();
+ },
  async creatorListPack(f){
   const raw=fd(f);
   const pricing=calculatePackMarkup(raw.base_price);
@@ -2438,18 +2466,24 @@ if(!reduce)setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>
   top.addEventListener("click",()=>{burst(innerWidth-40,innerHeight-40,["🚀","✨","💨"],8);scrollTo({top:0,behavior:"smooth"})})})();
 (function(){
   const panel=$("tpanel"),btn=$("themeBtn");
+  function renderSwatchRow(k, isActive){
+    const m=THEME_META[k]||[k,"#030407","#D4FF24"];
+    return `<button type="button" class="topt${isActive?" on":""}" data-t="${esc(k)}">
+      <span class="topt-left">
+        <span class="topt-swatch" style="background:${esc(m[2])}"></span>
+        <span>${esc(m[0])}</span>
+      </span>
+      <span class="topt-dot" style="background:${esc(m[1])}"></span>
+    </button>`;
+  }
   function paint(){
     const cfg=getThemeConfig();
     const cur=document.documentElement.getAttribute("data-theme")||cfg.fixed;
     if(cfg.mode==="single"){
-      const m=THEME_META[cfg.fixed]||["Midnight Lime","#030407","#D4FF24"];
-      panel.innerHTML=`<b>Active Site Theme</b><button type="button" class="topt on" data-t="${esc(cfg.fixed)}"><i style="background:linear-gradient(135deg,${m[1]} 50%,${m[2]} 50%)"></i>${esc(m[0])}</button><div class="small sub" style="padding:4px 6px">Controlled in Portal → Theme &amp; Stats</div>`;
+      panel.innerHTML=`<b>Active Site Color</b>`+renderSwatchRow(cfg.fixed,true)+`<div class="small sub" style="padding:4px 6px">Change in Portal → Theme &amp; Stats</div>`;
       return;
     }
-    panel.innerHTML=`<b>Choose Color (${cfg.group.length})</b>`+cfg.group.map(k=>{
-      const m=THEME_META[k]||[k,"#030407","#D4FF24"];
-      return '<button type="button" class="topt'+(cur===k?" on":"")+'" data-t="'+k+'"><i style="background:linear-gradient(135deg,'+m[1]+' 50%,'+m[2]+' 50%)"></i>'+esc(m[0])+'</button>';
-    }).join("");
+    panel.innerHTML=`<b>Choose Color (${cfg.group.length})</b>`+cfg.group.map(k=>renderSwatchRow(k,cur===k)).join("");
   }
   btn.addEventListener("click",()=>{paint();panel.classList.toggle("open");if(panel.classList.contains("open"))syncHistoryTrap()});
   panel.addEventListener("click",e=>{
